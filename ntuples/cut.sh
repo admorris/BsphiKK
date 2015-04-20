@@ -26,13 +26,14 @@ KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
 #Phi mass window cut
 phiMcut="TMath::Abs(phi_1020_MM-1019.461)<15"
 #Bs mass window cut
-BsMcut="TMath::Abs(B_s0_MM-5366.77)<150"
+BsMcut="B_s0_MM>5100&&B_s0_MM<5900"
 #Bs flight distance chi-squared cut
-BsFDCHI2cut="B_s0_FDCHI2_OWNPV>300"
+BsFDCHI2cut="B_s0_FDCHI2_OWNPV>250"
+BsIPCHI2cut="B_s0_IPCHI2_OWNPV<20"
 #Same PID variable cut as Haofei's analysis
 KPIDcut="Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025"
 #Sum of all cuts
-totalcut="${trigcut}&&${ghstcut}&&${phiMcut}&&${KpTcut}&&${BsMcut}&&${BsFDCHI2cut}&&${KPIDcut}"
+totalcut="${trigcut}&&${ghstcut}&&${phiMcut}&&${KpTcut}&&${BsMcut}&&${BsFDCHI2cut}&&${BsIPCHI2cut}&&${KPIDcut}"
 
 cutapplier BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}" BsphiKK_data_duplicates.root
 cutapplier BsphiKK_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" BsphiKK_MC_duplicates.root
@@ -40,8 +41,8 @@ cutapplier Bsphiphi_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" Bsphiph
 
 root -q -b FlagClones.C+
 
-cutapplier BsphiKK_data_duplicates_Clone.root DecayTree "isAlive==1" BsphiKK_data.root
-cutapplier BsphiKK_MC_duplicates_Clone.root DecayTree "isAlive==1" BsphiKK_MC.root
-cutapplier Bsphiphi_MC_duplicates_Clone.root DecayTree "isAlive==1" Bsphiphi_MC.root
+cutapplier BsphiKK_data_duplicates_Clone.root DecayTree "isDup==1" BsphiKK_data_cuts.root
+cutapplier BsphiKK_MC_duplicates_Clone.root DecayTree "isDup==1" BsphiKK_MC_cuts.root
+cutapplier Bsphiphi_MC_duplicates_Clone.root DecayTree "isDup==1" Bsphiphi_MC_cuts.root
 
 

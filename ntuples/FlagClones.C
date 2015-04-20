@@ -228,7 +228,7 @@ std::string RemoveDup(std::string fileName = "BsphiKK_data_duplicates.root" , st
   return outputName;
 }
 
-void FlagClone()
+void FlagClones()
 {
   RemoveDup("BsphiKK_data_duplicates.root");
   RemoveDup("BsphiKK_MC_duplicates.root");
