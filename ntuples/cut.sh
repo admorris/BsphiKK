@@ -1,8 +1,21 @@
 #! /bin/bash
 
-#hadd -f BsphiKK_data_nocut.root BsphiKK_421.root BsphiKK_422.root BsphiKK_423.root BsphiKK_424.root
-#hadd -f BsphiKK_MC_nocut.root BsphiKK_431.root BsphiKK_432.root
-#hadd -f Bsphiphi_MC_nocut.root BsphiKK_429.root BsphiKK_430.root
+source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/LbLogin.sh
+ntuple_name='BsphiKK'
+user=admorris
+###########################################################
+user_fl=${user:0:1}
+EOS_nTuples_dir="/eos/lhcb/user/${user_fl}/${user}/phiKK/"
+source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
+if [ ! -d ~/${EOS_nTuples_dir}/ ]
+then
+source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
+fi
+
+## 
+hadd -f BsphiKK_data_nocut.root ~/${EOS_nTuples_dir}/BsphiKK_421_PIDcut.root ~/${EOS_nTuples_dir}/BsphiKK_422_PIDcut.root ~/${EOS_nTuples_dir}/BsphiKK_423_PIDcut.root ~/${EOS_nTuples_dir}/BsphiKK_424_PIDcut.root
+hadd -f BsphiKK_MC_nocut.root ~/${EOS_nTuples_dir}/BsphiKK_431_PIDcut.root ~/${EOS_nTuples_dir}/BsphiKK_432_PIDcut.root
+hadd -f Bsphiphi_MC_nocut.root ~/${EOS_nTuples_dir}/BsphiKK_429_PIDcut.root ~/${EOS_nTuples_dir}/BsphiKK_430_PIDcut.root
 
 #Same trigger lines as Haofei's analysis
 trigcut="(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)"
@@ -17,9 +30,7 @@ BsMcut="TMath::Abs(B_s0_MM-5366.77)<150"
 #Bs flight distance chi-squared cut
 BsFDCHI2cut="B_s0_FDCHI2_OWNPV>300"
 #Same PID variable cut as Haofei's analysis
-KPIDcut="Kminus_ProbNNk*(1-Kminus_ProbNNk)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNk)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNk)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNk)>0.025"
-#Alternative PID cut
-KPIDcut="Kminus_ProbNNk>0.2&&Kplus_ProbNNk>0.2&&Kminus0_>0.2&&Kplus0_ProbNNk>0.2"
+KPIDcut="Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025"
 #Sum of all cuts
 totalcut="${trigcut}&&${ghstcut}&&${phiMcut}&&${KpTcut}&&${BsMcut}&&${BsFDCHI2cut}&&${KPIDcut}"
 
@@ -29,8 +40,8 @@ cutapplier Bsphiphi_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" Bsphiph
 
 root -q -b FlagClones.C+
 
-cutapplier BsphiKK_data_duplicates_Clone.root DecayTree "isAlive==0" BsphiKK_data.root
-cutapplier BsphiKK_MC_duplicates_Clone.root DecayTree "isAlive==0" BsphiKK_MC.root
-cutapplier Bsphiphi_MC_duplicates_Clone.root DecayTree "isAlive==0" Bsphiphi_MC.root
+cutapplier BsphiKK_data_duplicates_Clone.root DecayTree "isAlive==1" BsphiKK_data.root
+cutapplier BsphiKK_MC_duplicates_Clone.root DecayTree "isAlive==1" BsphiKK_MC.root
+cutapplier Bsphiphi_MC_duplicates_Clone.root DecayTree "isAlive==1" Bsphiphi_MC.root
 
 
