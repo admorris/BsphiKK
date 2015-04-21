@@ -29,69 +29,60 @@ void makeBranches(string filename)
   TTree* intree = (TTree*)infile->Get("DecayTree"),
     * outtree = intree->CloneTree(0);
   Int_t n = intree->GetEntries();
-/*Variables to read in branches************************************************/
-  Double_t
-    B_s0_FDCHI2_OWNPV,
-    B_s0_IPCHI2_OWNPV,
-    B_s0_ENDVERTEX_CHI2,
-    B_s0_P,
-    B_s0_PT,
-    h_PX[4],h_PY[4],h_PZ[4],
-    h_ProbNNp[4],h_ProbNNk[4],h_ProbNNpi[4],h_IP_OWNPV[4];
 /*PDG masses*******************************************************************/
   Double_t
     Kmass = 493.667, pimass = 139.570, pmass = 938.272;
 /*Variables for new branches***************************************************/
-  Double_t
-    B_s0_ln_FDCHI2,
-    B_s0_ln_IPCHI2,
-    B_s0_ln_VCHI2,
-    B_s0_PT_GeV,
-    B_s0_Eta;
   Int_t pion,proton,kaon;
   TLorentzVector hP[4],pionP,protonP;
 /*Input branches***************************************************************/
-  intree->SetBranchAddress("B_s0_FDCHI2_OWNPV",&B_s0_FDCHI2_OWNPV);
-  intree->SetBranchAddress("B_s0_IPCHI2_OWNPV",&B_s0_IPCHI2_OWNPV);
-  intree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&B_s0_ENDVERTEX_CHI2);
-  intree->SetBranchAddress("B_s0_P",&B_s0_P);
-  intree->SetBranchAddress("B_s0_PT",&B_s0_PT);
+  Double_t B_s0_FDCHI2_OWNPV; intree->SetBranchAddress("B_s0_FDCHI2_OWNPV",&B_s0_FDCHI2_OWNPV);
+  Double_t B_s0_IPCHI2_OWNPV; intree->SetBranchAddress("B_s0_IPCHI2_OWNPV",&B_s0_IPCHI2_OWNPV);
+  Double_t B_s0_ENDVERTEX_CHI2; intree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&B_s0_ENDVERTEX_CHI2);
+  Double_t B_s0_P; intree->SetBranchAddress("B_s0_P",&B_s0_P);
+  Double_t B_s0_PT; intree->SetBranchAddress("B_s0_PT",&B_s0_PT);
 /*PX Branches******************************************************************/
+  Double_t h_PX[4];
   intree->SetBranchAddress("Kminus_PX",&h_PX[0]);
   intree->SetBranchAddress("Kplus_PX",&h_PX[1]);
   intree->SetBranchAddress("Kminus0_PX",&h_PX[2]);
   intree->SetBranchAddress("Kplus0_PX",&h_PX[3]);
 /*PY Branches******************************************************************/
+  Double_t h_PY[4];
   intree->SetBranchAddress("Kminus_PY",&h_PY[0]);
   intree->SetBranchAddress("Kplus_PY",&h_PY[1]);
   intree->SetBranchAddress("Kminus0_PY",&h_PY[2]);
   intree->SetBranchAddress("Kplus0_PY",&h_PY[3]);
 /*PZ Branches******************************************************************/
+  Double_t h_PZ[4];
   intree->SetBranchAddress("Kminus_PZ",&h_PZ[0]);
   intree->SetBranchAddress("Kplus_PZ",&h_PZ[1]);
   intree->SetBranchAddress("Kminus0_PZ",&h_PZ[2]);
   intree->SetBranchAddress("Kplus0_PZ",&h_PZ[3]);
 /*ProbNNp Branches*************************************************************/
+  Double_t h_ProbNNp[4];
   intree->SetBranchAddress("Kminus_ProbNNp",&h_ProbNNp[0]);
   intree->SetBranchAddress("Kplus_ProbNNp",&h_ProbNNp[1]);
   intree->SetBranchAddress("Kminus0_ProbNNp",&h_ProbNNp[2]);
   intree->SetBranchAddress("Kplus0_ProbNNp",&h_ProbNNp[3]);
 /*ProbNNk Branches*************************************************************/
+  Double_t h_ProbNNk[4];
   intree->SetBranchAddress("Kminus_ProbNNk",&h_ProbNNk[0]);
   intree->SetBranchAddress("Kplus_ProbNNk",&h_ProbNNk[1]);
   intree->SetBranchAddress("Kminus0_ProbNNk",&h_ProbNNk[2]);
   intree->SetBranchAddress("Kplus0_ProbNNk",&h_ProbNNk[3]);
 /*ProbNNpi Branches************************************************************/
+  Double_t h_ProbNNpi[4];
   intree->SetBranchAddress("Kminus_ProbNNpi",&h_ProbNNpi[0]);
   intree->SetBranchAddress("Kplus_ProbNNpi",&h_ProbNNpi[1]);
   intree->SetBranchAddress("Kminus0_ProbNNpi",&h_ProbNNpi[2]);
   intree->SetBranchAddress("Kplus0_ProbNNpi",&h_ProbNNpi[3]);
 /*BDT branches*****************************************************************/
-  outtree->Branch("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2,"B_s0_ln_FDCHI2/D");
-  outtree->Branch("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2,"B_s0_ln_IPCHI2/D");
-  outtree->Branch("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2,"B_s0_ln_EVCHI2/D");
-  outtree->Branch("B_s0_PT_GeV",&B_s0_PT_GeV,"B_s0_PT_GeV/D");
-  outtree->Branch("B_s0_Eta",&B_s0_Eta,"B_s0_Eta/D");
+  Double_t B_s0_ln_FDCHI2; outtree->Branch("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2,"B_s0_ln_FDCHI2/D");
+  Double_t B_s0_ln_IPCHI2; outtree->Branch("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2,"B_s0_ln_IPCHI2/D");
+  Double_t B_s0_ln_EVCHI2; outtree->Branch("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2,"B_s0_ln_EVCHI2/D");
+  Double_t B_s0_PT_GeV; outtree->Branch("B_s0_PT_GeV",&B_s0_PT_GeV,"B_s0_PT_GeV/D");
+  Double_t B_s0_Eta; outtree->Branch("B_s0_Eta",&B_s0_Eta,"B_s0_Eta/D");
 /*New mass branches************************************************************/
   TLorentzVector phiKplusP; Double_t phiKplusM; outtree->Branch("phiKplusM",&phiKplusM,"phiKplusM/D");
   TLorentzVector phiKminusP; Double_t phiKminusM; outtree->Branch("phiKminusM",&phiKminusM,"phiKminusM/D");
