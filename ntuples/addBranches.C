@@ -33,7 +33,8 @@ void makeBranches(string filename)
   Double_t
     B_s0_FDCHI2_OWNPV,
     B_s0_IPCHI2_OWNPV,
-    B_s0_OWNPV_CHI2,
+    B_s0_ENDVERTEX_CHI2,
+    B_s0_P,
     B_s0_PT,
     h_PX[4],h_PY[4],h_PZ[4],
     h_ProbNNp[4],h_ProbNNk[4],h_ProbNNpi[4],h_IP_OWNPV[4];
@@ -52,7 +53,8 @@ void makeBranches(string filename)
 /*Input branches***************************************************************/
   intree->SetBranchAddress("B_s0_FDCHI2_OWNPV",&B_s0_FDCHI2_OWNPV);
   intree->SetBranchAddress("B_s0_IPCHI2_OWNPV",&B_s0_IPCHI2_OWNPV);
-  intree->SetBranchAddress("B_s0_OWNPV_CHI2",&B_s0_OWNPV_CHI2);
+  intree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&B_s0_ENDVERTEX_CHI2);
+  intree->SetBranchAddress("B_s0_P",&B_s0_P);
   intree->SetBranchAddress("B_s0_PT",&B_s0_PT);
 /*PX Branches******************************************************************/
   intree->SetBranchAddress("Kminus_PX",&h_PX[0]);
@@ -87,7 +89,7 @@ void makeBranches(string filename)
 /*BDT branches*****************************************************************/
   outtree->Branch("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2,"B_s0_ln_FDCHI2/D");
   outtree->Branch("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2,"B_s0_ln_IPCHI2/D");
-  outtree->Branch("B_s0_ln_VCHI2",&B_s0_ln_VCHI2,"B_s0_ln_VCHI2/D");
+  outtree->Branch("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2,"B_s0_ln_EVCHI2/D");
   outtree->Branch("B_s0_PT_GeV",&B_s0_PT_GeV,"B_s0_PT_GeV/D");
   outtree->Branch("B_s0_Eta",&B_s0_Eta,"B_s0_Eta/D");
 /*New mass branches************************************************************/
@@ -106,8 +108,9 @@ void makeBranches(string filename)
 /*BDT variables****************************************************************/
     B_s0_ln_FDCHI2 = safeLog(B_s0_FDCHI2_OWNPV);
     B_s0_ln_IPCHI2 = safeLog(B_s0_IPCHI2_OWNPV);
-    B_s0_ln_VCHI2 = safeLog(B_s0_OWNPV_CHI2);
+    B_s0_ln_EVCHI2 = safeLog(B_s0_ENDVERTEX_CHI2/5.0); // 5 degrees of freedom
     B_s0_PT_GeV = B_s0_PT/1000;
+    B_s0_Eta = TMath::ACosH(B_s0_P/B_s0_PT);
 /*Mass branches****************************************************************/
     // Initial 4K hypothesis
     for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_PX[j],h_PY[j],h_PZ[j],Kmass);
