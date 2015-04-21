@@ -93,8 +93,12 @@ void makeBranches(string filename)
 /*New mass branches************************************************************/
   TLorentzVector phiKplusP; Double_t phiKplusM; outtree->Branch("phiKplusM",&phiKplusM,"phiKplusM/D");
   TLorentzVector phiKminusP; Double_t phiKminusM; outtree->Branch("phiKminusM",&phiKminusM,"phiKminusM/D");
-  TLorentzVector phiKpP; Double_t phiKpM; outtree->Branch("phiKpM",&phiKpM,"phiKpM/D");
+  TLorentzVector phipiplusP; Double_t phipiplusM; outtree->Branch("phipiplusM",&phipiplusM,"phipiplusM/D");
+  TLorentzVector phipiminusP; Double_t phipiminusM; outtree->Branch("phipiminusM",&phipiminusM,"phipiminusM/D");
   TLorentzVector phiKpiP; Double_t phiKpiM; outtree->Branch("phiKpiM",&phiKpiM,"phiKpiM/D");
+  TLorentzVector phipP; Double_t phipM; outtree->Branch("phipM",&phipM,"phipM/D");
+  TLorentzVector phipbarP; Double_t phipbarM; outtree->Branch("phipbarM",&phipbarM,"phipbarM/D");
+  TLorentzVector phiKpP; Double_t phiKpM; outtree->Branch("phiKpM",&phiKpM,"phiKpM/D");
 /*Event loop*******************************************************************/
   for(Int_t i = 0; i < n; i++)
   {
@@ -129,7 +133,15 @@ void makeBranches(string filename)
     pionP.SetXYZM(h_PX[pion],h_PY[pion],h_PZ[pion],pimass);
     phiKpiP = hP[0] + hP[1] + pionP + hP[kaon];
     phiKpiM = phiKpiP.M();
-    // Decide which is the proton
+    // phi pi-
+    pionP.SetXYZM(h_PX[2],h_PY[2],h_PZ[2],pimass);
+    phipiminusP = hP[0] + hP[1] + pionP;
+    phipiminusM = phipiminusP.M();
+    // phi pi+
+    pionP.SetXYZM(h_PX[3],h_PY[3],h_PZ[3],pimass);
+    phipiplusP = hP[0] + hP[1] + pionP;
+    phipiplusM = phipiplusP.M();    
+    // Decide which is the proton for phi K p
     if(h_ProbNNp[2] > h_ProbNNp[3])
     {
       // first is the proton
@@ -145,7 +157,15 @@ void makeBranches(string filename)
     // Set branch value
     protonP.SetXYZM(h_PX[proton],h_PY[proton],h_PZ[proton],pmass);
     phiKpP = hP[0] + hP[1] + protonP + hP[kaon];
-    phiKpM = phiKpP.M();    
+    phiKpM = phiKpP.M(); 
+    // phi proton
+    protonP.SetXYZM(h_PX[3],h_PY[3],h_PZ[3],pmass);
+    phipP = hP[0] + hP[1] + protonP;
+    phipM = phipP.M(); 
+    // phi anti-proton
+    protonP.SetXYZM(h_PX[2],h_PY[2],h_PZ[2],pmass);
+    phipbarP = hP[0] + hP[1] + protonP;
+    phipbarM = phipbarP.M();    
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
     if(i%100==0)
