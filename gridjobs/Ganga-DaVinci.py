@@ -29,15 +29,15 @@ for i in range (2):
     InputName.append(dataName)
 # Bs to phi K*
 for i in range (2):
-    dataName = 'MC201211104021Beam4000GeV-2012-Mag' + magnet[i] + '-Nu25-Pythia8Sim08aDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
+    dataName = 'MC201211104021Beam4000GeV-2012-Mag' + magnet[i] + '-Nu2.5-Pythia8Sim08aDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
     InputName.append(dataName)
 # Bd to phi pi pi
 for i in range (2):
-    dataName = 'MC201213104081Beam4000GeV2012Mag' + magnet[i] + '-Nu25-Pythia8Sim08aDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
+    dataName = 'MC201213104081Beam4000GeV2012Mag' + magnet[i] + 'Nu2.5Pythia8Sim08eDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
     InputName.append(dataName)
 # Lb to phi K p
 for i in range (2):
-    dataName = 'MC201215104020Beam4000GeV-2012-Mag' + magnet[i] + '-Nu25-Pythia6+8Sim08aDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
+    dataName = 'MC201215104020Beam4000GeV-2012-Mag' + magnet[i] + '-Nu2.5-Pythia6+8Sim08eDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
     InputName.append(dataName)
 # Data
 Year = ['11', '12']

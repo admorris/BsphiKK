@@ -96,57 +96,64 @@ tuple.TupleToolTISTOS.TriggerList = tlist
 # Decay descriptor
 tuple.Decay = "[B_s0 -> ^(phi(1020) -> ^K+ ^K-) ^(f_0(980) -> ^K+ ^K-)]CC"
 #tuple.Decay = "[B0 -> ^(phi(1020) -> ^K+ ^K-) ^(rho(770)0 -> ^pi+ ^pi-)]CC" # original
+# Rename f_0(980) branch to KK
+tuple.addBranches({
+   "KK" : " [B_s0 -> (phi(1020) -> K+ K-) ^(f_0(980) -> K+ K-)]CC "
+})
 # LOKI Vairables
-if IsMC:
-  from Configurables import  LoKi__Hybrid__TupleTool
-  LoKiVariables2 = LoKi__Hybrid__TupleTool('LoKiVariables2')
-  LoKiVariables2.Variables = {
-    "LOKI_Mass" : "DTF_FUN(M, True)",
-    "LOKI_Chi2" : "DTF_CHI2(True)",
-    "LOKI_ndof" : "DTF_NDOF(True)",
-    "LOKI_MassError2" : "DTF_FUN(M2ERR2, True)",
-    "LOKI_DTF_CTAU"        : "DTF_CTAU( 0, True )",
-    "LOKI_DTF_CTAUS"       : "DTF_CTAUSIGNIFICANCE( 0, True )",
-    "LOKI_DTF_CTAUERR"     : "DTF_CTAUERR( 0, True )",
+from Configurables import  LoKi__Hybrid__TupleTool
+LoKiVariables2 = LoKi__Hybrid__TupleTool('LoKiVariables2')
+LoKiVariables2.Variables = {
+  "LOKI_Mass" : "DTF_FUN(M, True)",
+  "LOKI_Chi2" : "DTF_CHI2(True)",
+  "LOKI_ndof" : "DTF_NDOF(True)",
+  "LOKI_MassError2" : "DTF_FUN(M2ERR2, True)",
+  "LOKI_DTF_CTAU"        : "DTF_CTAU( 0, True )",
+  "LOKI_DTF_CTAUS"       : "DTF_CTAUSIGNIFICANCE( 0, True )",
+  "LOKI_DTF_CTAUERR"     : "DTF_CTAUERR( 0, True )",
 
-    "PX_kaon1": "DTF_FUN(CHILD(PX, 1,1), True)",
-    "PY_kaon1": "DTF_FUN(CHILD(PY, 1,1), True)",
-    "PZ_kaon1": "DTF_FUN(CHILD(PZ, 1,1), True)",
+  "PX_kaon0": "DTF_FUN(CHILD(PX, 1,1), True)",
+  "PY_kaon0": "DTF_FUN(CHILD(PY, 1,1), True)",
+  "PZ_kaon0": "DTF_FUN(CHILD(PZ, 1,1), True)",
+  "ID_kaon0": "DTF_FUN(CHILD(ID, 1,1), True)",
 
-    "PX_kaon2": "DTF_FUN(CHILD(PX, 1,2), True)",
-    "PY_kaon2": "DTF_FUN(CHILD(PY, 1,2), True)",
-    "PZ_kaon2": "DTF_FUN(CHILD(PZ, 1,2), True)",
+  "PX_kaon1": "DTF_FUN(CHILD(PX, 1,2), True)",
+  "PY_kaon1": "DTF_FUN(CHILD(PY, 1,2), True)",
+  "PZ_kaon1": "DTF_FUN(CHILD(PZ, 1,2), True)",
+  "ID_kaon1": "DTF_FUN(CHILD(ID, 1,2), True)",
 
-    "PX_kaon3": "DTF_FUN(CHILD(PX, 2,1), True)",
-    "PY_kaon3": "DTF_FUN(CHILD(PY, 2,1), True)",
-    "PZ_kaon3": "DTF_FUN(CHILD(PZ, 2,1), True)",
+  "PX_kaon2": "DTF_FUN(CHILD(PX, 2,1), True)",
+  "PY_kaon2": "DTF_FUN(CHILD(PY, 2,1), True)",
+  "PZ_kaon2": "DTF_FUN(CHILD(PZ, 2,1), True)",
+  "ID_kaon2": "DTF_FUN(CHILD(ID, 2,1), True)",
 
-    "PX_kaon4": "DTF_FUN(CHILD(PX, 2,2), True)",
-    "PY_kaon4": "DTF_FUN(CHILD(PY, 2,2), True)",
-    "PZ_kaon4": "DTF_FUN(CHILD(PZ, 2,2), True)",
+  "PX_kaon3": "DTF_FUN(CHILD(PX, 2,2), True)",
+  "PY_kaon3": "DTF_FUN(CHILD(PY, 2,2), True)",
+  "PZ_kaon3": "DTF_FUN(CHILD(PZ, 2,2), True)",
+  "ID_kaon3": "DTF_FUN(CHILD(ID, 2,2), True)",
 
-    "BCON_LOKI_Mass" : "DTF_FUN(M, True, strings(['B_s0']))",
-    "BCON_LOKI_Chi2" : "DTF_CHI2(True, strings(['B_s0']))",
-    "BCON_LOKI_ndof" : "DTF_NDOF(True, strings(['B_s0']))",
-    "BCON_PX_kaon1": "DTF_FUN(CHILD(PX, 1,1), True, strings(['B_s0']))",
-    "BCON_PY_kaon1": "DTF_FUN(CHILD(PY, 1,1), True, strings(['B_s0']))",
-    "BCON_PZ_kaon1": "DTF_FUN(CHILD(PZ, 1,1), True, strings(['B_s0']))",
+  "BCON_LOKI_Mass" : "DTF_FUN(M, True, strings(['B_s0']))",
+  "BCON_LOKI_Chi2" : "DTF_CHI2(True, strings(['B_s0']))",
+  "BCON_LOKI_ndof" : "DTF_NDOF(True, strings(['B_s0']))",
+  "BCON_PX_kaon0": "DTF_FUN(CHILD(PX, 1,1), True, strings(['B_s0']))",
+  "BCON_PY_kaon0": "DTF_FUN(CHILD(PY, 1,1), True, strings(['B_s0']))",
+  "BCON_PZ_kaon0": "DTF_FUN(CHILD(PZ, 1,1), True, strings(['B_s0']))",
 
-    "BCON_PX_kaon2": "DTF_FUN(CHILD(PX, 1,2), True, strings(['B_s0']))",
-    "BCON_PY_kaon2": "DTF_FUN(CHILD(PY, 1,2), True, strings(['B_s0']))",
-    "BCON_PZ_kaon2": "DTF_FUN(CHILD(PZ, 1,2), True, strings(['B_s0']))",
+  "BCON_PX_kaon1": "DTF_FUN(CHILD(PX, 1,2), True, strings(['B_s0']))",
+  "BCON_PY_kaon1": "DTF_FUN(CHILD(PY, 1,2), True, strings(['B_s0']))",
+  "BCON_PZ_kaon1": "DTF_FUN(CHILD(PZ, 1,2), True, strings(['B_s0']))",
 
-    "BCON_PX_kaon3": "DTF_FUN(CHILD(PX, 2,1), True, strings(['B_s0']))",
-    "BCON_PY_kaon3": "DTF_FUN(CHILD(PY, 2,1), True, strings(['B_s0']))",
-    "BCON_PZ_kaon3": "DTF_FUN(CHILD(PZ, 2,1), True, strings(['B_s0']))",
+  "BCON_PX_kaon2": "DTF_FUN(CHILD(PX, 2,1), True, strings(['B_s0']))",
+  "BCON_PY_kaon2": "DTF_FUN(CHILD(PY, 2,1), True, strings(['B_s0']))",
+  "BCON_PZ_kaon2": "DTF_FUN(CHILD(PZ, 2,1), True, strings(['B_s0']))",
 
-    "BCON_PX_kaon4": "DTF_FUN(CHILD(PX, 2,2), True, strings(['B_s0']))",
-    "BCON_PY_kaon4": "DTF_FUN(CHILD(PY, 2,2), True, strings(['B_s0']))",
-    "BCON_PZ_kaon4": "DTF_FUN(CHILD(PZ, 2,2), True, strings(['B_s0']))"
-  }
+  "BCON_PX_kaon3": "DTF_FUN(CHILD(PX, 2,2), True, strings(['B_s0']))",
+  "BCON_PY_kaon3": "DTF_FUN(CHILD(PY, 2,2), True, strings(['B_s0']))",
+  "BCON_PZ_kaon3": "DTF_FUN(CHILD(PZ, 2,2), True, strings(['B_s0']))"
+}
 
-  tuple.addTool(LoKiVariables2 , name = 'LoKiVariables2' )
-  tuple.ToolList   += [ 'LoKi::Hybrid::TupleTool/LoKiVariables2']
+tuple.addTool(LoKiVariables2 , name = 'LoKiVariables2' )
+tuple.ToolList   += [ 'LoKi::Hybrid::TupleTool/LoKiVariables2']
 
 ##################################################
 from Configurables import CondDB, CondDBAccessSvc
@@ -196,7 +203,7 @@ dv = DaVinci(
     TupleFile = myTupleName,
     UserAlgorithms = [userAlgos],
     DataType  = DataYear,
-    EvtMax = -1,
+    EvtMax = 1000,
     InputType = 'DST' if IsMC else 'MDST',
     RootInTES = "/Event/AllStreams" if IsMC else '/Event/Bhadron',
     PrintFreq  = 1000,
