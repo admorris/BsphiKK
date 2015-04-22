@@ -50,19 +50,19 @@ for i in range (2):
 
 for i in range (len(InputName) ):
    print InputName[i]
-
-for nameLoop in range(2):
-  for i in range (2):
-    opts_names = [File ( myFile[nameLoop] ) ]
-    opts_names += [File ( dirc + InputName[2*nameLoop + i] ) ]
-    myApplication.optsfile = opts_names
-    j = Job (
-      name         = myJobName[nameLoop],
-      application  = myApplication,
-      splitter     = mySplitter,
-      backend      = myBackend,
-      outputfiles  = myOutput
-    )
-    j.do_auto_resubmit = True
-    j.submit()
-
+   
+if len(InputName) == 2*len(myFile):
+  for nameLoop in range(len(myFile)):
+    for i in range (2):
+      opts_names = [File ( myFile[nameLoop] ) ]
+      opts_names += [File ( dirc + InputName[2*nameLoop + i] ) ]
+      myApplication.optsfile = opts_names
+      j = Job (
+        name         = myJobName[nameLoop],
+        application  = myApplication,
+        splitter     = mySplitter,
+        backend      = myBackend,
+        outputfiles  = myOutput
+      )
+      j.do_auto_resubmit = True
+      j.submit()
