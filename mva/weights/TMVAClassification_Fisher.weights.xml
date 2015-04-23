@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<MethodSetup Method="Fisher::Fisher">
+  <GeneralInfo>
+    <Info name="TMVA Release" value="4.0.7 [262151]"/>
+    <Info name="ROOT Release" value="5.27/04 [334596]"/>
+    <Info name="Creator" value="hluo"/>
+    <Info name="Date" value="Mon Apr 22 15:03:21 2013"/>
+    <Info name="Host" value="Linux lxbuild148.cern.ch 2.6.18-164.11.1.el5 #1 SMP Wed Jan 20 12:36:24 CET 2010 x86_64 x86_64 x86_64 GNU/Linux"/>
+    <Info name="Dir" value="/afs/cern.ch/user/h/hluo/cmtuser/tmva"/>
+    <Info name="Training events" value="47065"/>
+    <Info name="TrainingTime" value="0.248255"/>
+    <Info name="AnalysisType" value="Classification"/>
+  </GeneralInfo>
+  <Options>
+    <Option name="V" modified="Yes">False</Option>
+    <Option name="VerbosityLevel" modified="No">Default</Option>
+    <Option name="VarTransform" modified="Yes">None</Option>
+    <Option name="H" modified="Yes">True</Option>
+    <Option name="CreateMVAPdfs" modified="Yes">True</Option>
+    <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+    <Option name="Method" modified="Yes">Fisher</Option>
+  </Options>
+  <Variables NVar="13">
+    <Variable VarIndex="0" Expression="Log_Bs_fd" Label="Log_Bs_fd" Title="Log_Bs_fd" Unit="" Internal="Log_Bs_fd" Type="F" Min="3.9121" Max="15.4933"/>
+    <Variable VarIndex="1" Expression="Log_Bs_ip" Label="Log_Bs_ip" Title="Log_Bs_ip" Unit="" Internal="Log_Bs_ip" Type="F" Min="-13.8155" Max="8.27713"/>
+    <Variable VarIndex="2" Expression="Log_ipmin" Label="Log_ipmin" Title="Log_ipmin" Unit="" Internal="Log_ipmin" Type="F" Min="2.7726" Max="9.80005"/>
+    <Variable VarIndex="3" Expression="Bs_CHI2" Label="Bs_CHI2" Title="Bs_CHI2" Unit="" Internal="Bs_CHI2" Type="F" Min="0.413908" Max="146.148"/>
+    <Variable VarIndex="4" Expression="Log_Bs_evchi2" Label="Log_Bs_evchi2" Title="Log_Bs_evchi2" Unit="" Internal="Log_Bs_evchi2" Type="F" Min="-4.45685" Max="2.1972"/>
+    <Variable VarIndex="5" Expression="Log_chi2max" Label="Log_chi2max" Title="Log_chi2max" Unit="" Internal="Log_chi2max" Type="F" Min="-0.543157" Max="1.38621"/>
+    <Variable VarIndex="6" Expression="Bspt" Label="Bspt" Title="Bspt" Unit="" Internal="Bspt" Type="F" Min="2.04634" Max="11.0426"/>
+    <Variable VarIndex="7" Expression="Meson_pt" Label="Meson_pt" Title="Meson_pt" Unit="" Internal="Meson_pt" Type="F" Min="6.7888" Max="9.98982"/>
+    <Variable VarIndex="8" Expression="Meson_ip" Label="Meson_ip" Title="Meson_ip" Unit="" Internal="Meson_ip" Type="F" Min="-6.31358" Max="10.6831"/>
+    <Variable VarIndex="9" Expression="Log_ptmin" Label="Log_ptmin" Title="Log_ptmin" Unit="" Internal="Log_ptmin" Type="F" Min="5.52178" Max="8.89383"/>
+    <Variable VarIndex="10" Expression="eta_angle1" Label="eta_angle1" Title="eta_angle1" Unit="" Internal="eta_angle1" Type="F" Min="1.85206" Max="9.68503"/>
+    <Variable VarIndex="11" Expression="phi_ENDVERTEX_CHI2" Label="phi_ENDVERTEX_CHI2" Title="phi_ENDVERTEX_CHI2" Unit="" Internal="phi_ENDVERTEX_CHI2" Type="F" Min="1.63606e-10" Max="8.99913"/>
+    <Variable VarIndex="12" Expression="f0_ENDVERTEX_CHI2" Label="f0_ENDVERTEX_CHI2" Title="f0_ENDVERTEX_CHI2" Unit="" Internal="f0_ENDVERTEX_CHI2" Type="F" Min="2.45535e-10" Max="8.9922"/>
+  </Variables>
+  <Spectators NSpec="0"/>
+  <Transformations NTransformations="0"/>
+  <MVAPdfs>
+    <PDF Name="Fisher_PDFSig" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="Fisher_tr_S_original" NBins="50" XMin="-2.3469641208648682e+00" XMax="2.4656224250793457e+00" HasEquidistantBins="1">
+        0 0 0 0 0 0 0 0 0 0 0 0.000296629 0 0.000296629 0 0.00118652 0.00355955 0.00533932 0.0118652 0.0213573 0.0436044 0.0670381 0.115982 0.192512 0.286247 0.420323 0.562705 0.722588 0.888403 1.01091 1.05125 1.04028 0.959891 0.845095 0.665338 0.49893 0.360404 0.243532 0.160476 0.0952178 0.0522067 0.0272898 0.0166112 0.00860224 0.00533932 0.00296629 0.000889886 0.000296629 0.000593258 0 
+      </Histogram>
+    </PDF>
+    <PDF Name="Fisher_PDFBkg" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="Fisher_tr_B_original" NBins="50" XMin="-2.3469641208648682e+00" XMax="2.4656224250793457e+00" HasEquidistantBins="1">
+        0.000862981 0.000862981 0.000862981 0 0.00172596 0.00517788 0.00776683 0.0258894 0.0526418 0.114776 0.195034 0.320166 0.44012 0.57043 0.757697 0.862118 0.896637 1.01487 0.976894 0.947553 0.80775 0.681755 0.582512 0.420272 0.27788 0.182089 0.100969 0.0655865 0.0345192 0.0163966 0.00776683 0.00690384 0.0043149 0.0043149 0.00172596 0 0 0.00172596 0.000862981 0 0 0 0 0 0 0 0 0 0 0 
+      </Histogram>
+    </PDF>
+  </MVAPdfs>
+  <Weights NCoeff="14">
+    <Coefficient Index="0" Value="-6.0905517768423256e-01"/>
+    <Coefficient Index="1" Value="8.8596458021226177e-02"/>
+    <Coefficient Index="2" Value="-1.3154463920048154e-01"/>
+    <Coefficient Index="3" Value="-2.9888238490091517e-02"/>
+    <Coefficient Index="4" Value="-3.3863266983914903e-03"/>
+    <Coefficient Index="5" Value="-1.9927406811543702e-01"/>
+    <Coefficient Index="6" Value="-5.6805127874707417e-01"/>
+    <Coefficient Index="7" Value="5.5505700816495356e-02"/>
+    <Coefficient Index="8" Value="-2.9128411153062826e-02"/>
+    <Coefficient Index="9" Value="9.0987408471272221e-02"/>
+    <Coefficient Index="10" Value="9.2369091007532489e-02"/>
+    <Coefficient Index="11" Value="-1.1601897293575465e-01"/>
+    <Coefficient Index="12" Value="2.4394425637659020e-02"/>
+    <Coefficient Index="13" Value="3.6701054379324975e-03"/>
+  </Weights>
+</MethodSetup>

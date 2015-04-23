@@ -15,9 +15,12 @@ fi
 # The lines hereafter and before definition of cuts not normally necessary
 cd ~/${EOS_nTuples_dir}/
 pwd
-#hadd -f BsphiKK_data_nocut.root BsphiKK_421_PIDcut.root BsphiKK_422_PIDcut.root BsphiKK_423_PIDcut.root BsphiKK_424_PIDcut.root
-#hadd -f BsphiKK_MC_nocut.root BsphiKK_431_PIDcut.root BsphiKK_432_PIDcut.root
-#hadd -f Bsphiphi_MC_nocut.root BsphiKK_429_PIDcut.root BsphiKK_430_PIDcut.root
+hadd -f Bsphiphi_MC_nocut.root BsphiKK_468_PIDcut.root BsphiKK_469_PIDcut.root
+hadd -f BsphiKK_MC_nocut.root BsphiKK_470_PIDcut.root BsphiKK_471_PIDcut.root
+hadd -f BdphiKst_MC_nocut.root BsphiKK_472_PIDcut.root BsphiKK_473_PIDcut.root
+hadd -f Bsphipipi_MC_nocut.root BsphiKK_474_PIDcut.root BsphiKK_475_PIDcut.root
+hadd -f LbphiKp_MC_nocut.root BsphiKK_476_PIDcut.root BsphiKK_477_PIDcut.root
+hadd -f BsphiKK_data_nocut.root BsphiKK_478_PIDcut.root BsphiKK_479_PIDcut.root BsphiKK_480_PIDcut.root BsphiKK_481_PIDcut.root
 cd -
 #Same trigger lines as Haofei's analysis
 trigcut="(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)"

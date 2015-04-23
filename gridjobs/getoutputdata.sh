@@ -12,10 +12,10 @@ if [ ! -d ~/${EOS_HOME}/ ]
 then
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
 fi
-for(( jobno=421; jobno<=432; jobno++)); do
-if [ "${jobno}" -gt "424" -a "${jobno}" -lt "429" ]
-then
-continue
+for(( jobno=468; jobno<=481; jobno++)); do
+#if [ "${jobno}" -gt "424" -a "${jobno}" -lt "429" ]
+#then
+#continue
 fi
 # Copy outputs to tmp
 gangaout=~/gangadir/workspace/${user}/LocalXML/
