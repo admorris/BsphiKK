@@ -16,7 +16,7 @@ for(( jobno=468; jobno<=481; jobno++)); do
 #if [ "${jobno}" -gt "424" -a "${jobno}" -lt "429" ]
 #then
 #continue
-fi
+#fi
 # Copy outputs to tmp
 gangaout=~/gangadir/workspace/${user}/LocalXML/
 lfns='LFNs.txt'
