@@ -5,7 +5,7 @@ ntuple_name='BsphiKK'
 user=admorris
 ###########################################################
 user_fl=${user:0:1}
-# The lines hereafter and before definition of cuts not normally necessary
+# Setup EOS directory
 EOS_nTuples_dir="/eos/lhcb/user/${user_fl}/${user}/phiKK/"
 source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
 if [ ! -d ~/${EOS_nTuples_dir}/ ]
@@ -42,8 +42,10 @@ root -q -b -l "FlagClones.C+(\"${mode}_duplicates.root\")"
 cutapplier ${mode}_duplicates_Clone.root DecayTree "isDup==1" ${mode}_cuts.root
 done
 
-source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
-
+# Move intermediate files to EOS
 mv -v *duplicates*root ~/${EOS_nTuples_dir}/
+
+# Unmount EOS after use
+source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
 
 exit 0
