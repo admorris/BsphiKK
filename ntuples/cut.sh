@@ -5,23 +5,13 @@ ntuple_name='BsphiKK'
 user=admorris
 ###########################################################
 user_fl=${user:0:1}
+# The lines hereafter and before definition of cuts not normally necessary
 EOS_nTuples_dir="/eos/lhcb/user/${user_fl}/${user}/phiKK/"
 source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
 if [ ! -d ~/${EOS_nTuples_dir}/ ]
 then
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
 fi
-
-# The lines hereafter and before definition of cuts not normally necessary
-cd ~/${EOS_nTuples_dir}/
-pwd
-hadd -f Bsphiphi_MC_nocut.root BsphiKK_468_PIDcut.root BsphiKK_469_PIDcut.root
-hadd -f BsphiKK_MC_nocut.root BsphiKK_470_PIDcut.root BsphiKK_471_PIDcut.root
-hadd -f BdphiKst_MC_nocut.root BsphiKK_472_PIDcut.root BsphiKK_473_PIDcut.root
-hadd -f Bsphipipi_MC_nocut.root BsphiKK_474_PIDcut.root BsphiKK_475_PIDcut.root
-hadd -f LbphiKp_MC_nocut.root BsphiKK_476_PIDcut.root BsphiKK_477_PIDcut.root
-hadd -f BsphiKK_data_nocut.root BsphiKK_478_PIDcut.root BsphiKK_479_PIDcut.root BsphiKK_480_PIDcut.root BsphiKK_481_PIDcut.root
-cd -
 #Same trigger lines as Haofei's analysis
 trigcut="(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)"
 #Tighter cut on track ghost prob than stripping
@@ -47,6 +37,8 @@ totalcut="${trigcut}&&${ghstcut}&&${trackisMuoncut}&&${phiMcut}&&${KpTcut}&&${Bs
 cutapplier ~/${EOS_nTuples_dir}/BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}" BsphiKK_data_duplicates.root
 cutapplier ~/${EOS_nTuples_dir}/BsphiKK_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" BsphiKK_MC_duplicates.root
 cutapplier ~/${EOS_nTuples_dir}/Bsphiphi_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" Bsphiphi_MC_duplicates.root
+
+source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
 
 root -q -b FlagClones.C+
 
