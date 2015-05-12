@@ -20,3 +20,4 @@ hadd -f LbphiKp_MC_nocut.root BsphiKK_476_PIDcut.root BsphiKK_477_PIDcut.root
 hadd -f BsphiKK_data_nocut.root BsphiKK_478_PIDcut.root BsphiKK_479_PIDcut.root BsphiKK_480_PIDcut.root BsphiKK_481_PIDcut.root BsphiKK_483_PIDcut.root BsphiKK_484_PIDcut.root
 cd -
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
+exit 0
