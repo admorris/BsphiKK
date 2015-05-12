@@ -10,15 +10,12 @@
 #include "TLegend.h"
 #include "TStyle.h"
 #include "./progbar.h"
-
 using namespace std;
-
 Double_t safeLog(Double_t x)
 {
   if(x>TMath::Exp(-25)) return TMath::Log(x);
   else return -25;
 }
-
 void addBranches(string filename)
 {
   const Int_t t0 = time(0);
@@ -175,10 +172,3 @@ void addBranches(string filename)
   outfile->Close();
   return;
 }
-//void addBranches()
-//{
-//  makeBranches("BsphiKK_data");
-//  makeBranches("BsphiKK_MC");
-//  makeBranches("Bsphiphi_MC");
-//  return;
-//}

@@ -8,18 +8,13 @@
 #include "TMath.h"
 #include "TLorentzVector.h"
 #include "TVector2.h"
-
 #include <vector>
 #include <algorithm>
 #include "TMath.h"
-
 #include "./progbar.h"
-
 class CloneInfo
 {
-
 public:
-
   CloneInfo(int key1, int key2, int key3, int key4, int i) :
   m_key1(key1),
   m_key2(key2),
@@ -27,7 +22,6 @@ public:
   m_key4(key4),
   m_i(i),
   m_isAlive(true){}
-
   CloneInfo(const CloneInfo& cl) :
   m_key1(cl.m_key1),
   m_key2(cl.m_key2),
@@ -35,27 +29,16 @@ public:
   m_key4(cl.m_key4),
   m_i(cl.m_i),
   m_isAlive(cl.m_isAlive){}
-
   CloneInfo() {}
-
   ~CloneInfo() {}
-
   bool isAlive() { return m_isAlive; }
-
   int i() const { return m_i; }
-
   void setDead(){m_isAlive = false;}
-
   int key1(){ return m_key1; }
-
   int key2(){ return m_key2; }
-
   int key3(){ return m_key3; }
-
   int key4(){ return m_key4; }
-
   int sum() const { return m_key1 + m_key2 + m_key3 + m_key4; } 
-
   class Less_by_sum
   {
     public:
@@ -64,9 +47,7 @@ public:
         return c1.sum() < c2.sum();
       }
   };
-
 private:
-
   int m_key1;
   int m_key2;
   int m_key3;
@@ -74,11 +55,9 @@ private:
   int m_i;
   bool m_isAlive;
 };
-
 #ifdef __MAKECINT__
 #pragma link C++ class vector<CloneInfo>;
 #endif
-
 void tagClone(CloneInfo& c1, CloneInfo& c2)
 {
   if (c1.sum() == c2.sum())
@@ -86,7 +65,6 @@ void tagClone(CloneInfo& c1, CloneInfo& c2)
     c2.setDead();
   }
 }
-
 void tagClones(std::vector<CloneInfo>& clones)
 {
   std::vector<CloneInfo>::iterator iter = clones.begin();
@@ -104,36 +82,29 @@ void tagClones(std::vector<CloneInfo>& clones)
       }
     }
   }
-
 }
 void sortClones(std::vector<CloneInfo>& clones)
 {
   std::sort(clones.begin(), clones.end(), CloneInfo::Less_by_sum());
 }
-
-
 void addToClones(std::vector<CloneInfo>& clones, int key1, int key2, int key3, int key4, int i )
 {
   CloneInfo tclone = CloneInfo(key1, key2, key3, key4,  i);
   clones.push_back(tclone);
 }
-
 std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , std::string treeName = "DecayTreeTuple/DecayTree")
 {
   const Int_t t0 = time(0);
   // get the input
   TChain* tree = new TChain(treeName.c_str());
   tree->Add(fileName.c_str());
-
   // clone the tree..
   int num_entries  = tree->GetEntries();
-
   std::vector<int> flag_clones; flag_clones.resize(num_entries);
   for (int i = 0; i < num_entries; ++i)
   {
     flag_clones[i] = 1;
   }
-
   double dvchi2; tree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&dvchi2); 
   UInt_t run;tree->SetBranchAddress("runNumber",&run);  
   ULong64_t event; tree->SetBranchAddress("eventNumber",&event);  
@@ -141,9 +112,7 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   int key2; tree->SetBranchAddress("Kminus0_TRACK_Key",&key2);  
   int key3; tree->SetBranchAddress("Kplus_TRACK_Key",&key3);  
   int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);  
-  
   std::vector<CloneInfo> clones;
-
   int i = 0;
   while (i < num_entries)
   {
@@ -157,14 +126,14 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
       tree->GetEntry(j);
       int run_j = run;
       int event_j = event;
-      if(run_j!=run_i||event_j!=event_i)
-      {
-      break;
-      }
-      else
-      {
-      addToClones(clones,key1,key2,key3,key4,j);  
-      }
+        if(run_j!=run_i||event_j!=event_i)
+        {
+          break;
+        }
+        else
+        {
+          addToClones(clones,key1,key2,key3,key4,j);  
+        }
     }
     sortClones(clones);
     tagClones(clones);
@@ -184,19 +153,15 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   }
   cout << endl;
   const Int_t t1 = time(0);
-  
-
   // make the output
   std::string outputName = fileName.substr(0,fileName.size() - 5);
   outputName += "_Clone.root";
   TFile* outFile  =new TFile(outputName.c_str(),"RECREATE");
   std::cout << "Reading: " << treeName << " from " << fileName  << " to " << outputName << std::endl;
-  
   TTree*  newtree = tree->CloneTree(-1);
   int isAlive;
   TBranch *branch_bestVtxChi2 = newtree->Branch("isDup",&isAlive, "isDup/I");
   num_entries = newtree->GetEntries(); 
-  
   // loop again and write the branch
   for (i=0;i<num_entries; i++)
   {
@@ -210,17 +175,7 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
     }
   }
   cout << endl;
- 
   newtree->Write();
-  outFile->Close();
- 
+  outFile->Close();s
   return outputName;
 }
-
-//void FlagClones()
-//{
-//  RemoveDup("BsphiKK_data_duplicates.root");
-//  RemoveDup("BsphiKK_MC_duplicates.root");
-//  RemoveDup("Bsphiphi_MC_duplicates.root");
-//  return;
-//}

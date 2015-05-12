@@ -1,5 +1,4 @@
 #! /bin/bash
-
 source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/LbLogin.sh
 ntuple_name='BsphiKK'
 user=admorris
