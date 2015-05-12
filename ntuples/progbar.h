@@ -4,12 +4,12 @@
 void progbar(Int_t ievent, Int_t nevents, Int_t barwidth=80)
 {
   Int_t perc = (Int_t)(100*ievent/nevents)+1;
-  cout << "\r [";
+  cout << "\r ┃";
   for (Int_t ibar = 0; ibar < (perc*barwidth)/100; ibar++)
-    cout << "#";
+    cout << "█";
   for (Int_t ibar = (perc*barwidth)/100; ibar < barwidth; ibar++)
-    cout << "-";
-  cout << "] " << perc << "% " << flush;
+    cout << " ";
+  cout << "┃ " << perc << "% " << flush;
 }
 void timestamp(const Int_t t0)
 {

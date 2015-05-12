@@ -34,16 +34,16 @@ KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>0.01&&Kminus_ProbNNk*(1-Kminus_ProbNNp
 #Sum of all cuts
 totalcut="${trigcut}&&${ghstcut}&&${trackisMuoncut}&&${phiMcut}&&${KpTcut}&&${BsMcut}&&${BsFDCHI2cut}&&${BsIPCHI2cut}&&${KPIDcut}&&${KpiPIDcut}&&${KpPIDcut}"
 
-cutapplier ~/${EOS_nTuples_dir}/BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}" BsphiKK_data_duplicates.root
-cutapplier ~/${EOS_nTuples_dir}/BsphiKK_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" BsphiKK_MC_duplicates.root
-cutapplier ~/${EOS_nTuples_dir}/Bsphiphi_MC_nocut.root DecayTreeTuple/DecayTree "${totalcut}" Bsphiphi_MC_duplicates.root
+modes=(Bsphiphi_MC BsphiKK_MC BdphiKst_MC Bsphipipi_MC LbphiKp_MC BsphiKK_data)
+
+for mode in ${modes[@]}; do
+cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}" ${mode}_duplicates.root
+root -q -b -l "FlagClones.C+(\"${mode}_duplicates.root\")"
+cutapplier ${mode}_duplicates_Clone.root DecayTree "isDup==1" ${mode}_cuts.root
+done
 
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
 
-root -q -b FlagClones.C+
+mv -v *duplicates*root ~/${EOS_nTuples_dir}/
 
-cutapplier BsphiKK_data_duplicates_Clone.root DecayTree "isDup==1" BsphiKK_data_cuts.root
-cutapplier BsphiKK_MC_duplicates_Clone.root DecayTree "isDup==1" BsphiKK_MC_cuts.root
-cutapplier Bsphiphi_MC_duplicates_Clone.root DecayTree "isDup==1" Bsphiphi_MC_cuts.root
-
-mv -v *duplicates* ~/${EOS_nTuples_dir}/
+exit 0
