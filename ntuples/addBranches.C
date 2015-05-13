@@ -56,6 +56,24 @@ void addBranches(string filename)
   intree->SetBranchAddress("Kplus_PZ",&h_PZ[1]);
   intree->SetBranchAddress("Kminus0_PZ",&h_PZ[2]);
   intree->SetBranchAddress("Kplus0_PZ",&h_PZ[3]);
+/*BCON PX Branches*************************************************************/
+  Double_t h_BCON_PX[4];
+  intree->SetBranchAddress("B_s0_BCON_PX_kaon1",&h_BCON_PX[0]);
+  intree->SetBranchAddress("B_s0_BCON_PX_kaon0",&h_BCON_PX[1]);
+  intree->SetBranchAddress("B_s0_BCON_PX_kaon3",&h_BCON_PX[2]);
+  intree->SetBranchAddress("B_s0_BCON_PX_kaon2",&h_BCON_PX[3]);
+/*BCON PY Branches*************************************************************/
+  Double_t h_BCON_PY[4];
+  intree->SetBranchAddress("B_s0_BCON_PY_kaon1",&h_BCON_PY[0]);
+  intree->SetBranchAddress("B_s0_BCON_PY_kaon0",&h_BCON_PY[1]);
+  intree->SetBranchAddress("B_s0_BCON_PY_kaon3",&h_BCON_PY[2]);
+  intree->SetBranchAddress("B_s0_BCON_PY_kaon2",&h_BCON_PY[3]);
+/*BCON PZ Branches*************************************************************/
+  Double_t h_BCON_PZ[4];
+  intree->SetBranchAddress("B_s0_BCON_PZ_kaon1",&h_BCON_PZ[0]);
+  intree->SetBranchAddress("B_s0_BCON_PZ_kaon0",&h_BCON_PZ[1]);
+  intree->SetBranchAddress("B_s0_BCON_PZ_kaon3",&h_BCON_PZ[2]);
+  intree->SetBranchAddress("B_s0_BCON_PZ_kaon2",&h_BCON_PZ[3]);
 /*ProbNNp Branches*************************************************************/
   Double_t h_ProbNNp[4];
   intree->SetBranchAddress("Kminus_ProbNNp",&h_ProbNNp[0]);
@@ -81,6 +99,7 @@ void addBranches(string filename)
   Double_t B_s0_PT_GeV; outtree->Branch("B_s0_PT_GeV",&B_s0_PT_GeV,"B_s0_PT_GeV/D");
   Double_t B_s0_Eta; outtree->Branch("B_s0_Eta",&B_s0_Eta,"B_s0_Eta/D");
 /*New mass branches************************************************************/
+  TLorentzVector BCON_KK_P; Double_t BCON_KK_M; outtree->Branch("BCON_KK_M",&BCON_KK_M,"BCON_KK_M/D");
   TLorentzVector phiKplusP; Double_t phiKplusM; outtree->Branch("phiKplusM",&phiKplusM,"phiKplusM/D");
   TLorentzVector phiKminusP; Double_t phiKminusM; outtree->Branch("phiKminusM",&phiKminusM,"phiKminusM/D");
   TLorentzVector phipiplusP; Double_t phipiplusM; outtree->Branch("phipiplusM",&phipiplusM,"phipiplusM/D");
@@ -100,6 +119,9 @@ void addBranches(string filename)
     B_s0_PT_GeV = B_s0_PT/1000;
     B_s0_Eta = TMath::ACosH(B_s0_P/B_s0_PT);
 /*Mass branches****************************************************************/
+    for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
+    BCON_KK_P = hP[2]+hP[3];
+    BCON_KK_M = BCON_KK_P.M();
     // Initial 4K hypothesis
     for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_PX[j],h_PY[j],h_PZ[j],Kmass);
     // Both phiK+− branches
@@ -172,3 +194,6 @@ void addBranches(string filename)
   outfile->Close();
   return;
 }
+
+
+
