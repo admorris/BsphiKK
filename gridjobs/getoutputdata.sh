@@ -1,7 +1,10 @@
 #! /bin/bash
-#SetupProject LHCbDirac
-#lhcb-proxy-init
 source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/LbLogin.sh
+source ~/.bash_profile
+source ~/.bashrc
+source /etc/bashrc
+SetupProject.sh LHCbDirac
+lhcb-proxy-init
 ntuple_name='BsphiKK'
 user=admorris
 ###########################################################
@@ -12,11 +15,12 @@ if [ ! -d ~/${EOS_HOME}/ ]
 then
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
 fi
-for(( jobno=468; jobno<=481; jobno++)); do
+for(( jobno=481; jobno<=484; jobno++)); do
 #if [ "${jobno}" -gt "424" -a "${jobno}" -lt "429" ]
-#then
-#continue
-#fi
+if [ "${jobno}" == "482" ]
+then
+continue
+fi
 # Copy outputs to tmp
 gangaout=~/gangadir/workspace/${user}/LocalXML/
 lfns='LFNs.txt'
@@ -36,7 +40,12 @@ cutapplier ${ntuple_name}${n}_noPID.root DecayTreeTuple/DecayTree "Kminus_ProbNN
 n=$(($n+1))
 fi
 done < output_lfns.lst
-hadd -f ~/${EOS_HOME}/phiKK/${ntuple_name}_${jobno}_PIDcut.root ${ntuple_name}*_PIDcut.root
-hadd -f ~/${EOS_HOME}/phiKK/${ntuple_name}_${jobno}_noPID.root ${ntuple_name}*_noPID.root
+hadd -f ../${ntuple_name}_${jobno}_PIDcut.root ${ntuple_name}*_PIDcut.root
+hadd -f ../${ntuple_name}_${jobno}_noPID.root ${ntuple_name}*_noPID.root
+if [ -e ../${ntuple_name}_${jobno}_PIDcut.root -a -e ../${ntuple_name}_${jobno}_noPID.root ]
+then
 rm ${ntuple_name}*root
-done;
+fi
+mv ../${ntuple_name}_${jobno}*.root ~/${EOS_HOME}/phiKK/
+done
+source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
