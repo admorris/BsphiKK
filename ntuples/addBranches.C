@@ -11,7 +11,7 @@
 #include "TStyle.h"
 #include "./progbar.h"
 using namespace std;
-Double_t safeLog(Double_t x)
+Float_t safeLog(Double_t x)
 {
   if(x>TMath::Exp(-25)) return TMath::Log(x);
   else return -25;
@@ -93,11 +93,11 @@ void addBranches(string filename)
   intree->SetBranchAddress("Kminus0_ProbNNpi",&h_ProbNNpi[2]);
   intree->SetBranchAddress("Kplus0_ProbNNpi",&h_ProbNNpi[3]);
 /*BDT branches*****************************************************************/
-  Double_t B_s0_ln_FDCHI2; outtree->Branch("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2,"B_s0_ln_FDCHI2/D");
-  Double_t B_s0_ln_IPCHI2; outtree->Branch("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2,"B_s0_ln_IPCHI2/D");
-  Double_t B_s0_ln_EVCHI2; outtree->Branch("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2,"B_s0_ln_EVCHI2/D");
-  Double_t B_s0_PT_GeV; outtree->Branch("B_s0_PT_GeV",&B_s0_PT_GeV,"B_s0_PT_GeV/D");
-  Double_t B_s0_Eta; outtree->Branch("B_s0_Eta",&B_s0_Eta,"B_s0_Eta/D");
+  Float_t B_s0_ln_FDCHI2; outtree->Branch("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2,"B_s0_ln_FDCHI2/F");
+  Float_t B_s0_ln_IPCHI2; outtree->Branch("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2,"B_s0_ln_IPCHI2/F");
+  Float_t B_s0_ln_EVCHI2; outtree->Branch("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2,"B_s0_ln_EVCHI2/F");
+  Float_t B_s0_PT_GeV; outtree->Branch("B_s0_PT_GeV",&B_s0_PT_GeV,"B_s0_PT_GeV/F");
+  Float_t B_s0_Eta; outtree->Branch("B_s0_Eta",&B_s0_Eta,"B_s0_Eta/F");
 /*New mass branches************************************************************/
   TLorentzVector BCON_KK_P; Double_t BCON_KK_M; outtree->Branch("BCON_KK_M",&BCON_KK_M,"BCON_KK_M/D");
   TLorentzVector phiKplusP; Double_t phiKplusM; outtree->Branch("phiKplusM",&phiKplusM,"phiKplusM/D");
@@ -113,11 +113,11 @@ void addBranches(string filename)
   {
     intree->GetEntry(i);
 /*BDT variables****************************************************************/
-    B_s0_ln_FDCHI2 = safeLog(B_s0_FDCHI2_OWNPV);
-    B_s0_ln_IPCHI2 = safeLog(B_s0_IPCHI2_OWNPV);
-    B_s0_ln_EVCHI2 = safeLog(B_s0_ENDVERTEX_CHI2/5.0); // 5 degrees of freedom
-    B_s0_PT_GeV = B_s0_PT/1000;
-    B_s0_Eta = TMath::ACosH(B_s0_P/B_s0_PT);
+    B_s0_ln_FDCHI2 = (float)safeLog(B_s0_FDCHI2_OWNPV);
+    B_s0_ln_IPCHI2 = (float)safeLog(B_s0_IPCHI2_OWNPV);
+    B_s0_ln_EVCHI2 = (float)safeLog(B_s0_ENDVERTEX_CHI2/5.0); // 5 degrees of freedom
+    B_s0_PT_GeV    = (float)B_s0_PT/1000;
+    B_s0_Eta       = (float)TMath::ACosH(B_s0_P/B_s0_PT);
 /*Mass branches****************************************************************/
     for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
     BCON_KK_P = hP[2]+hP[3];

@@ -114,6 +114,7 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);  
   std::vector<CloneInfo> clones;
   int i = 0;
+  std::cout << "Finding duplicate events" << std::endl;
   while (i < num_entries)
   {
     tree->GetEntry(i);
@@ -176,6 +177,6 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   }
   cout << endl;
   newtree->Write();
-  outFile->Close();s
+  outFile->Close();
   return outputName;
 }

@@ -23,7 +23,7 @@ KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
 #Phi mass window cut
 phiMcut="TMath::Abs(phi_1020_MM-1019.461)<15"
 #Bs mass window cut
-BsMcut="B_s0_MM>5100&&B_s0_MM<5900"
+BsMcut="B_s0_LOKI_Mass>5000&&B_s0_LOKI_Mass<6000"
 #Bs flight distance chi-squared cut
 BsFDCHI2cut="B_s0_FDCHI2_OWNPV>250"
 BsIPCHI2cut="B_s0_IPCHI2_OWNPV<20"
@@ -31,12 +31,19 @@ BsIPCHI2cut="B_s0_IPCHI2_OWNPV<20"
 KPIDcut="Kminus_ProbNNk>0.1&&Kplus_ProbNNk>0.1&&Kminus0_ProbNNk>0.1&&Kplus0_ProbNNk>0.1"
 KpiPIDcut="Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025"
 KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>0.01&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>0.01&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.01&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.01"
+#Monte Carlo background category
+BKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
 #Sum of all cuts
 totalcut="${trigcut}&&${ghstcut}&&${trackisMuoncut}&&${phiMcut}&&${KpTcut}&&${BsMcut}&&${BsFDCHI2cut}&&${BsIPCHI2cut}&&${KPIDcut}&&${KpiPIDcut}&&${KpPIDcut}"
 ###########################################################
 modes=(Bsphiphi_MC BsphiKK_MC BdphiKst_MC Bsphipipi_MC LbphiKp_MC BsphiKK_data)
 for mode in ${modes[@]}; do
+if [ "$mode" == "Bsphiphi_MC"  -o  "$mode" == "BsphiKK_MC" ]
+then
+cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BKGCATcut}" ${mode}_duplicates.root
+else
 cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}" ${mode}_duplicates.root
+fi
 root -q -b -l "FlagClones.C+(\"${mode}_duplicates.root\")"
 cutapplier ${mode}_duplicates_Clone.root DecayTree "isDup==1" ${mode}_cuts.root
 done
