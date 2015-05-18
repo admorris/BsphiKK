@@ -35,14 +35,14 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
 #ifdef __CINT__
   gROOT->ProcessLine( ".O0" ); // turn off optimization in CINT
 #endif
-  filename[6] = { "BsphiKK_data",
-                  "BsphiKK_MC",
-                  "Bsphiphi_MC",
-                  "Bsphipipi_MC",
-                  "BdphiKst_MC",
-                  "LbphiKp_MC"
-                };
-  for(int mode =0; mode<3; mode++) {
+  string filename[6] = { "BsphiKK_data",
+                         "BsphiKK_MC",
+                         "Bsphiphi_MC",
+                         "Bsphipipi_MC",
+                         "BdphiKst_MC",
+                         "LbphiKp_MC"
+                       };
+  for(int mode =0; mode<6; mode++) {
 
   //---------------------------------------------------------------
 
@@ -144,7 +144,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
 
   TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );    
 
-  Double_t B_s0_ln_FDCHI2,
+  Float_t B_s0_ln_FDCHI2,
     B_s0_ln_IPCHI2,
     B_s0_ln_EVCHI2,
     B_s0_PT_GeV,
@@ -234,7 +234,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //TFile * input_Background = new TFile("Z4430Files/merged_ntuple_jpsi_s17.root"); // this is the background
   //TFile * input = new TFile("../output/MCBsphif0_after_transform.root"); // this is the signal
   TFile * input_Background; 
-  input_Background = new TFile(("../ntuples/"+filename[mode]+"bdtVars.root").c_str());
+  input_Background = new TFile(("../ntuples/"+filename[mode]+"_bdtVars.root").c_str());
   //std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
   std::cout << "--- TMVAClassificationApp    : Using input file: " << input_Background->GetName() << std::endl;
   
@@ -268,15 +268,15 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //TTree* smalltree = theTree->CloneTree(-1);
   //TTree*  newtree = theTree->CloneTree(-1);
   float bdtg;
-  TBranch*  b_bdtg = newtree->Branch("bdtg", &bdtg,"bdtg/D");  
+  TBranch*  b_bdtg = newtree->Branch("bdtg", &bdtg,"bdtg/F");  
   float bdt;
-  TBranch*  b_bdt = newtree->Branch("bdt", &bdt,"bdt/D");  
+  TBranch*  b_bdt = newtree->Branch("bdt", &bdt,"bdt/F");  
   float bdtb;
-  TBranch*  b_bdtb = newtree->Branch("bdtb", &bdtb,"bdtb/D");  
+  TBranch*  b_bdtb = newtree->Branch("bdtb", &bdtb,"bdtb/F");  
   float bdtd;
-  TBranch*  b_bdtd = newtree->Branch("bdtd", &bdtd,"bdtd/D");  
+  TBranch*  b_bdtd = newtree->Branch("bdtd", &bdtd,"bdtd/F");  
   float mlp;
-  TBranch*  b_mlp = newtree->Branch("mlp", &mlp,"mlp/D");  
+  TBranch*  b_mlp = newtree->Branch("mlp", &mlp,"mlp/F");  
  
 
   //   Float_t userptsum, userpionpt, userptj, userdmj , uservchi2dof;
@@ -300,7 +300,15 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
     if (ievt%10000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
 
     newtree->GetEntry(ievt);
-
+    if(ievt==0)
+    {
+    cout << B_s0_ln_FDCHI2 << endl 
+         << B_s0_ln_IPCHI2 << endl 
+         << B_s0_ln_EVCHI2 << endl 
+         << B_s0_PT_GeV<< endl 
+         << B_s0_Eta<< endl ;
+    
+    }
     //    var1 = userVar1 + userVar2;
     //       var2 = userVar1 - userVar2;
     

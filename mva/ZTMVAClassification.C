@@ -104,11 +104,11 @@ void ZTMVAClassification( TString myMethodList = "" )
   TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
                                              
-  factory->AddVariable("B_s0_ln_FDCHI2","B_s0_ln_FDCHI2","",'D');
-  factory->AddVariable("B_s0_ln_IPCHI2","B_s0_ln_IPCHI2","",'D');
-  factory->AddVariable("B_s0_ln_EVCHI2","B_s0_ln_EVCHI2","",'D');
-  factory->AddVariable("B_s0_PT_GeV","B_s0_PT_GeV","",'D');
-  factory->AddVariable("B_s0_Eta","B_s0_Eta","",'D');
+  factory->AddVariable("B_s0_ln_FDCHI2","B_s0_ln_FDCHI2","",'F');
+  factory->AddVariable("B_s0_ln_IPCHI2","B_s0_ln_IPCHI2","",'F');
+  factory->AddVariable("B_s0_ln_EVCHI2","B_s0_ln_EVCHI2","",'F');
+  factory->AddVariable("B_s0_PT_GeV","B_s0_PT_GeV","",'F');
+  factory->AddVariable("B_s0_Eta","B_s0_Eta","",'F');
   
   
   TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_bdtVars.root");
