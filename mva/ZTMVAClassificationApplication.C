@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <iomanip>
 #include <string>
 
 #include "TFile.h"
@@ -27,6 +28,8 @@
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
 #endif
+
+#include "../progbar.h"
 
 using namespace TMVA;
 
@@ -144,16 +147,13 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
 
   TMVA::Reader *reader = new TMVA::Reader( "!Color:!Silent" );    
 
-  Float_t B_s0_ln_FDCHI2,
-    B_s0_ln_IPCHI2,
-    B_s0_ln_EVCHI2,
-    B_s0_PT_GeV,
-    B_s0_Eta;
-  reader->AddVariable("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2);
-  reader->AddVariable("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2);
-  reader->AddVariable("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2);
-  reader->AddVariable("B_s0_PT_GeV",&B_s0_PT_GeV);
-  reader->AddVariable("B_s0_Eta",&B_s0_Eta);
+  Float_t B_s0_ln_FDCHI2; reader->AddVariable("B_s0_ln_FDCHI2", &B_s0_ln_FDCHI2 );
+  Float_t B_s0_ln_IPCHI2; reader->AddVariable("B_s0_ln_IPCHI2", &B_s0_ln_IPCHI2 );
+  Float_t B_s0_ln_EVCHI2; reader->AddVariable("B_s0_ln_EVCHI2", &B_s0_ln_EVCHI2 );
+  Float_t B_s0_PT_fiveGeV;reader->AddVariable("B_s0_PT_fiveGeV",&B_s0_PT_fiveGeV);
+  Float_t B_s0_Eta;       reader->AddVariable("B_s0_Eta",       &B_s0_Eta       );
+  Float_t minK_PT_GeV;    reader->AddVariable("minK_PT_GeV",    &minK_PT_GeV    );
+  Float_t minK_ln_IPCHI2; reader->AddVariable("minK_ln_IPCHI2", &minK_ln_IPCHI2 );
   
   Float_t Category_cat1, Category_cat2, Category_cat3;
   if (Use["Category"]){
@@ -281,34 +281,29 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
 
   //   Float_t userptsum, userpionpt, userptj, userdmj , uservchi2dof;
   // Float_t usermaxdphi; Float_t userptAsym;
-  theTree->SetBranchAddress("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2);
-  theTree->SetBranchAddress("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2);
-  theTree->SetBranchAddress("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2);
-  theTree->SetBranchAddress("B_s0_PT_GeV",&B_s0_PT_GeV);
-  theTree->SetBranchAddress("B_s0_Eta",&B_s0_Eta);
+  theTree->SetBranchAddress("B_s0_ln_FDCHI2", &B_s0_ln_FDCHI2 );
+  theTree->SetBranchAddress("B_s0_ln_IPCHI2", &B_s0_ln_IPCHI2 );
+  theTree->SetBranchAddress("B_s0_ln_EVCHI2", &B_s0_ln_EVCHI2 );
+  theTree->SetBranchAddress("B_s0_PT_fiveGeV",&B_s0_PT_fiveGeV);
+  theTree->SetBranchAddress("B_s0_Eta",       &B_s0_Eta       );
+  theTree->SetBranchAddress("minK_PT_GeV",    &minK_PT_GeV    );
+  theTree->SetBranchAddress("minK_ln_IPCHI2", &minK_ln_IPCHI2 );
   // Efficiency calculator for cut method
   Int_t    nSelCutsGA = 0;
   Double_t effS       = 0.7;
 
   std::vector<Float_t> vecVar(4); // vector for EvaluateMVA tests
-
-  std::cout << "--- Processing: " << newtree->GetEntries() << " events" << std::endl;
+  Int_t num_entries = newtree->GetEntries();
+  std::cout << "--- Processing: " << num_entries << " events" << std::endl;
   TStopwatch sw;
   sw.Start();
-  for (Long64_t ievt=0; ievt<newtree->GetEntries();ievt++) {
+  
+  for (Long64_t ievt=0; ievt<num_entries;ievt++) {
 
-    if (ievt%10000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
+    // if (ievt%10000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
 
     newtree->GetEntry(ievt);
-    if(ievt==0)
-    {
-    cout << B_s0_ln_FDCHI2 << endl 
-         << B_s0_ln_IPCHI2 << endl 
-         << B_s0_ln_EVCHI2 << endl 
-         << B_s0_PT_GeV<< endl 
-         << B_s0_Eta<< endl ;
-    
-    }
+   
     //    var1 = userVar1 + userVar2;
     //       var2 = userVar1 - userVar2;
     
@@ -388,7 +383,13 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
        probHistFi  ->Fill( reader->GetProba ( "Fisher method" ) );
        rarityHistFi->Fill( reader->GetRarity( "Fisher method" ) );
     }
+    if(ievt%100==0)
+    {
+      progbar(ievt,num_entries);
+    }
   }
+  cout << endl;
+
 
   // Get elapsed time
   sw.Stop();

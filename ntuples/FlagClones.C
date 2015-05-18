@@ -11,7 +11,7 @@
 #include <vector>
 #include <algorithm>
 #include "TMath.h"
-#include "./progbar.h"
+#include "../progbar.h"
 class CloneInfo
 {
 public:

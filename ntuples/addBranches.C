@@ -10,7 +10,7 @@
 #include "TH1D.h"
 #include "TLegend.h"
 #include "TStyle.h"
-#include "./progbar.h"
+#include "../progbar.h"
 using namespace std;
 Float_t safeLog(Double_t x)
 {
@@ -115,13 +115,13 @@ void addBranches(string filename = "BsphiKK_data")
   intree->SetBranchAddress("Kminus0_IPCHI2_OWNPV",&h_IPCHI2_OWNPV[2]);
   intree->SetBranchAddress("Kplus0_IPCHI2_OWNPV", &h_IPCHI2_OWNPV[3]);
 /*BDT branches*****************************************************************/
-  Float_t B_s0_ln_FDCHI2; outtree->Branch("B_s0_ln_FDCHI2",&B_s0_ln_FDCHI2,"B_s0_ln_FDCHI2/F");
-  Float_t B_s0_ln_IPCHI2; outtree->Branch("B_s0_ln_IPCHI2",&B_s0_ln_IPCHI2,"B_s0_ln_IPCHI2/F");
-  Float_t B_s0_ln_EVCHI2; outtree->Branch("B_s0_ln_EVCHI2",&B_s0_ln_EVCHI2,"B_s0_ln_EVCHI2/F");
-  Float_t B_s0_PT_5GeV;   outtree->Branch("B_s0_PT_5GeV",  &B_s0_PT_5GeV,  "B_s0_PT_5GeV/F"  );
-  Float_t B_s0_Eta;       outtree->Branch("B_s0_Eta",      &B_s0_Eta,      "B_s0_Eta/F"      );
-  Float_t minK_ln_IPCHI2; outtree->Branch("minK_ln_IPCHI2",&minK_ln_IPCHI2,"minK_ln_IPCHI2/F");
-  Float_t minK_PT_GeV;    outtree->Branch("minK_PT_GeV",   &minK_PT_GeV,   "minK_PT_GeV/F"   );
+  Float_t B_s0_ln_FDCHI2; outtree->Branch("B_s0_ln_FDCHI2", &B_s0_ln_FDCHI2, "B_s0_ln_FDCHI2/F" );
+  Float_t B_s0_ln_IPCHI2; outtree->Branch("B_s0_ln_IPCHI2", &B_s0_ln_IPCHI2, "B_s0_ln_IPCHI2/F" );
+  Float_t B_s0_ln_EVCHI2; outtree->Branch("B_s0_ln_EVCHI2", &B_s0_ln_EVCHI2, "B_s0_ln_EVCHI2/F" );
+  Float_t B_s0_PT_fiveGeV;outtree->Branch("B_s0_PT_fiveGeV",&B_s0_PT_fiveGeV,"B_s0_PT_fiveGeV/F");
+  Float_t B_s0_Eta;       outtree->Branch("B_s0_Eta",       &B_s0_Eta,       "B_s0_Eta/F"       );
+  Float_t minK_ln_IPCHI2; outtree->Branch("minK_ln_IPCHI2", &minK_ln_IPCHI2, "minK_ln_IPCHI2/F" );
+  Float_t minK_PT_GeV;    outtree->Branch("minK_PT_GeV",    &minK_PT_GeV,    "minK_PT_GeV/F"    );
   Double_t h_PT[4]; // Necessary for min Kaon PT
 /*New mass branches************************************************************/
   TLorentzVector BCON_KK_P;   Double_t BCON_KK_M;   outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
@@ -146,14 +146,14 @@ void addBranches(string filename = "BsphiKK_data")
   {
     intree->GetEntry(i);
 /*BDT variables****************************************************************/
-    B_s0_ln_FDCHI2 = safeLog(B_s0_FDCHI2_OWNPV);
-    B_s0_ln_IPCHI2 = safeLog(B_s0_IPCHI2_OWNPV);
-    B_s0_ln_EVCHI2 = safeLog(B_s0_ENDVERTEX_CHI2/5.0); // 5 degrees of freedom
-    B_s0_PT_5GeV   = B_s0_PT/5000; // Change units for sensible range of numbers
-    B_s0_Eta       = TMath::ACosH(B_s0_P/B_s0_PT);
-    minK_ln_IPCHI2 = safeLog(minOfFour(h_IPCHI2_OWNPV[0],h_IPCHI2_OWNPV[1],h_IPCHI2_OWNPV[2],h_IPCHI2_OWNPV[3]));
+    B_s0_ln_FDCHI2  = safeLog(B_s0_FDCHI2_OWNPV);
+    B_s0_ln_IPCHI2  = safeLog(B_s0_IPCHI2_OWNPV);
+    B_s0_ln_EVCHI2  = safeLog(B_s0_ENDVERTEX_CHI2/5.0); // 5 degrees of freedom
+    B_s0_PT_fiveGeV = B_s0_PT/5000; // Change units for sensible range of numbers
+    B_s0_Eta        = TMath::ACosH(B_s0_P/B_s0_PT);
+    minK_ln_IPCHI2  = safeLog(minOfFour(h_IPCHI2_OWNPV[0],h_IPCHI2_OWNPV[1],h_IPCHI2_OWNPV[2],h_IPCHI2_OWNPV[3]));
     for(Int_t j = 0; j < 4; j++) h_PT[j] = TMath::Sqrt(TMath::Power(h_PX[j],2)+TMath::Power(h_PY[j],2));
-    minK_PT_GeV    = minOfFour(h_PT[0],h_PT[1],h_PT[2],h_PT[3])/1000;
+    minK_PT_GeV     = minOfFour(h_PT[0],h_PT[1],h_PT[2],h_PT[3])/1000;
 /*Mass branches****************************************************************/
     // Track 4-momenta with constrained Bs mass
     for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);

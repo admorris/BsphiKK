@@ -107,8 +107,10 @@ void ZTMVAClassification( TString myMethodList = "" )
   factory->AddVariable("B_s0_ln_FDCHI2","B_s0_ln_FDCHI2","",'F');
   factory->AddVariable("B_s0_ln_IPCHI2","B_s0_ln_IPCHI2","",'F');
   factory->AddVariable("B_s0_ln_EVCHI2","B_s0_ln_EVCHI2","",'F');
-  factory->AddVariable("B_s0_PT_GeV","B_s0_PT_GeV","",'F');
+  factory->AddVariable("B_s0_PT_fiveGeV","B_s0_PT_fiveGeV","",'F');
   factory->AddVariable("B_s0_Eta","B_s0_Eta","",'F');
+  factory->AddVariable("minK_PT_GeV","minK_PT_GeV","",'F');
+  factory->AddVariable("minK_ln_IPCHI2","minK_ln_IPCHI2","",'F');
   
   
   TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_bdtVars.root");
