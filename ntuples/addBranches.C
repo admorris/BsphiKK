@@ -228,17 +228,17 @@ void addBranches(string filename = "BsphiKK_data")
     {
       // Boost into B frame
       Bframe_h_P[j] = hP[j];
-      Bframe_h_P[j].Boost(BP.BoostVector());
+      Bframe_h_P[j].Boost(-BP.BoostVector());
       // Boost into daughter frames
       dframe_h_P[j] = hP[j];
-      dframe_h_P[j].Boost(dP[j/2].BoostVector());
+      dframe_h_P[j].Boost(-dP[j/2].BoostVector());
     }
     // Loop over daughters
     for(Int_t j = 0; j < 2; j++)
     {
       // Boost daughters into B frame
       Bframe_d_P[j] = dP[j];
-      Bframe_d_P[j].Boost(BP.BoostVector());
+      Bframe_d_P[j].Boost(-BP.BoostVector());
       // theta_i is the angle between the Kplus from daughter_i in the daughter frame and the daughter in the B frame
 //      cos_theta[j] = TMath::Cos(dframe_h_P[2*j+1].Vect().Angle(Bframe_d_P[j].Vect()));
       cos_theta[j] = Bframe_d_P[j].Vect().Dot(dframe_h_P[2*j+1].Vect())/(Bframe_d_P[j].Vect().Mag()*dframe_h_P[2*j+1].Vect().Mag());
