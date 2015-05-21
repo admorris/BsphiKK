@@ -1,20 +1,22 @@
 #! /bin/bash
-Bdwidth="50"
-Kstwidth="150"
+Bdmass="5279.58"
+Kstmass="891.66"
+Bdwindow="50"
+Kstwindow="150"
 #Simple cut on events that are both m(KKKpi) in Bd range and m(Kpi) in K* range
-vetoes[0]="(TMath::Abs(KpiM-891.66)>${Kstwidth}||TMath::Abs(phiKpiM-5279.58)>${Bdwidth})"
+vetoes[0]="(TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow})"
 #Tighten DLL if m(KKKpi) in Bd mass range
-vetoes[1]="(TMath::Abs(phiKpiM-5279.58)>${Bdwidth}||(TMath::Abs(phiKpiM-5279.58)<${Bdwidth}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.1))"
+vetoes[1]="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.1))"
 #Tighten DLL if m(Kpi) in K* mass range
-vetoes[2]="(TMath::Abs(KpiM-891.66)>${Kstwidth}||(TMath::Abs(KpiM-891.66)<${Kstwidth}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.1))"
+vetoes[2]="(TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||(TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.1))"
 #Tighten DLL if both m(KKKpi) in Bd range and m(Kpi) in K* range
-vetoes[3]="((TMath::Abs(KpiM-891.66)>${Kstwidth}||TMath::Abs(phiKpiM-5279.58)>${Bdwidth})||((TMath::Abs(KpiM-891.66)<${Kstwidth}&&TMath::Abs(phiKpiM-5279.58)<${Bdwidth})&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.1))"
+vetoes[3]="((TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow})||((TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow})&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.1))"
 #Require ProbNNk>ProbNNpi if m(KKKpi) in Bd mass range
-vetoes[4]="(TMath::Abs(phiKpiM-5279.58)>${Bdwidth}||(TMath::Abs(phiKpiM-5279.58)<${Bdwidth}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+vetoes[4]="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 #Require ProbNNk>ProbNNpi if m(Kpi) in K* mass range
-vetoes[5]="(TMath::Abs(KpiM-891.66)>${Kstwidth}||(TMath::Abs(KpiM-891.66)<${Kstwidth}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+vetoes[5]="(TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||(TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 #Require ProbNNk>ProbNNpi if both m(KKKpi) in Bd range and m(Kpi) in K* range
-vetoes[6]="((TMath::Abs(KpiM-891.66)>${Kstwidth}||TMath::Abs(phiKpiM-5279.58)>${Bdwidth})||((TMath::Abs(KpiM-891.66)<${Kstwidth}&&TMath::Abs(phiKpiM-5279.58)<${Bdwidth})&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+vetoes[6]="((TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow})||((TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow})&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 ################################################################################
 i=0
 for veto in ${vetoes[@]}; do
