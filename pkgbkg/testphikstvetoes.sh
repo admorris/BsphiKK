@@ -17,6 +17,12 @@ vetoes[4]="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdm
 vetoes[5]="(TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||(TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 #Require ProbNNk>ProbNNpi if both m(KKKpi) in Bd range and m(Kpi) in K* range
 vetoes[6]="((TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow})||((TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow})&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+#Require pion ProbNNk>ProbNNpi if m(KKKpi) in Bd mass range
+vetoes[7]="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&pion_ProbNNk>pion_ProbNNpi))"
+#Require pion ProbNNk>ProbNNpi if m(Kpi) in K* mass range
+vetoes[8]="(TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||(TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&pion_ProbNNk>pion_ProbNNpi))"
+#Require pion ProbNNk>ProbNNpi if both m(KKKpi) in Bd range and m(Kpi) in K* range
+vetoes[9]="((TMath::Abs(KpiM-${Kstmass})>${Kstwindow}||TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow})||((TMath::Abs(KpiM-${Kstmass})<${Kstwindow}&&TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow})&&pion_ProbNNk>pion_ProbNNpi))"
 ################################################################################
 i=0
 for veto in ${vetoes[@]}; do
@@ -24,8 +30,14 @@ root -l -q -b "cuteff.C+(\"BsphiKK_MC_bdtVars\",\"B_s0_LOKI_Mass\",\"\",\"${veto
 root -l -q -b "cuteff.C+(\"Bsphiphi_MC_bdtVars\",\"B_s0_LOKI_Mass\",\"\",\"${veto}\")"
 root -l -q -b "cuteff.C+(\"BdphiKst_MC_bdtVars\",\"B_s0_LOKI_Mass\",\"\",\"${veto}\")"
 echo "                ———"
-root -l -q -b "cuteff.C+(\"BsphiKK_data_bdtVars\",\"B_s0_LOKI_Mass\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${veto}\",\"testphisktveto_data$i\")"
+root -l -q -b "cuteff.C+(\"BsphiKK_data_bdtVars\",\"B_s0_LOKI_Mass\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${veto}\",\"testphisktveto_data${i}\")"
 echo "################################################################################"
 i=$(($i+1))
 done
+
+# Check for helicity angle bias
+root -l -q -b "cuteff.C+(\"BsphiKK_data_bdtVars\",\"Phi_angle\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${vetoes[4]}\",\"testphisktveto_data4_Phi_angle\")"
+root -l -q -b "cuteff.C+(\"BsphiKK_data_bdtVars\",\"cos_theta1\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${vetoes[4]}\",\"testphisktveto_data4_costheta1\")"
+root -l -q -b "cuteff.C+(\"BsphiKK_data_bdtVars\",\"cos_theta2\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${vetoes[4]}\",\"testphisktveto_data4_costheta2\")"
+
 exit 0

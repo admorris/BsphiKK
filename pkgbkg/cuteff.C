@@ -39,6 +39,7 @@ void cuteff(string filename = "LbphiKp_MC_bdtVars", string branchtoplot = "B_s0_
   dif->Add(aft,-1);
   // Draw canvas
   TCanvas* can = new TCanvas((filename+" {"+cut+"}").c_str());
+  TLegend* leg = new TLegend(0.6,0.5,0.89,0.65);
   can->cd();
   can->SetLeftMargin(0.12  );
   can->SetBottomMargin(0.12);
@@ -49,7 +50,6 @@ void cuteff(string filename = "LbphiKp_MC_bdtVars", string branchtoplot = "B_s0_
   bef->SetLineColor(kBlack);
   aft->SetLineColor(kBlue );
   dif->SetLineColor(kGreen);
-  TLegend* leg = new TLegend(0.6,0.5,0.89,0.65);
   leg->SetHeader(filename.c_str());
   leg->AddEntry(bef, "Original", "l");
   leg->AddEntry(aft, "Passed",   "l");
@@ -62,6 +62,10 @@ void cuteff(string filename = "LbphiKp_MC_bdtVars", string branchtoplot = "B_s0_
   if(plotname!="")
   {
     mkplots(can,plotname);
+//    can->SaveAs(("./figs/"+plotname+".pdf").c_str());
+//    can->SaveAs(("./figs/"+plotname+".eps").c_str());
+//    can->SaveAs(("./figs/"+plotname+".png").c_str());
+//    can->SaveAs(("./figs/"+plotname+".C").c_str());
   }
   return;
 }

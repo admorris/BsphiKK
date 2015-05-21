@@ -18,7 +18,7 @@ TH1D* plotBsmass(string filename = "LbphiKp_MC")
   cout << "Plotting Bs mass from " << filename << endl;
 /*Input************************************************************************/
   // Open the input file
-  TFile* infile  = new TFile(("../ntuples/"+filename+"_cuts.root").c_str());
+  TFile* infile  = new TFile(("../ntuples/"+filename+"_bdtVars_vetoes.root").c_str());
   // Get the input tree
   TTree* intree  = (TTree*)infile->Get("DecayTree");
   // Set branches to read
@@ -67,14 +67,17 @@ void plotBsmasses()
   Double_t w_BdphiKst  = B_BdphiKst *(1.0/ngen_BdphiKst) *B_KsttoKpi/denominator;
   Double_t w_Bsphipipi = B_Bsphipipi*(1.0/ngen_Bsphipipi)/denominator;
   Bsphiphi->Scale(1.0); // Probably don't need this line
+  cout << "N_LbphiKp   = \t" << w_LbphiKp*(fLb_fufd/fs_fufd)*LbphiKp->GetEntries()  /Bsphiphi->GetEntries() << "×N_Bsphiphi" << endl
+       << "N_BdphiKst  = \t" << w_BdphiKst/fs_fd            *BdphiKst->GetEntries() /Bsphiphi->GetEntries() << "×N_Bsphiphi" << endl
+       << "N_Bsphipipi = \t" << w_Bsphipipi                 *Bsphipipi->GetEntries()/Bsphiphi->GetEntries() << "×N_Bsphiphi" << endl;
   LbphiKp->Scale(w_LbphiKp*(fLb_fufd/fs_fufd));
   BdphiKst->Scale(w_BdphiKst/fs_fd);
   Bsphipipi->Scale(w_Bsphipipi);
 /*Create stack*****************************************************************/
   THStack* total  = new THStack("total","");
   // Add components
-  total->Add(Bsphipipi,"E");
-  total->Add(LbphiKp,  "E");
+//  total->Add(Bsphipipi,"E");
+//  total->Add(LbphiKp,  "E");
   total->Add(BdphiKst, "E");
   total->Add(Bsphiphi     );
   // Create legend
@@ -82,8 +85,8 @@ void plotBsmasses()
   leg->SetHeader("Decay mode");
   leg->AddEntry(Bsphiphi, "B^0_s\\to\\phi\\phi",       "l");
   leg->AddEntry(BdphiKst, "B^0\\to\\phi K^*(892)",     "l");
-  leg->AddEntry(LbphiKp,  "\\Lambda_b\\to\\phi p K^-", "l");
-  leg->AddEntry(Bsphipipi,"B^0_s\\to\\phi\\pi^+\\pi^-","l");
+//  leg->AddEntry(LbphiKp,  "\\Lambda_b\\to\\phi p K^-", "l");
+//  leg->AddEntry(Bsphipipi,"B^0_s\\to\\phi\\pi^+\\pi^-","l");
   leg->SetLineColor(0);
   leg->SetTextSize(0.04);
 /*Set colours******************************************************************/
