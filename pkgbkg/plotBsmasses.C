@@ -25,7 +25,7 @@ TH1D* plotBsmass(string filename = "LbphiKp_MC")
   Double_t B_s0_LOKI_Mass;
   intree->SetBranchAddress("B_s0_LOKI_Mass",&B_s0_LOKI_Mass);
 /*Output***********************************************************************/
-  TH1D* hist = new TH1D(filename.c_str(),"",40,5366.77-200,5366.77+200);
+  TH1D* hist = new TH1D(filename.c_str(),"",40,5170,5580);
 /*Fill*************************************************************************/
   for(Int_t i = 0; i < intree->GetEntries(); i++)
   {
@@ -96,6 +96,7 @@ void plotBsmasses()
 /*Style plot*******************************************************************/
   can->SetLeftMargin(0.12);
   can->SetBottomMargin(0.12);
+  can->SetFrameLineColor(0);
   total->Draw();
   leg->Draw();
   stringstream ytitle;
