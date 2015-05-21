@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "TMath.h"
 #include "../progbar.h"
+using namespace std;
 class CloneInfo
 {
 public:
@@ -65,14 +66,14 @@ void tagClone(CloneInfo& c1, CloneInfo& c2)
     c2.setDead();
   }
 }
-void tagClones(std::vector<CloneInfo>& clones)
+void tagClones(vector<CloneInfo>& clones)
 {
-  std::vector<CloneInfo>::iterator iter = clones.begin();
+  vector<CloneInfo>::iterator iter = clones.begin();
   for (;iter != clones.end(); ++iter)
   {
     if (iter->isAlive() == true)
     {
-    std::vector<CloneInfo>::iterator iter2 = iter; ++iter2;
+    vector<CloneInfo>::iterator iter2 = iter; ++iter2;
       for (;iter2 != clones.end(); ++iter2)
       {
 	      if (iter2->sum() == iter->sum())
@@ -83,16 +84,16 @@ void tagClones(std::vector<CloneInfo>& clones)
     }
   }
 }
-void sortClones(std::vector<CloneInfo>& clones)
+void sortClones(vector<CloneInfo>& clones)
 {
-  std::sort(clones.begin(), clones.end(), CloneInfo::Less_by_sum());
+  sort(clones.begin(), clones.end(), CloneInfo::Less_by_sum());
 }
-void addToClones(std::vector<CloneInfo>& clones, int key1, int key2, int key3, int key4, int i )
+void addToClones(vector<CloneInfo>& clones, int key1, int key2, int key3, int key4, int i )
 {
   CloneInfo tclone = CloneInfo(key1, key2, key3, key4,  i);
   clones.push_back(tclone);
 }
-std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , std::string treeName = "DecayTreeTuple/DecayTree")
+string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
 {
   const Int_t t0 = time(0);
   // get the input
@@ -100,7 +101,7 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   tree->Add(fileName.c_str());
   // clone the tree..
   int num_entries  = tree->GetEntries();
-  std::vector<int> flag_clones; flag_clones.resize(num_entries);
+  vector<int> flag_clones; flag_clones.resize(num_entries);
   for (int i = 0; i < num_entries; ++i)
   {
     flag_clones[i] = 1;
@@ -112,9 +113,9 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   int key2; tree->SetBranchAddress("Kminus0_TRACK_Key",&key2);  
   int key3; tree->SetBranchAddress("Kplus_TRACK_Key",&key3);  
   int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);  
-  std::vector<CloneInfo> clones;
+  vector<CloneInfo> clones;
   int i = 0;
-  std::cout << "Finding duplicate events" << std::endl;
+  cout << "Finding duplicate events" << endl;
   while (i < num_entries)
   {
     tree->GetEntry(i);
@@ -155,10 +156,10 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
   cout << endl;
   const Int_t t1 = time(0);
   // make the output
-  std::string outputName = fileName.substr(0,fileName.size() - 5);
+  string outputName = fileName.substr(0,fileName.size() - 5);
   outputName += "_Clone.root";
   TFile* outFile  =new TFile(outputName.c_str(),"RECREATE");
-  std::cout << "Reading: " << treeName << " from " << fileName  << " to " << outputName << std::endl;
+  cout << "Reading: " << treeName << " from " << fileName  << " to " << outputName << endl;
   TTree*  newtree = tree->CloneTree(-1);
   int isAlive;
   TBranch *branch_bestVtxChi2 = newtree->Branch("isDup",&isAlive, "isDup/I");
@@ -175,7 +176,7 @@ std::string FlagClones(std::string fileName = "BsphiKK_data_duplicates.root" , s
       timestamp(t1);
     }
   }
-  cout << endl;
+  cout << endl; // Terminate progress bar
   newtree->Write();
   outFile->Close();
   return outputName;

@@ -124,15 +124,30 @@ void addBranches(string filename = "BsphiKK_data")
   Float_t minK_PT_GeV;    outtree->Branch("minK_PT_GeV",    &minK_PT_GeV,    "minK_PT_GeV/F"    );
   Double_t h_PT[4]; // Necessary for min Kaon PT
 /*New mass branches************************************************************/
+  // phi KK
   TLorentzVector BCON_KK_P;   Double_t BCON_KK_M;   outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
   TLorentzVector phiKplusP;   Double_t phiKplusM;   outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
   TLorentzVector phiKminusP;  Double_t phiKminusM;  outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
+  // phi pipi
+  TLorentzVector phipipiP;    Double_t phipipiM;    outtree->Branch("phipipiM",   &phipipiM,   "phipipiM/D"   );
+  TLorentzVector pipiP;       Double_t pipiM;       outtree->Branch("pipiM",      &pipiM,      "pipiM/D"      );
   TLorentzVector phipiplusP;  Double_t phipiplusM;  outtree->Branch("phipiplusM", &phipiplusM, "phipiplusM/D" );
   TLorentzVector phipiminusP; Double_t phipiminusM; outtree->Branch("phipiminusM",&phipiminusM,"phipiminusM/D");
+  // phi K pi
+  TLorentzVector KpiP;        Double_t KpiM;        outtree->Branch("KpiM",       &KpiM,       "KpiM/D"       );
   TLorentzVector phiKpiP;     Double_t phiKpiM;     outtree->Branch("phiKpiM",    &phiKpiM,    "phiKpiM/D"    );
+  // phi K p
   TLorentzVector phipP;       Double_t phipM;       outtree->Branch("phipM",      &phipM,      "phipM/D"      );
   TLorentzVector phipbarP;    Double_t phipbarM;    outtree->Branch("phipbarM",   &phipbarM,   "phipbarM/D"   );
+  TLorentzVector KpP;         Double_t KpM;         outtree->Branch("KpM",        &KpM,        "KpM/D"        );
   TLorentzVector phiKpP;      Double_t phiKpM;      outtree->Branch("phiKpM",     &phiKpM,     "phiKpM/D"     );
+  // PID variables for tracks identified as something else
+  Double_t pion_ProbNNk;    outtree->Branch("pion_ProbNNk",   &pion_ProbNNk,   "pion_ProbNNk/D" );
+  Double_t pion_ProbNNpi;   outtree->Branch("pion_ProbNNpi",  &pion_ProbNNpi,  "pion_ProbNNpi/D");
+  Double_t pion_ProbNNp;    outtree->Branch("pion_ProbNNp",   &pion_ProbNNp,   "pion_ProbNNp/D" );
+  Double_t proton_ProbNNk;  outtree->Branch("proton_ProbNNk", &proton_ProbNNk, "proton_ProbNNk/D" );
+  Double_t proton_ProbNNpi; outtree->Branch("proton_ProbNNpi",&proton_ProbNNpi,"proton_ProbNNpi/D");
+  Double_t proton_ProbNNp;  outtree->Branch("proton_ProbNNp", &proton_ProbNNp, "proton_ProbNNp/D" );
 /*Helicity angle branches******************************************************/
   // Track 4-momentum in B frame and daughter frames
   TLorentzVector Bframe_h_P[4], Bframe_d_P[4], dframe_h_P[4];
@@ -184,18 +199,32 @@ void addBranches(string filename = "BsphiKK_data")
       pion = 3;
       kaon = 2;
     }
+    // PID branches
+    pion_ProbNNk  = h_ProbNNk[pion] ;
+    pion_ProbNNpi = h_ProbNNpi[pion];
+    pion_ProbNNp  = h_ProbNNp[pion] ;
     // phi K pi
     pionP.SetXYZM(h_PX[pion],h_PY[pion],h_PZ[pion],pimass);
     phiKpiP = hP[0] + hP[1] + pionP + hP[kaon];
     phiKpiM = phiKpiP.M();
-    // phi pi-
+    // K pi
+    KpiP = pionP + hP[kaon];
+    KpiM = KpiP.M();
+    // phi pi- 
     pionP.SetXYZM(h_PX[2],h_PY[2],h_PZ[2],pimass);
+    pipiP       = pionP; // Half of the pi pi 4momentum
     phipiminusP = hP[0] + hP[1] + pionP;
     phipiminusM = phipiminusP.M();
+    phipipiP    = phipiminusP; // 3/4 of phi pi pi 4momentum
     // phi pi+
     pionP.SetXYZM(h_PX[3],h_PY[3],h_PZ[3],pimass);
+    pipiP     += pionP; // Other half of the pi pi 4momentum
+    phipipiP  += pionP; // Other 1/4 of the phi pi pi 4momentum
     phipiplusP = hP[0] + hP[1] + pionP;
     phipiplusM = phipiplusP.M();
+    // phi pi pi and pi pi
+    phipipiM   = phipipiP.M();
+    pipiM      = pipiP.M();
 /*Lambda backgrounds***********************************************************/
     // Decide which is the proton
     if(h_ProbNNp[2] > h_ProbNNp[3])
@@ -210,10 +239,17 @@ void addBranches(string filename = "BsphiKK_data")
       proton = 3;
       kaon   = 2;
     }
+    // PID branches
+    proton_ProbNNk  = h_ProbNNk[proton] ;
+    proton_ProbNNpi = h_ProbNNpi[proton];
+    proton_ProbNNp  = h_ProbNNp[proton] ;
     // phi K proton
     protonP.SetXYZM(h_PX[proton],h_PY[proton],h_PZ[proton],pmass);
     phiKpP = hP[0] + hP[1] + protonP + hP[kaon];
     phiKpM = phiKpP.M();
+    // K proton
+    KpP = protonP + hP[kaon];
+    KpM = KpP.M();
     // phi proton
     protonP.SetXYZM(h_PX[3],h_PY[3],h_PZ[3],pmass);
     phipP = hP[0] + hP[1] + protonP;
