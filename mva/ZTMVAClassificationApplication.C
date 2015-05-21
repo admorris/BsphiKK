@@ -234,7 +234,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //TFile * input_Background = new TFile("Z4430Files/merged_ntuple_jpsi_s17.root"); // this is the background
   //TFile * input = new TFile("../output/MCBsphif0_after_transform.root"); // this is the signal
   TFile * input_Background; 
-  input_Background = new TFile(("../ntuples/"+filename[mode]+"_bdtVars.root").c_str());
+  input_Background = new TFile(("../ntuples/"+filename[mode]+"_bdtVars_vetoes.root").c_str());
   //std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
   std::cout << "--- TMVAClassificationApp    : Using input file: " << input_Background->GetName() << std::endl;
   
@@ -271,8 +271,6 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   TBranch*  b_bdtg = newtree->Branch("bdtg", &bdtg,"bdtg/F");  
   float bdt;
   TBranch*  b_bdt = newtree->Branch("bdt", &bdt,"bdt/F");  
-  float bdtb;
-  TBranch*  b_bdtb = newtree->Branch("bdtb", &bdtb,"bdtb/F");  
   float bdtd;
   TBranch*  b_bdtd = newtree->Branch("bdtd", &bdtd,"bdtd/F");  
   float mlp;

@@ -113,8 +113,8 @@ void ZTMVAClassification( TString myMethodList = "" )
   factory->AddVariable("minK_ln_IPCHI2","minK_ln_IPCHI2","",'F');
   
   
-  TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_bdtVars.root");
-  TFile * input_Background = new TFile("../ntuples/BsphiKK_sideband_bdtVars.root");
+  TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_bdtVars_vetoes.root");
+  TFile * input_Background = new TFile("../ntuples/BsphiKK_sideband_bdtVars_vetoes.root");
   std::cout << "--- TMVAClassification       : Using input file for signal    : " << input_Signal->GetName() << std::endl;
   std::cout << "--- TMVAClassification       : Using input file for backgound : " << input_Background->GetName() << std::endl;
   
@@ -267,9 +267,18 @@ void ZTMVAClassification( TString myMethodList = "" )
 
   // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
   if (Use["MLP"])
-   // factory->BookMethod( TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
-   factory->BookMethod( TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=600:HiddenLayers=N+5:TestRate=5" );
-
+  {
+//   factory->BookMethod( TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=600:HiddenLayers=N+5:TestRate=5" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCE", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=600:HiddenLayers=N+5:TestRate=5:EstimatorType=CE" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCE5", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=600:HiddenLayers=5:TestRate=5:EstimatorType=CE" );
+   factory->BookMethod( TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=600:HiddenLayers=6:TestRate=5:EstimatorType=CE" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCE700", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=700:HiddenLayers=6:TestRate=5:EstimatorType=CE" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCE800", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=800:HiddenLayers=6:TestRate=5:EstimatorType=CE" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCE900", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=900:HiddenLayers=6:TestRate=5:EstimatorType=CE" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCEsigm", "H:!V:NeuronType=sigmoid:VarTransform=Norm:NCycles=600:HiddenLayers=6:TestRate=5:EstimatorType=CE" );
+//   factory->BookMethod( TMVA::Types::kMLP, "MLPCE7", "H:!V:NeuronType=tanh:VarTransform=Norm:NCycles=600:HiddenLayers=7:TestRate=5:EstimatorType=CE" );
+   // NCycles 600..800..1000
+  }
 
   if (Use["MLPBFGS"])
     factory->BookMethod( TMVA::Types::kMLP, "MLPBFGS", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:TrainingMethod=BFGS:!UseRegulator" );
@@ -291,8 +300,11 @@ void ZTMVAClassification( TString myMethodList = "" )
 
   // Boosted Decision Trees
   if (Use["BDTG"]) // Gradient Boost
-    factory->BookMethod( TMVA::Types::kBDT, "BDTG",
-                         "!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=5" );
+  {
+    factory->BookMethod( TMVA::Types::kBDT, "BDTG","!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=5" );
+//    factory->BookMethod( TMVA::Types::kBDT, "BDTG500","!H:!V:NTrees=500:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=5" );
+    // Vary NTrees 500..1000 GradBaggingFraction, nCuts, shrinkage 0.1..0.3
+  }
 
   if (Use["BDT"])  // Adaptive Boost
     factory->BookMethod( TMVA::Types::kBDT, "BDT",
