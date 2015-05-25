@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include <time.h>
 #include "TFile.h"
 #include "TTree.h"
 #include "TBranch.h"
@@ -95,7 +94,6 @@ void addToClones(vector<CloneInfo>& clones, int key1, int key2, int key3, int ke
 }
 string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
 {
-  const Int_t t0 = time(0);
   // get the input
   TChain* tree = new TChain(treeName.c_str());
   tree->Add(fileName.c_str());
@@ -116,6 +114,7 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
   vector<CloneInfo> clones;
   int i = 0;
   cout << "Finding duplicate events" << endl;
+  progbar bar(num_entries);
   while (i < num_entries)
   {
     tree->GetEntry(i);
@@ -149,12 +148,10 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
     i = j;
     if(i%100==0)
     {
-      progbar(i,num_entries);
-      timestamp(t0);
+      bar.print(i);
     }
   }
-  cout << endl;
-  const Int_t t1 = time(0);
+  bar.terminate();
   // make the output
   string outputName = fileName.substr(0,fileName.size() - 5);
   outputName += "_Clone.root";
@@ -165,6 +162,7 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
   TBranch *branch_bestVtxChi2 = newtree->Branch("isDup",&isAlive, "isDup/I");
   num_entries = newtree->GetEntries(); 
   // loop again and write the branch
+  bar.reset();
   for (i=0;i<num_entries; i++)
   {
     newtree->GetEntry(i); 
@@ -172,11 +170,10 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
     branch_bestVtxChi2->Fill();
     if(i%100==0)
     {
-      progbar(i,num_entries);
-      timestamp(t1);
+      bar.print(i);
     }
   }
-  cout << endl; // Terminate progress bar
+  bar.terminate();
   newtree->Write();
   outFile->Close();
   return outputName;

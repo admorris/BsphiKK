@@ -295,7 +295,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   std::cout << "--- Processing: " << num_entries << " events" << std::endl;
   TStopwatch sw;
   sw.Start();
-  
+  progbar bar(num_entries);
   for (Long64_t ievt=0; ievt<num_entries;ievt++) {
 
     // if (ievt%10000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
@@ -383,11 +383,10 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
     }
     if(ievt%100==0)
     {
-      progbar(ievt,num_entries);
+      bar.print(ievt);
     }
   }
-  cout << endl;
-
+  bar.terminate();
 
   // Get elapsed time
   sw.Stop();

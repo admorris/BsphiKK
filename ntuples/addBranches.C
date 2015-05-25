@@ -1,5 +1,4 @@
 #include <string.h>
-#include <time.h>
 #include "TCanvas.h"
 #include "TROOT.h"
 #include "TFile.h"
@@ -24,7 +23,6 @@ Float_t minOfFour(Double_t a, Double_t b, Double_t c, Double_t d)
 }
 void addBranches(string filename = "BsphiKK_data")
 {
-  const Int_t t0 = time(0);
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
@@ -157,6 +155,7 @@ void addBranches(string filename = "BsphiKK_data")
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
 /*Event loop*******************************************************************/
+  progbar bar(n);
   for(Int_t i = 0; i < n; i++)
   {
     intree->GetEntry(i);
@@ -287,11 +286,10 @@ void addBranches(string filename = "BsphiKK_data")
     outtree->Fill();
     if(i%100 == 0)
     {
-      progbar(i,n);
-      timestamp(t0);
+      bar.print(i);
     }
   }
-  cout << endl; // New line to finish off the progress bar
+  bar.terminate();
 /*Write the output**************************************************************/
   outtree->Write();
   infile->Close();
