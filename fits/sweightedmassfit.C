@@ -129,9 +129,9 @@ void sweightedmassfit(string input = "BsphiKK_data_mvacut.root")
   model.plotOn(frame[0],Components("bkgmod"));
   frame[0]->Draw();
   
-  string outputName = input.substr(0, input.size() - 5);
+//  string outputName = ;
   string trailer = "_Sweighted.root";
-  outputName += trailer;
+  string outputName = folder + input.substr(0, input.size() - 5) + trailer;
   TFile* f_out = new TFile(outputName.c_str(),"RECREATE");
   TTree* newtree = BsphiKKdatatree->CloneTree(-1);
   cout << "copied the tree" << endl;
