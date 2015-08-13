@@ -29,7 +29,7 @@
 #include "TMVA/MethodCuts.h"
 #endif
 
-#include "../progbar.h"
+#include "progbar.h"
 
 using namespace TMVA;
 
@@ -38,6 +38,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
 #ifdef __CINT__
   gROOT->ProcessLine( ".O0" ); // turn off optimization in CINT
 #endif
+  gSystem->Load("libprogbar.so");
   string filename[6] = { "BsphiKK_data",
                          "BsphiKK_MC",
                          "Bsphiphi_MC",
@@ -234,7 +235,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //TFile * input_Background = new TFile("Z4430Files/merged_ntuple_jpsi_s17.root"); // this is the background
   //TFile * input = new TFile("../output/MCBsphif0_after_transform.root"); // this is the signal
   TFile * input_Background; 
-  input_Background = new TFile(("../ntuples/"+filename[mode]+"_bdtVars_vetoes.root").c_str());
+  input_Background = new TFile(("../ntuples/"+filename[mode]+"_mvaVars_vetoes.root").c_str());
   //std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
   std::cout << "--- TMVAClassificationApp    : Using input file: " << input_Background->GetName() << std::endl;
   
@@ -261,7 +262,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //else TCut cut = TCut("time1>0. && abs(phi_mass-1019.455)<15 && abs(phi1_mass-1019.455)<15");
   //TFile* f_out  =new TFile("../output/MCBsphif0_after_bdt.root","RECREATE");
   TFile* f_out;
-  f_out = new TFile(("../ntuples/"+filename[mode]+"_bdt.root").c_str(),"RECREATE");
+  f_out = new TFile(("../ntuples/"+filename[mode]+"_mva.root").c_str(),"RECREATE");
 
   //TTree* smalltree = theTree->CopyTree(cut);
   TTree*  newtree = theTree->CloneTree(-1);

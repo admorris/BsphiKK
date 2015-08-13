@@ -17,7 +17,7 @@ Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass
 DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
 Dtophipiveto="TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
 ################################################################################
-for mode in $(ls *_bdtVars.root | sed 's/_bdtVars\.root//'); do
-cutapplier ${mode}_bdtVars.root DecayTree "${phikstveto}&&${LbphiKpveto}&&${Lcphipveto}&&${DtoKaonsveto}&&${Dtophipiveto}" ${mode}_bdtVars_vetoes.root
+for mode in $(ls *_mvaVars.root | sed 's/_mvaVars\.root//'); do
+cutapplier ${mode}_mvaVars.root DecayTree "${phikstveto}&&${LbphiKpveto}&&${Lcphipveto}&&${DtoKaonsveto}&&${Dtophipiveto}" ${mode}_mvaVars_vetoes.root
 done
 exit 0

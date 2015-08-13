@@ -23,11 +23,12 @@ Float_t minOfFour(Double_t a, Double_t b, Double_t c, Double_t d)
 }
 void addBranches(string filename = "BsphiKK_data")
 {
+  gSystem->Load("../progbar.so");
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
   TFile* infile  = new TFile((filename+"_cuts.root"   ).c_str()),
-       * outfile = new TFile((filename+"_bdtVars.root").c_str(),"RECREATE");
+       * outfile = new TFile((filename+"_mvaVars.root").c_str(),"RECREATE");
   // Get the input tree and create an empty output tree
   TTree* intree  = (TTree*)infile->Get("DecayTree"),
        * outtree = intree->CloneTree(0);
@@ -282,6 +283,7 @@ void addBranches(string filename = "BsphiKK_data")
     }
     // Phi is the inverse cos of the normalised dot product of the two above cross products
     Phi_angle = TMath::ACos(CrossProduct[0].Dot(CrossProduct[1])/(CrossProduct[0].Mag()*CrossProduct[1].Mag()));
+//    Phi_angle = CrossProduct[0].Angle(CrossProduct[1]);
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
     if(i%100 == 0)
