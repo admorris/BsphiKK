@@ -1,4 +1,6 @@
 #include <string.h>
+#include <iostream>
+#include "TSystem.h"
 #include "TCanvas.h"
 #include "TROOT.h"
 #include "TFile.h"
@@ -9,7 +11,7 @@
 #include "TH1D.h"
 #include "TLegend.h"
 #include "TStyle.h"
-#include "../progbar.h"
+#include "progbar.h"
 using namespace std;
 Float_t safeLog(Double_t x)
 {
@@ -23,7 +25,7 @@ Float_t minOfFour(Double_t a, Double_t b, Double_t c, Double_t d)
 }
 void addBranches(string filename = "BsphiKK_data")
 {
-  gSystem->Load("../progbar.so");
+  gSystem->Load("libprogbar.so");
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
@@ -149,8 +151,10 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t proton_ProbNNp;  outtree->Branch("proton_ProbNNp", &proton_ProbNNp, "proton_ProbNNp/D" );
 /*Helicity angle branches******************************************************/
   // Track 4-momentum in B frame and daughter frames
-  TLorentzVector Bframe_h_P[4], Bframe_d_P[4], dframe_h_P[4];
-  TVector3 CrossProduct[2];
+  TLorentzVector Bframe_h_P[4], /*Bframe_d_P[4],*/ dframe_h_P[4];
+  TVector3 Bframe_e, dframe_e[2], dframe_n[2];
+//  TVector3 CrossProduct[2];
+  Double_t sin_Phi, cos_Phi;
   Double_t Phi_angle; outtree->Branch("Phi_angle", &Phi_angle, "Phi_angle/D" );
   Double_t cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
@@ -259,6 +263,9 @@ void addBranches(string filename = "BsphiKK_data")
     phipbarP = hP[0] + hP[1] + protonP;
     phipbarM = phipbarP.M();
 /*Helicity angles**************************************************************/
+/***************************************************************************
+    See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
+*******************************************************************************/
     // Loop over Kaons
     for(Int_t j = 0; j < 4; j++)
     {
@@ -272,18 +279,15 @@ void addBranches(string filename = "BsphiKK_data")
     // Loop over daughters
     for(Int_t j = 0; j < 2; j++)
     {
-      // Boost daughters into B frame
-      Bframe_d_P[j] = dP[j];
-      Bframe_d_P[j].Boost(-BP.BoostVector());
-      // theta_i is the angle between the Kplus from daughter_i in the daughter frame and the daughter in the B frame
-//      cos_theta[j] = TMath::Cos(dframe_h_P[2*j+1].Vect().Angle(Bframe_d_P[j].Vect()));
-      cos_theta[j] = Bframe_d_P[j].Vect().Dot(dframe_h_P[2*j+1].Vect())/(Bframe_d_P[j].Vect().Mag()*dframe_h_P[2*j+1].Vect().Mag());
-      // Calculate cross product of K pairs in B frame (vector normal to decay plane)
-      CrossProduct[j] = Bframe_h_P[2*j].Vect().Cross(Bframe_h_P[2*j+1].Vect());
+      
+      dframe_e[j] = -1.0 * ((dframe_h_P[2*j].Vect() + dframe_h_P[2*j+1].Vect()) * (1.0/(dframe_h_P[2*j].Vect() + dframe_h_P[2*j+1].Vect()).Mag()));
+      cos_theta[j] = (dframe_h_P[2*j+1].Vect() * (1.0/dframe_h_P[2*j+1].Vect().Mag())).Dot(dframe_e[j]);
+      dframe_n[j] = (Bframe_h_P[2*j+1].Vect().Cross(Bframe_h_P[2*j].Vect())) * (1.0/(Bframe_h_P[2*j+1].Vect().Cross(Bframe_h_P[2*j].Vect())).Mag());
     }
-    // Phi is the inverse cos of the normalised dot product of the two above cross products
-    Phi_angle = TMath::ACos(CrossProduct[0].Dot(CrossProduct[1])/(CrossProduct[0].Mag()*CrossProduct[1].Mag()));
-//    Phi_angle = CrossProduct[0].Angle(CrossProduct[1]);
+    Bframe_e = (Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()) * (1.0/(Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()).Mag());
+    cos_Phi = dframe_n[1].Dot(dframe_n[0]);
+    sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
+    Phi_angle  = TMath::ACos(cos_Phi) * (sin_Phi/TMath::Abs(sin_Phi));
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
     if(i%100 == 0)

@@ -10,7 +10,7 @@
 #include <iostream>
 #include <iomanip>
 /******************************************************************************/
-void cuteff(string filename = "LbphiKp_MC_bdtVars", string branchtoplot = "B_s0_M", string beforecut = "", string cut = "", string plotname = "")
+void cuteff(string filename = "LbphiKp_MC_mvaVars", string branchtoplot = "B_s0_M", string beforecut = "", string cut = "", string plotname = "")
 {
 //  cout << "Cut efficiency for \"" << cut <<"\" in " << filename << endl;
 /*Input************************************************************************/

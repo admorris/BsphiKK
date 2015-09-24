@@ -10,7 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include "TMath.h"
-#include "../progbar.h"
+#include "progbar.h"
 using namespace std;
 class CloneInfo
 {
@@ -94,7 +94,7 @@ void addToClones(vector<CloneInfo>& clones, int key1, int key2, int key3, int ke
 }
 string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
 {
-  gSystem->Load("../progbar.so");
+  gSystem->Load("libprogbar.so");
   // get the input
   TChain* tree = new TChain(treeName.c_str());
   tree->Add(fileName.c_str());
