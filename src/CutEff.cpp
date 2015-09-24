@@ -69,3 +69,18 @@ void cuteff(string filename = "LbphiKp_MC_mvaVars", string branchtoplot = "B_s0_
   }
   return;
 }
+int main(int argc, char* argv[])
+{
+  if(argc==1)
+  {
+    cout << "Usage: CutEff <filename> <branch to plot> <initial cut> <final cut> [<plot name>]" << endl;
+    return 1;
+  }
+  else if(argc>5)
+  {
+    cout << "Too many arguments." << endl;
+    return 1;
+  }
+  cuteff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4], (string)argv[5]);
+  return 0;
+}

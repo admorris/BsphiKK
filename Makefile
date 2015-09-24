@@ -34,10 +34,10 @@ OUTPUT     = $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS)
-LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) $(EXTRALIBS) -lprogbar
+LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) $(EXTRALIBS) -lprogbar -lCloneTagger -lCloneInfo -lplotmaker
 
 # Make the libraries
-all : $(LIBS) $(BINDIR)/addBranches $(BINDIR)/flagClones $(BINDIR)/cutEff $(BINDIR)/plotBsmasses
+all : $(LIBS) $(BINDIR)/AddBranches $(BINDIR)/FlagClones $(BINDIR)/CutEff $(BINDIR)/PlotBsMasses
 # Make object files
 objects : $(OBJS)
 # Build binaries

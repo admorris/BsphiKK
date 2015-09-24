@@ -12,20 +12,12 @@
 #include "TLegend.h"
 #include "TStyle.h"
 #include "progbar.h"
+#include "minOfFour.h"
+#include "safeLog.h"
 using namespace std;
-Float_t safeLog(Double_t x)
-{
-  // Keep numbers in a sensible range for the sake of MVA training
-  if(x>TMath::Exp(-25)) return TMath::Log(x);
-  else return -25;
-}
-Float_t minOfFour(Double_t a, Double_t b, Double_t c, Double_t d)
-{
-  return TMath::Min(TMath::Min(a,b),TMath::Min(c,d));
-}
 void addBranches(string filename = "BsphiKK_data")
 {
-  gSystem->Load("libprogbar.so");
+//  gSystem->Load("libprogbar.so");
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
@@ -301,4 +293,19 @@ void addBranches(string filename = "BsphiKK_data")
   infile->Close();
   outfile->Close();
   return;
+}
+int main(int argc, char* argv[])
+{
+  if(argc==1)
+  {
+    cout << "Please provide a filename." << endl;
+    return 1;
+  }
+  else if(argc>2)
+  {
+    cout << "Too many arguments." << endl;
+    return 1;
+  }
+  addBranches((string)argv[1]);
+  return 0;
 }

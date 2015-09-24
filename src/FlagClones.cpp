@@ -11,90 +11,12 @@
 #include <algorithm>
 #include "TMath.h"
 #include "progbar.h"
+#include "CloneInfo.h"
+#include "CloneTagger.h"
 using namespace std;
-class CloneInfo
-{
-public:
-  CloneInfo(int key1, int key2, int key3, int key4, int i) :
-  m_key1(key1),
-  m_key2(key2),
-  m_key3(key3),
-  m_key4(key4),
-  m_i(i),
-  m_isAlive(true){}
-  CloneInfo(const CloneInfo& cl) :
-  m_key1(cl.m_key1),
-  m_key2(cl.m_key2),
-  m_key3(cl.m_key3),
-  m_key4(cl.m_key4),
-  m_i(cl.m_i),
-  m_isAlive(cl.m_isAlive){}
-  CloneInfo() {}
-  ~CloneInfo() {}
-  bool isAlive() { return m_isAlive; }
-  int i() const { return m_i; }
-  void setDead(){m_isAlive = false;}
-  int key1(){ return m_key1; }
-  int key2(){ return m_key2; }
-  int key3(){ return m_key3; }
-  int key4(){ return m_key4; }
-  int sum() const { return m_key1 + m_key2 + m_key3 + m_key4; } 
-  class Less_by_sum
-  {
-    public:
-      inline bool operator() (const CloneInfo& c1, const CloneInfo& c2) const
-      {
-        return c1.sum() < c2.sum();
-      }
-  };
-private:
-  int m_key1;
-  int m_key2;
-  int m_key3;
-  int m_key4;
-  int m_i;
-  bool m_isAlive;
-};
-#ifdef __MAKECINT__
-#pragma link C++ class vector<CloneInfo>;
-#endif
-void tagClone(CloneInfo& c1, CloneInfo& c2)
-{
-  if (c1.sum() == c2.sum())
-  {
-    c2.setDead();
-  }
-}
-void tagClones(vector<CloneInfo>& clones)
-{
-  vector<CloneInfo>::iterator iter = clones.begin();
-  for (;iter != clones.end(); ++iter)
-  {
-    if (iter->isAlive() == true)
-    {
-    vector<CloneInfo>::iterator iter2 = iter; ++iter2;
-      for (;iter2 != clones.end(); ++iter2)
-      {
-	      if (iter2->sum() == iter->sum())
-	      {
-        	iter2->setDead();
-	      }
-      }
-    }
-  }
-}
-void sortClones(vector<CloneInfo>& clones)
-{
-  sort(clones.begin(), clones.end(), CloneInfo::Less_by_sum());
-}
-void addToClones(vector<CloneInfo>& clones, int key1, int key2, int key3, int key4, int i )
-{
-  CloneInfo tclone = CloneInfo(key1, key2, key3, key4,  i);
-  clones.push_back(tclone);
-}
 string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
 {
-  gSystem->Load("libprogbar.so");
+//  gSystem->Load("libprogbar.so");
   // get the input
   TChain* tree = new TChain(treeName.c_str());
   tree->Add(fileName.c_str());
@@ -113,6 +35,7 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
   int key3; tree->SetBranchAddress("Kplus_TRACK_Key",&key3);  
   int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);  
   vector<CloneInfo> clones;
+  CloneTagger tagger(clones);
   int i = 0;
   cout << "Finding duplicate events" << endl;
   progbar bar(num_entries);
@@ -121,7 +44,8 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
     tree->GetEntry(i);
     int run_i = run;
     int event_i = event;
-    clones.clear();  addToClones(clones,key1,key2,key3,key4,i);
+    clones.clear();
+    tagger.addToClones(key1,key2,key3,key4,i);
     int j = i+1;
     for (j=i+1;j<num_entries; j++)
     {
@@ -134,11 +58,11 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
         }
         else
         {
-          addToClones(clones,key1,key2,key3,key4,j);  
+          tagger.addToClones(key1,key2,key3,key4,j);  
         }
     }
-    sortClones(clones);
-    tagClones(clones);
+    tagger.sortClones();
+    tagger.tagClones();
     if (clones.size() > 1)
     {
       for (unsigned int ii = 0; ii < clones.size() ; ++ii)

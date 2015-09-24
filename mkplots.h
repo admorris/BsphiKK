@@ -3,7 +3,7 @@
 #include "addBlurb.h"
 #include <string>
 #include <sstream>
-
+using namespace std;
 void mkplots(TCanvas* canv, string fname)
 {
     canv->cd();
