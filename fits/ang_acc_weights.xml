@@ -1,0 +1,291 @@
+<RapidFit>
+	<ParameterSet>
+		// True Physics Parameters for signal
+
+		<PhysicsParameter>
+			<Name>F_s</Name>
+			<Value>0.</Value>
+			<Type>Fixed</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>delta_s</Name>
+			<Value>0.</Value>
+			<Type>Fixed</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>Csp</Name>
+			<Value>1.</Value>
+			<Type>Fixed</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>mistagP1</Name>
+			<Value>1.0</Value>
+			<Type>Fixed</Type>
+			<Unit> </Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>mistagP0</Name>
+			<Value>0.355</Value>
+			<Type>Fixed</Type>
+			<Unit> </Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>mistagSetPoint</Name>
+			<Value>0.355</Value>
+			<Type>Fixed</Type>
+			<Unit> </Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>mistagDeltaP1</Name>
+			<Value>0.</Value>
+			<Type>Fixed</Type>
+			<Unit> </Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>mistagDeltaP0</Name>
+			<Value>0.0</Value>
+			<Type>Fixed</Type>
+			<Unit> </Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>mistagDeltaSetPoint</Name>
+			<Value>0.0</Value>
+			<Type>Fixed</Type>
+			<Unit> </Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>gamma</Name>
+			<Value>0.66541</Value>
+			<Minimum>0.6</Minimum>
+			<Maximum>0.75</Maximum>
+			<Type>Free</Type>
+			<Unit>ps^{-1}</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>deltaGamma</Name>
+			<Value>0.09166</Value>
+			<Minimum>0.01</Minimum>
+			<Maximum>0.15</Maximum>
+			<Type>Free</Type>
+			<Unit>ps^{-1}</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>Aperp_sq</Name>
+			<Value>0.16</Value>
+			<Minimum>0.</Minimum>
+			<Maximum>0.5</Maximum>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>Azero_sq</Name>
+			<Value>0.601</Value>
+			<Type>Free</Type>
+			<Minimum>0.</Minimum>
+			<Maximum>0.8</Maximum>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>delta_para</Name>
+			<Value>2.5</Value>
+			<StepSize>0.05</StepSize>
+			<Maximum>6.3</Maximum>
+			<Minimum>-6.3</Minimum>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>delta_perp</Name>
+			<Value>-0.17</Value>
+			<Minimum>-6.3</Minimum>
+			<Maximum>6.3</Maximum>
+			<StepSize>0.05</StepSize>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>delta_zero</Name>
+			<Value>0.0</Value>
+			<Minimum>-3.3</Minimum>
+			<Maximum>3.3</Maximum>
+			<Type>Fixed</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>deltaM</Name>
+			<Value>17.8</Value>
+			<Type>Free</Type>
+			<Unit>ps-1</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>Phi_s</Name>
+			<Value>-0.04</Value>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		<PhysicsParameter>
+			<Name>lambda</Name>
+			<Value>1.</Value>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+      <PhysicsParameter>
+                <Name>timeResolution2Fraction</Name>
+                <Value>0.</Value>
+                <Type>Fixed</Type>
+                <Unit>someUnit</Unit>
+        </PhysicsParameter>
+
+                <PhysicsParameter>
+                        <Name>timeResolution1</Name>
+                        <Value>0.001</Value>
+                        <Type>Fixed</Type>
+                </PhysicsParameter>
+
+                <PhysicsParameter>
+                        <Name>timeResolution2</Name>
+                        <Value>0.</Value>
+                        <Type>Fixed</Type>
+                </PhysicsParameter>
+
+                <PhysicsParameter>
+                        <Name>timeResolutionScale</Name>
+                        <Value>1.</Value>
+                        <Type>Fixed</Type>
+                </PhysicsParameter>
+
+	</ParameterSet>
+
+
+	//==========================================
+	// Specify which minimiser to use.
+
+	<Minimiser>
+		<MinimiserName>Minuit</MinimiserName>
+		<MaxSteps>100000</MaxSteps>
+		<GradTolerance>0.01</GradTolerance>
+		<Quality>0</Quality>
+	</Minimiser>
+
+	<FitFunction>
+		<FunctionName>NegativeLogLikelihoodThreaded</FunctionName>
+		<Threads>8</Threads>
+		<SetIntegratorTest>False</SetIntegratorTest>
+		<OffSetNLL>True</OffSetNLL>
+	</FitFunction>
+
+	<NumberRepeats>1</NumberRepeats>
+
+	<CommonPDF>
+		<PDF>
+			<Name>Bs2JpsiPhi_Signal_v7</Name>
+			<ConfigurationParameter>UseHelicityBasis:True</ConfigurationParameter>
+                        <ConfigurationParameter>AngularAcceptanceIgnoreNumerator:True</ConfigurationParameter>			
+			<ConfigurationParameter>UseTimeAcceptance:False</ConfigurationParameter>
+			<ConfigurationParameter>UseEventResolution:False</ConfigurationParameter>
+		</PDF>
+	</CommonPDF>
+
+	<CommonPhaseSpace>
+		<PhaseSpaceBoundary>
+			<Observable>
+				<Name>time</Name>
+                                #<TF1>B_s0_LOKI_DTF_CTAU/0.299792458</TF1>
+                                #<TF1>B_s0_TRUETAU*1000.</TF1>
+                                <TF1>truetime</TF1>
+				<Minimum>0.3</Minimum>
+				<Maximum>20.0</Maximum>
+				<Unit>ps</Unit>
+			</Observable>
+			<Observable>
+                                <Name>helcosthetaK</Name>
+                                <TF1>helcosthetaK</TF1>
+                                <Minimum>-1.0</Minimum>
+                                <Maximum>1.0</Maximum>
+                                <Unit> </Unit>
+                        </Observable>
+                        <Observable>
+                                <Name>helphi</Name>
+                                <TF1>(helphi+TMath::Pi()-(helphi>0.)*(2.*TMath::Pi()))</TF1>
+                                <Minimum>-3.1416</Minimum>
+                                <Maximum>3.1416</Maximum>
+                                <Unit>rad</Unit>
+                        </Observable>
+                        <Observable>
+                                <Name>helcosthetaL</Name>
+                                <TF1>helcosthetaL</TF1>
+                                <Minimum>-1.0</Minimum>
+                                <Maximum>1.0</Maximum>
+                                <Unit> </Unit>
+                        </Observable>
+			<Observable>
+				<Name>cosTheta</Name>
+				<TF1>trcostheta</TF1>
+				<Minimum>-1.0</Minimum>
+				<Maximum>1.0</Maximum>
+				<Unit> </Unit>
+			</Observable>
+			<Observable>
+				<Name>phi</Name>
+				<TF1>trphi</TF1>
+				<Minimum>-3.1416</Minimum>
+				<Maximum>3.1416</Maximum>
+				<Unit>rad</Unit>
+			</Observable>
+			<Observable>
+				<Name>cosPsi</Name>
+				<TF1>trcospsi</TF1>
+				<Minimum>-1.0</Minimum>
+				<Maximum>1.0</Maximum>
+				<Unit> </Unit>
+			</Observable>
+			<Observable>
+				<Name>tag</Name>
+				<TF1>trueid/531.</TF1>
+				<Value>1.</Value>
+				<Value>-1.</Value>
+				<Unit> </Unit>
+			</Observable>
+			<Observable>
+				<Name>mistag</Name>
+				<TF1>0.</TF1>
+				<Minimum>0.</Minimum>
+				<Maximum>0.5</Maximum>
+				<Unit> </Unit>
+			</Observable>
+		</PhaseSpaceBoundary>
+	</CommonPhaseSpace>
+
+	<ToFit>
+		<CommonPDF>True</CommonPDF>
+		<DataSet>
+			<Source>File</Source>
+			#<FileName>/afs/cern.ch/user/d/dferguso/Bs2Psi2SPhi/fit/data_files/MC2012_psi2s_output.root</FileName>
+			<FileName>/afs/cern.ch/user/d/dferguso/Bs2Psi2SPhi/fit/data_files/MC2011_psi2s_output.root</FileName>
+			<CutString>(12. > TMath::Abs(mdau2 - 1019.45))</CutString>
+			<NumberEvents>100000000</NumberEvents>
+
+			<CommonPhaseSpace>
+			</CommonPhaseSpace>
+
+		</DataSet>
+	</ToFit>
+
+</RapidFit>
+
+
