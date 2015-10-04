@@ -15,6 +15,7 @@
 #include "CloneTagger.h"
 using namespace std;
 void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
+{
 //  gSystem->Load("libprogbar.so");
   // get the input
   TChain* tree = new TChain(treeName.c_str());

@@ -113,3 +113,8 @@ void plotBsmasses()
   mkplots(can,"simulated_backgrounds");
   return;
 }
+int main()
+{
+  plotBsmasses();
+  return 0;
+}
