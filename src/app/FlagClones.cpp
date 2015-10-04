@@ -14,8 +14,16 @@
 #include "CloneInfo.h"
 #include "CloneTagger.h"
 using namespace std;
-string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
+// string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
+int main(int argc, char* argv[])
 {
+  if(argc!=3)
+  {
+    cout << "Usage: " << argv[0] << " <file name> <tree path/tree name>" << endl;
+    return 1;
+  }
+  string fileName = (string)argv[1];
+  string treeName = (string)argv[2];
 //  gSystem->Load("libprogbar.so");
   // get the input
   TChain* tree = new TChain(treeName.c_str());
@@ -27,13 +35,13 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
   {
     flag_clones[i] = 1;
   }
-  double dvchi2; tree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&dvchi2); 
-  UInt_t run;tree->SetBranchAddress("runNumber",&run);  
-  ULong64_t event; tree->SetBranchAddress("eventNumber",&event);  
-  int key1; tree->SetBranchAddress("Kminus_TRACK_Key",&key1);  
-  int key2; tree->SetBranchAddress("Kminus0_TRACK_Key",&key2);  
-  int key3; tree->SetBranchAddress("Kplus_TRACK_Key",&key3);  
-  int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);  
+  double dvchi2; tree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&dvchi2);
+  UInt_t run;tree->SetBranchAddress("runNumber",&run);
+  ULong64_t event; tree->SetBranchAddress("eventNumber",&event);
+  int key1; tree->SetBranchAddress("Kminus_TRACK_Key",&key1);
+  int key2; tree->SetBranchAddress("Kminus0_TRACK_Key",&key2);
+  int key3; tree->SetBranchAddress("Kplus_TRACK_Key",&key3);
+  int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);
   vector<CloneInfo> clones;
   CloneTagger tagger(clones);
   int i = 0;
@@ -58,7 +66,7 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
         }
         else
         {
-          tagger.addToClones(key1,key2,key3,key4,j);  
+          tagger.addToClones(key1,key2,key3,key4,j);
         }
     }
     tagger.sortClones();
@@ -85,12 +93,12 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
   TTree*  newtree = tree->CloneTree(-1);
   int isAlive;
   TBranch *branch_bestVtxChi2 = newtree->Branch("isDup",&isAlive, "isDup/I");
-  num_entries = newtree->GetEntries(); 
+  num_entries = newtree->GetEntries();
   // loop again and write the branch
   bar.reset();
   for (i=0;i<num_entries; i++)
   {
-    newtree->GetEntry(i); 
+    newtree->GetEntry(i);
     isAlive = flag_clones[i];
     branch_bestVtxChi2->Fill();
     if(i%100==0)
@@ -101,5 +109,5 @@ string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string tree
   bar.terminate();
   newtree->Write();
   outFile->Close();
-  return outputName;
+  return 0;
 }
