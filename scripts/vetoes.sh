@@ -1,4 +1,5 @@
 #! /bin/bash
+cd ../ntuples
 Bdmass="5279.58"
 Kstmass="891.66"
 Bdwindow="50" # Try 60

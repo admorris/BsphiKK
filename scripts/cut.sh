@@ -1,4 +1,5 @@
 #! /bin/bash
+cd ../ntuples/
 source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/LbLogin.sh
 ntuple_name='BsphiKK'
 user=admorris
@@ -44,7 +45,8 @@ cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${t
 else
 cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}" ${mode}_duplicates.root
 fi
-root -q -b -l "FlagClones.C+(\"${mode}_duplicates.root\")"
+#root -q -b -l "FlagClones.C+(\"${mode}_duplicates.root\")"
+../bin/FlagClones ${mode}_duplicates.root
 cutapplier ${mode}_duplicates_Clone.root DecayTree "isDup==1" ${mode}_cuts.root
 done
 ###########################################################
