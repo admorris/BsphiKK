@@ -46,7 +46,7 @@ else
 cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}" ${mode}_duplicates.root
 fi
 #root -q -b -l "FlagClones.C+(\"${mode}_duplicates.root\")"
-../bin/FlagClones ${mode}_duplicates.root
+../bin/FlagClones ${mode}_duplicates.root DecayTreeTuple/DecayTree
 cutapplier ${mode}_duplicates_Clone.root DecayTree "isDup==1" ${mode}_cuts.root
 done
 ###########################################################
