@@ -14,16 +14,7 @@
 #include "CloneInfo.h"
 #include "CloneTagger.h"
 using namespace std;
-// string FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
-int main(int argc, char* argv[])
-{
-  if(argc!=3)
-  {
-    cout << "Usage: " << argv[0] << " <file name> <tree path/tree name>" << endl;
-    return 1;
-  }
-  string fileName = (string)argv[1];
-  string treeName = (string)argv[2];
+void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
 //  gSystem->Load("libprogbar.so");
   // get the input
   TChain* tree = new TChain(treeName.c_str());
@@ -109,5 +100,15 @@ int main(int argc, char* argv[])
   bar.terminate();
   newtree->Write();
   outFile->Close();
+  return;
+}
+int main(int argc, char* argv[])
+{
+  if(argc!=3)
+  {
+    cout << "Usage: " << argv[0] << " <file name> <tree path/tree name>" << endl;
+    return 1;
+  }
+  FlagClones((string)argv[1], (string)argv[2]);
   return 0;
 }
