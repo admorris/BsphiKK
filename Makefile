@@ -36,7 +36,7 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS)
-LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS)
+LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar
 
 all : $(BINS)
 libs : $(LIBS)
