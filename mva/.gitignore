@@ -1,0 +1,7 @@
+.__afs*
+TMVA*root
+plots/*
+weights/*
+*.d
+*.so
+*.pcm

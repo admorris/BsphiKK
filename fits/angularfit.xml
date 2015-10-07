@@ -1,0 +1,127 @@
+<RapidFit>
+	<ParameterSet>
+		// Lifetimes
+		<PhysicsParameter>
+			<Name>GammaL</Name>
+			<Value>0.661</Value>
+			<Minimum>0.0000001</Minimum>
+			<Maximum>1.0</Maximum>
+			<Type>Fixed</Type>
+			<Unit>ps^{-1}</Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>GammaH</Name>
+			<Value>0.555</Value>
+			<Minimum>0.0000001</Minimum>
+			<Maximum>1.0</Maximum>
+			<Type>Fixed</Type>
+			<Unit>ps^{-1}</Unit>
+		</PhysicsParameter>
+
+		// Amplitudes
+		<PhysicsParameter>
+			<Name>Apara2</Name>
+			<Value>0.33</Value>
+			<Minimum>0.0</Minimum>
+			<Maximum>1.0</Maximum>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+		<PhysicsParameter>
+			<Name>Azero2</Name>
+			<Value>0.33</Value>
+			<Minimum>0.0</Minimum>
+			<Maximum>1.0</Maximum>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+
+		// Strong phase
+		<PhysicsParameter>
+			<Name>deltapara</Name>
+			<Value>0.00</Value>
+			<Minimum>-3.14159</Minimum>
+			<Maximum>3.14159</Maximum>
+			<Type>Free</Type>
+			<Unit>Unitless</Unit>
+		</PhysicsParameter>
+	</ParameterSet>
+	<Minimiser>
+		<MinimiserName>Minuit</MinimiserName>
+		<ConfigureMinimiser>#MinosErrors</ConfigureMinimiser>
+	</Minimiser>
+
+
+	// Minimising weighted NLL
+	<FitFunction>
+		<FunctionName>NegativeLogLikelihoodThreaded</FunctionName>
+		<Threads>1</Threads>
+	  <SetIntegratorTest>False</SetIntegratorTest>
+	</FitFunction>
+
+
+	<CommonPDF>
+		<PDF>
+			<Name>Bs2PhiKK</Name>
+    </PDF>
+	</CommonPDF>
+	<CommonPhaseSpace>
+		<PhaseSpaceBoundary>
+				<Observable>
+					<Name>phi</Name>
+   				<TF1>Phi_angle</TF1>
+					<Minimum>-3.14159</Minimum>
+					<Maximum>3.14159</Maximum>
+					<Unit>rad</Unit>
+				</Observable>
+
+				<Observable>
+					<Name>ctheta_1</Name>
+   				<TF1>cos_theta1</TF1>
+					<Minimum>-1.0</Minimum>
+					<Maximum>1.0</Maximum>
+					<Unit>Unitless</Unit>
+				</Observable>
+
+				<Observable>
+					<Name>ctheta_2</Name>
+   				<TF1>cos_theta2</TF1>
+					<Minimum>-1.0</Minimum>
+					<Maximum>1.0</Maximum>
+					<Unit>Unitless</Unit>
+				</Observable>
+		</PhaseSpaceBoundary>
+	</CommonPhaseSpace>
+
+
+	<ToFit>
+		<CommonPDF>True</CommonPDF>
+		<PDFConfigurator>
+		</PDFConfigurator>
+		<DataSet>
+			<Source>File</Source>
+			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvaVars.root</FileName>
+			<NTuplePath>DecayTree</NTuplePath>
+			<NumberEvents>10000000</NumberEvents>
+
+			<CommonPhaseSpace>
+			</CommonPhaseSpace>
+
+		</DataSet>
+	</ToFit>
+	<Output>
+    <ComponentProjection>
+      <Name>phi</Name>
+      <DrawPull>True</DrawPull>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_1</Name>
+      <DrawPull>True</DrawPull>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_2</Name>
+      <DrawPull>True</DrawPull>
+    </ComponentProjection>
+  </Output>
+
+</RapidFit>
