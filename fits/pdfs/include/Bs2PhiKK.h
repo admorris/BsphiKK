@@ -73,5 +73,4 @@ class Bs2PhiKK : public BasePDF
       double K5() { return sqrt(Azero2)*sqrt(Apara2)*cos(deltapara)/GammaL ; }
       double K6() { return 0; }
 };
-
 #endif
