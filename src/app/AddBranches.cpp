@@ -53,13 +53,13 @@ void addBranches(string filename = "BsphiKK_data")
   intree->SetBranchAddress("B_s0_PX_kaon0",&h_PX[1]);
   intree->SetBranchAddress("B_s0_PX_kaon3",&h_PX[2]);
   intree->SetBranchAddress("B_s0_PX_kaon2",&h_PX[3]);
-/*PY Branches*************************************************************/
+/*PY Branches******************************************************************/
   Double_t h_PY[4];
   intree->SetBranchAddress("B_s0_PY_kaon1",&h_PY[0]);
   intree->SetBranchAddress("B_s0_PY_kaon0",&h_PY[1]);
   intree->SetBranchAddress("B_s0_PY_kaon3",&h_PY[2]);
   intree->SetBranchAddress("B_s0_PY_kaon2",&h_PY[3]);
-/*PZ Branches*************************************************************/
+/*PZ Branches******************************************************************/
   Double_t h_PZ[4];
   intree->SetBranchAddress("B_s0_PZ_kaon1",&h_PZ[0]);
   intree->SetBranchAddress("B_s0_PZ_kaon0",&h_PZ[1]);
@@ -101,7 +101,7 @@ void addBranches(string filename = "BsphiKK_data")
   intree->SetBranchAddress("Kplus_ProbNNpi",  &h_ProbNNpi[1]);
   intree->SetBranchAddress("Kminus0_ProbNNpi",&h_ProbNNpi[2]);
   intree->SetBranchAddress("Kplus0_ProbNNpi", &h_ProbNNpi[3]);
-/*IPCHI2_OWNPV Branches************************************************************/
+/*IPCHI2_OWNPV Branches********************************************************/
   Double_t h_IPCHI2_OWNPV[4];
   intree->SetBranchAddress("Kminus_IPCHI2_OWNPV", &h_IPCHI2_OWNPV[0]);
   intree->SetBranchAddress("Kplus_IPCHI2_OWNPV",  &h_IPCHI2_OWNPV[1]);
@@ -293,7 +293,7 @@ void addBranches(string filename = "BsphiKK_data")
     }
   }
   bar.terminate();
-/*Write the output**************************************************************/
+/*Write the output*************************************************************/
   outtree->Write();
   infile->Close();
   outfile->Close();
