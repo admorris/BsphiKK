@@ -271,11 +271,11 @@ void addBranches(string filename = "BsphiKK_data")
     // Loop over daughters
     for(Int_t j = 0; j < 2; j++)
     {
-      Int_t minus = 2*j;   // 0 and 2
-      Int_t plus  = 2*j+1; // 1 and 3
-      dframe_e[j] = -1.0 * ((dframe_h_P[minus].Vect() + dframe_h_P[plus].Vect()) * (1.0/(dframe_h_P[minus].Vect() + dframe_h_P[plus].Vect()).Mag()));
+      Int_t minus  = 2*j;   // 0 and 2
+      Int_t plus   = 2*j+1; // 1 and 3
+      dframe_e[j]  = - (dframe_h_P[minus].Vect() + dframe_h_P[plus].Vect()) / (dframe_h_P[minus].Vect() + dframe_h_P[plus].Vect()).Mag();
       cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);
-      dframe_n[j] = (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())) * (1.0/(Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag());
+      dframe_n[j]  = Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect()) / (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag();
     }
     Bframe_e = (Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()) * (1.0/(Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()).Mag());
     cos_Phi = dframe_n[1].Dot(dframe_n[0]);
