@@ -206,7 +206,7 @@ void addBranches(string filename = "BsphiKK_data")
     // K pi
     KpiP = pionP + hP[kaon];
     KpiM = KpiP.M();
-    // phi pi- 
+    // phi pi-
     pionP.SetXYZM(h_PX[2],h_PY[2],h_PZ[2],pimass);
     pipiP       = pionP; // Half of the pi pi 4momentum
     phipiminusP = hP[0] + hP[1] + pionP;
@@ -255,7 +255,7 @@ void addBranches(string filename = "BsphiKK_data")
     phipbarP = hP[0] + hP[1] + protonP;
     phipbarM = phipbarP.M();
 /*Helicity angles**************************************************************/
-/***************************************************************************
+/*******************************************************************************
     See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
 *******************************************************************************/
     // Loop over Kaons
@@ -271,7 +271,6 @@ void addBranches(string filename = "BsphiKK_data")
     // Loop over daughters
     for(Int_t j = 0; j < 2; j++)
     {
-      
       dframe_e[j] = -1.0 * ((dframe_h_P[2*j].Vect() + dframe_h_P[2*j+1].Vect()) * (1.0/(dframe_h_P[2*j].Vect() + dframe_h_P[2*j+1].Vect()).Mag()));
       cos_theta[j] = (dframe_h_P[2*j+1].Vect() * (1.0/dframe_h_P[2*j+1].Vect().Mag())).Dot(dframe_e[j]);
       dframe_n[j] = (Bframe_h_P[2*j+1].Vect().Cross(Bframe_h_P[2*j].Vect())) * (1.0/(Bframe_h_P[2*j+1].Vect().Cross(Bframe_h_P[2*j].Vect())).Mag());
