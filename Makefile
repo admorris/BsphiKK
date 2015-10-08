@@ -8,6 +8,7 @@ RM         = rm -f
 # ROOT has some broken backwards compatability for OSX so won't claim to be a set of system headers
 ROOTCFLAGS = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
 ROOTLIBS   = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --libs)
+EXTRA_ROOTLIBS=-lRooFit -lRooStats -lRooFitCore
 
 # Extensions
 SRCEXT     = cpp
@@ -36,7 +37,7 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS)
-LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar
+LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar
 
 all : $(BINS)
 libs : $(LIBS)
