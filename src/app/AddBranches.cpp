@@ -143,7 +143,7 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t proton_ProbNNp;  outtree->Branch("proton_ProbNNp", &proton_ProbNNp, "proton_ProbNNp/D" );
 /*Helicity angle branches******************************************************/
   // Track 4-momentum in B frame and daughter frames
-  TLorentzVector Bframe_h_P[4], /*Bframe_d_P[4],*/ dframe_h_P[4];
+  TLorentzVector Bframe_h_P[4], /*Bframe_d_P[4],*/ dframe_h_P[4], dframe_other_h_P[4];
   TVector3 Bframe_e, dframe_e[2], dframe_n[2];
 //  TVector3 CrossProduct[2];
   Double_t sin_Phi, cos_Phi;
@@ -267,13 +267,17 @@ void addBranches(string filename = "BsphiKK_data")
       // Boost into daughter frames
       dframe_h_P[j] = hP[j];
       dframe_h_P[j].Boost(-dP[j/2].BoostVector());
+      // Boost into "wrong" daughter frames
+      // Thanks Dianne!
+      dframe_other_h_P[j] = hP[j];
+      dframe_other_h_P[j].Boost(-dP[(j-3)/-2].BoostVector());
     }
     // Loop over daughters
     for(Int_t j = 0; j < 2; j++)
     {
       Int_t minus = 2*j;   // 0 and 2
       Int_t plus  = 2*j+1; // 1 and 3
-      dframe_e[j] = -1.0 * ((dframe_h_P[minus].Vect() + dframe_h_P[plus].Vect()) * (1.0/(dframe_h_P[minus].Vect() + dframe_h_P[plus].Vect()).Mag()));
+      dframe_e[j] = -1.0 * ((dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()) * (1.0/(dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()).Mag()));
       cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);
       dframe_n[j] = (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())) * (1.0/(Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag());
     }
