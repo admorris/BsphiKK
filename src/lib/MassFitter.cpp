@@ -1,5 +1,7 @@
 // Standard headers
 #include <stdexcept>
+// ROOT headers
+#include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
 #include "RooFormulaVar.h"
@@ -9,8 +11,9 @@
 // Custom headers
 #include "MassFitter.h"
 using namespace std;
+using namespace RooFit;
 /******************************************************************************/
-MassFitter::MassFitter(RooRealVar mass) :
+MassFitter::MassFitter(RooRealVar* mass) :
   _mass(mass)
 {
   init();
@@ -36,31 +39,47 @@ void MassFitter::SetPDF(RooAbsPdf* pdf)
   _haspdf = true;
   _pdf    = pdf;
 }
-void MassFitter::SetPDF(string name)
+void MassFitter::SetPDF(string signame, string bkgname)
 {
+  RooAbsPdf* sigpdf, * bkgpdf;
   if(_haspdf)
   {
     ResetPDF();
   }
   _haspdf = false;
-  cout << "Will attempt to construct PDF with name " << name << endl;
-  if(name=="Single Gaussian")
+  cout << "Will attempt to construct PDF with name " << signame << endl;
+  if(signame=="Single Gaussian")
   {
-    _pdf = singleGaussian();
+    sigpdf = singleGaussian();
   }
-  else if(name=="Double Gaussian")
+  else if(signame=="Double Gaussian")
   {
-    _pdf = doubleGaussian();
+    sigpdf = doubleGaussian();
   }
-  else if(name=="Triple Gaussian")
+  else if(signame=="Triple Gaussian")
   {
-    _pdf = tripleGaussian();
+    sigpdf = tripleGaussian();
   }
   else
   {
-    throw invalid_argument(("No such PDF " + name).c_str());
+    throw invalid_argument(("No such PDF " + signame).c_str());
   }
-  cout << name << " constructed." << endl;
+  if(bkgname=="none")
+  {
+    _pdf = sigpdf;
+    _haspdf = true;
+    return;
+  }
+  cout << "Will attempt to construct PDF with name " << bkgname << endl;
+  if(bkgname=="Flat")
+  {
+    bkgpdf = flatfunction();
+  }
+  else
+  {
+    throw invalid_argument(("No such PDF " + bkgname).c_str());
+  }
+  _pdf = combine(sigpdf,bkgpdf);
   _haspdf = true;
 }
 /******************************************************************************/
@@ -106,11 +125,35 @@ RooFitResult* MassFitter::Fit(RooDataSet* data)
   }
 }
 /******************************************************************************/
+void MassFitter::Plot(RooPlot* frame)
+{
+  cout << "PDF name is " << _pdf->GetName() << endl;
+  if(strcmp(_pdf->GetName(),"model")==0)
+  {
+    cout << "Plotting components sigmod and bkgmod." << endl;
+    _pdf->plotOn(frame,Components("sigmod"),LineStyle(9),LineColor(kBlue));
+    _pdf->plotOn(frame,Components("bkgmod"),LineStyle(kDotted),LineColor(kViolet));
+  }
+  cout << "Plotting PDF." << endl;
+  _pdf->plotOn(frame,LineStyle(kSolid),LineColor(kRed));
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::combine(RooAbsPdf* sigmod, RooAbsPdf* bkgmod)
+{
+  RooRealVar* Nsig  = new RooRealVar("Nsig","Number of signal events",3.50443e+04,0,120000);
+  RooRealVar* Nbkg  = new RooRealVar("Nbkg","Number of background events",2.52394e+02,0,20000);
+  RooAddPdf*  model = new RooAddPdf("model","model",RooArgList(*bkgmod,*sigmod),RooArgList(*Nbkg,*Nsig));
+  _stuff.push_back(Nsig);
+  _stuff.push_back(Nbkg);
+  _stuff.push_back(model);
+  return (RooAbsPdf*)model;
+}
+/******************************************************************************/
 RooAbsPdf* MassFitter::singleGaussian()
 {
   RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
-  RooGaussian*   sigmod    = new RooGaussian("sigmod","First gaussian",_mass,*mean,*sigma1);
+  RooGaussian*   sigmod    = new RooGaussian("sigmod","First gaussian",*_mass,*mean,*sigma1);
   _stuff.push_back(mean);
   _stuff.push_back(sigma1);
   _stuff.push_back(sigmod);
@@ -124,8 +167,8 @@ RooAbsPdf* MassFitter::doubleGaussian()
   RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
   RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Fraction of first gaussian",0.8,0.7,0.9);
   RooFormulaVar* fgaus2    = new RooFormulaVar("fgaus2","(1-@0)*(@0<1)",RooArgList(*fgaus1));
-  RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",_mass,*mean,*sigma1);
-  RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",_mass,*mean,*sigma2);
+  RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",*_mass,*mean,*sigma1);
+  RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",*_mass,*mean,*sigma2);
   RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*gauss1,*gauss2),RooArgList(*fgaus1,*fgaus2));
   _stuff.push_back(mean);
   _stuff.push_back(sigma1);
@@ -147,9 +190,9 @@ RooAbsPdf* MassFitter::tripleGaussian()
   RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Fraction of first gaussian",0.8,0.7,0.9);
   RooRealVar*    fgaus2    = new RooRealVar("fgaus2","Fraction of second gaussian",0.1,0.0,0.3);
   RooFormulaVar* fgaus3    = new RooFormulaVar("fgaus3","(1-@0-@1)*(@0+@1<1)",RooArgList(*fgaus1,*fgaus2));
-  RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",_mass,*mean,*sigma1);
-  RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",_mass,*mean,*sigma2);
-  RooGaussian*   gauss3    = new RooGaussian("gauss3","Third gaussian",_mass,*mean,*sigma3);
+  RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",*_mass,*mean,*sigma1);
+  RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",*_mass,*mean,*sigma2);
+  RooGaussian*   gauss3    = new RooGaussian("gauss3","Third gaussian",*_mass,*mean,*sigma3);
   RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*gauss1,*gauss2,*gauss3),RooArgList(*fgaus1,*fgaus2,*fgaus3));
   _stuff.push_back(mean);
   _stuff.push_back(sigma1);
@@ -163,4 +206,11 @@ RooAbsPdf* MassFitter::tripleGaussian()
   _stuff.push_back(gauss3);
   _stuff.push_back(sigmod);
   return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::flatfunction()
+{
+  RooUniform* bkgmod = new RooUniform("bkgmod","Flat background",*_mass);
+  _stuff.push_back(bkgmod);
+  return (RooAbsPdf*)bkgmod;
 }

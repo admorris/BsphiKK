@@ -21,6 +21,7 @@ void cuteff(string filename = "LbphiKp_MC_mvaVars", string branchtoplot = "B_s0_
   gStyle->SetOptStat(0);
   // Draw "before" and fetch the yield and the temporary histogram
   TCanvas* canbef = new TCanvas("before");
+  canbef->cd();
   Long64_t nocutyield = intree->Draw(branchtoplot.c_str(),beforecut.c_str());
   TH1F* bef = (TH1F*)gPad->GetPrimitive("htemp");
   // Draw "after" and fetch yield and histo

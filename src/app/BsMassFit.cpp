@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 // ROOT headers
+#include "TCanvas.h"
 #include "TFile.h"
 #include "TTree.h"
 // RooFit headers
@@ -10,7 +11,7 @@
 #include "RooRealVar.h"
 // Custom headers
 #include "MassFitter.h"
-void BsMassFit(string filename = "BsphiKK_MC")
+void BsMassFit(string filename)
 {
   using namespace std;
   cout << "Fitting the Bs mass in " << filename << endl;
@@ -21,15 +22,17 @@ void BsMassFit(string filename = "BsphiKK_MC")
 /*Do the fit*******************************************************************/
   cout << "Importing tree." << endl;
   using namespace RooFit;
-  RooRealVar mass("B_s0_M","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5150,5600);
+  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5250,5500);
   RooDataSet data("data","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*tree));
-  MassFitter FitModel(mass);
-  FitModel.SetPDF("Single Gaussian");
+  RooPlot* frame = mass.frame();
+  data.plotOn(frame);
+  MassFitter FitModel(&mass);
+  FitModel.SetPDF("Triple Gaussian","Flat");
   FitModel.Fit(&data);
-  FitModel.SetPDF("Double Gaussian");
-  FitModel.Fit(&data);
-  FitModel.SetPDF("Triple Gaussian");
-  FitModel.Fit(&data);
+  FitModel.Plot(frame);
+  frame->Draw();
+  gPad->SaveAs("test.pdf");
+
 /******************************************************************************/
   return;
 }
