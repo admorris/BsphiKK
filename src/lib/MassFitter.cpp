@@ -40,7 +40,18 @@ RooFitResult* MassFitter::Fit()
   }
   else
   {
-    throw runtime_error("Attempting to fit before setting PDF or DataSet.");
+    throw runtime_error("Attempting to fit before setting PDF and/or DataSet.");
+  }
+}
+RooFitResult* MassFitter::Fit(RooDataSet* newdata)
+{
+  if(haspdf)
+  {
+    return pdf->fitTo(*newdata);
+  }
+  else
+  {
+    throw runtime_error("Attempting to fit before setting PDF.");
   }
 }
 /******************************************************************************/
