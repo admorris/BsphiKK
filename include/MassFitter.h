@@ -6,7 +6,7 @@
 #include "RooAbsPdf.h"
 #include "RooDataSet.h"
 #include "RooFitResult.h"
-
+using namespace std;
 class MassFitter
 {
   public:
@@ -21,7 +21,7 @@ class MassFitter
     RooDataSet*        GetData(){ return data; }
     void               SetPDF(RooAbsPdf*);
     void               SetData(RooDataSet*);
-    // 
+    //
     RooFitResult*      Fit();
     RooFitResult*      Fit(RooDataSet*);
   private:
