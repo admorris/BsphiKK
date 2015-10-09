@@ -24,6 +24,10 @@ void BsMassFit(string filename = "BsphiKK_MC")
   RooRealVar mass("B_s0_M","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5150,5600);
   RooDataSet data("data","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*tree));
   MassFitter FitModel(mass);
+  FitModel.SetPDF("Single Gaussian");
+  FitModel.Fit(&data);
+  FitModel.SetPDF("Double Gaussian");
+  FitModel.Fit(&data);
   FitModel.SetPDF("Triple Gaussian");
   FitModel.Fit(&data);
 /******************************************************************************/

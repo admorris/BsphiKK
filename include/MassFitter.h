@@ -5,6 +5,7 @@
 #include <string>
 // RooFit headers
 #include "RooAbsPdf.h"
+#include "RooAbsReal.h"
 #include "RooDataSet.h"
 #include "RooFitResult.h"
 #include "RooRealVar.h"
@@ -19,25 +20,30 @@ class MassFitter
     // Destructor
     ~MassFitter();
     // Get and set private variables
-    RooAbsPdf*         GetPDF() { return _pdf;  }
-    RooDataSet*        GetData(){ return _data; }
-    void               SetPDF(RooAbsPdf*);
-    void               SetPDF(string);
-    void               SetData(RooDataSet*);
+    RooAbsPdf*          GetPDF() { return _pdf;  }
+    RooDataSet*         GetData(){ return _data; }
+    void                SetPDF(RooAbsPdf*);
+    void                SetPDF(string);
+    void                ResetPDF();
+    void                SetData(RooDataSet*);
     //
-    RooFitResult*      Fit();
-    RooFitResult*      Fit(RooDataSet*);
+    RooFitResult*       Fit();
+    RooFitResult*       Fit(RooDataSet*);
   private:
-    RooAbsPdf*         _pdf;
-    RooDataSet*        _data;
-    RooRealVar         _mass;
-    void               init();
+    RooAbsPdf*          _pdf;
+    RooDataSet*         _data;
+    RooRealVar          _mass;
+    void                init();
     // Settings
-    vector<string>     _builtins;
+    vector<string>      _builtins;
     // Flags
-    bool               _haspdf;
-    bool               _hasdata;
+    bool                _haspdf;
+    bool                _hasdata;
     // PDFs
-    RooAbsPdf*         tripleGaussian();
+    RooAbsPdf*          singleGaussian();
+    RooAbsPdf*          doubleGaussian();
+    RooAbsPdf*          tripleGaussian();
+    // Keep track of pointers
+    vector<RooAbsReal*> _stuff;
 };
 #endif
