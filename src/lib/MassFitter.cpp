@@ -4,9 +4,11 @@
 #include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
+#include "RooCBShape.h"
 #include "RooExponential.h"
 #include "RooFormulaVar.h"
 #include "RooGaussian.h"
+#include "RooPolynomial.h"
 #include "RooRealVar.h"
 #include "RooUniform.h"
 // Custom headers
@@ -33,6 +35,7 @@ void MassFitter::init()
 {
   _haspdf  = false;
   _hasdata = false;
+  cout << "MassFitter instance initialised" << endl;
 }
 /******************************************************************************/
 void MassFitter::SetPDF(RooAbsPdf* pdf)
@@ -60,6 +63,18 @@ void MassFitter::SetPDF(string signame, string bkgname)
   else if(signame=="Triple Gaussian")
   {
     sigpdf = tripleGaussian();
+  }
+  else if(signame=="Crystal Ball")
+  {
+    sigpdf = CrystalBall();
+  }
+  else if(signame=="Crystal Ball + 1 Gaussian")
+  {
+    sigpdf = CrystalBall1Gauss();
+  }
+  else if(signame=="Crystal Ball + 2 Gaussians")
+  {
+    sigpdf = CrystalBall2Gauss();
   }
   else
   {
@@ -130,45 +145,36 @@ RooFitResult* MassFitter::Fit(RooDataSet* data)
   }
 }
 /******************************************************************************/
-double MassFitter::GetValue(string name)
+RooAbsReal* MassFitter::GetThing(string name)
 {
   for(unsigned int i = 0; i < _stuff.size(); i++)
   {
     if((string)_stuff[i]->GetName() == name)
     {
-      return (double)((RooRealVar*)_stuff[i])->getValV();
+      return _stuff[i];
     }
   }
   throw invalid_argument(("No such parameter: "+name).c_str());
+}
+/******************************************************************************/
+double MassFitter::GetValue(string name)
+{
+  return (double)((RooRealVar*)GetThing(name))->getValV();
 }
 /******************************************************************************/
 void MassFitter::SetValue(string name, double value)
 {
-  for(unsigned int i = 0; i < _stuff.size(); i++)
-  {
-    if((string)_stuff[i]->GetName() == name)
-    {
-      cout << "Setting " << name << " to " << value << endl;
-      ((RooRealVar*)_stuff[i])->setVal(value);
-      return;
-    }
-  }
-  throw invalid_argument(("No such parameter: "+name).c_str());
+  RooRealVar* thing = (RooRealVar*)GetThing(name);
+  thing->setVal(value);
+  cout << "Setting " << name << " to " << value << endl;
 }
 /******************************************************************************/
 void MassFitter::FixValue(string name, double value)
 {
-  for(unsigned int i = 0; i < _stuff.size(); i++)
-  {
-    if((string)_stuff[i]->GetName() == name)
-    {
-      cout << "Fixing " << name << " to " << value << endl;
-      ((RooRealVar*)_stuff[i])->setVal(value);
-      ((RooRealVar*)_stuff[i])->setConstant();
-      return;
-    }
-  }
-  throw invalid_argument(("No such parameter: "+name).c_str());
+  RooRealVar* thing = (RooRealVar*)GetThing(name);
+  thing->setVal(value);
+  thing->setConstant();
+  cout << "Fixing " << name << " to " << value << endl;
 }
 /******************************************************************************/
 void MassFitter::Plot(RooPlot* frame)
@@ -198,7 +204,7 @@ RooAbsPdf* MassFitter::combine(RooAbsPdf* sigmod, RooAbsPdf* bkgmod)
 RooAbsPdf* MassFitter::singleGaussian()
 {
   RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
-  RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
+  RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
   RooGaussian*   sigmod    = new RooGaussian("sigmod","First gaussian",*_mass,*mean,*sigma1);
   _stuff.push_back(mean);
   _stuff.push_back(sigma1);
@@ -212,15 +218,15 @@ RooAbsPdf* MassFitter::doubleGaussian()
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
   RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
   RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Fraction of first gaussian",0.8,0.5,1.0);
-  RooFormulaVar* fgaus2    = new RooFormulaVar("fgaus2","(1-@0)*(@0<1)",RooArgList(*fgaus1));
+  RooFormulaVar* ominf1    = new RooFormulaVar("ominf1","(1-@0)*(@0<1)",RooArgList(*fgaus1));
   RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",*_mass,*mean,*sigma1);
   RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",*_mass,*mean,*sigma2);
-  RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*gauss1,*gauss2),RooArgList(*fgaus1,*fgaus2));
+  RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*gauss1,*gauss2),RooArgList(*fgaus1,*ominf1));
   _stuff.push_back(mean);
   _stuff.push_back(sigma1);
   _stuff.push_back(sigma2);
   _stuff.push_back(fgaus1);
-  _stuff.push_back(fgaus2);
+  _stuff.push_back(ominf1);
   _stuff.push_back(gauss1);
   _stuff.push_back(gauss2);
   _stuff.push_back(sigmod);
@@ -258,6 +264,81 @@ RooAbsPdf* MassFitter::tripleGaussian()
   return (RooAbsPdf*)sigmod;
 }
 /******************************************************************************/
+RooAbsPdf* MassFitter::CrystalBall()
+{
+  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,0,10);
+	RooRealVar*    n         = new RooRealVar("n","n",1.0);
+  RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
+  RooCBShape*    sigmod    = new RooCBShape("sigmod","Crystal Ball",*_mass,*mean,*sigma1,*alpha,*n);
+  _stuff.push_back(mean);
+  _stuff.push_back(alpha);
+  _stuff.push_back(n);
+  _stuff.push_back(sigma1);
+  _stuff.push_back(sigmod);
+  return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::CrystalBall1Gauss()
+{
+  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,0,10);
+	RooRealVar*    n         = new RooRealVar("n","n",1.0);
+  RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
+  RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
+  RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Fraction of first gaussian",0.8,0.5,1.0);
+  RooFormulaVar* ominf1    = new RooFormulaVar("ominf1","(1-@0)*(@0<1)",RooArgList(*fgaus1));
+  RooCBShape*    CBshape   = new RooCBShape("CBshape","Crystal Ball",*_mass,*mean,*sigma1,*alpha,*n);
+  RooGaussian*   gauss2    = new RooGaussian("gauss2","First gaussian",*_mass,*mean,*sigma2);
+  RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*CBshape,*gauss2),RooArgList(*fgaus1,*ominf1));
+  _stuff.push_back(mean);
+  _stuff.push_back(alpha);
+  _stuff.push_back(n);
+  _stuff.push_back(sigma1);
+  _stuff.push_back(sigma2);
+  _stuff.push_back(fgaus1);
+  _stuff.push_back(ominf1);
+  _stuff.push_back(CBshape);
+  _stuff.push_back(gauss2);
+  _stuff.push_back(sigmod);
+  return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::CrystalBall2Gauss()
+{
+  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,0,10);
+	RooRealVar*    n         = new RooRealVar("n","n",1.0);
+  RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
+  RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
+  RooRealVar*    sigma3    = new RooRealVar("sigma3","Width of third gaussian",50,40,120);
+  RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Total fraction of first gaussian",0.5,0.3,1.0);
+  RooFormulaVar* ominf1    = new RooFormulaVar("ominf1","(1-@0)*(@0<1)",*fgaus1);
+  RooRealVar*    fgaus2    = new RooRealVar("fgaus2","Fraction of second gaussian relative to third",0.5,0.3,1.0);
+  RooFormulaVar* ominf2    = new RooFormulaVar("ominf2","(1-@0)*(@0<1)",*fgaus2);
+  RooCBShape*    CBshape   = new RooCBShape("CBshape","Crystal Ball",*_mass,*mean,*sigma1,*alpha,*n);
+  RooGaussian*   gauss2    = new RooGaussian("gauss2","First gaussian ",*_mass,*mean,*sigma2);
+  RooGaussian*   gauss3    = new RooGaussian("gauss3","Second gaussian",*_mass,*mean,*sigma3);
+  RooAddPdf*     othbit    = new RooAddPdf("othbit","othbit",RooArgList(*gauss2,*gauss3),RooArgList(*fgaus2,*ominf2));
+  RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*CBshape,*othbit),RooArgList(*fgaus1,*ominf1));
+  _stuff.push_back(mean);
+  _stuff.push_back(alpha);
+  _stuff.push_back(n);
+  _stuff.push_back(sigma1);
+  _stuff.push_back(sigma2);
+  _stuff.push_back(sigma3);
+  _stuff.push_back(fgaus1);
+  _stuff.push_back(fgaus2);
+  _stuff.push_back(ominf1);
+  _stuff.push_back(ominf2);
+  _stuff.push_back(CBshape);
+  _stuff.push_back(gauss2);
+  _stuff.push_back(gauss3);
+  _stuff.push_back(othbit);
+  _stuff.push_back(sigmod);
+  return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
 RooAbsPdf* MassFitter::flatfunction()
 {
   RooUniform* bkgmod = new RooUniform("bkgmod","Flat background",*_mass);
@@ -267,9 +348,17 @@ RooAbsPdf* MassFitter::flatfunction()
 /******************************************************************************/
 RooAbsPdf* MassFitter::exponential()
 {
-  RooRealVar*     expcon = new RooRealVar("expcon","Exponent",0,-1.0,1.0);
-  RooExponential* bkgmod = new RooExponential("bkgmod","Flat background",*_mass,*expcon);
-  _stuff.push_back(expcon);
+  RooRealVar*     slope  = new RooRealVar("slope","Exponent",0,-1.0,1.0);
+  RooExponential* bkgmod = new RooExponential("bkgmod","Flat background",*_mass,*slope);
+  _stuff.push_back(slope);
   _stuff.push_back(bkgmod);
   return (RooAbsPdf*)bkgmod;
+}
+RooAbsPdf* MassFitter::straightline()
+{
+  RooRealVar*    slope  = new RooRealVar("slope","Gradient",0,-1.0,1.0);
+  RooPolynomial* bkgmod = new RooPolynomial("bkgmod","Straight line background",*_mass,*slope);
+  _stuff.push_back(slope);
+  _stuff.push_back(bkgmod);
+  return (RooAbsPdf*)bkgmod; 
 }
