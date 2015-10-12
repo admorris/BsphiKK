@@ -23,10 +23,13 @@ class MassFitter
     // Get and set private variables
     RooAbsPdf*          GetPDF()    { return _pdf;  }
     RooDataSet*         GetData()   { return _data; }
+    double              GetValue(string);
     void                SetPDF(RooAbsPdf*);
     void                SetPDF(string,string);
     void                ResetPDF();
     void                SetData(RooDataSet*);
+    void                SetValue(string, double);
+    void                FixValue(string, double);
     //
     RooFitResult*       Fit();
     RooFitResult*       Fit(RooDataSet*);
@@ -47,6 +50,7 @@ class MassFitter
     RooAbsPdf*          tripleGaussian();
     // Background models
     RooAbsPdf*          flatfunction();
+    RooAbsPdf*          exponential();
     // Combine function for total model
     RooAbsPdf*          combine(RooAbsPdf*,RooAbsPdf*);
     // Keep track of pointers
