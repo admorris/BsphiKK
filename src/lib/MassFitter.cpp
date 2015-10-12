@@ -137,7 +137,9 @@ RooFitResult* MassFitter::Fit(RooDataSet* data)
 {
   if(_haspdf)
   {
-    return _pdf->fitTo(*data);
+    cout << "Saving passed RooDataSet in object." << endl;
+    SetData(data);
+    return Fit();
   }
   else
   {
@@ -188,6 +190,11 @@ void MassFitter::Plot(RooPlot* frame)
   }
   cout << "Plotting PDF." << endl;
   _pdf->plotOn(frame,LineStyle(kSolid),LineColor(kRed));
+}
+/******************************************************************************/
+SPlot* MassFitter::GetsPlot()
+{
+  return new SPlot("sData","An SPlot", *_data, _pdf, RooArgList(*GetThing("Nsig"),*GetThing("Nbkg")));
 }
 /******************************************************************************/
 RooAbsPdf* MassFitter::combine(RooAbsPdf* sigmod, RooAbsPdf* bkgmod)
@@ -360,5 +367,5 @@ RooAbsPdf* MassFitter::straightline()
   RooPolynomial* bkgmod = new RooPolynomial("bkgmod","Straight line background",*_mass,*slope);
   _stuff.push_back(slope);
   _stuff.push_back(bkgmod);
-  return (RooAbsPdf*)bkgmod; 
+  return (RooAbsPdf*)bkgmod;
 }

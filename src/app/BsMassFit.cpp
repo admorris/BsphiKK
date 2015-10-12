@@ -9,10 +9,12 @@
 // RooFit headers
 #include "RooAbsPdf.h"
 #include "RooRealVar.h"
+// RooStats headers
+#include "RooStats/SPlot.h"
 // Custom headers
 #include "MassFitter.h"
 // void BsMassFit(string filename)
-void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians")
+void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight = false)
 {
   using namespace std;
 /*Input************************************************************************/
@@ -88,7 +90,7 @@ void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians")
   REFitModel.Plot(REframe);
   REframe->Draw();
   gPad->SaveAs("testRE.pdf");
-/******************************************************************************/
+/*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
   double Nbkg = REFitModel.GetValue("Nbkg");
@@ -108,6 +110,38 @@ void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians")
   cout << "S:\t" << sigmodint3->getValV()*Nsig << endl;
   RooAbsReal* bkgmodint3 = bkgmod->createIntegral(mass,NormSet(mass),Range("threesigma"));
   cout << "B:\t" << bkgmodint3->getValV()*Nbkg << endl;
+/*S-weight the given ntuple****************************************************/
+  if(doSweight)
+  {
+    using namespace RooStats;
+    string trailer = "_Sweighted.root";
+    string outputName = ((string)REfile->GetName()).substr(0, ((string)REfile->GetName()).size() - 5) + trailer;
+    TFile* outputFile = new TFile(outputName.c_str(),"RECREATE");
+    TTree* newtree = REtree->CloneTree(-1);
+    cout << "copied the tree" << endl;
+    RooStats::SPlot* sData = REFitModel.GetsPlot();
+    float Nsig_sw; TBranch*  b_Nsig_sw = newtree->Branch("Nsig_sw", &Nsig_sw,"Nsig_sw/F");
+    float Nbkg_sw; TBranch*  b_Nbkg_sw = newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
+    float L_Nsig;  TBranch*  b_L_Nsig  = newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
+    float L_Nbkg;  TBranch*  b_L_Nbkg  = newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
+    for (int i = 0; i < REdata.numEntries(); ++i)
+    {
+      newtree->GetEntry(i);
+      const RooArgSet* row = REdata.get(i);
+      Nsig_sw =  row->getRealValue("Nsig_sw");
+      L_Nsig  =  row->getRealValue("L_Nsig" );
+      Nbkg_sw =  row->getRealValue("Nbkg_sw");
+      L_Nbkg  =  row->getRealValue("L_Nbkg" );
+      if (i < 10)
+      cout << Nsig_sw << endl;
+      b_Nsig_sw->Fill();
+      b_L_Nsig->Fill();
+      b_Nbkg_sw->Fill();
+      b_L_Nbkg->Fill();
+    }
+    newtree->Write();
+    outputFile->Close();
+  }
 /******************************************************************************/
   return;
 }
@@ -120,10 +154,10 @@ int main(int argc, char* argv[])
     BsMassFit();
     return 0;
   }
-  else if(argc>2)
+  else if(argc>3)
   {
     throw invalid_argument("Too many arguments.");
   }
-  BsMassFit((string)argv[1]);
+  BsMassFit((string)argv[1],(string)argv[2]=="sweight");
   return 0;
 }

@@ -10,7 +10,11 @@
 #include "RooFitResult.h"
 #include "RooPlot.h"
 #include "RooRealVar.h"
+// RooStats headers
+#include "RooStats/SPlot.h"
 using namespace std;
+using namespace RooFit;
+using namespace RooStats;
 class MassFitter
 {
   public:
@@ -22,19 +26,21 @@ class MassFitter
     ~MassFitter();
     // Get and set private variables
     RooAbsPdf*          GetPDF()    { return _pdf;  }
-    RooAbsReal*         GetThing(string);
-    RooDataSet*         GetData()   { return _data; }
-    double              GetValue(string);
     void                SetPDF(RooAbsPdf*);
     void                SetPDF(string,string);
     void                ResetPDF();
+    RooAbsReal*         GetThing(string);
+    RooDataSet*         GetData()   { return _data; }
     void                SetData(RooDataSet*);
+    // Parameter values
+    double              GetValue(string);
     void                SetValue(string, double);
     void                FixValue(string, double);
-    //
+    // Command functions
     RooFitResult*       Fit();
     RooFitResult*       Fit(RooDataSet*);
     void                Plot(RooPlot*);
+    SPlot*              GetsPlot();
   private:
     RooAbsPdf*          _pdf;
     RooDataSet*         _data;
