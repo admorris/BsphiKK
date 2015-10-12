@@ -13,6 +13,7 @@
 #include "RooStats/SPlot.h"
 // Custom headers
 #include "MassFitter.h"
+#include "progbar.h"
 // void BsMassFit(string filename)
 void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight = false)
 {
@@ -124,6 +125,7 @@ void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight =
     float Nbkg_sw; TBranch*  b_Nbkg_sw = newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
     float L_Nsig;  TBranch*  b_L_Nsig  = newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
     float L_Nbkg;  TBranch*  b_L_Nbkg  = newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
+    progbar bar(REdata.numEntries());
     for (int i = 0; i < REdata.numEntries(); ++i)
     {
       newtree->GetEntry(i);
@@ -132,13 +134,14 @@ void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight =
       L_Nsig  =  row->getRealValue("L_Nsig" );
       Nbkg_sw =  row->getRealValue("Nbkg_sw");
       L_Nbkg  =  row->getRealValue("L_Nbkg" );
-      if (i < 10)
-      cout << Nsig_sw << endl;
+      if (i % 10)
+        bar.print(i);
       b_Nsig_sw->Fill();
       b_L_Nsig->Fill();
       b_Nbkg_sw->Fill();
       b_L_Nbkg->Fill();
     }
+    bar.terminate();
     newtree->Write();
     outputFile->Close();
   }
