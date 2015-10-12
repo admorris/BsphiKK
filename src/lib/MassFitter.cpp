@@ -148,6 +148,7 @@ void MassFitter::SetValue(string name, double value)
   {
     if((string)_stuff[i]->GetName() == name)
     {
+      cout << "Setting " << name << " to " << value << endl;
       ((RooRealVar*)_stuff[i])->setVal(value);
       return;
     }
@@ -161,6 +162,7 @@ void MassFitter::FixValue(string name, double value)
   {
     if((string)_stuff[i]->GetName() == name)
     {
+      cout << "Fixing " << name << " to " << value << endl;
       ((RooRealVar*)_stuff[i])->setVal(value);
       ((RooRealVar*)_stuff[i])->setConstant();
       return;
@@ -231,23 +233,27 @@ RooAbsPdf* MassFitter::tripleGaussian()
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
   RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
   RooRealVar*    sigma3    = new RooRealVar("sigma3","Width of third gaussian",50,40,120);
-  RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Fraction of first gaussian",0.5,0.7,1.0);
-  RooRealVar*    fgaus2    = new RooRealVar("fgaus2","Fraction of second gaussian",0.1,0.0,0.5);
-  RooFormulaVar* fgaus3    = new RooFormulaVar("fgaus3","(1-@0-@1)*(@0+@1<1)",RooArgList(*fgaus1,*fgaus2));
+  RooRealVar*    fgaus1    = new RooRealVar("fgaus1","Total fraction of first gaussian",0.5,0.3,1.0);
+  RooFormulaVar* ominf1    = new RooFormulaVar("ominf1","(1-@0)*(@0<1)",*fgaus1);
+  RooRealVar*    fgaus2    = new RooRealVar("fgaus2","Fraction of second gaussian relative to third",0.5,0.3,1.0);
+  RooFormulaVar* ominf2    = new RooFormulaVar("ominf2","(1-@0)*(@0<1)",*fgaus2);
   RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",*_mass,*mean,*sigma1);
   RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",*_mass,*mean,*sigma2);
   RooGaussian*   gauss3    = new RooGaussian("gauss3","Third gaussian",*_mass,*mean,*sigma3);
-  RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*gauss1,*gauss2,*gauss3),RooArgList(*fgaus1,*fgaus2,*fgaus3));
+  RooAddPdf*     othbit    = new RooAddPdf("othbit","othbit",RooArgList(*gauss2,*gauss3),RooArgList(*fgaus2,*ominf2));
+  RooAddPdf*     sigmod    = new RooAddPdf("sigmod","sigmod",RooArgList(*gauss1,*othbit),RooArgList(*fgaus1,*ominf1));
   _stuff.push_back(mean);
   _stuff.push_back(sigma1);
   _stuff.push_back(sigma2);
   _stuff.push_back(sigma3);
   _stuff.push_back(fgaus1);
   _stuff.push_back(fgaus2);
-  _stuff.push_back(fgaus3);
+  _stuff.push_back(ominf1);
+  _stuff.push_back(ominf2);
   _stuff.push_back(gauss1);
   _stuff.push_back(gauss2);
   _stuff.push_back(gauss3);
+  _stuff.push_back(othbit);
   _stuff.push_back(sigmod);
   return (RooAbsPdf*)sigmod;
 }
