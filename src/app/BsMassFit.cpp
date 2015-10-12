@@ -21,7 +21,19 @@ void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight =
 /*Input************************************************************************/
   // Open the input file and get the tree
   using namespace RooFit;
-  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
+  double upperlimit, lowerlimit;
+  if(doSweight)
+  {
+    lowerlimit = 5000;
+    upperlimit = 6000;
+  }
+  else
+  {
+    lowerlimit = 5200;
+    upperlimit = 5600;
+  }
+  cout << "Fitting in the range" << lowerlimit << " MeV/c^2 to " << upperlimit << "MeV/c^2" << endl;
+  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",lowerlimit,upperlimit);
 /*Monte Carlo fit**************************************************************/
   TFile* MCfile = new TFile("ntuples/BsphiKK_MC_mvaVars_vetoes.root");
   TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
