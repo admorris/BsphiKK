@@ -113,7 +113,7 @@ void ZTMVAClassification( TString myMethodList = "" )
   factory->AddVariable("minK_ln_IPCHI2","minK_ln_IPCHI2","",'F');
   
   
-  TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_mvaVars_vetoes.root");
+  TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root");
   TFile * input_Background = new TFile("../ntuples/BsphiKK_sideband_mvaVars_vetoes.root");
   std::cout << "--- TMVAClassification       : Using input file for signal    : " << input_Signal->GetName() << std::endl;
   std::cout << "--- TMVAClassification       : Using input file for backgound : " << input_Background->GetName() << std::endl;
