@@ -10,12 +10,12 @@
 #include <iostream>
 #include <iomanip>
 /******************************************************************************/
-void cuteff(string filename = "LbphiKp_MC_mvaVars", string branchtoplot = "B_s0_M", string beforecut = "", string cut = "", string plotname = "")
+void cuteff(string filename = "ntuples/LbphiKp_MC_mvaVars.root", string branchtoplot = "B_s0_M", string beforecut = "", string cut = "", string plotname = "")
 {
 //  cout << "Cut efficiency for \"" << cut <<"\" in " << filename << endl;
 /*Input************************************************************************/
   // Open the input file
-  TFile* infile  = new TFile(("../ntuples/"+filename+".root").c_str());
+  TFile* infile  = new TFile(filename.c_str());
   // Get the input tree
   TTree* intree  = (TTree*)infile->Get("DecayTree");
   gStyle->SetOptStat(0);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 {
   if(argc==1)
   {
-    cout << "Usage: CutEff <filename> <branch to plot> <initial cut> <final cut> [<plot name>]" << endl;
+    cout << "Usage: " << argv[0] << " <filename> <branch to plot> <initial cut> <final cut> [<plot name>]" << endl;
     return 1;
   }
   else if(argc>5)
