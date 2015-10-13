@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
     cout << "Usage: " << argv[0] << "<MC file> <Data file> <PDF> [sweight]" << endl;
     return 0;
   }
-  else if(argc>4)
+  else if(argc>5)
   {
     throw invalid_argument("Too many arguments.");
   }

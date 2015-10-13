@@ -36,8 +36,8 @@ BINS      := $(patsubst $(SRCDIR)/$(BINSRCDIR)/%.$(SRCEXT), $(BINDIR)/%, $(BINSR
 OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT) $(BINDIR)/*
 
 # Compiler flags
-CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS)
-LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar
+CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS) 
+LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar $(EXTRA_ROOTLIBS) 
 
 all : $(BINS)
 libs : $(LIBS)

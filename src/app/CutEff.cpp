@@ -5,10 +5,12 @@
 #include "TStyle.h"
 #include "TLegend.h"
 #include "TH1.h"
+#include "TEnv.h"
 #include "../mkplots.h"
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <stdexcept>
 /******************************************************************************/
 void cuteff(string filename = "ntuples/LbphiKp_MC_mvaVars.root", string branchtoplot = "B_s0_M", string beforecut = "", string cut = "", string plotname = "")
 {
@@ -17,7 +19,16 @@ void cuteff(string filename = "ntuples/LbphiKp_MC_mvaVars.root", string branchto
   // Open the input file
   TFile* infile  = new TFile(filename.c_str());
   // Get the input tree
-  TTree* intree  = (TTree*)infile->Get("DecayTree");
+  TTree* intree ;
+  if((TTree*)infile->Get("DecayTree") == (TTree*)0x0)
+  {
+    cout << "Tree not found" << endl;
+    intree  = (TTree*)infile->Get("DecayTreeTuple/DecayTree");
+  }
+  else
+  {
+    intree  = (TTree*)infile->Get("DecayTree");
+  }
   gStyle->SetOptStat(0);
   // Draw "before" and fetch the yield and the temporary histogram
   TCanvas* canbef = new TCanvas("before");
@@ -72,16 +83,24 @@ void cuteff(string filename = "ntuples/LbphiKp_MC_mvaVars.root", string branchto
 }
 int main(int argc, char* argv[])
 {
-  if(argc==1)
+  if(argc==6)
   {
-    cout << "Usage: " << argv[0] << " <filename> <branch to plot> <initial cut> <final cut> [<plot name>]" << endl;
-    return 1;
+    cuteff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4], (string)argv[5]);
   }
-  else if(argc>5)
+  else if(argc==5)
+  {
+    cout << (string)argv[1] << " " << (string)argv[2] << " " << (string)argv[3] << " " << (string)argv[4] << endl;
+    cuteff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4]);
+  }
+  else if(argc>6)
   {
     cout << "Too many arguments." << endl;
     return 1;
   }
-  cuteff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4], (string)argv[5]);
+  else
+  {
+    cout << "Usage: " << argv[0] << " <filename> <branch to plot> <initial cut> <final cut> [<plot name>]" << endl;
+    return 1;
+  }
   return 0;
 }
