@@ -17,14 +17,14 @@ OBJEXT     = o
 LIBEXT     = so
 
 # Directories
-SRCDIR     = src
+PWD        = $(shell pwd)
+SRCDIR     = $(PWD)/src
 BINSRCDIR  = app
 LIBSRCDIR  = lib
-HDRDIR     = include
-OBJDIR     = build
-LIBDIR     = lib
-BINDIR     = bin
-
+HDRDIR     = $(PWD)/include
+OBJDIR     = $(PWD)/build
+LIBDIR     = $(PWD)/lib
+BINDIR     = $(PWD)/bin
 # Get files and make list of objects and libraries
 BINSRCS   := $(shell find $(SRCDIR)/$(BINSRCDIR) -name '*.$(SRCEXT)')
 LIBSRCS   := $(shell find $(SRCDIR)/$(LIBSRCDIR) -name '*.$(SRCEXT)')
