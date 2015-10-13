@@ -5,7 +5,7 @@
 #./merge.sh > log/merge.log
 ./docuts.sh > log/docuts.log
 ./addBranches.sh > log/addBranches.log
-./dovetoes.sh > log/vetoes.log
+./dovetoes.sh > log/dovetoes.log
 ./sweight.sh > log/sweight.log
 ./trainmva.sh > log/trainmva.log
 ./applymva.sh > log/applymva.log
