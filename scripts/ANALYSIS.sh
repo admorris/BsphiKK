@@ -3,10 +3,10 @@
 # Please run all scripts from within the scripts folder
 #./getoutputdata
 #./merge.sh
-#./cuts.sh
-#./addBranches.sh
+./cut.sh
+./addBranches.sh
 ./vetoes.sh
-./sideband.sh
+./sweight.sh
 ./trainmva.sh
 ./applymva.sh
 ./mvacut.sh
