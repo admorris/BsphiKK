@@ -15,27 +15,15 @@
 #include "MassFitter.h"
 #include "progbar.h"
 // void BsMassFit(string filename)
-void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight = false)
+void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", string REfilename = "ntuples/BsphiKK_Data_mvaVars_vetoes.root", string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight = false)
 {
   using namespace std;
 /*Input************************************************************************/
   // Open the input file and get the tree
   using namespace RooFit;
-  double upperlimit, lowerlimit;
-  if(doSweight)
-  {
-    lowerlimit = 5000;
-    upperlimit = 6000;
-  }
-  else
-  {
-    lowerlimit = 5200;
-    upperlimit = 5600;
-  }
-  cout << "Fitting in the range " << lowerlimit << " MeV/c^2 to " << upperlimit << "MeV/c^2" << endl;
-  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",lowerlimit,upperlimit);
+  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
 /*Monte Carlo fit**************************************************************/
-  TFile* MCfile = new TFile("ntuples/BsphiKK_MC_mvaVars_vetoes.root");
+  TFile* MCfile = new TFile(MCfilename.c_str());
   TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
   RooDataSet MCdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*MCtree));
   RooPlot* MCframe = mass.frame();
@@ -70,7 +58,7 @@ void BsMassFit(string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight =
     resolution = sqrt(f1*s1*s1 + (1-f1)*(f2*s2*s2 + (1-f2)*s3*s3));
   }
 /*Collision data fit***********************************************************/
-  TFile* REfile = new TFile("ntuples/BsphiKK_data_mvaVars_vetoes.root");
+  TFile* REfile = new TFile(REfilename.c_str());
   TTree* REtree = (TTree*)REfile->Get("DecayTree");
   RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
   RooPlot* REframe = mass.frame();
@@ -165,14 +153,13 @@ int main(int argc, char* argv[])
   using namespace std;
   if(argc==1)
   {
-    cout << "Fitting with default PDF" << endl;
-    BsMassFit();
+    cout << "Usage: " << argv[0] << "<MC file> <Data file> <PDF> [sweight]" << endl;
     return 0;
   }
-  else if(argc>3)
+  else if(argc>4)
   {
     throw invalid_argument("Too many arguments.");
   }
-  BsMassFit((string)argv[1],(string)argv[2]=="sweight");
+  BsMassFit((string)argv[1],(string)argv[2],(string)argv[3],(string)argv[4]=="sweight");
   return 0;
 }
