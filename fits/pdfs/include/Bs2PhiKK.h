@@ -72,5 +72,11 @@ class Bs2PhiKK : public BasePDF
       double K4() { return 0; }
       double K5() { return sqrt(Azero2)*sqrt(Apara2)*cos(deltapara)/GammaL ; }
       double K6() { return 0; }
+      // Shapes
+      double twoBodyPhaseSpace(double dm, double m1, double m2) 
+      {
+        double m = dm + m1 + m2;
+        return (1.0 / (m*m)) * sqrt( (m*m - (m1+m2)*(m1+m2)) * (m*m - (m1-m2)*(m1-m2)) );
+      }
 };
 #endif
