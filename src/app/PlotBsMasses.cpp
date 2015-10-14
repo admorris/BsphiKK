@@ -11,7 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include "../mkplots.h"
+using namespace std;
 /******************************************************************************/
 TH1D* plotBsmass(string filename = "LbphiKp_MC")
 {
@@ -110,7 +110,7 @@ void plotBsmasses()
   total->GetYaxis()->SetTitleSize(0.05);
   total->GetXaxis()->SetTitleSize(0.05);
 /*Draw plot********************************************************************/
-  mkplots(can,"simulated_backgrounds");
+  can->SaveAs("simulated_backgrounds.pdf");
   return;
 }
 int main()
