@@ -23,6 +23,7 @@ void GetTrigEff(string filename)
   , CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[3])
   };
   double totHlt2eff = CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+"||"+Hlt2[3]);
+  double toteff = CutEff(filename,"B_s0_M","","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+"||"+Hlt2[3]+")");
   cout << "Line & Efficiency \\\\" << endl
   << L0[0]   << " & " << L0eff[0]*100   << "\\% \\\\" << endl
   << L0[1]   << " & " << L0eff[1]*100   << "\\% \\\\" << endl
@@ -32,7 +33,8 @@ void GetTrigEff(string filename)
   << Hlt2[1] << " & " << Hlt2eff[1]*100 << "\\% \\\\" << endl
   << Hlt2[2] << " & " << Hlt2eff[2]*100 << "\\% \\\\" << endl
   << Hlt2[3] << " & " << Hlt2eff[3]*100 << "\\% \\\\" << endl
-  << "Hlt2"  << " & " << totHlt2eff*100 << "\\% \\\\" << endl;
+  << "Hlt2"  << " & " << totHlt2eff*100 << "\\% \\\\" << endl
+  << "Total" << " & " << toteff*100     << "\\% \\\\" << endl;
 }
 int main(int argc, char* argv[])
 {

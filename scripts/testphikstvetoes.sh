@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 Bdmass="5279.58"
 Kstmass="891.66"
 Bdwindow="60"
