@@ -22,7 +22,7 @@ j.application.optsfile = [
   , OptnsDir+"/Gauss-Job.py"
   ]
 j.name = "Default Generation"
-j.splitter = GaussSplitter(numberOfJobs=10,eventsPerJob=10)
+j.splitter = GaussSplitter(numberOfJobs=200,eventsPerJob=2500)
 j.outputfiles = [DiracFile("*.xgen"),DiracFile("*.root"),DiracFile("*.xml")]
 j.backend = Dirac()
 j.submit()
