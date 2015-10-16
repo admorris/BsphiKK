@@ -39,11 +39,6 @@ mctuple.addTupleTool("LoKi::Hybrid::TupleTool/LoKi_Photos").Variables = {
 printMC = PrintMCTree()
 printMC.ParticleNames = decay_heads
 
-# Name of the .xgen file produced by Gauss
-#EventSelector().Input = []
-#for datafile in LFNs:
-#  EventSelector().Input.append("DATAFILE='{0}' TYP='POOL_ROOTTREE' Opt='READ'".format(datafile))
-
 # Configure DaVinci
 DaVinci().TupleFile = "DVntuple.root"
 DaVinci().Simulation = True
