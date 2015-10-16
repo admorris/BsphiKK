@@ -1,3 +1,4 @@
+# LFNs generated in the job launched from ../../Gauss/PhaseSpaceMC/
 from Gaudi.Configuration import *
 from GaudiConf import IOHelper
 IOHelper('ROOT').inputFiles(['LFN:/lhcb/user/a/admorris/2015_10/119828/119828920/Gauss-13104024-5ev-20151015.xgen',
