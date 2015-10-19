@@ -33,7 +33,7 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   MCFitModel.Fit(&MCdata);
   MCFitModel.Plot(MCframe);
   MCframe->Draw();
-  gPad->SetLogy();
+//  gPad->SetLogy();
   gPad->SaveAs("testMC.pdf");
   // This bit is really horrible, sorry.
   double resolution = 0, f1, f2, s1, s2, s3;
