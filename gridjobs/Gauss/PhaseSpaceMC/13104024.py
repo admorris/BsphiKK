@@ -14,7 +14,7 @@ from Configurables import ToolSvc
 from Configurables import EvtGenDecay
 ToolSvc().addTool( EvtGenDecay )
 ToolSvc().EvtGenDecay.UserDecayFile = "$DECFILESROOT/dkfiles/Bs_phiK+K-=DecProdCut,hpt400.dec"
-Generation().SignalRepeatedHadronization.CutTool = "DaughtersInLHCbAndWithDaughAndBCuts"
+#Generation().SignalRepeatedHadronization.CutTool = "DaughtersInLHCbAndWithDaughAndBCuts"
 Generation().SignalRepeatedHadronization.SignalPIDList = [ 531,-531 ]
 
 # Ad-hoc particle gun code
