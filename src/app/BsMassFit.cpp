@@ -14,6 +14,7 @@
 // Custom headers
 #include "MassFitter.h"
 #include "progbar.h"
+#include "plotmaker.h"
 // void BsMassFit(string filename)
 void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", string REfilename = "ntuples/BsphiKK_Data_mvaVars_vetoes.root", string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight = false)
 {
@@ -62,7 +63,7 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   TTree* REtree = (TTree*)REfile->Get("DecayTree");
   RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
   RooPlot* REframe = mass.frame();
-  REdata.plotOn(REframe);
+  REdata.plotOn(REframe,Binning(50));
   MassFitter REFitModel(&mass);
   REFitModel.SetPDF(ModelName,"Exponential");
   string fixme[] =
@@ -89,8 +90,12 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   }
   REFitModel.Fit(&REdata);
   REFitModel.Plot(REframe);
-  REframe->Draw();
-  gPad->SaveAs("testRE.pdf");
+  RooHist* pullhist = REframe->pullHist();
+  RooPlot* pullframe = mass.frame(Title("Pull"));
+  pullframe->addPlotable(pullhist,"B");
+  plotmaker plotter(REframe);
+//  plotmaker plotter(REframe,pullframe);
+  plotter.Draw()->SaveAs("testRE.pdf");
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
@@ -151,15 +156,16 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
 int main(int argc, char* argv[])
 {
   using namespace std;
-  if(argc==1)
+  if(argc==4)
   {
-    cout << "Usage: " << argv[0] << "<MC file> <Data file> <PDF> [sweight]" << endl;
+    BsMassFit((string)argv[1],(string)argv[2],(string)argv[3],false);
     return 0;
   }
-  else if(argc>5)
+  else if(argc==5)
   {
-    throw invalid_argument("Too many arguments.");
+    BsMassFit((string)argv[1],(string)argv[2],(string)argv[3],(string)argv[4]=="sweight");
+    return 0;
   }
-  BsMassFit((string)argv[1],(string)argv[2],(string)argv[3],(string)argv[4]=="sweight");
-  return 0;
+  cout << "Usage: " << argv[0] << "<MC file> <Data file> <PDF> [sweight]" << endl;
+  return 1;
 }
