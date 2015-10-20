@@ -12,7 +12,6 @@
 // Custom headers
 #include "plotmaker.h"
 
-
 void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup)
 {
   TFile* file = new TFile(filename.c_str());
