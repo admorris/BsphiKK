@@ -16,6 +16,7 @@
 // Custom headers
 #include "MassFitter.h"
 #include "progbar.h"
+#include "plotmaker.h"
 // void BsMassFit(string filename)
 void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename)
 {
@@ -64,7 +65,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   TTree* REtree = (TTree*)REfile->Get("DecayTree");
   RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
   RooPlot* REframe = mass.frame();
-  REdata.plotOn(REframe);
+  REdata.plotOn(REframe,Binning(50));
   MassFitter REFitModel(&mass);
   REFitModel.SetPDF(SignalModel,BackgroundModel);
   string fixme[] =
@@ -91,8 +92,12 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   }
   REFitModel.Fit(&REdata);
   REFitModel.Plot(REframe);
-  REframe->Draw();
-  gPad->SaveAs((plotfilename+".pdf").c_str());
+  RooHist* pullhist = REframe->pullHist();
+  RooPlot* pullframe = mass.frame(Title("Pull"));
+  pullframe->addPlotable(pullhist,"B");
+  plotmaker plotter(REframe);
+//  plotmaker plotter(REframe,pullframe);
+  plotter.Draw()->SaveAs((plotfilename+".pdf").c_str());
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
