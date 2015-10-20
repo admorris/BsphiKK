@@ -17,13 +17,13 @@
 #include "MassFitter.h"
 #include "progbar.h"
 // void BsMassFit(string filename)
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight)
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename)
 {
   using namespace std;
 /*Input************************************************************************/
   // Open the input file and get the tree
   using namespace RooFit;
-  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
+  RooRealVar mass(branchtofit.c_str(),"#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
 /*Monte Carlo fit**************************************************************/
   TFile* MCfile = new TFile(MCfilename.c_str());
   TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
@@ -154,23 +154,25 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options");
-  std::string MCfile, REfile, sigPDF, bkgPDF;
+  std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname;
   desc.add_options()
-    ("help,h", "produce help message")
-    ("sweight,W", "apply sweights to collision data")
-    ("MCfile,M", value<std::string>(&MCfile)->default_value("ntuples/BsphiKK_MC_mva.root"), "set Monte Carlo file")
-    ("REfile,R", value<std::string>(&REfile)->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file")
-    ("sigPDF,S", value<std::string>(&sigPDF)->default_value("Crystal Ball + 2 Gaussians"), "signal PDF to fit to data")
-    ("bkgPDF,B", value<std::string>(&bkgPDF)->default_value("Exponential"), "background PDF to fit to data")
+    ("help,H",                                                                                      "produce help message"         )
+    ("sweight,W",                                                                                   "apply sweights to data"       )
+    ("MCfile,M",     value<std::string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"),   "set Monte Carlo file"         )
+    ("REfile,R",     value<std::string>(&REfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
+    ("sigPDF,S",     value<std::string>(&sigPDF  )->default_value("Crystal Ball + 2 Gaussians"),    "signal PDF to fit to data"    )
+    ("bkgPDF,B",     value<std::string>(&bkgPDF  )->default_value("Exponential"),                   "background PDF to fit to data")
+    ("plotname,O",   value<std::string>(&plotname)->default_value("BsphiKK_data"),                  "fit plot filename"            )
+    ("branchname,N", value<std::string>(&plotname)->default_value("B_s0_LOKI_Mass"),                "branch to fit"                )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
   notify(vmap);
-  if (vmap.count("help"))
+  if (vmap.count("help")||argc==1)
   {
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"));
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname);
   return 0;
 }
