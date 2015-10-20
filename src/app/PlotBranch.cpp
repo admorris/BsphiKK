@@ -5,13 +5,19 @@
 // ROOT headers
 #include "TFile.h"
 #include "TTree.h"
+// RooFit headers
+#include "RooDataSet.h"
+#include "RooPlot.h"
 // Custom headers
 #include "plotmaker.h"
 
 
 void PlotBranch(string filename, string branchname, string xtitle, string unit, double xlow, double, xup)
 {
-
+  RooDataSet* data = new RooDataSet(branchname.c_str(),xtitle.c_str(),xlow,xup);
+  RooPlot* frame = data->frame();
+  plotmaker plotter(frame);
+  plotter.SetTitle(xtitle, unit);
 }
 
 int main(int argc, int argv[])
@@ -19,6 +25,7 @@ int main(int argc, int argv[])
   using namespace boost::program_options;
   options_description desc("Allowed options");
   std::string file, branch, xtitle, unit;
+  double xlow, xup;
   desc.add_options()
     ("help,H"  ,                                                                                                    "produce help message"                      )
     ("file,F"  , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mva.root"                      ), "set data file"                             )
