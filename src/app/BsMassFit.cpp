@@ -18,13 +18,14 @@
 #include "progbar.h"
 #include "plotmaker.h"
 // void BsMassFit(string filename)
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename)
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls)
 {
   using namespace std;
 /*Input************************************************************************/
   // Open the input file and get the tree
   using namespace RooFit;
-  RooRealVar mass(branchtofit.c_str(),"#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
+  cout << "Fitting to the branch " << branchtofit << endl;
+  RooRealVar mass(branchtofit.c_str(),"m(K+K−K+K−) MeV",5200,5600);
 /*Monte Carlo fit**************************************************************/
   TFile* MCfile = new TFile(MCfilename.c_str());
   TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
@@ -35,8 +36,19 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   MCFitModel.SetPDF(SignalModel,"none");
   MCFitModel.Fit(&MCdata);
   MCFitModel.Plot(MCframe);
-  plotmaker MCplotter(MCframe);
-  MCplotter.Draw()->SaveAs((plotfilename+"_MC.pdf").c_str());
+  plotmaker* MCplotter;
+  if(drawpulls)
+  {
+    RooHist* pullhist = MCframe->pullHist();
+    RooPlot* pullframe = mass.frame(Title("Pull"));
+    pullframe->addPlotable(pullhist,"B");
+    MCplotter = new plotmaker(MCframe,pullframe);
+  }
+  else
+  {
+    MCplotter = new plotmaker(MCframe);
+  }
+  MCplotter->Draw()->SaveAs((plotfilename+"_MC.pdf").c_str());
   // This bit is really horrible, sorry.
   double resolution = 0, f1, f2, s1, s2, s3;
   if (SignalModel == "Single Gaussian" || SignalModel == "Crystal Ball")
@@ -91,12 +103,19 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   }
   REFitModel.Fit(&REdata);
   REFitModel.Plot(REframe);
-  RooHist* pullhist = REframe->pullHist();
-  RooPlot* pullframe = mass.frame(Title("Pull"));
-  pullframe->addPlotable(pullhist,"B");
-  plotmaker REplotter(REframe);
-//  plotmaker plotter(REframe,pullframe);
-  REplotter.Draw()->SaveAs((plotfilename+".pdf").c_str());
+  plotmaker* REplotter;
+  if(drawpulls)
+  {
+    RooHist* pullhist = REframe->pullHist();
+    RooPlot* pullframe = mass.frame(Title("Pull"));
+    pullframe->addPlotable(pullhist,"B");
+    REplotter = new plotmaker(REframe,pullframe);
+  }
+  else
+  {
+    REplotter = new plotmaker(REframe);
+  }
+  REplotter->Draw()->SaveAs((plotfilename+".pdf").c_str());
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
@@ -127,6 +146,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     TTree* newtree = REtree->CloneTree(-1);
     cout << "copied the tree" << endl;
     RooStats::SPlot* sData = REFitModel.GetsPlot();
+    sData->GetName(); // Just to prevent compiler warning
     float Nsig_sw; TBranch*  b_Nsig_sw = newtree->Branch("Nsig_sw", &Nsig_sw,"Nsig_sw/F");
     float Nbkg_sw; TBranch*  b_Nbkg_sw = newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
     float L_Nsig;  TBranch*  b_L_Nsig  = newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
@@ -160,23 +180,24 @@ int main(int argc, char* argv[])
   options_description desc("Allowed options");
   std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname;
   desc.add_options()
-    ("help,H",                                                                                      "produce help message"         )
-    ("sweight,W",                                                                                   "apply sweights to data"       )
-    ("MCfile,M",     value<std::string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"),   "set Monte Carlo file"         )
-    ("REfile,R",     value<std::string>(&REfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
-    ("sigPDF,S",     value<std::string>(&sigPDF  )->default_value("Crystal Ball + 2 Gaussians"),    "signal PDF to fit to data"    )
-    ("bkgPDF,B",     value<std::string>(&bkgPDF  )->default_value("Exponential"),                   "background PDF to fit to data")
-    ("plotname,O",   value<std::string>(&plotname)->default_value("BsphiKK_data"),                  "fit plot filename"            )
-    ("branchname,N", value<std::string>(&plotname)->default_value("B_s0_LOKI_Mass"),                "branch to fit"                )
+    ("help,H"      ,                                                                                  "produce help message"         )
+    ("sweight,W"   ,                                                                                  "apply sweights to data"       )
+    ("pulls,P"     ,                                                                                  "plot with pulls"              )
+    ("MCfile,M"    , value<std::string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root")  , "set Monte Carlo file"         )
+    ("REfile,R"    , value<std::string>(&REfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
+    ("sigPDF,S"    , value<std::string>(&sigPDF    )->default_value("Crystal Ball + 2 Gaussians")   , "signal PDF to fit to data"    )
+    ("bkgPDF,B"    , value<std::string>(&bkgPDF    )->default_value("Exponential")                  , "background PDF to fit to data")
+    ("plotname,O"  , value<std::string>(&plotname  )->default_value("BsphiKK_data")                 , "fit plot filename"            )
+    ("branchname,N", value<std::string>(&branchname)->default_value("B_s0_LOKI_Mass")               , "branch to fit"                )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
   notify(vmap);
-  if (vmap.count("help")||argc==1)
+  if (vmap.count("help"))
   {
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname);
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"));
   return 0;
 }

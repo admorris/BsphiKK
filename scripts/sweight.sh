@@ -6,6 +6,6 @@ cutapplier ${mode}_mvaVars_vetoes.root DecayTree "KK_M>1050" ${mode}_1050_mvaVar
 cutapplier ${mode}_mvaVars_vetoes.root DecayTree "KK_M>1050&&KK_M<1800" ${mode}_1050_1800_mvaVars_vetoes.root
 done
 cd ../fits/
-../bin/BsMassFit -M ../ntuples/BsphiKK_MC_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_mvaVars_vetoes.root --sweight
-../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_mvaVars_vetoes.root --sweight
-../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_1800_mvaVars_vetoes.root --sweight
+../bin/BsMassFit -M ../ntuples/BsphiKK_MC_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit
+../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit1050
+../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_1800_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit10501800
