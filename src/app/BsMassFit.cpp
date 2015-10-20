@@ -92,7 +92,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   REFitModel.Fit(&REdata);
   REFitModel.Plot(REframe);
   REframe->Draw();
-  gPad->SaveAs("testRE.pdf");
+  gPad->SaveAs((plotfilename+".pdf").c_str());
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
