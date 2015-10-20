@@ -12,7 +12,7 @@
 // Custom headers
 #include "plotmaker.h"
 
-void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup)
+void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins)
 {
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
@@ -22,7 +22,7 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
   RooDataSet* data = new RooDataSet("data","",RooArgSet(*x),Import(*tree),cuts.c_str());
   RooPlot* frame = x->frame();
   std::cout << "Plotting" << endl;
-  data->plotOn(frame);
+  data->plotOn(frame,Binning(nbins));
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
   options_description desc("Allowed options");
   std::string file, branch, cuts, xtitle, unit, plot;
   double xlow, xup;
+  int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                                    "produce help message"                      )
     ("file,F"  , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mva.root"                      ), "set data file"                             )
@@ -44,6 +45,7 @@ int main(int argc, char* argv[])
     ("plot,O"  , value<std::string>(&plot  )->default_value("plottedbranch"                                      ), "set output plot filename"                  )
     ("upper,u" , value<double     >(&xup   )->default_value(5600                                                 ), "set branch upper limit"                    )
     ("lower,l" , value<double     >(&xlow  )->default_value(5200                                                 ), "set branch lower limit"                    )
+    ("bins,b"  , value<int        >(&nbins )->default_value(50                                                   ), "set number of bins"                        )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -54,6 +56,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(file,branch,xtitle,unit,plot,cuts,xlow,xup);
+  PlotBranch(file,branch,xtitle,unit,plot,cuts,xlow,xup,nbins);
   return 0;
 }
