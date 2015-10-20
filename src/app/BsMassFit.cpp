@@ -31,7 +31,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
   RooDataSet MCdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*MCtree));
   RooPlot* MCframe = mass.frame();
-  MCdata.plotOn(MCframe);
+  MCdata.plotOn(MCframe,Binning(50));
   MassFitter MCFitModel(&mass);
   MCFitModel.SetPDF(SignalModel,"none");
   MCFitModel.Fit(&MCdata);
