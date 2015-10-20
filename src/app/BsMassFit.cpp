@@ -35,9 +35,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   MCFitModel.SetPDF(SignalModel,"none");
   MCFitModel.Fit(&MCdata);
   MCFitModel.Plot(MCframe);
-  MCframe->Draw();
-//  gPad->SetLogy();
-  gPad->SaveAs("testMC.pdf");
+  plotmaker MCplotter(MCframe);
+  MCplotter.Draw()->SaveAs((plotfilename+"_MC.pdf").c_str());
   // This bit is really horrible, sorry.
   double resolution = 0, f1, f2, s1, s2, s3;
   if (SignalModel == "Single Gaussian" || SignalModel == "Crystal Ball")
@@ -95,9 +94,9 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   RooHist* pullhist = REframe->pullHist();
   RooPlot* pullframe = mass.frame(Title("Pull"));
   pullframe->addPlotable(pullhist,"B");
-  plotmaker plotter(REframe);
+  plotmaker REplotter(REframe);
 //  plotmaker plotter(REframe,pullframe);
-  plotter.Draw()->SaveAs((plotfilename+".pdf").c_str());
+  REplotter.Draw()->SaveAs((plotfilename+".pdf").c_str());
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
