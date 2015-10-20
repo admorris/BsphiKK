@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+// BOOST headers
+#include "boost/program_options.hpp"
 // ROOT headers
 #include "TCanvas.h"
 #include "TFile.h"
@@ -16,13 +18,13 @@
 #include "progbar.h"
 #include "plotmaker.h"
 // void BsMassFit(string filename)
-void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", string REfilename = "ntuples/BsphiKK_Data_mvaVars_vetoes.root", string ModelName = "Crystal Ball + 2 Gaussians", bool doSweight = false)
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename)
 {
   using namespace std;
 /*Input************************************************************************/
   // Open the input file and get the tree
   using namespace RooFit;
-  RooRealVar mass("B_s0_LOKI_Mass","#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
+  RooRealVar mass(branchtofit.c_str(),"#font[132]{#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}}) [MeV/}#font[12]{c}#font[132]{^{2}}]",5200,5600);
 /*Monte Carlo fit**************************************************************/
   TFile* MCfile = new TFile(MCfilename.c_str());
   TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
@@ -30,7 +32,7 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   RooPlot* MCframe = mass.frame();
   MCdata.plotOn(MCframe);
   MassFitter MCFitModel(&mass);
-  MCFitModel.SetPDF(ModelName,"none");
+  MCFitModel.SetPDF(SignalModel,"none");
   MCFitModel.Fit(&MCdata);
   MCFitModel.Plot(MCframe);
   MCframe->Draw();
@@ -38,18 +40,18 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   gPad->SaveAs("testMC.pdf");
   // This bit is really horrible, sorry.
   double resolution = 0, f1, f2, s1, s2, s3;
-  if (ModelName == "Single Gaussian" || ModelName == "Crystal Ball")
+  if (SignalModel == "Single Gaussian" || SignalModel == "Crystal Ball")
   {
     resolution = MCFitModel.GetValue("sigma1");
   }
-  if (ModelName == "Double Gaussian" || ModelName == "Crystal Ball + 1 Gaussian")
+  if (SignalModel == "Double Gaussian" || SignalModel == "Crystal Ball + 1 Gaussian")
   {
     f1 = MCFitModel.GetValue("fgaus1");
     s1 = MCFitModel.GetValue("sigma1");
     s2 = MCFitModel.GetValue("sigma2");
     resolution = sqrt(f1*s1*s1 + (1-f1)*s2*s2);
   }
-  if (ModelName == "Triple Gaussian" || ModelName == "Crystal Ball + 2 Gaussians")
+  if (SignalModel == "Triple Gaussian" || SignalModel == "Crystal Ball + 2 Gaussians")
   {
     f1 = MCFitModel.GetValue("fgaus1");
     f2 = MCFitModel.GetValue("fgaus2");
@@ -65,7 +67,7 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   RooPlot* REframe = mass.frame();
   REdata.plotOn(REframe,Binning(50));
   MassFitter REFitModel(&mass);
-  REFitModel.SetPDF(ModelName,"Exponential");
+  REFitModel.SetPDF(SignalModel,BackgroundModel);
   string fixme[] =
   {
     "sigma1"
@@ -95,7 +97,7 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
   pullframe->addPlotable(pullhist,"B");
   plotmaker plotter(REframe);
 //  plotmaker plotter(REframe,pullframe);
-  plotter.Draw()->SaveAs("testRE.pdf");
+  plotter.Draw()->SaveAs((plotfilename+".pdf").c_str());
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
@@ -155,17 +157,27 @@ void BsMassFit(string MCfilename = "ntuples/BsphiKK_MC_mvaVars_vetoes.root", str
 }
 int main(int argc, char* argv[])
 {
-  using namespace std;
-  if(argc==4)
+  using namespace boost::program_options;
+  options_description desc("Allowed options");
+  std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname;
+  desc.add_options()
+    ("help,H",                                                                                      "produce help message"         )
+    ("sweight,W",                                                                                   "apply sweights to data"       )
+    ("MCfile,M",     value<std::string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"),   "set Monte Carlo file"         )
+    ("REfile,R",     value<std::string>(&REfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
+    ("sigPDF,S",     value<std::string>(&sigPDF  )->default_value("Crystal Ball + 2 Gaussians"),    "signal PDF to fit to data"    )
+    ("bkgPDF,B",     value<std::string>(&bkgPDF  )->default_value("Exponential"),                   "background PDF to fit to data")
+    ("plotname,O",   value<std::string>(&plotname)->default_value("BsphiKK_data"),                  "fit plot filename"            )
+    ("branchname,N", value<std::string>(&plotname)->default_value("B_s0_LOKI_Mass"),                "branch to fit"                )
+  ;
+  variables_map vmap;
+  store(parse_command_line(argc, argv, desc), vmap);
+  notify(vmap);
+  if (vmap.count("help")||argc==1)
   {
-    BsMassFit((string)argv[1],(string)argv[2],(string)argv[3],false);
-    return 0;
+    std::cout << desc << endl;
+    return 1;
   }
-  else if(argc==5)
-  {
-    BsMassFit((string)argv[1],(string)argv[2],(string)argv[3],(string)argv[4]=="sweight");
-    return 0;
-  }
-  cout << "Usage: " << argv[0] << "<MC file> <Data file> <PDF> [sweight]" << endl;
-  return 1;
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname);
+  return 0;
 }
