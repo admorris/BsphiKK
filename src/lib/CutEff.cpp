@@ -23,7 +23,7 @@ double CutEff(string filename, string branchtoplot, string beforecut, string cut
   TTree* intree ;
   if((TTree*)infile->Get("DecayTree") == (TTree*)0x0)
   {
-    cout << "Tree not found" << endl;
+    cout << "Tree DecayTree not found. Trying DecayTreeTuple/DecayTree" << endl;
     intree  = (TTree*)infile->Get("DecayTreeTuple/DecayTree");
   }
   else
