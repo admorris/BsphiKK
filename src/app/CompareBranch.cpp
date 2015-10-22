@@ -1,5 +1,8 @@
 // Standard headers
 #include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 // BOOST headers
 #include "boost/program_options.hpp"
 // ROOT headers
@@ -36,6 +39,8 @@ void PlotBranch(string MCfilename, string REfilename, string branchname, string 
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
   RooRealVar* MCw,* REw;
   RooDataSet* MCdata,* REdata;
+  // Store the values of each bin because the GetMaximum() method isn't implemented properly in RooHist
+  vector<double> bincontent;
   // Get the data out of the file and optionally weight it
   std::cout << "Importing first tree" << endl;
   if(MCweight!="")
@@ -60,7 +65,7 @@ void PlotBranch(string MCfilename, string REfilename, string branchname, string 
   // Create a RooPlot and add the data points
   RooPlot* frame = x->frame();
   std::cout << "Plotting" << endl;
-  MCdata->plotOn(frame,Binning(nbins),DrawOption("B"),FillColor(kOrange));
+  MCdata->plotOn(frame,Binning(nbins),DrawOption("B1"),FillColor(kOrange));
   REdata->plotOn(frame,Binning(nbins));
   // Get the histograms out of the RooPlot
   RooHist* h_MCdata = frame->getHist("h_MCdata");
@@ -69,6 +74,7 @@ void PlotBranch(string MCfilename, string REfilename, string branchname, string 
   for(int i = 0; i < h_MCdata->GetN(); i++)
   {
     h_MCdata->SetPointError(i,0,0,0,0);
+    bincontent.push_back(h_MCdata->GetY()[i]);
   }
   // Integrate the histograms
   double MCint = integrate(h_MCdata);
@@ -83,7 +89,13 @@ void PlotBranch(string MCfilename, string REfilename, string branchname, string 
     h_REdata->GetY(     )[i] *= ratio;
     h_REdata->GetEYhigh()[i] *= ratio;
     h_REdata->GetEYlow( )[i] *= ratio;
+    bincontent.push_back(h_REdata->GetY()[i]);
   }
+  // Set a sensible maximum so the blurb doesn't sit on top of data points
+  double max = *max_element(bincontent.begin(),bincontent.end());
+  cout << "The maximum is\t" << max << endl;
+  frame->SetMaximum(max*1.3);
+  // Draw everything
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
