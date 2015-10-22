@@ -6,6 +6,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
+#include "TMath.h"
 // RooFit headers
 #include "RooDataSet.h"
 #include "RooHist.h"
@@ -13,12 +14,7 @@
 #include "RooRealVar.h"
 // Custom headers
 #include "plotmaker.h"
-
-/*
-To do:
-- Normalise the RooPlots or RooDataSets
-- Draw the plots differently
-*/
+// Just sum bin contents for a RooHist 
 inline double integrate(RooHist* hist)
 {
   double integral = 0;
@@ -30,14 +26,17 @@ inline double integrate(RooHist* hist)
 }
 void PlotBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
 {
+  // Open the files and get the trees
   TFile* MCfile = new TFile(MCfilename.c_str());
   TFile* REfile = new TFile(REfilename.c_str());
   TTree* MCtree = (TTree*)MCfile->Get("DecayTree");
   TTree* REtree = (TTree*)REfile->Get("DecayTree");
+  // RooFit variables
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
   RooRealVar* MCw,* REw;
   RooDataSet* MCdata,* REdata;
+  // Get the data out of the file and optionally weight it
   std::cout << "Importing first tree" << endl;
   if(MCweight!="")
   {
@@ -58,25 +57,32 @@ void PlotBranch(string MCfilename, string REfilename, string branchname, string 
   {
     REdata = new RooDataSet("REdata","",RooArgSet(*x),Import(*REtree));
   }
+  // Create a RooPlot and add the data points
   RooPlot* frame = x->frame();
   std::cout << "Plotting" << endl;
   MCdata->plotOn(frame,Binning(nbins),DrawOption("B"),FillColor(kOrange));
   REdata->plotOn(frame,Binning(nbins));
+  // Get the histograms out of the RooPlot
   RooHist* h_MCdata = frame->getHist("h_MCdata");
   RooHist* h_REdata = frame->getHist("h_REdata");
+  // Get rid of MC datapoint error bars
   for(int i = 0; i < h_MCdata->GetN(); i++)
   {
     h_MCdata->SetPointError(i,0,0,0,0);
   }
+  // Integrate the histograms
   double MCint = integrate(h_MCdata);
   double REint = integrate(h_REdata);
   double ratio = MCint/REint;
-  cout << "First integral\t" << MCint << endl;
+  cout << "First integral \t" << MCint << endl;
   cout << "Second integral\t" << REint << endl;
-  cout << "Scale factor\t" << ratio << endl;
+  cout << "Scale factor   \t" << ratio << endl;
+  // Scale the data plot to match the Monte Carlo
   for(int i = 0; i < h_REdata->GetN(); i++)
   {
-    h_REdata->GetY()[i] *= ratio;
+    h_REdata->GetY(     )[i] *= ratio;
+    h_REdata->GetEYhigh()[i] *= ratio;
+    h_REdata->GetEYlow( )[i] *= ratio;
   }
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
@@ -86,25 +92,24 @@ void PlotBranch(string MCfilename, string REfilename, string branchname, string 
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
-  options_description desc("Allowed options");
+  options_description desc("Allowed options",(unsigned)120);
   std::string MCfile, REfile, branch, cuts, xtitle, unit, plot, MCweight, REweight;
   double xlow, xup;
   int nbins;
   desc.add_options()
-    ("help,H"    ,                                                                                                      "produce help message"                      )
-    ("MCfile,M"  , value<std::string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"                        ), "set Monte Carlo file"                      )
-    ("REfile,R"  , value<std::string>(&REfile  )->default_value("ntuples/BsphiKK_data_mva.root"                      ), "set collision data file"                   )
-    ("branch,B"  , value<std::string>(&branch  )->default_value("B_s0_LOKI_Mass"                                     ), "set branch to plot"                        )
-    ("MCweight,w", value<std::string>(&MCweight)->default_value(""                                                   ), "set Monte Carlo weighting variable"        )
-    ("REweight,W", value<std::string>(&REweight)->default_value(""                                                   ), "set collision data weighting variable"     )
-    ("cuts,C"    , value<std::string>(&cuts    )->default_value(""                                                   ), "set optional cuts (UNIMPLEMENTED)"         )
-    ("title,T"   , value<std::string>(&xtitle  )->default_value("#it{m}(#it{K^{#plus}K^{#minus}K^{#plus}K^{#minus}})"), "set x-axis title (takes ROOT LaTeX format)")
-    ("unit,U"    , value<std::string>(&unit    )->default_value("MeV/#it{c}^{2}"                                     ), "set unit (takes ROOT LaTeX format)"        )
-    ("plot,O"    , value<std::string>(&plot    )->default_value("comparison"                                         ), "set output plot filename"                  )
-    ("upper,u"   , value<double     >(&xup     )->default_value(5600                                                 ), "set branch upper limit"                    )
-    ("lower,l"   , value<double     >(&xlow    )->default_value(5200                                                 ), "set branch lower limit"                    )
-    ("bins,b"    , value<int        >(&nbins   )->default_value(20                                                   ), "set number of bins"                        )
-    
+    ("help,H"    ,                                                                                        "produce help message"                      )
+    ("MCfile,M"  , value<std::string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"          ), "set Monte Carlo file"                      )
+    ("REfile,R"  , value<std::string>(&REfile  )->default_value("ntuples/BsphiKK_data_mva.root"        ), "set collision data file"                   )
+    ("branch,B"  , value<std::string>(&branch  )->default_value("B_s0_LOKI_Mass"                       ), "set branch to plot"                        )
+    ("MCweight,w", value<std::string>(&MCweight)->default_value(""                                     ), "set Monte Carlo weighting variable"        )
+    ("REweight,W", value<std::string>(&REweight)->default_value(""                                     ), "set collision data weighting variable"     )
+    ("cuts,C"    , value<std::string>(&cuts    )->default_value(""                                     ), "set optional cuts (UNIMPLEMENTED)"         )
+    ("title,T"   , value<std::string>(&xtitle  )->default_value("#it{m}(#it{#phi K^{#plus}K^{#minus}})"), "set x-axis title (takes ROOT LaTeX format)")
+    ("unit,U"    , value<std::string>(&unit    )->default_value("MeV/#it{c}^{2}"                       ), "set unit (takes ROOT LaTeX format)"        )
+    ("plot,O"    , value<std::string>(&plot    )->default_value("comparison"                           ), "set output plot filename"                  )
+    ("upper,u"   , value<double     >(&xup     )->default_value(5600                                   ), "set branch upper limit"                    )
+    ("lower,l"   , value<double     >(&xlow    )->default_value(5200                                   ), "set branch lower limit"                    )
+    ("bins,b"    , value<int        >(&nbins   )->default_value(20                                     ), "set number of bins"                        )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
