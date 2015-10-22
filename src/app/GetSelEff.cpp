@@ -7,6 +7,10 @@ void GetSelEff(string filename)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
   string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)&&(B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600)";
+  if(filename.find("MC")!=string::npos)
+  {
+    trigger+="&&(B_s0_BKGCAT<20||B_s0_BKGCAT==50)";
+  }
   string cut[] =
   {
     "Kminus_TRACK_GhostProb<0.3&&Kplus_TRACK_GhostProb<0.3&&Kminus0_TRACK_GhostProb<0.3&&Kplus0_TRACK_GhostProb<0.3"

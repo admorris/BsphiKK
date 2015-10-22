@@ -48,6 +48,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   {
     MCplotter = new plotmaker(MCframe);
   }
+  MCplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
   MCplotter->Draw()->SaveAs((plotfilename+"_MC.pdf").c_str());
   // This bit is really horrible, sorry.
   double resolution = 0, f1, f2, s1, s2, s3;
@@ -115,6 +116,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   {
     REplotter = new plotmaker(REframe);
   }
+  REplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
   REplotter->Draw()->SaveAs((plotfilename+".pdf").c_str());
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
