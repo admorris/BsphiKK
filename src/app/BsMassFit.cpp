@@ -177,7 +177,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
-  options_description desc("Allowed options");
+  options_description desc("Allowed options",120);
   std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname;
   desc.add_options()
     ("help,H"      ,                                                                                  "produce help message"         )
