@@ -134,7 +134,6 @@ void plot_efficiencies( TFile* file, Int_t type = 2, TDirectory* BinDir)
       dyH *= (Float_t(nmva - 3.0)/4.0);
       legend->SetY2( y0H + dyH);
    }
-
    // redraw axes
    frame->GetXaxis()->SetRange(400,500);
    frame->GetYaxis()->SetRange(400,500);
