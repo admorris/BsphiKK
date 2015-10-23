@@ -3,13 +3,13 @@
 # Please run all scripts from within the scripts folder
 #./getoutputdata | tee log/getoutputdata.log
 #./merge.sh | tee log/merge.log
-./docuts.sh | tee log/docuts.log
-./addBranches.sh | tee log/addBranches.log
-./dovetoes.sh | tee log/dovetoes.log
-./seleff.sh
-./trigeff.sh
-./sweight.sh | tee log/sweight.log
-./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
+#./docuts.sh | tee log/docuts.log
+#./addBranches.sh | tee log/addBranches.log
+#./dovetoes.sh | tee log/dovetoes.log
+#./seleff.sh
+#./trigeff.sh
+#./sweight.sh | tee log/sweight.log
+#./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
 ./trainmva.sh | tee log/trainmva.log
 ./applymva.sh | tee log/applymva.log
-./mvacut.sh | tee log/mvacut.log
+#./mvacut.sh | tee log/mvacut.log
