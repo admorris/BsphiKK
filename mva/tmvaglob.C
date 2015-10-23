@@ -232,6 +232,7 @@ namespace TMVAGlob {
          TString pngName = fname + ".png";
          TString gifName = fname + ".gif";
          TString epsName = fname + ".eps";
+         TString pdfName = fname + ".pdf";
          c->cd();
 
          // create eps (other option: c->Print( epsName ))
@@ -245,6 +246,7 @@ namespace TMVAGlob {
             cout << "--- --------------------------------------------------------------------" << endl;
             c->Print(epsName);
             c->Print(pngName);
+            c->Print(pdfName);
             // c->Print(gifName);
          }
       }
