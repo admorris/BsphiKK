@@ -558,7 +558,7 @@ void mvaeffs( TString fin = "TMVA.root",
 {
    TMVAGlob::Initialize( useTMVAStyle );
 
-   StatDialogMVAEffs* gGui = new StatDialogMVAEffs(gClient->GetRoot(), 1000, 1000);
+   StatDialogMVAEffs* gGui = new StatDialogMVAEffs(gClient->GetRoot(), 1920.59, 1148.17);
 
    TFile* file = TMVAGlob::OpenFile( fin );
    gGui->ReadHistograms(file);
