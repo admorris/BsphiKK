@@ -162,7 +162,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       L_Nsig  =  row->getRealValue("L_Nsig" );
       Nbkg_sw =  row->getRealValue("Nbkg_sw");
       L_Nbkg  =  row->getRealValue("L_Nbkg" );
-      if (i % 10)
+      if (i % 100)
         bar.print(i);
       b_Nsig_sw->Fill();
       b_L_Nsig->Fill();
