@@ -8,4 +8,4 @@ done
 cd ../fits/
 ../bin/BsMassFit -M ../ntuples/BsphiKK_MC_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit --pulls
 ../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit1050 --pulls
-../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_1800_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit10501800 --pulls
+../bin/BsMassFit -M ../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root -R ../ntuples/BsphiKK_data_1050_1800_mvaVars_vetoes.root --sweight -O ../latex/figs/initialmassfit10501800 --pulls --draw-region

@@ -8,6 +8,7 @@
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TLine.h"
 // RooFit headers
 #include "RooAbsPdf.h"
 #include "RooRealVar.h"
@@ -18,7 +19,7 @@
 #include "progbar.h"
 #include "plotmaker.h"
 // void BsMassFit(string filename)
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls)
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, bool drawregion)
 {
   using namespace std;
 /*Input************************************************************************/
@@ -117,7 +118,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     REplotter = new plotmaker(REframe);
   }
   REplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
-  REplotter->Draw()->SaveAs((plotfilename+".pdf").c_str());
+  TCanvas* canv = REplotter->Draw();
 /*Output S and B for MC optimisation*******************************************/
   double mean = REFitModel.GetValue("mean");
   double Nsig = REFitModel.GetValue("Nsig");
@@ -138,6 +139,20 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   cout << "S:\t" << sigmodint3->getValV()*Nsig << endl;
   RooAbsReal* bkgmodint3 = bkgmod->createIntegral(mass,NormSet(mass),Range("threesigma"));
   cout << "B:\t" << bkgmodint3->getValV()*Nbkg << endl;
+  if(drawregion)
+  {
+    cout << "Drawing lines" << endl;
+//    canv->cd(0);
+    TLine* hiline = new TLine(mean+3*resolution,0,mean+3*resolution,REframe->GetMaximum());
+    TLine* loline = new TLine(mean-3*resolution,0,mean-3*resolution,REframe->GetMaximum());
+//    hiline->SetLineColor(2);
+//    loline->SetLineColor(2);
+    hiline->SetLineStyle(2);
+    loline->SetLineStyle(2);
+    hiline->Draw();
+    loline->Draw();
+  }
+  canv->SaveAs((plotfilename+".pdf").c_str());
 /*S-weight the given ntuple****************************************************/
   if(doSweight)
   {
@@ -184,6 +199,7 @@ int main(int argc, char* argv[])
   desc.add_options()
     ("help,H"      ,                                                                                  "produce help message"         )
     ("sweight,W"   ,                                                                                  "apply sweights to data"       )
+    ("draw-region" ,                                                                                  "draw lines at ±3σ"            )
     ("pulls,P"     ,                                                                                  "plot with pulls"              )
     ("MCfile,M"    , value<std::string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root")  , "set Monte Carlo file"         )
     ("REfile,R"    , value<std::string>(&REfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
@@ -200,6 +216,6 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"));
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), vmap.count("draw-region"));
   return 0;
 }
