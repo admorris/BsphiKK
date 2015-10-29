@@ -1,10 +1,9 @@
 #!/bin/bash
 cd ../ntuples
-../bin/PlotBranch \
+../bin/AnnotateMKK \
     -F BsphiKK_data_mvaVars_vetoes_Sweighted.root \
     -B KK_M \
     -W Nsig_sw \
-    -T "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" \
     -O ../latex/figs/mKKsweight \
     -l 900 \
     -u 4000 \
@@ -19,11 +18,10 @@ cd ../ntuples
     -u 4000 \
     -b 62
 
-../bin/PlotBranch \
+../bin/AnnotateMKK \
     -F BsphiKK_data_1050_mvaVars_vetoes_Sweighted.root \
     -B KK_M \
     -W Nsig_sw \
-    -T "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" \
     -O ../latex/figs/mKKsweight_1050 \
     -l 1050 \
     -u 4000 \
