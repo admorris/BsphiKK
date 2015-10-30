@@ -1,4 +1,10 @@
 #include "tmvaglob.C"
+#include "TLegend.h"
+#include "TText.h"
+#include <map>
+#include <string>
+
+using namespace std;
 
 // this macro plots the distributions of the different input variables
 // used in TMVA (e.g. running TMVAnalysis.C).  Signal and Background are overlayed.
@@ -9,6 +15,24 @@
 void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id", TString title = "TMVA Input Variables",
                 Bool_t isRegression = kFALSE, Bool_t useTMVAStyle = kTRUE )
 {
+   // Define new x-axis titles
+   map<string, string> newtitle;
+//   newtitle["B_s0_ln_FDCHI2"]  = "#it{B_{s}}^{0} #ln#it{#chi}_{FD}^{2}";
+//   newtitle["B_s0_ln_IPCHI2"]  = "#it{B_{s}}^{0} #ln#it{#chi}_{IP}^{2}";
+//   newtitle["B_s0_ln_EVCHI2"]  = "#it{B_{s}}^{0} #ln#it{#chi}_{EV}^{2}";
+//   newtitle["B_s0_PT_fiveGeV"] = "#it{B_{s}}^{0} #it{p_{T}} / 5 [GeV/#it{c}^{2}]";
+//   newtitle["B_s0_Eta"]        = "#it{B_{s}}^{0} #it{#eta}";
+//   newtitle["minK_PT_GeV"]     = "min #it{K} #it{p_{T}} [GeV/#it{c}^{2}]";
+//   newtitle["minK_ln_IPCHI2"]  = "min #it{K} #ln#it{#chi}_{IP}^{2}";
+   newtitle.insert(pair<string, string>("B_s0_ln_FDCHI2","#it{B_{s}}^{0} ln#it{#chi}_{FD}^{2}"));
+   newtitle.insert(pair<string, string>("B_s0_ln_IPCHI2","#it{B_{s}}^{0} ln#it{#chi}_{IP}^{2}"));
+   newtitle.insert(pair<string, string>("B_s0_ln_EVCHI2","#it{B_{s}}^{0} ln#it{#chi}_{EV}^{2}"));
+   newtitle.insert(pair<string, string>("B_s0_PT_fiveGeV","#it{B_{s}}^{0} #it{p_{T}} / 5 [GeV/#it{c}^{2}]"));
+   newtitle.insert(pair<string, string>("B_s0_Eta","#it{B_{s}}^{0} #it{#eta}"));
+   newtitle.insert(pair<string, string>("minK_PT_GeV","min #it{K} #it{p_{T}} [GeV/#it{c}^{2}]"));
+   newtitle.insert(pair<string, string>("minK_ln_IPCHI2","min #it{K} ln#it{#chi}_{IP}^{2}"));
+   
+   
    TString outfname = dirName;
    outfname.ToLower(); outfname.ReplaceAll( "input", ""  );
 
@@ -51,7 +75,7 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
    case 4:
       xPad = 2; yPad = 2; width = 600; height = width; break;
    default:
-      xPad = 3; yPad = 2; width = 800; height = 0.55*width; break;
+      xPad = 2; yPad = 4; width = 400; height = 2.0*width; break;
    }
 
    Int_t noPadPerCanv = xPad * yPad ;
@@ -100,7 +124,8 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
       // this is set but not stored during plot creation in MVA_Factory
       TMVAGlob::SetSignalAndBackgroundStyle( sig, (isRegression ? 0 : bgd) );            
 
-      sig->SetTitle( TString( htitle ) + ": " + sig->GetTitle() );
+//      sig->SetTitle( TString( htitle ) + ": " + sig->GetTitle() );
+      sig->SetTitle("");
       TMVAGlob::SetFrameStyle( sig, 1.2 );
 
       // normalise both signal and background
@@ -127,7 +152,8 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
          TString ytit = TString("(1/N) ") + sig->GetYaxis()->GetTitle();
          sig->GetYaxis()->SetTitle( ytit ); // histograms are normalised
       }
-
+      cout << newtitle[sig->GetXaxis()->GetTitle()] << endl;
+      sig->GetXaxis()->SetTitle(newtitle[sig->GetXaxis()->GetTitle()].c_str());
       // Draw legend
       if (countPad == 1 && !isRegression) {
          TLegend *legend= new TLegend( cPad->GetLeftMargin(), 

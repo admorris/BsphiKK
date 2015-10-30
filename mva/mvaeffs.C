@@ -91,7 +91,8 @@ public:
       effpurS = new TH1F(epname, epname, nbins, low, high);        
 
       // chop off useless stuff
-      sigE->SetTitle( Form("Cut efficiencies for %s classifier", methodTitle.Data()) );
+//      sigE->SetTitle( Form("Cut efficiencies for %s classifier", methodTitle.Data()) );
+      sigE->SetTitle("");
          
       // set the histogram style
       TMVAGlob::SetSignalAndBackgroundStyle( sigE, bgdE );
@@ -432,7 +433,8 @@ void StatDialogMVAEffs::DrawHistograms()
       c->SetTopMargin(.2);
       
       // and the signal purity and quality
-      info->effpurS->SetTitle("Cut efficiencies and optimal cut value");
+//      info->effpurS->SetTitle("Cut efficiencies and optimal cut value");
+      info->effpurS->SetTitle("");
       if (info->methodTitle.Contains("Cuts")){
 	info->effpurS->GetXaxis()->SetTitle( "Signal Efficiency" );
       }

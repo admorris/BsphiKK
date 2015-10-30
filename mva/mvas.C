@@ -80,13 +80,14 @@ void mvas( TString fin = "TMVA.root", HistType htype = MVAType, Bool_t useTMVASt
 
          cout << " containing " << hname << "_S/_B" << endl;
          // chop off useless stuff
-         sig->SetTitle( Form("TMVA response for classifier: %s", methodTitle.Data()) );
          if      (htype == ProbaType) 
             sig->SetTitle( Form("TMVA probability for classifier: %s", methodTitle.Data()) );
          else if (htype == RarityType) 
             sig->SetTitle( Form("TMVA Rarity for classifier: %s", methodTitle.Data()) );
          else if (htype == CompareType) 
             sig->SetTitle( Form("TMVA overtraining check for classifier: %s", methodTitle.Data()) );
+         sig->SetTitle( Form("TMVA response for classifier: %s", methodTitle.Data()) );
+         sig->SetTitle( "" );
          
          // create new canvas
          TString ctitle = ((htype == MVAType) ? 

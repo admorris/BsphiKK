@@ -56,7 +56,7 @@ void plot_efficiencies( TFile* file, Int_t type = 2, TDirectory* BinDir)
 
    // draw empty frame
    if(gROOT->FindObject("frame")!=0) gROOT->FindObject("frame")->Delete();
-   TH2F* frame = new TH2F( "frame", ftit, 500, x1, x2, 500, y1, y2 );
+   TH2F* frame = new TH2F( "frame", "", 500, x1, x2, 500, y1, y2 );
    frame->GetXaxis()->SetTitle( xtit );
    frame->GetYaxis()->SetTitle( ytit );
    TMVAGlob::SetFrameStyle( frame, 1.0 );

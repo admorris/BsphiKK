@@ -34,21 +34,22 @@ void correlations( TString fin = "TMVA.root", Bool_t isRegression = kFALSE,
                                 Form("Correlations between MVA input variables (%s)", 
                                      (isRegression ? "" : (ic==0 ? "signal" : "background"))), 
                                 ic*(width+5)+200, 0, width, width ); 
-      Float_t newMargin1 = 0.13;
-      Float_t newMargin2 = 0.15;
-      if (TMVAGlob::UsePaperStyle) newMargin2 = 0.13;
+//      Float_t newMargin1 = 0.13;
+//      Float_t newMargin2 = 0.17;
+//      if (TMVAGlob::UsePaperStyle) newMargin2 = 0.13;
 
       c->SetGrid();
       c->SetTicks();
-      c->SetLeftMargin  ( newMargin2 );
-      c->SetBottomMargin( newMargin2 );
-      c->SetRightMargin ( newMargin1 );
-      c->SetTopMargin   ( newMargin1 );
+      c->SetLeftMargin  ( 0.17 );
+      c->SetBottomMargin( 0.15 );
+      c->SetRightMargin ( 0.13 );
+      c->SetTopMargin   ( 0.10 );
       gStyle->SetPalette( 1, 0 );
 
 
       gStyle->SetPaintTextFormat( "3g" );
 
+      h2->SetTitle("");
       h2->SetMarkerSize( 1.5 );
       h2->SetMarkerColor( 0 );
       Float_t labelSize = 0.040;
