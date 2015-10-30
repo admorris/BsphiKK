@@ -30,7 +30,7 @@ annotation* resonance(double mass,string name)
   _a->line.SetX2(mass);
   _a->line.SetLineStyle(2);
   _a->line.SetLineColor(2);
-  _a->label.SetText(mass+50,1.0,name.c_str());
+  _a->label.SetText(mass-50,1.0,name.c_str());
   return _a;
 }
 
@@ -55,14 +55,17 @@ void PlotBranch(string filename, string branchname, string plotname, string weig
   RooPlot* frame = x->frame();
   std::cout << "Plotting" << endl;
   data->plotOn(frame,Binning(nbins));
+  frame->SetMinimum(0);
   RooHist* hist = frame->getHist();
   annotation* particles[] = 
   {
-    resonance(1019.461,"#it{#phi}")
+    resonance(1019.461,"  #it{#phi}")
   , resonance(1864.84,"#it{D}^{0}")
   , resonance(1525,"#it{f'}_{2}(1525)")
   , resonance(3096.916,"#it{J/#psi}")
   , resonance(3414.75,"#it{#chi}_{#it{c}0}")
+  , resonance(3510.66,"#it{#chi}_{#it{c}1}")
+  , resonance(3686.109," #psi(2S)")
   };
   plotmaker plotter(frame);
   plotter.SetTitle("#it{m}(#it{K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
