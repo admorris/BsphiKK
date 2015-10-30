@@ -5,3 +5,4 @@ weights/*
 *.d
 *.so
 *.pcm
+AutoDict*
