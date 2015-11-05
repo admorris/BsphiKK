@@ -10,6 +10,7 @@
 #./trigeff.sh
 #./sweight.sh | tee log/sweight.log
 #./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
-./trainmva.sh | tee log/trainmva.log
-./applymva.sh | tee log/applymva.log
+#./trainmva.sh | tee log/trainmva.log
+#./applymva.sh | tee log/applymva.log
+#mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
 #./mvacut.sh | tee log/mvacut.log
