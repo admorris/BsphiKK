@@ -1,7 +1,7 @@
 #!/bin/bash
 branch='mlp'
 unit='none'
-title='MLP response'
+title='MLP~output'
 range='-l -1 -u 1'
 
 cd ../ntuples
