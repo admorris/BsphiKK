@@ -76,7 +76,7 @@ void PlotBranch(string filename, string branchname, string plotname, string weig
   };
   if(xlow>1020)
   {
-    particles[0] = resonance(1100, "#it{#phi} tail", false)
+    particles[0] = resonance(1100, " #it{#phi} tail", false);
   }
   plotmaker plotter(frame);
   plotter.SetTitle("#it{m}(#it{K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
