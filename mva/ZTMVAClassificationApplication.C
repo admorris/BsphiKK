@@ -13,6 +13,7 @@
 #include <map>
 #include <iomanip>
 #include <string>
+#include <algorithm>
 
 #include "TFile.h"
 #include "TTree.h"
@@ -33,21 +34,12 @@
 
 using namespace TMVA;
 
-void ZTMVAClassificationApplication( TString myMethodList = "" ) 
+void ZTMVAClassificationApplication( string filename, TString myMethodList = "" ) 
 {   
 #ifdef __CINT__
   gROOT->ProcessLine( ".O0" ); // turn off optimization in CINT
 #endif
   gSystem->Load("libprogbar.so");
-  string filename[6] = { "BsphiKK_data",
-                         "BsphiKK_MC",
-                         "Bsphiphi_MC",
-                         "Bsphipipi_MC",
-                         "BdphiKst_MC",
-                         "LbphiKp_MC"
-                       };
-  for(int mode =0; mode<6; mode++) {
-
   //---------------------------------------------------------------
 
   // This loads the library
@@ -235,7 +227,7 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //TFile * input_Background = new TFile("Z4430Files/merged_ntuple_jpsi_s17.root"); // this is the background
   //TFile * input = new TFile("../output/MCBsphif0_after_transform.root"); // this is the signal
   TFile * input_Background; 
-  input_Background = new TFile(("../ntuples/"+filename[mode]+"_mvaVars_vetoes.root").c_str());
+  input_Background = new TFile(filename.c_str());
   //std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
   std::cout << "--- TMVAClassificationApp    : Using input file: " << input_Background->GetName() << std::endl;
   
@@ -262,7 +254,10 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   //else TCut cut = TCut("time1>0. && abs(phi_mass-1019.455)<15 && abs(phi1_mass-1019.455)<15");
   //TFile* f_out  =new TFile("../output/MCBsphif0_after_bdt.root","RECREATE");
   TFile* f_out;
-  f_out = new TFile(("../ntuples/"+filename[mode]+"_mva.root").c_str(),"RECREATE");
+  string oldLabel="mvaVars_vetoes";
+  string newLabel="mva";
+  filename.replace(filename.find(oldLabel), oldLabel.length(), newLabel);
+  f_out = new TFile(filename.c_str(),"RECREATE");
 
   //TTree* smalltree = theTree->CopyTree(cut);
   TTree*  newtree = theTree->CloneTree(-1);
@@ -472,5 +467,4 @@ void ZTMVAClassificationApplication( TString myMethodList = "" )
   delete reader;
   
   std::cout << "==> TMVAClassificationApplication is done!" << endl << std::endl;
-}
 } 
