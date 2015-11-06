@@ -14,32 +14,7 @@
 #include "RooRealVar.h"
 // Custom headers
 #include "plotmaker.h"
-
-typedef struct
-{
-  TLine line;
-  TLatex label;
-} annotation;
-
-annotation* resonance(double mass, string name, bool drawline = true)
-{
-  annotation* _a = new annotation;
-  _a->line.SetY1(0);
-  _a->line.SetY2(1);
-  _a->line.SetX1(mass);
-  _a->line.SetX2(mass);
-  _a->line.SetLineStyle(2);
-  if(drawline)
-  {
-    _a->line.SetLineColor(2);
-  }
-  else
-  {
-    _a->line.SetLineColor(0);
-  }
-  _a->label.SetText(mass-50,1.0,name.c_str());
-  return _a;
-}
+#include "annotation.h"
 
 void PlotBranch(string filename, string branchname, string plotname, string weight, double xlow, double xup, int nbins)
 {
