@@ -60,8 +60,8 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   };
   annotation* charmantimesons[] = 
   {
-    resonance(1896.61,"#it{D}^{#plus}"    )
-  , resonance(1968.30,"#it{D_{s}}^{#plus}")
+    resonance(1896.61,"#it{D}^{#minus}"    )
+  , resonance(1968.30,"#it{D_{s}}^{#minus}")
   };
   annotation* charmbaryons[] =
   {
@@ -69,7 +69,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   };
   annotation* charmantibaryons[] =
   {
-    resonance(2286.46,"#it{#bar{#Lambda_{c}}}^{#minus}")
+    resonance(2286.46,"  #it{#bar{#Lambda}_{c}}^{#minus}")
   };
 /*****************************************************************************/
   bool go = true;

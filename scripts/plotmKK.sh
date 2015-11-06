@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ../ntuples
-../bin/AnnotateMKK \
+../bin/AnnotateBranch \
     -F BsphiKK_data_mvaVars_vetoes_Sweighted.root \
     -B KK_M \
     -W Nsig_sw \
@@ -18,7 +18,7 @@ cd ../ntuples
     -u 4100 \
     -b 64
 
-../bin/AnnotateMKK \
+../bin/AnnotateBranch \
     -F BsphiKK_data_1050_mvaVars_vetoes_Sweighted.root \
     -B KK_M \
     -W Nsig_sw \

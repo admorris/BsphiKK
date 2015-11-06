@@ -7,7 +7,7 @@ for i in `seq 0 11`
 do
   for suffix in ${suffices[@]}
   do
-    ../bin/PlotBranch \
+    ../bin/AnnotateBranch \
       -F ../ntuples/BsphiKK_data${suffix}.root \
       -B ${branches[$i]} \
       -T "#it{m}(${titles[$i]})" \
