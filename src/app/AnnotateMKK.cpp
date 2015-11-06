@@ -16,7 +16,7 @@
 #include "plotmaker.h"
 #include "annotation.h"
 
-void PlotBranch(string filename, string branchname, string plotname, string weight, double xlow, double xup, int nbins)
+void AnnotateMKK(string filename, string branchname, string plotname, string weight, double xlow, double xup, int nbins)
 {
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
@@ -105,6 +105,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(file,branch,plot,weight,xlow,xup,nbins);
+  AnnotateMKK(file,branch,plot,weight,xlow,xup,nbins);
   return 0;
 }
