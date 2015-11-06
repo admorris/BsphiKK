@@ -53,6 +53,15 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   , resonance(3510.66 ,"#it{#chi}_{#it{c}1}")
   , resonance(3686.109," #psi(2S)"          )
   };
+  annotation* beautymesons[] = 
+  {
+    resonance(5279.61,"#it{B}^{0}")
+  , resonance(5366.79,"#it{B_{s}}^{0}")
+  };
+  annotation* beautybaryons[] = 
+  {
+    resonance(5619.51,"#it{#Lambda_{b}}^{0}")
+  };
   annotation* charmmesons[] = 
   {
     resonance(1896.61,"#it{D}^{#plus}"    )
@@ -92,7 +101,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     particles = charmantimesons;
     n = sizeof(charmantimesons)/sizeof(annotation*);  
   }
-  else if(branchname == "phipM")
+  else if(branchname == "phipM" || branchname == "KpM")
   {
     particles = charmbaryons;
     n = sizeof(charmbaryons)/sizeof(annotation*);    
@@ -101,6 +110,16 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   {
     particles = charmantibaryons;
     n = sizeof(charmantibaryons)/sizeof(annotation*);    
+  }
+  else if(branchname == "phiKpiM" || branchname == "phipipiM")
+  {
+    particles = beautymesons;
+    n = sizeof(beautymesons)/sizeof(annotation*);    
+  }
+  else if(branchname == "phiKpM")
+  {
+    particles = beautybaryons;
+    n = sizeof(beautybaryons)/sizeof(annotation*);    
   }
   else
   {
