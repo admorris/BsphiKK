@@ -72,6 +72,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     resonance(2286.46,"#it{#bar{#Lambda_{c}}}^{#minus}")
   };
 /*****************************************************************************/
+  bool go = true;
   if(branchname == "KK_M")
   {
     if(xlow>1020)
@@ -104,7 +105,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   else
   {
     cout << "No stored list of resonances for branch name " << branchname << endl;
-    return;
+    go=false;
   }
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle,unit);
@@ -112,21 +113,24 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   TLatex* label;
   TLine* line;
   double height;
-  for(unsigned int i = 0; i < n; i++)
+  if(go)
   {
-    line = &(particles[i]->line);
-    label = &(particles[i]->label);
-    height = hist->Eval(line->GetX1());
-    if(line->GetX1()>xlow && line->GetX1()<xup && height/frame->GetMaximum() > 0.05)
+    for(unsigned int i = 0; i < n; i++)
     {
-      line->SetY2(line->GetY2()*height);
-      line->Draw();
-      label->SetY(label->GetY()*height+0.075*frame->GetMaximum());
-      label->Draw();
-    }
-    else
-    {
-      cout << "Skipping particle at " << line->GetX1() << " MeV" << endl;
+      line = &(particles[i]->line);
+      label = &(particles[i]->label);
+      height = hist->Eval(line->GetX1());
+      if(line->GetX1()>xlow && line->GetX1()<xup && height/frame->GetMaximum() > 0.05)
+      {
+        line->SetY2(line->GetY2()*height);
+        line->Draw();
+        label->SetY(label->GetY()*height+0.075*frame->GetMaximum());
+        label->Draw();
+      }
+      else
+      {
+        cout << "Skipping particle at " << line->GetX1() << " MeV" << endl;
+      }
     }
   }
   canv->SaveAs((plotname+".pdf").c_str());
