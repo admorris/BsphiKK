@@ -49,22 +49,40 @@ void addBranches(string filename = "BsphiKK_data")
   // Note that LOKI uses a different order (plus before minus)
   // Do not to change this without careful scrutiny of what is happening with creating the new branches
   Double_t h_PX[4];
-  intree->SetBranchAddress("B_s0_PX_kaon1",&h_PX[0]);
-  intree->SetBranchAddress("B_s0_PX_kaon0",&h_PX[1]);
-  intree->SetBranchAddress("B_s0_PX_kaon3",&h_PX[2]);
-  intree->SetBranchAddress("B_s0_PX_kaon2",&h_PX[3]);
+  intree->SetBranchAddress("Kminus_PX",&h_PX[0]);
+  intree->SetBranchAddress("Kplus_PX",&h_PX[1]);
+  intree->SetBranchAddress("Kminus0_PX",&h_PX[2]);
+  intree->SetBranchAddress("Kplus0_PX",&h_PX[3]);
 /*PY Branches******************************************************************/
   Double_t h_PY[4];
-  intree->SetBranchAddress("B_s0_PY_kaon1",&h_PY[0]);
-  intree->SetBranchAddress("B_s0_PY_kaon0",&h_PY[1]);
-  intree->SetBranchAddress("B_s0_PY_kaon3",&h_PY[2]);
-  intree->SetBranchAddress("B_s0_PY_kaon2",&h_PY[3]);
+  intree->SetBranchAddress("Kminus_PY",&h_PY[0]);
+  intree->SetBranchAddress("Kplus_PY",&h_PY[1]);
+  intree->SetBranchAddress("Kminus0_PY",&h_PY[2]);
+  intree->SetBranchAddress("Kplus0_PY",&h_PY[3]);
 /*PZ Branches******************************************************************/
   Double_t h_PZ[4];
-  intree->SetBranchAddress("B_s0_PZ_kaon1",&h_PZ[0]);
-  intree->SetBranchAddress("B_s0_PZ_kaon0",&h_PZ[1]);
-  intree->SetBranchAddress("B_s0_PZ_kaon3",&h_PZ[2]);
-  intree->SetBranchAddress("B_s0_PZ_kaon2",&h_PZ[3]);
+  intree->SetBranchAddress("Kminus_PZ",&h_PZ[0]);
+  intree->SetBranchAddress("Kplus_PZ",&h_PZ[1]);
+  intree->SetBranchAddress("Kminus0_PZ",&h_PZ[2]);
+  intree->SetBranchAddress("Kplus0_PZ",&h_PZ[3]);
+/*LOKI PX Branches*************************************************************/
+  Double_t h_LOKI_PX[4];
+  intree->SetBranchAddress("B_s0_PX_kaon1",&h_LOKI_PX[0]);
+  intree->SetBranchAddress("B_s0_PX_kaon0",&h_LOKI_PX[1]);
+  intree->SetBranchAddress("B_s0_PX_kaon3",&h_LOKI_PX[2]);
+  intree->SetBranchAddress("B_s0_PX_kaon2",&h_LOKI_PX[3]);
+/*LOKI PY Branches*************************************************************/
+  Double_t h_LOKI_PY[4];
+  intree->SetBranchAddress("B_s0_PY_kaon1",&h_LOKI_PY[0]);
+  intree->SetBranchAddress("B_s0_PY_kaon0",&h_LOKI_PY[1]);
+  intree->SetBranchAddress("B_s0_PY_kaon3",&h_LOKI_PY[2]);
+  intree->SetBranchAddress("B_s0_PY_kaon2",&h_LOKI_PY[3]);
+/*LOKI PZ Branches*************************************************************/
+  Double_t h_LOKI_PZ[4];
+  intree->SetBranchAddress("B_s0_PZ_kaon1",&h_LOKI_PZ[0]);
+  intree->SetBranchAddress("B_s0_PZ_kaon0",&h_LOKI_PZ[1]);
+  intree->SetBranchAddress("B_s0_PZ_kaon3",&h_LOKI_PZ[2]);
+  intree->SetBranchAddress("B_s0_PZ_kaon2",&h_LOKI_PZ[3]);
 /*BCON PX Branches*************************************************************/
   Double_t h_BCON_PX[4];
   intree->SetBranchAddress("B_s0_BCON_PX_kaon1",&h_BCON_PX[0]);
