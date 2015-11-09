@@ -27,7 +27,7 @@ inline double integrate(RooHist* hist)
   }
   return integral;
 }
-void PlotBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
+void CompareBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
 {
   // Open the files and get the trees
   TFile* MCfile = new TFile(MCfilename.c_str());
@@ -132,6 +132,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(MCfile,REfile,branch,xtitle,unit,plot,cuts,MCweight,REweight,xlow,xup,nbins);
+  CompareBranch(MCfile,REfile,branch,xtitle,unit,plot,cuts,MCweight,REweight,xlow,xup,nbins);
   return 0;
 }
