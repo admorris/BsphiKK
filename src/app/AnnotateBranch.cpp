@@ -15,6 +15,8 @@
 // Custom headers
 #include "plotmaker.h"
 #include "annotation.h"
+#include "maxOfFive.h"
+#include "maxOfThree.h"
 
 void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins)
 {
@@ -50,7 +52,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   , resonance(1525    ,"#it{f'}_{2}(1525)"  )
   , resonance(3096.916,"#it{J/#psi}"        )
   , resonance(3414.75 ,"#it{#chi}_{#it{c}0}")
-  , resonance(3510.66 ,"#it{#chi}_{#it{c}1}")
+  , resonance(3556.20 ,"#it{#chi}_{#it{c}2}")
   , resonance(3686.109," #psi(2S)"          )
   };
   annotation* beautymesons[] = 
@@ -78,7 +80,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   };
   annotation* charmantibaryons[] =
   {
-    resonance(2286.46,"  #it{#bar{#Lambda}_{c}}^{#minus}")
+    resonance(2286.46,"#it{#bar{#Lambda}_{c}}^{#minus}")
   };
 /*****************************************************************************/
   bool go = true;
@@ -86,7 +88,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   {
     if(xlow>1020)
     {
-      KKpeaks[0] = resonance(1100, " #it{#phi} tail", false);
+      KKpeaks[0] = resonance(1100, "  #it{#phi} tail", false);
     }
     particles = KKpeaks;
     n = sizeof(KKpeaks)/sizeof(annotation*);
@@ -129,26 +131,49 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle,unit);
   TCanvas* canv = plotter.Draw();
+  frame->SetMaximum(frame->GetMaximum()*1.1);
   TLatex* label;
   TLine* line;
-  double height;
+  // Get number of bins in hist
+  int N = hist->GetN();
+  // Arrays to store Y-values and upper errors
+  double* height;
+  double* errorbar;
+  double range = xup-xlow;
+  // Which bin to get the height of
+  int bin;
   if(go)
   {
+    height = hist->GetY();
+    errorbar = hist->GetEYhigh();
+    // Loop through the particles
     for(unsigned int i = 0; i < n; i++)
     {
       line = &(particles[i]->line);
       label = &(particles[i]->label);
-      height = hist->Eval(line->GetX1());
-      if(line->GetX1()>xlow && line->GetX1()<xup && height/frame->GetMaximum() > 0.05)
+        cout << "Labelling particle at " << line->GetX1() << " MeV" << endl;
+      // Find the right bin for the line
+      bin=0;
+      for(int j = 0; j < N-1 && hist->GetX()[j]+hist->GetErrorXhigh(j) < line->GetX1(); j++)
       {
-        line->SetY2(line->GetY2()*height);
+        bin = j+1;
+      }
+      // Check if the particle is in the range of the plot, and the line would be big enough
+      if(line->GetX1()>xlow && line->GetX1()<xup && height[bin]/frame->GetMaximum() > 0.05)
+      {
+        cout << "Bin " << bin << endl;        
+        // Scale up the line
+        line->SetY2(line->GetY2()*height[bin]);
         line->Draw();
-        label->SetY(label->GetY()*height+0.075*frame->GetMaximum());
+        // Put the label above surrounding error bars
+        label->SetX(label->GetX()-2*range/100);
+//        label->SetY(label->GetY()*maxOfFive(height[bin-2],height[bin-1],height[bin],height[bin+1],height[bin+2])+0.05*frame->GetMaximum()+errorbar[bin]);
+        label->SetY(label->GetY()*maxOfThree(height[TMath::Abs(bin-1)],height[bin],height[bin+1])+0.05*frame->GetMaximum()+errorbar[bin]);
         label->Draw();
       }
       else
       {
-        cout << "Skipping particle at " << line->GetX1() << " MeV" << endl;
+        cout << "Out of range" << endl;
       }
     }
   }

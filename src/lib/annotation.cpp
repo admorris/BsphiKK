@@ -17,6 +17,6 @@ annotation* resonance(double mass, string name, bool drawline)
   {
     _a->line.SetLineColor(0);
   }
-  _a->label.SetText(mass-50,1.0,name.c_str());
+  _a->label.SetText(mass,1.0,name.c_str());
   return _a;
 }
