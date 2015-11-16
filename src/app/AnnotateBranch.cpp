@@ -66,12 +66,12 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   };
   annotation* charmmesons[] = 
   {
-    resonance(1896.61,"#it{D}^{#plus}"    )
+    resonance(1869.61,"#it{D}^{#plus}"    )
   , resonance(1968.30,"#it{D_{s}}^{#plus}")
   };
   annotation* charmantimesons[] = 
   {
-    resonance(1896.61,"#it{D}^{#minus}"    )
+    resonance(1869.61,"#it{D}^{#minus}"    )
   , resonance(1968.30,"#it{D_{s}}^{#minus}")
   };
   annotation* charmbaryons[] =
