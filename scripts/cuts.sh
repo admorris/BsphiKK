@@ -11,6 +11,8 @@ Dsmass="1968.3"
 Dswindow="24"
 Dumass="1864.84"
 Duwindow="24"
+Ddmass="1869.61"
+Ddwindow="24"
 phimass="1019.461"
 phiwindow="15"
 ###############################################################################
@@ -42,5 +44,5 @@ phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bd
 LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.1))"
 Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.1))&&(TMath::Abs(phipbarM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.1))"
 DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
-Dtophipiveto="TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
+Dtophipiveto="TMath::Abs(phipiplusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiminusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
 vetoes=($phikstveto $LbphiKpveto $Lcphipveto $DtoKaonsveto $Dtophipiveto)

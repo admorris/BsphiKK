@@ -4,13 +4,15 @@
 #./getoutputdata | tee log/getoutputdata.log
 #./merge.sh | tee log/merge.log
 #./docuts.sh | tee log/docuts.log
-#./addBranches.sh | tee log/addBranches.log
-#./dovetoes.sh | tee log/dovetoes.log
-#./seleff.sh
-#./trigeff.sh
-#./sweight.sh | tee log/sweight.log
-#./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
-#./trainmva.sh | tee log/trainmva.log
-#./applymva.sh | tee log/applymva.log
-#mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
-#./mvacut.sh | tee log/mvacut.log
+./addBranches.sh | tee log/addBranches.log
+./dovetoes.sh | tee log/dovetoes.log
+./showvetoes.sh | tee log/showvetoes.log
+./seleff.sh
+./trigeff.sh
+./sweight.sh | tee log/sweight.log
+./plotMKK.sh
+./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
+./trainmva.sh | tee log/trainmva.log
+./applymva.sh | tee log/applymva.log
+./mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
+./mvacut.sh | tee log/mvacut.log
