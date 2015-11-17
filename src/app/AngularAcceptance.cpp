@@ -2,77 +2,112 @@
 #include <string>
 
 #include "TFile.h"
-#include "TH1.h"
 #include "TTree.h"
 
-#include "RooAbsPdf.h"
-#include "RooDataSet.h"
-#include "RooDataHist.h"
-#include "RooRealVar.h"
-#include "RooUniform.h"
+#include "TCanvas.h"
+#include "TH3.h"
+#include "TMultiDimFit.h"
+#include "TAxis.h"
 
 #include "progbar.h"
 
 using namespace std;
-using namespace RooFit;
 
-TH1D* normalise(TH1D* hist)
+double D(TH3D* hist, double x, double y, double z)
 {
-  hist->Scale(1.0/hist->Integral());
-  return hist;
+  int bin_x = hist->GetXaxis()->FindBin(x);
+  int bin_y = hist->GetYaxis()->FindBin(y);
+  int bin_z = hist->GetZaxis()->FindBin(z);
+  if(bin_x<1 || bin_x>hist->GetNbinsX() || bin_y<1 || bin_y>hist->GetNbinsY() || bin_z<1 || bin_z>hist->GetNbinsZ())
+  {
+      cout << bin_x << "\t" << bin_y << "\t" << bin_z << endl;
+  }
+  return hist->GetBinContent(bin_x,bin_y,bin_z);
 }
 
-TH1D* toyhist(RooAbsPdf* PDF, RooRealVar* x, int nbins = 100)
-{
-  RooDataSet* data = PDF->generate(*x,1000000);
-  string name = (string)PDF->GetName()+"Hist";
-  RooDataHist* hist = data->binnedClone();
-  return (TH1D*)hist->createHistogram(name.c_str(),*x,Binning(nbins));
-}
 void AngularAcceptance(string filename)
 {
+  // Input
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
-  TH1D* PhiHist = new TH1D("PhiHist","",100,-3.142,3.142);
-  TH1D* ct1Hist = new TH1D("ct1Hist","",100,-1,1);
-  TH1D* ct2Hist = new TH1D("ct2Hist","",100,-1,1);
-  double Phi_angle ; tree->SetBranchAddress("Phi_angle", &Phi_angle );
-  double cos_theta1; tree->SetBranchAddress("cos_theta1",&cos_theta1);
-  double cos_theta2; tree->SetBranchAddress("cos_theta2",&cos_theta2);
-  RooRealVar Phi("PhiVar","",0,-3.142,3.142);
-  RooRealVar ct1("ct1Var","",0,-1,1);
-  RooRealVar ct2("ct2Var","",0,-1,1);
-  RooUniform* PhiPDF = new RooUniform("Phi","",Phi);
-  RooUniform* ct1PDF = new RooUniform("ct1","",ct1);
-  RooUniform* ct2PDF = new RooUniform("ct2","",ct2);
-  unsigned int n = tree->GetEntries();
-  cout << "Reading in angles from MC." << endl;
+  int n = tree->GetEntries();
+  double x[3],d;
+  tree->SetBranchAddress("Phi_angle", &x[0]);
+  tree->SetBranchAddress("cos_theta1",&x[1]);
+  tree->SetBranchAddress("cos_theta2",&x[2]);
+  int nbins = 10;
+  double xlow = -3.14159;
+  double xup  = +3.14159;
+  double xrange = xup - xlow;
+  double ylow = -1;
+  double yup  = +1;
+  double yrange = yup - ylow;
+  double zlow = -1;
+  double zup  = +1;
+  double zrange = zup - zlow;
+  TH3D* hist = new TH3D("hist","",nbins,xlow-(xrange/(nbins)),xup+(xrange/(nbins))  // Phi range
+                                 ,nbins,ylow-(yrange/(nbins)),yup+(yrange/(nbins)) // cos_theta1 range
+                                 ,nbins,zlow-(zrange/(nbins)),zup+(zrange/(nbins)));// cos_theta2 range
+  cout << "Filling a 3D histogram with " << n << " events." << endl;
   progbar bar(n);
-  for(unsigned int i = 0; i < n; i++)
+  for(int i = 0; i < n; i++)
   {
     tree->GetEntry(i);
-    PhiHist->Fill(Phi_angle );
-    ct1Hist->Fill(cos_theta1);
-    ct2Hist->Fill(cos_theta2);
-    if(i%100==0)
+    hist->Fill(x[0],x[1],x[2]);
+    if(i%(n/100)==0) // should print 100 times?
     {
       bar.print(i);
     }
   }
   bar.terminate();
-  normalise(PhiHist);
-  normalise(ct1Hist);
-  normalise(ct2Hist);
-  PhiHist->Divide(normalise(toyhist(PhiPDF,&Phi)));
-  ct1Hist->Divide(normalise(toyhist(ct1PDF,&ct1)));
-  ct2Hist->Divide(normalise(toyhist(ct2PDF,&ct2)));
-  TFile* outputfile = new TFile("AngAcc.root","RECREATE");
-  outputfile->cd();
-  PhiHist->Write();
-  ct1Hist->Write();
-  ct2Hist->Write();
-  file->Close();
-  outputfile->Close();
+//  cout << "Normalising the histogram." << endl;
+//  hist->Scale(1.0/hist->Integral());
+  // Output
+  TFile* outfile = new TFile("AngAcc.root", "RECREATE");
+  TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre);
+  // Configuration
+  int maxpowers[3] = {4,4,6};
+  fit->SetMaxPowers(maxpowers);
+  fit->SetMaxFunctions(1000);
+  fit->SetMaxStudy(10000);
+  fit->SetMaxTerms(30);
+  fit->SetPowerLimit(1);
+  fit->SetMinAngle(10);
+  fit->SetMaxAngle(10);
+  fit->SetMinRelativeError(.01);
+  // Event loop
+  for(int i = 0; i < n; i++)
+  {
+    tree->GetEntry(i);
+    d = hist->Interpolate(x[0],x[1],x[2]);
+//    d = D(hist,x[0],x[1],x[2]);
+    if(i < n/2)
+    {
+      fit->AddRow(x,d); // Training sample
+    }
+    else
+    {
+      fit->AddTestRow(x,d); // Test sample
+    }
+  }
+  // Print starting parameters
+  fit->Print("p");
+  // Print out the statistics
+  fit->Print("s");
+  // Book histograms
+  fit->MakeHistograms();
+  // Find the parameterization
+  fit->FindParameterization();
+  // Print coefficents
+  fit->Print("rc");
+  // Do the fit
+  fit->Fit("M");
+  // Print result
+  fit->Print("fc");
+  // Write code to file
+  fit->MakeCode();
+  outfile->Write();
+  outfile->Close();
 }
 
 int main(int argc, char* argv[])
