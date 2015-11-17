@@ -13,15 +13,11 @@
 
 using namespace std;
 
-double D(TH3D* hist, double x, double y, double z)
+double D(TH3D* hist, double x, double y, double z) // Don't need this any more, since Interpolate() now works
 {
   int bin_x = hist->GetXaxis()->FindBin(x);
   int bin_y = hist->GetYaxis()->FindBin(y);
   int bin_z = hist->GetZaxis()->FindBin(z);
-  if(bin_x<1 || bin_x>hist->GetNbinsX() || bin_y<1 || bin_y>hist->GetNbinsY() || bin_z<1 || bin_z>hist->GetNbinsZ())
-  {
-      cout << bin_x << "\t" << bin_y << "\t" << bin_z << endl;
-  }
   return hist->GetBinContent(bin_x,bin_y,bin_z);
 }
 
@@ -35,6 +31,7 @@ void AngularAcceptance(string filename)
   tree->SetBranchAddress("Phi_angle", &x[0]);
   tree->SetBranchAddress("cos_theta1",&x[1]);
   tree->SetBranchAddress("cos_theta2",&x[2]);
+  // Configure and make the 3D histogram
   int nbins = 10;
   double xlow = -3.14159;
   double xup  = +3.14159;
@@ -45,16 +42,18 @@ void AngularAcceptance(string filename)
   double zlow = -1;
   double zup  = +1;
   double zrange = zup - zlow;
+  // For TH3::Interpolate() to work properly, the points have to be within the centres of the edge bins
   TH3D* hist = new TH3D("hist","",nbins,xlow-(xrange/(nbins)),xup+(xrange/(nbins))  // Phi range
-                                 ,nbins,ylow-(yrange/(nbins)),yup+(yrange/(nbins)) // cos_theta1 range
+                                 ,nbins,ylow-(yrange/(nbins)),yup+(yrange/(nbins))  // cos_theta1 range
                                  ,nbins,zlow-(zrange/(nbins)),zup+(zrange/(nbins)));// cos_theta2 range
+  // Fill the histogram
   cout << "Filling a 3D histogram with " << n << " events." << endl;
   progbar bar(n);
   for(int i = 0; i < n; i++)
   {
     tree->GetEntry(i);
     hist->Fill(x[0],x[1],x[2]);
-    if(i%(n/100)==0) // should print 100 times?
+    if(i%(n/100)==0)
     {
       bar.print(i);
     }
