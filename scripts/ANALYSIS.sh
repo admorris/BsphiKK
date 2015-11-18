@@ -14,5 +14,7 @@
 ./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
 ./trainmva.sh | tee log/trainmva.log
 ./applymva.sh | tee log/applymva.log
+./mvaplots.sh | tee log/mvaplots.log
 ./mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
 ./mvacut.sh | tee log/mvacut.log
+./angacc.sh | tee log/angacc.log
