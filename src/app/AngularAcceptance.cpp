@@ -13,13 +13,13 @@
 
 using namespace std;
 
-double D(TH3D* hist, double x, double y, double z) // Don't need this any more, since Interpolate() now works
-{
-  int bin_x = hist->GetXaxis()->FindBin(x);
-  int bin_y = hist->GetYaxis()->FindBin(y);
-  int bin_z = hist->GetZaxis()->FindBin(z);
-  return hist->GetBinContent(bin_x,bin_y,bin_z);
-}
+//double D(TH3D* hist, double x, double y, double z) // Don't need this any more, since Interpolate() now works
+//{
+//  int bin_x = hist->GetXaxis()->FindBin(x);
+//  int bin_y = hist->GetYaxis()->FindBin(y);
+//  int bin_z = hist->GetZaxis()->FindBin(z);
+//  return hist->GetBinContent(bin_x,bin_y,bin_z);
+//}
 
 void AngularAcceptance(string filename)
 {
@@ -32,7 +32,7 @@ void AngularAcceptance(string filename)
   tree->SetBranchAddress("cos_theta1",&x[1]);
   tree->SetBranchAddress("cos_theta2",&x[2]);
   // Configure and make the 3D histogram
-  int nbins = 10;
+  int nbins = 100;
   double xlow = -3.14159;
   double xup  = +3.14159;
   double xrange = xup - xlow;
@@ -59,13 +59,11 @@ void AngularAcceptance(string filename)
     }
   }
   bar.terminate();
-//  cout << "Normalising the histogram." << endl;
-//  hist->Scale(1.0/hist->Integral());
   // Output
   TFile* outfile = new TFile("AngAcc.root", "RECREATE");
-  TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre);
+  TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre,"KV");
   // Configuration
-  int maxpowers[3] = {4,4,6};
+  int maxpowers[3] = {8,8,10};
   fit->SetMaxPowers(maxpowers);
   fit->SetMaxFunctions(1000);
   fit->SetMaxStudy(10000);
@@ -104,7 +102,7 @@ void AngularAcceptance(string filename)
   // Print result
   fit->Print("fc");
   // Write code to file
-  fit->MakeCode();
+  fit->MakeMethod("AutoAngAcc");
   outfile->Write();
   outfile->Close();
 }
