@@ -18,7 +18,7 @@ TH1D* plotBsmass(string filename = "LbphiKp_MC")
   cout << "Plotting Bs mass from " << filename << endl;
 /*Input************************************************************************/
   // Open the input file
-  TFile* infile  = new TFile(("../ntuples/"+filename+"_mvaVars_vetoes.root").c_str());
+  TFile* infile  = new TFile(("../ntuples/"+filename+"_mvaVars.root").c_str());
   // Get the input tree
   TTree* intree  = (TTree*)infile->Get("DecayTree");
   // Set branches to read
