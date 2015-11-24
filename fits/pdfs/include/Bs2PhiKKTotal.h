@@ -15,12 +15,13 @@
 #include "framework/include/BasePDF.h"
 #endif
 #include "TMath.h"
+#include "Bs2PhiKKComponent.h"
 
 class Bs2PhiKKTotal : public BasePDF
 {
     public:
       Bs2PhiKKTotal(PDFConfigurator*);
-      ~Bs2PhiKKComponent();
+      ~Bs2PhiKKTotal();
       virtual double Evaluate(DataPoint*);
       virtual double Normalisation(DataPoint*, PhaseSpaceBoundary*);
       virtual bool SetPhysicsParameters(ParameterSet*);
@@ -29,14 +30,16 @@ class Bs2PhiKKTotal : public BasePDF
       bool init;
       Bs2PhiKKTotal& operator=( const Bs2PhiKKTotal& );
       void MakePrototypes();
+      // K+K− mass and helicity angles
       double        mKK,     ctheta_1,     ctheta_2,     phi;
       ObservableRef mKKName, ctheta_1Name, ctheta_2Name, phiName;
-      double        ASzero2,     APzero2,     APpara2,     ADzero2,     ADpara2;
-      ObservableRef ASzero2Name, APzero2Name, APpara2Name, ADzero2Name, ADpara2Name;
-      double APperp2() { return 1.0 - APzero2 - APpara2 ; }
-      double ADperp2() { return 1.0 - ADzero2 - ADpara2 ; }
-      double        nSwave,     nPwave,     nDwave;
-      ObservableRef nSwaveName, nPwaveName, nDwaveName;
+      // Magnitude-squared of helicity amplitudes
+      double        ASsq,     APsq[3],     ADsq[3];
+      ObservableRef ASsqName, APsqName[3], ADsqName[3];
+      // Phase of helicity amplitudes
+      double        deltaS,     deltaP[3],     deltaD[3];
+      ObservableRef deltaSName, deltaPName[3], deltaDName[3];
+      // The m(KK) components
       Bs2PhiKKComponent* Swave;
       Bs2PhiKKComponent* Pwave;
       Bs2PhiKKComponent* Dwave;
