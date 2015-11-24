@@ -4,13 +4,14 @@
 #include "DPMassShape.hh"
 #include <string>
 #include <vector>
+#include "DPBarrierFactor.hh"
 using std::string;
 using std::vector;
 class Bs2PhiKKComponent
 {
   public:
     Bs2PhiKKComponent(int, double, double, string); // J2, M2, W2
-    void SetParameters(double, vector<TComplex>); 
+    void SetParameters(vector<TComplex>); 
     TComplex Amplitude(double, double, double, double); // KK_M, Phi_angle, cos_theta1, cos_theta2
   private:
     TComplex*        A(int);                    // Polarisation amplitude coefficients
@@ -23,7 +24,8 @@ class Bs2PhiKKComponent
     double           _M2; // Mass of particle 2
     double           _W1; // Width of particle 1 (phi width)
     double           _W2; // Width of particle 2
-    double           _lambda_max; // Keep track of the max. helicity value
+    int              _lambda_max; // Keep track of the max. helicity value
     DPMassShape*     _M; // Pointer to resonance shape function
-}
+    DPBarrierFactor* barrier; // Blatt-Weisskopf barrier penetration factor for particle 2
+};
 #endif
