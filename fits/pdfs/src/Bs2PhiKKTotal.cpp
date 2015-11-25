@@ -61,9 +61,12 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   MakePrototypes();
   cout << "Making PhiKK" << endl;
   // Initialise the signal components
-  Swave = new Bs2PhiKKComponent(0, 980    ,100    ,"FT");
-  Pwave = new Bs2PhiKKComponent(1,1019.461,  4.266,"BW");
-  Dwave = new Bs2PhiKKComponent(2,1525    , 73    ,"BW");
+  // Typical values of barrier factor radius are 3 and 1.7 inverse GeV
+  double RBs = 1.7;
+  double RKK = 1.7; // TODO: Get these from the config
+  Swave = new Bs2PhiKKComponent(0, 980    ,100    ,"FT",RBs,RKK);
+  Pwave = new Bs2PhiKKComponent(1,1019.461,  4.266,"BW",RBs,RKK);
+  Dwave = new Bs2PhiKKComponent(2,1525    , 73    ,"BW",RBs,RKK);
 }
 //Destructor
 Bs2PhiKKTotal::~Bs2PhiKKTotal()
@@ -108,6 +111,20 @@ bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
     deltaP[i] = allParameters.GetPhysicsParameter(deltaPName[i])->GetValue();
     deltaD[i] = allParameters.GetPhysicsParameter(deltaDName[i])->GetValue();
   }
+  // Construct and set helicity amplitudes
+  // S-wave
+  vector<TComplex> AS;
+  AS.push_back(TComplex(sqrt(ASsq), deltaS, true));
+  Swave->SetHelicityAmplitudes(AS);
+  // P- and D-wave
+  vector<TComplex> AP, AD;
+  for(unsigned short i = 0; i < 3; i++)
+  {
+    AP.push_back(TComplex(sqrt(APsq[i]), deltaP[i], true));
+    AD.push_back(TComplex(sqrt(ADsq[i]), deltaD[i], true));
+  }
+  Pwave->SetHelicityAmplitudes(AP);
+  Dwave->SetHelicityAmplitudes(AD);
   return isOK;
 }
 //Return a list of parameters not to be integrated
@@ -123,20 +140,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
   phi      = measurement->GetObservable(phiName     )->GetValue();
-  // Construct and set helicity amplitudes
-  // S-wave
-  vector<TComplex> AS;
-  AS.push_back(TComplex(sqrt(ASsq), deltaS, true));
-  Swave->SetHelicityAmplitudes(AS);
-  // P- and D-wave
-  vector<TComplex> AP, AD;
-  for(unsigned short i = 0; i < 3; i++)
-  {
-    AP.push_back(TComplex(sqrt(APsq[i]), deltaP[i], true));
-    AD.push_back(TComplex(sqrt(ADsq[i]), deltaD[i], true));
-  }
-  Pwave->SetHelicityAmplitudes(AP);
-  Dwave->SetHelicityAmplitudes(AD);
+
   // Sum-square of component amplitudes 
   double evalres;
   TComplex amplitude = Swave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
@@ -145,6 +149,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
   evalres = amplitude.Rho2();
   return evalres;
 }
+// Normalise by summing over squares of helicity amplitudes
 double Bs2PhiKKTotal::Normalisation(DataPoint * measurement, PhaseSpaceBoundary * boundary)
 {
   double norm = 0;
