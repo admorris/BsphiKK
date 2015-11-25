@@ -26,7 +26,7 @@ using std::endl;
 Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape, double RBs, double RKK) : 
     _J1(1)        // Spin of phi --> fixed
   , _J2(J2)       // Spin of KK resonance
-  , _M1(mphi) // Mass of phi --> fixed
+  , _M1(mphi)     // Mass of phi --> fixed
   , _M2(M2)       // Mass of KK resonance
   , _W1(4.266)    // Width of phi --> fixed
   , _W2(W2)       // Width of KK resonance

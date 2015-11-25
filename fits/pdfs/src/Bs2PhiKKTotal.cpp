@@ -102,8 +102,11 @@ void Bs2PhiKKTotal::MakePrototypes()
 bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
 {
   bool isOK = allParameters.SetPhysicsParameters(NewParameterSet);
+  // Retrieve the physics parameters
+  // S-wave
   ASsq      = allParameters.GetPhysicsParameter(ASsqName     )->GetValue();
   deltaS    = allParameters.GetPhysicsParameter(deltaSName   )->GetValue();
+  // P- and D-wave
   for(unsigned short i = 0; i < 3; i++)
   {
     APsq[i]   = allParameters.GetPhysicsParameter(APsqName[i]  )->GetValue();
@@ -111,18 +114,18 @@ bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
     deltaP[i] = allParameters.GetPhysicsParameter(deltaPName[i])->GetValue();
     deltaD[i] = allParameters.GetPhysicsParameter(deltaDName[i])->GetValue();
   }
-  // Construct and set helicity amplitudes
+  // Construct the amplitudes
+  vector<TComplex> AS, AP, AD;
   // S-wave
-  vector<TComplex> AS;
   AS.push_back(TComplex(sqrt(ASsq), deltaS, true));
-  Swave->SetHelicityAmplitudes(AS);
   // P- and D-wave
-  vector<TComplex> AP, AD;
   for(unsigned short i = 0; i < 3; i++)
   {
     AP.push_back(TComplex(sqrt(APsq[i]), deltaP[i], true));
     AD.push_back(TComplex(sqrt(ADsq[i]), deltaD[i], true));
   }
+  // Set the amplitudes
+  Swave->SetHelicityAmplitudes(AS);
   Pwave->SetHelicityAmplitudes(AP);
   Dwave->SetHelicityAmplitudes(AD);
   return isOK;
