@@ -17,20 +17,20 @@ class Bs2PhiKKComponent
     void SetHelicityAmplitudes(vector<TComplex>); 
     TComplex Amplitude(double, double, double, double); // KK_M, Phi_angle, cos_theta1, cos_theta2
   private:
-    TComplex*        A(int);                    // Polarisation amplitude coefficients
+    TComplex         A(int);                    // Polarisation amplitude coefficients
     TComplex         F(double, double, double); // Angular part
     TComplex         M(double);                 // Mass-dependent part (KK resonance shape)
-    vector<TComplex> _A;
-    int              _J1; // Spin of the phi (P-wave, 1)
-    int              _J2; // Spin of the KK resonance (0, 1 or 2)
-    double           _M1; // Mass of the phi
-    double           _M2; // Mass of the KK resonance
-    double           _W1; // Width of the phi
-    double           _W2; // Width of the KK resonance
-    int              _lambda_max; // Keep track of the max. helicity value
-    DPMassShape*     _M; // Pointer to resonance shape function
-    DPBarrierFactor* Bsbarrier; // Blatt-Weisskopf barrier penetration factor for the Bs
-    DPBarrierFactor* KKbarrier; // Barrier factor for the KK resonance
+    vector<TComplex>  _A;  // A vector to contain the amplitudes....which for some reason loses its size()
+    int               _J1; // Spin of the phi (P-wave, 1)
+    int               _J2; // Spin of the KK resonance (0, 1 or 2)
+    double            _M1; // Mass of the phi
+    double            _M2; // Mass of the KK resonance
+    double            _W1; // Width of the phi
+    double            _W2; // Width of the KK resonance
+    int               _lambda_max; // Keep track of the max. helicity value
+    DPMassShape*      _M; // Pointer to resonance shape function
+    DPBarrierFactor*  Bsbarrier; // Blatt-Weisskopf barrier penetration factor for the Bs
+    DPBarrierFactor*  KKbarrier; // Barrier factor for the KK resonance
     double mBs  = 5366.77;
     double mphi = 1019.461;
     double mK   = 493.677;

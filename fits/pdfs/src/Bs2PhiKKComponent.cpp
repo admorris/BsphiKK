@@ -34,10 +34,16 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape,
   // RBs and RKK are barrier factor radii for the Bs and the KK resonance
 {
   _lambda_max = TMath::Min(_J1,_J2); // Maximum helicity
-  for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
+  cout << "New spin-" << _J2 << " KK resonance" << endl;
+  cout << "Mass:\t" << M2 << " MeV" << endl;
+  cout << "Width:\t" << W2 << " MeV" << endl;
+  cout << "Helicity values: ";
+  for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
     _A.push_back(TComplex(sqrt(1.0/(1+2*_lambda_max)),0)); // Make our helicity amplitudes
+    cout << lambda << "\t";
   }
+  cout << endl;
   // Breit Wigner
   if(shape=="BW")
   {
@@ -63,9 +69,9 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape,
   }
 }
 // Get the corresponding helicity amplitude for a given value of helicity, instead of using array indices
-TComplex* Bs2PhiKKComponent::A(int lambda)
+TComplex Bs2PhiKKComponent::A(int lambda)
 {
-  return &_A[lambda+_lambda_max];
+  return _A[lambda+_lambda_max];
 }
 // Mass-dependent part of the amplitude
 TComplex Bs2PhiKKComponent::M(double m)
@@ -76,9 +82,9 @@ TComplex Bs2PhiKKComponent::M(double m)
 TComplex Bs2PhiKKComponent::F(double Phi, double theta1, double theta2)
 {
   TComplex result(0, 0);
-  for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
+  for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    result += *A(lambda) * Y(-lambda, _J1, TMath::Pi() - theta1, -Phi)*Y(lambda, _J2, theta2, 0);
+    result += A(lambda) * Y(-lambda, _J1, TMath::Pi() - theta1, -Phi)*Y(lambda, _J2, theta2, 0);
   }
   return result;
 }
@@ -110,11 +116,11 @@ TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double cos_theta1,
 // Set helicity amplitude parameters
 void Bs2PhiKKComponent::SetHelicityAmplitudes(vector<TComplex> newA)
 {
-  if(newA.size()!=_A.size())
+  if( newA.size() != _A.size())
   {
     cout << newA.size() << " amplitudes given, but " << _A.size() << " required!" << endl;
   }
-  for(unsigned int i = 0; i < _A.size(); i++)
+  for(unsigned int i = 0; i < newA.size(); i++)
   {
     _A[i] = newA[i];
   }

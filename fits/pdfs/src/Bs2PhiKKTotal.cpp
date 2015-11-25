@@ -139,6 +139,11 @@ vector<string> Bs2PhiKKTotal::GetDoNotIntegrateList()
 //Calculate the function value
 double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
 {
+  if(init)
+  {
+    cout << "First evaluate call" << endl;
+    init = false;
+  }
   mKK      = measurement->GetObservable(mKKName     )->GetValue();
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
