@@ -31,6 +31,9 @@ class Bs2PhiKKComponent
     DPMassShape*     _M; // Pointer to resonance shape function
     DPBarrierFactor* Bsbarrier; // Blatt-Weisskopf barrier penetration factor for the Bs
     DPBarrierFactor* KKbarrier; // Barrier factor for the KK resonance
+    double mBs  = 5366.77;
+    double mphi = 1019.461;
+    double mK   = 493.677;
 };
 #endif
 
