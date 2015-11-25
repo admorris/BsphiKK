@@ -5,13 +5,13 @@
  *  @author Adam Morris
  *  @date Nov-Dec 2015
  */
-
+// Self
 #include "Bs2PhiKKTotal.h"
-#include "Bs2PhiKKComponent.h"
-#include "TComplex.h"
+// Std Libraries
 #include <iostream>
-#include "math.h"
-#include "TMath.h"
+// ROOT Libraries
+#include "TComplex.h"
+// RapidFit
 #include "PDFConfigurator.h"
 #define DEBUGFLAG true
 
@@ -19,12 +19,12 @@ PDF_CREATOR( Bs2PhiKKTotal )
 
 //Constructor
 Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
-  // Observables
+  // Dependent variables
     mKK(0.0)
   , phi(0.0)
   , ctheta_1(0.0)
   , ctheta_2(0.0)
-  // Observables
+  // Dependent variable names
   , mKKName       ( config->getName("mKK"     ) )
   , ctheta_1Name  ( config->getName("ctheta_1") )
   , ctheta_2Name  ( config->getName("ctheta_2") )
@@ -32,7 +32,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   // Options
   , init(true)
 {
-  // Physics parameters
+  // Set physics parameters to zero for now
   ASsq      = 0;
   deltaS    = 0;
   for(unsigned short i = 0; i < 3; i++)
@@ -60,6 +60,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   deltaDName[2] = config->getName("deltaDplus" );  
   MakePrototypes();
   cout << "Making PhiKK" << endl;
+  // Initialise the signal components
   Swave = new Bs2PhiKKComponent(0, 980    ,100    ,"FT");
   Pwave = new Bs2PhiKKComponent(1,1019.461,  4.266,"BW");
   Dwave = new Bs2PhiKKComponent(2,1525    , 73    ,"BW");
@@ -122,10 +123,11 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
   phi      = measurement->GetObservable(phiName     )->GetValue();
+  // Construct and set helicity amplitudes
   // S-wave
   vector<TComplex> AS;
   AS.push_back(TComplex(sqrt(ASsq), deltaS, true));
-  Swave->SetParameters(AS);
+  Swave->SetHelicityAmplitudes(AS);
   // P- and D-wave
   vector<TComplex> AP, AD;
   for(unsigned short i = 0; i < 3; i++)
@@ -133,9 +135,9 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
     AP.push_back(TComplex(sqrt(APsq[i]), deltaP[i], true));
     AD.push_back(TComplex(sqrt(ADsq[i]), deltaD[i], true));
   }
-  Pwave->SetParameters(AP);
-  Dwave->SetParameters(AD);
-  
+  Pwave->SetHelicityAmplitudes(AP);
+  Dwave->SetHelicityAmplitudes(AD);
+  // Sum-square of component amplitudes 
   double evalres;
   TComplex amplitude = Swave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
                      + Pwave->Amplitude(mKK, phi, ctheta_1, ctheta_2)

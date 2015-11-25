@@ -1,9 +1,12 @@
 #ifndef __BS2PHIKKCOMPONENT_H__
 #define __BS2PHIKKCOMPONENT_H__
+// ROOT
 #include "TComplex.h"
-#include "DPMassShape.hh"
+// Std
 #include <string>
 #include <vector>
+// RapidFit
+#include "DPMassShape.hh"
 #include "DPBarrierFactor.hh"
 using std::string;
 using std::vector;
@@ -11,7 +14,7 @@ class Bs2PhiKKComponent
 {
   public:
     Bs2PhiKKComponent(int, double, double, string); // J2, M2, W2
-    void SetParameters(vector<TComplex>); 
+    void SetHelicityAmplitudes(vector<TComplex>); 
     TComplex Amplitude(double, double, double, double); // KK_M, Phi_angle, cos_theta1, cos_theta2
   private:
     TComplex*        A(int);                    // Polarisation amplitude coefficients

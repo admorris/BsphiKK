@@ -14,14 +14,16 @@
 #ifdef __CINT__
 #include "framework/include/BasePDF.h"
 #endif
-#include "TMath.h"
+// Self
 #include "Bs2PhiKKComponent.h"
 
 class Bs2PhiKKTotal : public BasePDF
 {
     public:
+      // *structors
       Bs2PhiKKTotal(PDFConfigurator*);
       ~Bs2PhiKKTotal();
+      // Required methods
       virtual double Evaluate(DataPoint*);
       virtual double Normalisation(DataPoint*, PhaseSpaceBoundary*);
       virtual bool SetPhysicsParameters(ParameterSet*);
