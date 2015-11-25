@@ -22,14 +22,15 @@
 using std::cout;
 using std::endl;
 // Constructor
-Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape) : 
+Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape, double RBs, double RKK) : 
     _J1(1)        // Spin of phi --> fixed
   , _J2(J2)       // Spin of KK resonance
   , _M1(1019.461) // Mass of phi --> fixed
   , _M2(M2)       // Mass of KK resonance
   , _W1(4.266)    // Width of phi --> fixed
   , _W2(W2)       // Width of KK resonance
-{
+  // the string shape chooses a resonance shape
+  // RBs and RKK are barrier factor radii for the Bs and the KK resonance
   _lambda_max = TMath::Min(_J1,_J2); // Maximum helicity
   for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
   {
@@ -38,12 +39,25 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape)
   // Breit Wigner
   if(shape=="BW")
   {
-    _M = new DPBWResonanceShape(M2,W2,J2,493.677,493.677,1.7); // Typical values of barrier factor radius are 3 and 1.7 inverse GeV
+    _M = new DPBWResonanceShape(M2,W2,J2,493.677,493.677,RKK); 
   }
   // Flatte
   if(shape=="FT")
   {
     _M = new DPFlatteShape(M2, 199,139.570,139.570, 199*3,493.677,493.677); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
+  }
+  Bsbarrier = new DPBarrierL0(RBs);
+  switch (LR)
+  {
+    case 0: KKbarrier = new DPBarrierL0(RKK);
+            break;
+    case 1: KKbarrier = new DPBarrierL1(RKK);
+            break;
+    case 2: KKbarrier = new DPBarrierL2(RKK);
+            break;
+    default: cout << "WARNING: Do not know which barrier factor to use." << endl;
+             KKbarrier = new DPBarrierL0(RKK);
+             break;
   }
 }
 // Get the corresponding helicity amplitude for a given value of helicity, instead of using array indices
