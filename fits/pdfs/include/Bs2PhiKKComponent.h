@@ -32,3 +32,4 @@ class Bs2PhiKKComponent
     DPBarrierFactor* barrier; // Blatt-Weisskopf barrier penetration factor for particle 2
 };
 #endif
+

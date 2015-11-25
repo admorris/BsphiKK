@@ -54,7 +54,8 @@ TComplex* Bs2PhiKKComponent::A(int lambda)
 // Mass-dependent part of the amplitude
 TComplex Bs2PhiKKComponent::M(double m)
 {
-  retu
+  return _M->massShape(m);
+}
 // Angular part of the amplitude
 TComplex Bs2PhiKKComponent::F(double Phi, double theta1, double theta2)
 {
@@ -81,5 +82,5 @@ void Bs2PhiKKComponent::SetHelicityAmplitudes(vector<TComplex> newA)
   {
     _A[i] = newA[i];
   }
-}rn _M->massShape(m);
 }
+

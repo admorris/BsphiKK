@@ -156,3 +156,4 @@ double Bs2PhiKKTotal::Normalisation(DataPoint * measurement, PhaseSpaceBoundary 
   }
  	return norm;
 }
+

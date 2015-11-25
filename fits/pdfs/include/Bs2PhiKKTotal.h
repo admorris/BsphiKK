@@ -47,3 +47,4 @@ class Bs2PhiKKTotal : public BasePDF
       Bs2PhiKKComponent* Dwave;
 };
 #endif
+
