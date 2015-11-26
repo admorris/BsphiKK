@@ -34,16 +34,15 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape,
   // RBs and RKK are barrier factor radii for the Bs and the KK resonance
 {
   _lambda_max = TMath::Min(_J1,_J2); // Maximum helicity
-  cout << "New spin-" << _J2 << " KK resonance" << endl;
-  cout << "Mass:\t" << M2 << " MeV" << endl;
-  cout << "Width:\t" << W2 << " MeV" << endl;
-  cout << "Helicity values: ";
+  int n = 1+2*_lambda_max;
+  _Amag   = new double[n];
+  _Aphase = new double[n];
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    _A.push_back(TComplex(sqrt(1.0/(1+2*_lambda_max)),0)); // Make our helicity amplitudes
-    cout << lambda << "\t";
+    _Amag[lambda] = sqrt(1.0/(n));
+    _Aphase[lambda] = 0;
   }
-  cout << endl;
+  Print();
   // Breit Wigner
   if(shape=="BW")
   {
@@ -68,10 +67,15 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape,
              break;
   }
 }
+Bs2PhiKKComponent::~Bs2PhiKKComponent()
+{
+  cout << "Bs2PhiKKComponent destructor" << endl;
+}
 // Get the corresponding helicity amplitude for a given value of helicity, instead of using array indices
 TComplex Bs2PhiKKComponent::A(int lambda)
 {
-  return _A[lambda+_lambda_max];
+  int i = lambda + _lambda_max;
+  return TComplex(_Amag[i],_Aphase[i],true);
 }
 // Mass-dependent part of the amplitude
 TComplex Bs2PhiKKComponent::M(double m)
@@ -79,12 +83,12 @@ TComplex Bs2PhiKKComponent::M(double m)
   return _M->massShape(m);
 }
 // Angular part of the amplitude
-TComplex Bs2PhiKKComponent::F(double Phi, double theta1, double theta2)
+TComplex Bs2PhiKKComponent::F(double Phi, double cos_theta1, double cos_theta2)
 {
   TComplex result(0, 0);
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    result += A(lambda) * Y(-lambda, _J1, TMath::Pi() - theta1, -Phi)*Y(lambda, _J2, theta2, 0);
+    result += A(lambda) * Y(_J1, -lambda, -cos_theta1, -Phi)*Y(_J2, lambda, cos_theta2, 0);
   }
   return result;
 }
@@ -94,7 +98,7 @@ TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double cos_theta1,
   // Mass-dependent part
   double massPart       = M(mKK);
   // Angular part
-  double angularPart    = F(phi, TMath::ACos(cos_theta1), TMath::ACos(cos_theta2));
+  double angularPart    = F(phi, cos_theta1, cos_theta2);
   // Orbital factor
   // Masses
   double m_min = mK + mK;
@@ -116,13 +120,28 @@ TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double cos_theta1,
 // Set helicity amplitude parameters
 void Bs2PhiKKComponent::SetHelicityAmplitudes(vector<TComplex> newA)
 {
-  if( newA.size() != _A.size())
+  if( newA.size() != 1+2*_lambda_max)
   {
-    cout << newA.size() << " amplitudes given, but " << _A.size() << " required!" << endl;
+    cout << newA.size() << " amplitudes given, but " << 1+2*_lambda_max << " required!" << endl;
   }
   for(unsigned int i = 0; i < newA.size(); i++)
   {
-    _A[i] = newA[i];
+    _Amag[i] = newA[i].Rho();
+    _Aphase[i] = newA[i].Theta();
   }
 }
-
+void Bs2PhiKKComponent::Print()
+{
+  cout << "Spin-" << _J2 << " KK resonance" << endl;
+  cout << "Mass:    \t" << _M2 << " MeV" << endl;
+  cout << "Width:   \t" << _W2 << " MeV" << endl;
+  cout << "Helicity:\t";
+  int n = 1+2*_lambda_max;
+  _Amag   = new double[n];
+  _Aphase = new double[n];
+  for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
+  {
+    cout << lambda << " ";
+  }
+  cout << endl;
+}

@@ -32,6 +32,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   // Options
   , init(true)
 {
+  cout << "Bs2PhiKKTotal constructor" << endl;
   // Set physics parameters to zero for now
   ASsq      = 0;
   deltaS    = 0;
@@ -71,13 +72,12 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
 //Destructor
 Bs2PhiKKTotal::~Bs2PhiKKTotal()
 {
-  delete Swave;
-  delete Pwave;
-  delete Dwave;
+  cout << "Bs2PhiKKTotal destructor" << endl;
 }
 //Make the data point and parameter set
 void Bs2PhiKKTotal::MakePrototypes()
 {
+  cout << "MakePrototypes" << endl;
   //Make the DataPoint prototype
   allObservables.push_back( mKKName      );
   allObservables.push_back( ctheta_1Name );
@@ -139,11 +139,6 @@ vector<string> Bs2PhiKKTotal::GetDoNotIntegrateList()
 //Calculate the function value
 double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
 {
-  if(init)
-  {
-    cout << "First evaluate call" << endl;
-    init = false;
-  }
   mKK      = measurement->GetObservable(mKKName     )->GetValue();
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();

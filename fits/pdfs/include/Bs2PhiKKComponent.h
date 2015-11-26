@@ -14,13 +14,16 @@ class Bs2PhiKKComponent
 {
   public:
     Bs2PhiKKComponent(int, double, double, string, double, double); // J2, M2, W2, shape, RBs, RKK
+    ~Bs2PhiKKComponent();
     void SetHelicityAmplitudes(vector<TComplex>); 
     TComplex Amplitude(double, double, double, double); // KK_M, Phi_angle, cos_theta1, cos_theta2
+    void Print();
   private:
     TComplex         A(int);                    // Polarisation amplitude coefficients
     TComplex         F(double, double, double); // Angular part
     TComplex         M(double);                 // Mass-dependent part (KK resonance shape)
-    vector<TComplex>  _A;  // A vector to contain the amplitudes....which for some reason loses its size()
+    double*           _Amag;  // A vector to contain the amplitudes.
+    double*           _Aphase;
     int               _J1; // Spin of the phi (P-wave, 1)
     int               _J2; // Spin of the KK resonance (0, 1 or 2)
     double            _M1; // Mass of the phi
