@@ -14,7 +14,6 @@
 // RapidFit
 #include "PDFConfigurator.h"
 #define DEBUGFLAG true
-
 PDF_CREATOR( Bs2PhiKKTotal )
 
 //Constructor
@@ -32,7 +31,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   // Options
   , init(true)
 {
-  cout << "Bs2PhiKKTotal constructor" << endl;
+//  cout << "Bs2PhiKKTotal constructor" << endl;
   // Set physics parameters to zero for now
   ASsq      = 0;
   deltaS    = 0;
@@ -59,8 +58,46 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   deltaDName[0] = config->getName("deltaDminus");
   deltaDName[1] = config->getName("deltaDzero" );
   deltaDName[2] = config->getName("deltaDplus" );  
+  Initialise();
+}
+// Copy constructor
+Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) : 
+    BasePDF( (BasePDF) copy)
+  // Dependent variables
+  , mKK(copy.mKK)
+  , phi(copy.phi)
+  , ctheta_1(copy.ctheta_1)
+  , ctheta_2(copy.ctheta_2)
+  // Dependent variable names
+  , mKKName       (copy.mKKName)
+  , ctheta_1Name  (copy.ctheta_1Name)
+  , ctheta_2Name  (copy.ctheta_2Name)
+  , phiName       (copy.phiName)
+{
+  ASsq = copy.ASsq;
+  deltaS = copy.deltaS;
+  ASsqName = copy.ASsqName;
+  deltaSName = copy.deltaSName;
+  for(unsigned short i = 0; i < 3; i++)
+  {
+    APsq[i] = copy.APsq[i];
+    ADsq[i] = copy.ADsq[i];
+    deltaP[i] = copy.deltaP[i];
+    deltaD[i] = copy.deltaD[i];
+    APsqName[i] = copy.APsqName[i];
+    ADsqName[i] = copy.ADsqName[i];
+    deltaPName[i] = copy.deltaPName[i];
+    deltaDName[i] = copy.deltaDName[i];
+  }
   MakePrototypes();
-  cout << "Making PhiKK" << endl;
+  Initialise();
+}
+//Destructor
+Bs2PhiKKTotal::~Bs2PhiKKTotal()
+{
+}
+void Bs2PhiKKTotal::Initialise()
+{
   // Initialise the signal components
   // Typical values of barrier factor radius are 3 and 1.7 inverse GeV
   double RBs = 1.7;
@@ -68,16 +105,12 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   Swave = new Bs2PhiKKComponent(0, 980    ,100    ,"FT",RBs,RKK);
   Pwave = new Bs2PhiKKComponent(1,1019.461,  4.266,"BW",RBs,RKK);
   Dwave = new Bs2PhiKKComponent(2,1525    , 73    ,"BW",RBs,RKK);
-}
-//Destructor
-Bs2PhiKKTotal::~Bs2PhiKKTotal()
-{
-  cout << "Bs2PhiKKTotal destructor" << endl;
+//  this->SetNumericalNormalisation( true );
+//	this->TurnCachingOff();
 }
 //Make the data point and parameter set
 void Bs2PhiKKTotal::MakePrototypes()
 {
-  cout << "MakePrototypes" << endl;
   //Make the DataPoint prototype
   allObservables.push_back( mKKName      );
   allObservables.push_back( ctheta_1Name );
@@ -95,17 +128,17 @@ void Bs2PhiKKTotal::MakePrototypes()
     parameterNames.push_back( deltaDName[i] );
   }
   allParameters = *( new ParameterSet(parameterNames) );
-  cout << "Finished making prototypes" << endl;
 }
 
 //Not only set the physics parameters, but indicate that the cache is no longer valid
 bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
 {
   bool isOK = allParameters.SetPhysicsParameters(NewParameterSet);
-  // Retrieve the physics parameters
+  // Retrieve the physics parameters and set amplitudes
   // S-wave
   ASsq      = allParameters.GetPhysicsParameter(ASsqName     )->GetValue();
   deltaS    = allParameters.GetPhysicsParameter(deltaSName   )->GetValue();
+  Swave->SetHelicityAmplitudes(0,sqrt(ASsq), deltaS);
   // P- and D-wave
   for(unsigned short i = 0; i < 3; i++)
   {
@@ -113,21 +146,9 @@ bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
     ADsq[i]   = allParameters.GetPhysicsParameter(ADsqName[i]  )->GetValue();
     deltaP[i] = allParameters.GetPhysicsParameter(deltaPName[i])->GetValue();
     deltaD[i] = allParameters.GetPhysicsParameter(deltaDName[i])->GetValue();
+    Pwave->SetHelicityAmplitudes(i,sqrt(APsq[i]), deltaP[i]);
+    Dwave->SetHelicityAmplitudes(i,sqrt(ADsq[i]), deltaD[i]);
   }
-  // Construct the amplitudes
-  vector<TComplex> AS, AP, AD;
-  // S-wave
-  AS.push_back(TComplex(sqrt(ASsq), deltaS, true));
-  // P- and D-wave
-  for(unsigned short i = 0; i < 3; i++)
-  {
-    AP.push_back(TComplex(sqrt(APsq[i]), deltaP[i], true));
-    AD.push_back(TComplex(sqrt(ADsq[i]), deltaD[i], true));
-  }
-  // Set the amplitudes
-  Swave->SetHelicityAmplitudes(AS);
-  Pwave->SetHelicityAmplitudes(AP);
-  Dwave->SetHelicityAmplitudes(AD);
   return isOK;
 }
 //Return a list of parameters not to be integrated
@@ -143,7 +164,6 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
   phi      = measurement->GetObservable(phiName     )->GetValue();
-
   // Sum-square of component amplitudes 
   double evalres;
   TComplex amplitude = Swave->Amplitude(mKK, phi, ctheta_1, ctheta_2)

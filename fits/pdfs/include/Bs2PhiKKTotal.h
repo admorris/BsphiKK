@@ -22,16 +22,14 @@ class Bs2PhiKKTotal : public BasePDF
     public:
       // *structors
       Bs2PhiKKTotal(PDFConfigurator*);
+      Bs2PhiKKTotal(const Bs2PhiKKTotal&);
       ~Bs2PhiKKTotal();
       // Required methods
       virtual double Evaluate(DataPoint*);
       virtual double Normalisation(DataPoint*, PhaseSpaceBoundary*);
       virtual bool SetPhysicsParameters(ParameterSet*);
       virtual vector<string> GetDoNotIntegrateList();
-    private:
-      bool init;
-      Bs2PhiKKTotal& operator=( const Bs2PhiKKTotal& );
-      void MakePrototypes();
+    protected:
       // K+K− mass and helicity angles
       double        mKK,     ctheta_1,     ctheta_2,     phi;
       ObservableRef mKKName, ctheta_1Name, ctheta_2Name, phiName;
@@ -45,6 +43,10 @@ class Bs2PhiKKTotal : public BasePDF
       Bs2PhiKKComponent* Swave;
       Bs2PhiKKComponent* Pwave;
       Bs2PhiKKComponent* Dwave;
+    private:
+      void Initialise();
+      bool init;
+      void MakePrototypes();
 };
 #endif
 

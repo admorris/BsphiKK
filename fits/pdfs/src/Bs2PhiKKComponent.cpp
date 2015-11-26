@@ -22,6 +22,7 @@
 #include "SphericalHarmonic.h"
 using std::cout;
 using std::endl;
+using std::flush;
 // Constructor
 Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape, double RBs, double RKK) : 
     _J1(1)        // Spin of phi --> fixed
@@ -30,46 +31,64 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape,
   , _M2(M2)       // Mass of KK resonance
   , _W1(4.266)    // Width of phi --> fixed
   , _W2(W2)       // Width of KK resonance
-  // the string shape chooses a resonance shape
-  // RBs and RKK are barrier factor radii for the Bs and the KK resonance
+  , _shape(shape) // chooses a resonance shape
+  , _RBs(RBs)     // RBs and RKK are barrier factor radii for the Bs and the KK resonance
+  , _RKK(RKK)
+{
+  Initialise();
+}
+void Bs2PhiKKComponent::Initialise()
 {
   _lambda_max = TMath::Min(_J1,_J2); // Maximum helicity
   int n = 1+2*_lambda_max;
   _Amag   = new double[n];
   _Aphase = new double[n];
-  for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
+  for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
   {
     _Amag[lambda] = sqrt(1.0/(n));
     _Aphase[lambda] = 0;
   }
-  Print();
   // Breit Wigner
-  if(shape=="BW")
+  if(_shape=="BW")
   {
-    _M = new DPBWResonanceShape(M2,W2,J2,mK,mK,RKK); 
+    _M = new DPBWResonanceShape(_M2,_W2,_J2,mK,mK,_RKK); 
   }
   // Flatte
-  if(shape=="FT")
+  if(_shape=="FT")
   {
-    _M = new DPFlatteShape(M2, 199,139.570,139.570, 199*3,mK,mK); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
+    _M = new DPFlatteShape(_M2, 199,139.570,139.570, 199*3,mK,mK); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
   }
-  Bsbarrier = new DPBarrierL0(RBs);
+  Bsbarrier = new DPBarrierL0(_RBs);
   switch (_J2)
   {
-    case 0: KKbarrier = new DPBarrierL0(RKK);
+    case 0: KKbarrier = new DPBarrierL0(_RKK);
             break;
-    case 1: KKbarrier = new DPBarrierL1(RKK);
+    case 1: KKbarrier = new DPBarrierL1(_RKK);
             break;
-    case 2: KKbarrier = new DPBarrierL2(RKK);
+    case 2: KKbarrier = new DPBarrierL2(_RKK);
             break;
     default: cout << "WARNING: Do not know which barrier factor to use." << endl;
-             KKbarrier = new DPBarrierL0(RKK);
+             KKbarrier = new DPBarrierL0(_RKK);
              break;
+  }
+}
+Bs2PhiKKComponent::Bs2PhiKKComponent(const Bs2PhiKKComponent& copy) : 
+    _J2(copy._J2)
+  , _M2(copy._M2)
+  , _W2(copy._W2)
+  , _shape(copy._shape)
+  , _RBs(copy._RBs)
+  , _RKK(copy._RKK)
+{
+  Initialise();
+  for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
+  {
+    _Amag[lambda] = copy._Amag[lambda];
+    _Aphase[lambda] = copy._Aphase[lambda];
   }
 }
 Bs2PhiKKComponent::~Bs2PhiKKComponent()
 {
-  cout << "Bs2PhiKKComponent destructor" << endl;
 }
 // Get the corresponding helicity amplitude for a given value of helicity, instead of using array indices
 TComplex Bs2PhiKKComponent::A(int lambda)
@@ -118,28 +137,18 @@ TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double cos_theta1,
   return massPart * angularPart * orbitalFactor * barrierFactor;
 }
 // Set helicity amplitude parameters
-void Bs2PhiKKComponent::SetHelicityAmplitudes(vector<TComplex> newA)
+void Bs2PhiKKComponent::SetHelicityAmplitudes(int i, double mag, double phase)
 {
-  if( newA.size() != 1+2*_lambda_max)
-  {
-    cout << newA.size() << " amplitudes given, but " << 1+2*_lambda_max << " required!" << endl;
-  }
-  for(unsigned int i = 0; i < newA.size(); i++)
-  {
-    _Amag[i] = newA[i].Rho();
-    _Aphase[i] = newA[i].Theta();
-  }
+  _Amag[i] = mag;
+  _Aphase[i] = phase;
 }
 void Bs2PhiKKComponent::Print()
 {
-  cout << "Spin-" << _J2 << " KK resonance" << endl;
-  cout << "Mass:    \t" << _M2 << " MeV" << endl;
-  cout << "Width:   \t" << _W2 << " MeV" << endl;
-  cout << "Helicity:\t";
-  int n = 1+2*_lambda_max;
-  _Amag   = new double[n];
-  _Aphase = new double[n];
-  for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
+  cout << "| Spin-" << _J2 << " KK resonance" << endl;
+  cout << "| Mass:    \t" << _M2 << " MeV" << endl;
+  cout << "| Width:   \t" << _W2 << " MeV" << endl;
+  cout << "| Helicity:\t";
+  for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
   {
     cout << lambda << " ";
   }
