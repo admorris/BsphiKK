@@ -3,7 +3,7 @@
 	  // Magnitudes squared
     <PhysicsParameter>
       <Name>ASzero2</Name>
-      <Value>100</Value>
+      <Value>852</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -11,7 +11,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APminus2</Name>
-      <Value>100</Value>
+      <Value>76</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -19,7 +19,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>100</Value>
+      <Value>108</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -27,7 +27,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APplus2</Name>
-      <Value>100</Value>
+      <Value>76</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -35,7 +35,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADminus2</Name>
-      <Value>100</Value>
+      <Value>24</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -43,7 +43,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>100</Value>
+      <Value>41</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -51,7 +51,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADplus2</Name>
-      <Value>100</Value>
+      <Value>89</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
       <Type>Free</Type>
@@ -60,7 +60,7 @@
     // Phases
     <PhysicsParameter>
       <Name>deltaSzero</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -68,7 +68,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaPminus</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -76,7 +76,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaPzero</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -84,7 +84,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaPplus</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -92,7 +92,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaDminus</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -100,7 +100,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaDzero</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -108,7 +108,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaDplus</Name>
-      <Value>0.3</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
@@ -118,75 +118,85 @@
   // Choose the minimiser
   <Minimiser>
     <MinimiserName>Minuit</MinimiserName>
-    <MaxSteps>100</MaxSteps>
   </Minimiser>
   // Choose the fit function
   <FitFunction>
-    <FunctionName>NegativeLogLikelihoodThreaded</FunctionName>
-    <Threads>1</Threads>
+    <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
     <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
     <FixedIntegrationPoints>100000</FixedIntegrationPoints>
-	  <SetIntegratorTest>True</SetIntegratorTest>
+    <Threads>16</Threads>
   </FitFunction>
-	<ToFit>
-    // Choose the PDF
-	  <PDF>
+  
+  <CommonPDF>
+  	<PDF>
 		  <Name>Bs2PhiKKTotal</Name>
     </PDF>
+  </CommonPDF>
+  
+  <CommonPhaseSpace>
+	  <PhaseSpaceBoundary>
+      <Observable>
+        <Name>mKK</Name>
+        <TF1>KK_M</TF1>
+        <Minimum>980</Minimum>
+        <Maximum>1800</Maximum>
+        <Unit>MeV/c^{2}</Unit>
+      </Observable>
+      <Observable>
+        <Name>phi</Name>
+		    <TF1>Phi_angle</TF1>
+        <Minimum>-3.14159</Minimum>
+        <Maximum>3.14159</Maximum>
+        <Unit>rad</Unit>
+      </Observable>
+      <Observable>
+        <Name>ctheta_1</Name>
+		    <TF1>cos_theta1</TF1>
+        <Minimum>-1.0</Minimum>
+        <Maximum>1.0</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ctheta_2</Name>
+		    <TF1>cos_theta2</TF1>
+        <Minimum>-1.0</Minimum>
+        <Maximum>1.0</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+    </PhaseSpaceBoundary>
+  </CommonPhaseSpace>
+  
+	<ToFit>
+    // Choose the PDF
+    <CommonPDF>True</CommonPDF>
+		<PDFConfigurator>
+		</PDFConfigurator>
 		<DataSet>
 			<Source>File</Source>
 			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mva.root</FileName>
 			<CutString>mlp>0.62</CutString>
 			<NTuplePath>DecayTree</NTuplePath>
 			<NumberEvents>1000000</NumberEvents>
-			<PhaseSpaceBoundary>
-        <Observable>
-          <Name>mKK</Name>
-          <TF1>KK_M</TF1>
-          <Minimum>980</Minimum>
-          <Maximum>1800</Maximum>
-          <Unit>MeV/c^{2}</Unit>
-        </Observable>
-	      <Observable>
-		      <Name>phi</Name>
-   				<TF1>Phi_angle</TF1>
-		      <Minimum>-3.14159</Minimum>
-		      <Maximum>3.14159</Maximum>
-		      <Unit>rad</Unit>
-	      </Observable>
-	      <Observable>
-		      <Name>ctheta_1</Name>
-   				<TF1>cos_theta1</TF1>
-		      <Minimum>-1.0</Minimum>
-		      <Maximum>1.0</Maximum>
-		      <Unit>Unitless</Unit>
-	      </Observable>
-	      <Observable>
-		      <Name>ctheta_2</Name>
-   				<TF1>cos_theta2</TF1>
-		      <Minimum>-1.0</Minimum>
-		      <Maximum>1.0</Maximum>
-		      <Unit>Unitless</Unit>
-	      </Observable>
-      </PhaseSpaceBoundary>
+			<CommonPhaseSpace>
+			</CommonPhaseSpace>
 		</DataSet>
 	</ToFit>
 	<Output>
     <ComponentProjection>
       <Name>mKK</Name>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>phi</Name>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>ctheta_1</Name>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>ctheta_2</Name>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
     </ComponentProjection>
   </Output>
 </RapidFit>
