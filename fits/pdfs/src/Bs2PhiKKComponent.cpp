@@ -45,8 +45,9 @@ void Bs2PhiKKComponent::Initialise()
   _Aphase = new double[n];
   for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
   {
-    _Amag[lambda] = sqrt(1.0/(n));
-    _Aphase[lambda] = 0;
+    int i = lambda+_lambda_max;
+    _Amag[i] = sqrt(1.0/(n));
+    _Aphase[i] = 0;
   }
   // Breit Wigner
   if(_shape=="BW")
@@ -83,12 +84,18 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(const Bs2PhiKKComponent& copy) :
   Initialise();
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    _Amag[lambda] = copy._Amag[lambda];
-    _Aphase[lambda] = copy._Aphase[lambda];
+    int i = lambda+_lambda_max;
+    _Amag[i] = copy._Amag[i];
+    _Aphase[i] = copy._Aphase[i];
   }
 }
 Bs2PhiKKComponent::~Bs2PhiKKComponent()
 {
+  delete[] _Amag;
+  delete[] _Aphase;
+  delete _M;
+  delete Bsbarrier;
+  delete KKbarrier;
 }
 // Get the corresponding helicity amplitude for a given value of helicity, instead of using array indices
 TComplex Bs2PhiKKComponent::A(int lambda)

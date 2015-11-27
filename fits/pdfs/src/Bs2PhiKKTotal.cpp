@@ -31,7 +31,6 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   // Options
   , init(true)
 {
-//  cout << "Bs2PhiKKTotal constructor" << endl;
   // Set physics parameters to zero for now
   ASsq      = 0;
   deltaS    = 0;
@@ -95,6 +94,9 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) :
 //Destructor
 Bs2PhiKKTotal::~Bs2PhiKKTotal()
 {
+  delete Swave;
+  delete Pwave;
+  delete Dwave;
 }
 void Bs2PhiKKTotal::Initialise()
 {

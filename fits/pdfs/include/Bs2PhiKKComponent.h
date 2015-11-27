@@ -43,6 +43,7 @@ class Bs2PhiKKComponent
     double mBs  = 5366.77;
     double mphi = 1019.461;
     double mK   = 493.677;
+    bool debug = false;
 };
 #endif
 
