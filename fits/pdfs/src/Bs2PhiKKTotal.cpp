@@ -107,8 +107,8 @@ void Bs2PhiKKTotal::Initialise()
   Swave = new Bs2PhiKKComponent(0, 980    ,100    ,"FT",RBs,RKK);
   Pwave = new Bs2PhiKKComponent(1,1019.461,  4.266,"BW",RBs,RKK);
   Dwave = new Bs2PhiKKComponent(2,1525    , 73    ,"BW",RBs,RKK);
-//  this->SetNumericalNormalisation( true );
-//	this->TurnCachingOff();
+  this->SetNumericalNormalisation( true );
+	this->TurnCachingOff();
 }
 //Make the data point and parameter set
 void Bs2PhiKKTotal::MakePrototypes()
