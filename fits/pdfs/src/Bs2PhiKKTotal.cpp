@@ -122,11 +122,15 @@ void Bs2PhiKKTotal::MakePrototypes()
   vector<string> parameterNames;
   parameterNames.push_back( ASsqName );
   parameterNames.push_back( deltaSName );
+  // Separate loops for P-wave and D-wave for readability in fit output
   for(unsigned short i = 0; i < 3; i++)
   {
     parameterNames.push_back( APsqName[i] );
-    parameterNames.push_back( ADsqName[i] );
     parameterNames.push_back( deltaPName[i] );
+  }
+  for(unsigned short i = 0; i < 3; i++)
+  {
+    parameterNames.push_back( ADsqName[i] );
     parameterNames.push_back( deltaDName[i] );
   }
   allParameters = *( new ParameterSet(parameterNames) );
