@@ -114,7 +114,7 @@ TComplex Bs2PhiKKComponent::F(double Phi, double ctheta_1, double ctheta_2)
   TComplex result(0, 0);
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    result += A(lambda) * Y(_J1, -lambda, -ctheta_1, -Phi)*Y(_J2, lambda, ctheta_2, 0);
+    result += A(lambda) * SphericalHarmonic::Y(_J1, -lambda, -ctheta_1, -Phi)*SphericalHarmonic::Y(_J2, lambda, ctheta_2, 0);
   }
   return result;
 }

@@ -6,7 +6,7 @@
 using std::cout;
 using std::endl;
 
-TComplex Y(int l, int m, double ctheta, double phi)
+TComplex SphericalHarmonic::Y(int l, int m, double ctheta, double phi)
 {
   if(l < 0)
   {
