@@ -1,12 +1,12 @@
-/** @class Bs2PhiKK Bs2PhiKK.h
+/** @class Bs2PhiKK_PwaveOnly Bs2PhiKK_PwaveOnly.h
  *
- *  RapidFit PDF for Bs2PhiKK
+ *  RapidFit PDF for Bs2PhiKK_PwaveOnly
  *
  *  @author Adam Morris
  *  @date Sept 2015
  */
-#ifndef Bs2PhiKK_H
-#define Bs2PhiKK_H
+#ifndef Bs2PhiKK_PwaveOnly_H
+#define Bs2PhiKK_PwaveOnly_H
 
 #ifndef __CINT__
 #include "BasePDF.h"
@@ -16,12 +16,12 @@
 #endif
 #include "TMath.h"
 
-class Bs2PhiKK : public BasePDF
+class Bs2PhiKK_PwaveOnly : public BasePDF
 {
     public:
-      Bs2PhiKK(PDFConfigurator*);
-      Bs2PhiKK(const Bs2PhiKK&);
-      ~Bs2PhiKK();
+      Bs2PhiKK_PwaveOnly(PDFConfigurator*);
+      Bs2PhiKK_PwaveOnly(const Bs2PhiKK_PwaveOnly&);
+      ~Bs2PhiKK_PwaveOnly();
 
       //Calculate the PDF value
       virtual double Evaluate(DataPoint*);
@@ -32,7 +32,7 @@ class Bs2PhiKK : public BasePDF
       double Azero2, Apara2, GammaL, GammaH, deltapara;
       bool init;
     private:
-      Bs2PhiKK& operator=( const Bs2PhiKK& );
+      Bs2PhiKK_PwaveOnly& operator=( const Bs2PhiKK_PwaveOnly& );
       void MakePrototypes();
       ObservableRef Apara2Name, Azero2Name, GammaLName, GammaHName, deltaparaName;
       // These contain the ObservableRefs that correspond

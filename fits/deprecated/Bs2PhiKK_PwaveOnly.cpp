@@ -1,22 +1,22 @@
-/** @class Bs2PhiKK Bs2PhiKK.cpp
+/** @class Bs2PhiKK_PwaveOnly Bs2PhiKK_PwaveOnly.cpp
  *
- *  RapidFit PDF for Bs2PhiKK
+ *  RapidFit PDF for Bs2PhiKK_PwaveOnly
  *
  *  @author Adam Morris
  *  @date Sept 2015
  */
 
-#include "Bs2PhiKK.h"
+#include "Bs2PhiKK_PwaveOnly.h"
 #include <iostream>
 #include "math.h"
 #include "TMath.h"
 #include "PDFConfigurator.h"
 #define DEBUGFLAG true
 
-PDF_CREATOR( Bs2PhiKK )
+PDF_CREATOR( Bs2PhiKK_PwaveOnly )
 
 //Constructor
-Bs2PhiKK::Bs2PhiKK(PDFConfigurator* config) :
+Bs2PhiKK_PwaveOnly::Bs2PhiKK_PwaveOnly(PDFConfigurator* config) :
     Apara2(0.0)
   , Azero2(0.0)
   , GammaL(0.0)
@@ -43,7 +43,7 @@ Bs2PhiKK::Bs2PhiKK(PDFConfigurator* config) :
 }
 
 //Make the data point and parameter set
-void Bs2PhiKK::MakePrototypes()
+void Bs2PhiKK_PwaveOnly::MakePrototypes()
 {
   //Make the DataPoint prototype
   allObservables.push_back( ctheta_1Name );
@@ -63,7 +63,7 @@ void Bs2PhiKK::MakePrototypes()
 
 //................................................
 //  Copy Constructor
-Bs2PhiKK::Bs2PhiKK( const Bs2PhiKK& input ) :
+Bs2PhiKK_PwaveOnly::Bs2PhiKK_PwaveOnly( const Bs2PhiKK_PwaveOnly& input ) :
     BasePDF( (BasePDF) input )
   // , Aperp(input.Aperp)
   , Apara2(input.Apara2)
@@ -88,12 +88,12 @@ Bs2PhiKK::Bs2PhiKK( const Bs2PhiKK& input ) :
 }
 
 //Destructor
-Bs2PhiKK::~Bs2PhiKK()
+Bs2PhiKK_PwaveOnly::~Bs2PhiKK_PwaveOnly()
 {
 }
 
 //Not only set the physics parameters, but indicate that the cache is no longer valid
-bool Bs2PhiKK::SetPhysicsParameters( ParameterSet * NewParameterSet )
+bool Bs2PhiKK_PwaveOnly::SetPhysicsParameters( ParameterSet * NewParameterSet )
 {
   bool isOK = allParameters.SetPhysicsParameters(NewParameterSet);
   Apara2       = allParameters.GetPhysicsParameter( Apara2Name    )->GetValue();
@@ -104,13 +104,13 @@ bool Bs2PhiKK::SetPhysicsParameters( ParameterSet * NewParameterSet )
   return isOK;
 }
 //Return a list of parameters not to be integrated
-vector<string> Bs2PhiKK::GetDoNotIntegrateList()
+vector<string> Bs2PhiKK_PwaveOnly::GetDoNotIntegrateList()
 {
   vector<string> list;
   return list;
 }
 //Calculate the function value
-double Bs2PhiKK::Evaluate(DataPoint * measurement)
+double Bs2PhiKK_PwaveOnly::Evaluate(DataPoint * measurement)
 {
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
@@ -141,7 +141,7 @@ double Bs2PhiKK::Evaluate(DataPoint * measurement)
   }
   return evalres;
 }
-double Bs2PhiKK::Normalisation(DataPoint * measurement, PhaseSpaceBoundary * boundary)
+double Bs2PhiKK_PwaveOnly::Normalisation(DataPoint * measurement, PhaseSpaceBoundary * boundary)
 {
  	return K1() + K2() + K3();
 }
