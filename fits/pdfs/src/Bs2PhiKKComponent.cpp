@@ -109,22 +109,22 @@ TComplex Bs2PhiKKComponent::M(double m)
   return _M->massShape(m);
 }
 // Angular part of the amplitude
-TComplex Bs2PhiKKComponent::F(double Phi, double cos_theta1, double cos_theta2)
+TComplex Bs2PhiKKComponent::F(double Phi, double ctheta_1, double ctheta_2)
 {
   TComplex result(0, 0);
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    result += A(lambda) * Y(_J1, -lambda, -cos_theta1, -Phi)*Y(_J2, lambda, cos_theta2, 0);
+    result += A(lambda) * Y(_J1, -lambda, -ctheta_1, -Phi)*Y(_J2, lambda, ctheta_2, 0);
   }
   return result;
 }
 // The full amplitude
-TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double cos_theta1, double cos_theta2)
+TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double ctheta_1, double ctheta_2)
 {
   // Mass-dependent part
-  double massPart       = M(mKK);
+  TComplex massPart    = M(mKK);
   // Angular part
-  double angularPart    = F(phi, cos_theta1, cos_theta2);
+  TComplex angularPart = F(phi, ctheta_1, ctheta_2);
   // Orbital factor
   // Masses
   double m_min = mK + mK;
