@@ -7,6 +7,7 @@
 ./addBranches.sh | tee log/addBranches.log
 ./dovetoes.sh | tee log/dovetoes.log
 ./showvetoes.sh | tee log/showvetoes.log
+./vetoeff.sh | tee log/vetoeff.log
 ./seleff.sh
 ./trigeff.sh
 ./sweight.sh | tee log/sweight.log
@@ -14,7 +15,9 @@
 ./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
 ./trainmva.sh | tee log/trainmva.log
 ./applymva.sh | tee log/applymva.log
+plotmKK_mva.sh | tee log/plotmKK_mva.log
 ./mvaplots.sh | tee log/mvaplots.log
 ./mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
 ./mvacut.sh | tee log/mvacut.log
+./plot4D.sh | tee log/plot4D.log
 ./angacc.sh | tee log/angacc.log

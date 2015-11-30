@@ -17,7 +17,8 @@ do
        -T \"${title}\" \
        -U \"${unit}\" \
        -O \"$plotname\" \
-       ${range}
+       ${range} \
+       -b 100
 done
 exit 0
 
