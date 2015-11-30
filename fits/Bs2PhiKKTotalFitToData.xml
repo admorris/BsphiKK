@@ -138,7 +138,7 @@
       <Observable>
         <Name>mKK</Name>
         <TF1>KK_M</TF1>
-        <Minimum>980</Minimum>
+        <Minimum>988</Minimum>
         <Maximum>1800</Maximum>
         <Unit>MeV/c^{2}</Unit>
       </Observable>
