@@ -3,7 +3,8 @@
 #include "TComplex.h"
 class SphericalHarmonic
 {
-  static TComplex Y(int, int, double, double); // l, m, cos_theta, phi
+  public:
+    static TComplex Y(int, int, double, double); // l, m, cos_theta, phi
 };
 // l is spin
 // m is spin projection -l < m < +l
