@@ -56,7 +56,8 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   deltaPName[2] = config->getName("deltaPplus" );
   deltaDName[0] = config->getName("deltaDminus");
   deltaDName[1] = config->getName("deltaDzero" );
-  deltaDName[2] = config->getName("deltaDplus" );  
+  deltaDName[2] = config->getName("deltaDplus" );
+  MakePrototypes(); // Should only ever go in the constructor. Never put this in the copy constructor!!
   Initialise();
 }
 // Copy constructor
@@ -88,7 +89,6 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) :
     deltaPName[i] = copy.deltaPName[i];
     deltaDName[i] = copy.deltaDName[i];
   }
-  MakePrototypes();
   Initialise();
 }
 //Destructor
@@ -115,9 +115,9 @@ void Bs2PhiKKTotal::MakePrototypes()
 {
   //Make the DataPoint prototype
   allObservables.push_back( mKKName      );
+  allObservables.push_back( phiName      );
   allObservables.push_back( ctheta_1Name );
   allObservables.push_back( ctheta_2Name );
-  allObservables.push_back( phiName      );
   //Make the parameter set
   vector<string> parameterNames;
   parameterNames.push_back( ASsqName );
@@ -170,6 +170,15 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
   phi      = measurement->GetObservable(phiName     )->GetValue();
+  
+  if(phi < -TMath::Pi() || phi > TMath::Pi() || ctheta_1 < -1 || ctheta_1 > 1 || ctheta_2 < -1 || ctheta_2 > 1 || mKK<493*2)
+  {
+    cout << "Bs2PhiKKComponent::Amplitude() received unphysical datapoint:" << endl;
+    cout << "m(KK)      :\t" << mKK << endl;
+    cout << "phi        :\t" << phi << endl;
+    cout << "cos(theta1):\t" << ctheta_1 << endl;
+    cout << "cos(theta2):\t" << ctheta_2 << endl;
+  }
   // Sum-square of component amplitudes 
   double evalres;
   TComplex amplitude = Swave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
