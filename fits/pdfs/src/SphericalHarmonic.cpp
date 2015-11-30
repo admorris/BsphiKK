@@ -6,21 +6,21 @@
 using std::cout;
 using std::endl;
 
-TComplex Y(int l, int m, double cos_theta, double phi)
+TComplex Y(int l, int m, double ctheta, double phi)
 {
   if(l < 0)
   {
-    cout << "Negative value of l = " << l << endl;
+    cout << "SphericalHarmonic::Y Negative value of l = " << l << endl;
     return TComplex(0,0);
   }
   if(m > l || m < -l)
   {
-    cout << "Unphysical value: m = " << m << " for l = " << l << endl;
+    cout << "SphericalHarmonic::Y Unphysical value: m = " << m << " for l = " << l << endl;
     return TComplex(0,0);
   }
-  if(cos_theta < -1 || cos_theta > 1)
+  if(ctheta < -1 || ctheta > 1)
   {
-    cout << "Impossible value: cos(theta) = " << cos_theta << endl;
+    cout << "SphericalHarmonic::Y Impossible value: cos(theta) = " << ctheta << endl;
     return TComplex(0,0);
   }
   double c = 1; // Proportionality constant to turn P^{m}_{l} into P^{-m}_{l}
@@ -28,5 +28,5 @@ TComplex Y(int l, int m, double cos_theta, double phi)
   {
     c = TMath::Power(-1,m) * TMath::Factorial(l-m) / TMath::Factorial(l+m);
   }
-  return c*ROOT::Math::sph_legendre(l,TMath::Abs(m),cos_theta)*TComplex::Exp(TComplex::I()*m*phi);
+  return c*ROOT::Math::sph_legendre(l,TMath::Abs(m),ctheta)*TComplex::Exp(TComplex::I()*m*phi);
 }
