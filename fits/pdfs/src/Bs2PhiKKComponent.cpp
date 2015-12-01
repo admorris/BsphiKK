@@ -57,7 +57,7 @@ void Bs2PhiKKComponent::Initialise()
   // Flatte
   if(_shape=="FT")
   {
-    _M = new DPFlatteShape(_M2, 199,139.570,139.570, 199*3,mK,mK); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
+    _M = new DPFlatteShape(_M2, 199,mpi,mpi, 199*3,mK,mK); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
   }
   Bsbarrier = new DPBarrierL0(_RBs);
   switch (_J2)
