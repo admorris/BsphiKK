@@ -23,6 +23,13 @@
 using std::cout;
 using std::endl;
 using std::flush;
+
+
+double Bs2PhiKKComponent::mBs  = 5366.77;
+double Bs2PhiKKComponent::mphi = 1019.461;
+double Bs2PhiKKComponent::mK   = 493.677;
+double Bs2PhiKKComponent::mpi  = 139.570;
+
 // Constructor
 Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape, double RBs, double RKK) : 
     _J1(1)        // Spin of phi --> fixed
@@ -39,25 +46,25 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(int J2, double M2, double W2, string shape,
 }
 void Bs2PhiKKComponent::Initialise()
 {
-  _lambda_max = TMath::Min(_J1,_J2); // Maximum helicity
-  int n = 1+2*_lambda_max;
+  _lambda_max = TMath::Min(_J1, _J2); // Maximum helicity
+  int n = 1 + 2 * _lambda_max;
   _Amag   = new double[n];
   _Aphase = new double[n];
   for(int lambda = -_lambda_max; lambda <= +_lambda_max; lambda++)
   {
-    int i = lambda+_lambda_max;
-    _Amag[i] = sqrt(1.0/(n));
+    int i = lambda + _lambda_max;
+    _Amag[i] = sqrt(1.0 / n);
     _Aphase[i] = 0;
   }
   // Breit Wigner
   if(_shape=="BW")
   {
-    _M = new DPBWResonanceShape(_M2,_W2,_J2,mK,mK,_RKK); 
+    _M = new DPBWResonanceShape(_M2, _W2, _J2, mK, mK, _RKK); 
   }
   // Flatte
   if(_shape=="FT")
   {
-    _M = new DPFlatteShape(_M2, 199,mpi,mpi, 199*3,mK,mK); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
+    _M = new DPFlatteShape(_M2, 199, mpi, mpi, 199*3, mK, mK); // Values for g0 and g1 are taken from Table 8 in LHCb-PAPER-2012-005
   }
   Bsbarrier = new DPBarrierL0(_RBs);
   switch (_J2)
@@ -84,7 +91,7 @@ Bs2PhiKKComponent::Bs2PhiKKComponent(const Bs2PhiKKComponent& copy) :
   Initialise();
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    int i = lambda+_lambda_max;
+    int i = lambda + _lambda_max;
     _Amag[i] = copy._Amag[i];
     _Aphase[i] = copy._Aphase[i];
   }
@@ -101,7 +108,7 @@ Bs2PhiKKComponent::~Bs2PhiKKComponent()
 TComplex Bs2PhiKKComponent::A(int lambda)
 {
   int i = lambda + _lambda_max;
-  return TComplex(_Amag[i],_Aphase[i],true);
+  return TComplex(_Amag[i], _Aphase[i], true);
 }
 // Mass-dependent part of the amplitude
 TComplex Bs2PhiKKComponent::M(double m)
@@ -114,7 +121,7 @@ TComplex Bs2PhiKKComponent::F(double Phi, double ctheta_1, double ctheta_2)
   TComplex result(0, 0);
   for(int lambda = -_lambda_max; lambda <= _lambda_max; lambda++)
   {
-    result += A(lambda) * SphericalHarmonic::Y(_J1, -lambda, -ctheta_1, -Phi)*SphericalHarmonic::Y(_J2, lambda, ctheta_2, 0);
+    result += A(lambda) * SphericalHarmonic::Y(_J1, -lambda, -ctheta_1, -Phi) * SphericalHarmonic::Y(_J2, lambda, ctheta_2, 0);
   }
   return result;
 }
@@ -127,9 +134,9 @@ TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double ctheta_1, d
   TComplex angularPart = F(phi, ctheta_1, ctheta_2);
   // Orbital factor
   // Masses
-  double m_min = mK + mK;
-  double m_max = mBs - _M1;
-  double m0_eff = m_min + (m_max - m_min)*(1+TMath::TanH( (_M2 - (m_min+m_max)/2.)/(m_max - m_min)))/2;
+  double m_min  = mK + mK;
+  double m_max  = mBs - _M1;
+  double m0_eff = m_min + (m_max - m_min) * (1 + TMath::TanH((_M2 - (m_min + m_max) / 2) / (m_max - m_min))) / 2;
   // Momenta
   double pBs  = DPHelpers::daughterMomentum(mBs, _M1, mKK   );
   double pKK  = DPHelpers::daughterMomentum(mKK, mK , mK    );
@@ -138,8 +145,8 @@ TComplex Bs2PhiKKComponent::Amplitude(double mKK, double phi, double ctheta_1, d
   double orbitalFactor = TMath::Power(pBs/mBs,   0)*
                          TMath::Power(pKK/mKK, _J2);
   // Barrier factors
-  double barrierFactor = Bsbarrier->barrier( pBs0, pBs )*
-                         KKbarrier->barrier( pKK0, pKK );
+  double barrierFactor = Bsbarrier->barrier(pBs0, pBs)*
+                         KKbarrier->barrier(pKK0, pKK);
   // Result
   return massPart * angularPart * orbitalFactor * barrierFactor;
 }

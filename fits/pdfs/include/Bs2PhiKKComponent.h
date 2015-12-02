@@ -1,3 +1,10 @@
+/** @class Bs2PhiKKComponent Bs2PhiKKComponent.cpp
+ *
+ *  RapidFit PDF for Bs2PhiKKComponent
+ *
+ *  @author Adam Morris
+ *  @date Nov-Dec 2015
+ */
 #ifndef __BS2PHIKKCOMPONENT_H__
 #define __BS2PHIKKCOMPONENT_H__
 // ROOT
@@ -19,8 +26,12 @@ class Bs2PhiKKComponent
     void SetHelicityAmplitudes(int, double, double); 
     TComplex Amplitude(double, double, double, double); // KK_M, Phi_angle, cos_theta1, cos_theta2
     void Print();
+    static double mBs ;
+    static double mphi;
+    static double mK  ;
+    static double mpi ;
   protected:
-    double*           _Amag;  // A vector to contain the amplitudes.
+    double*           _Amag;  // Arrays to contain the amplitudes.
     double*           _Aphase;
     int               _J1; // Spin of the phi (P-wave, 1)
     int               _J2; // Spin of the KK resonance (0, 1 or 2)
@@ -40,10 +51,6 @@ class Bs2PhiKKComponent
     DPBarrierFactor*  KKbarrier; // Barrier factor for the KK resonance
     DPMassShape*      _M; // Pointer to resonance shape function
     int               _lambda_max; // Keep track of the max. helicity value
-    double mBs  = 5366.77;
-    double mphi = 1019.461;
-    double mK   = 493.677;
-    double mpi  = 139.570;
     bool debug = false;
 };
 #endif
