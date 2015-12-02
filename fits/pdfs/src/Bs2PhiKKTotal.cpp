@@ -13,10 +13,10 @@
 #include "TComplex.h"
 // RapidFit
 #include "PDFConfigurator.h"
+#include "AutoAngAcc.h"
 #define DEBUGFLAG true
 PDF_CREATOR( Bs2PhiKKTotal )
-
-//Constructor
+// Constructor
 Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   // Dependent variables
     mKK(0.0)
@@ -91,7 +91,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) :
   }
   Initialise();
 }
-//Destructor
+// Destructor
 Bs2PhiKKTotal::~Bs2PhiKKTotal()
 {
   delete Swave;
@@ -104,46 +104,48 @@ void Bs2PhiKKTotal::Initialise()
   // Typical values of barrier factor radius are 3 and 1.7 inverse GeV
   double RBs = 1.7;
   double RKK = 1.7; // TODO: Get these from the config
-  Swave = new Bs2PhiKKComponent(0, 980    ,100    ,"FT",RBs,RKK);
-  Pwave = new Bs2PhiKKComponent(1,1019.461,  4.266,"BW",RBs,RKK);
-  Dwave = new Bs2PhiKKComponent(2,1525    , 73    ,"BW",RBs,RKK);
+  double mphi = Bs2PhiKKComponent::mphi;
+  Swave = new Bs2PhiKKComponent(0, 980,100    ,"FT",RBs,RKK);
+  Pwave = new Bs2PhiKKComponent(1,mphi,  4.266,"BW",RBs,RKK);
+  Dwave = new Bs2PhiKKComponent(2,1525, 73    ,"BW",RBs,RKK);
   this->SetNumericalNormalisation( true );
 	this->TurnCachingOff();
 }
-//Make the data point and parameter set
+// Make the data point and parameter set
 void Bs2PhiKKTotal::MakePrototypes()
 {
-  //Make the DataPoint prototype
-  allObservables.push_back( mKKName      );
-  allObservables.push_back( phiName      );
-  allObservables.push_back( ctheta_1Name );
-  allObservables.push_back( ctheta_2Name );
-  //Make the parameter set
+  // Make the DataPoint prototype
+  // The ordering here matters. It has to be the same as the XML file, apparently.
+  allObservables.push_back(mKKName     );
+  allObservables.push_back(phiName     );
+  allObservables.push_back(ctheta_1Name);
+  allObservables.push_back(ctheta_2Name);
+  // Make the parameter set
   vector<string> parameterNames;
-  parameterNames.push_back( ASsqName );
-  parameterNames.push_back( deltaSName );
+  parameterNames.push_back(ASsqName  );
+  parameterNames.push_back(deltaSName);
   // Separate loops for P-wave and D-wave for readability in fit output
   for(unsigned short i = 0; i < 3; i++)
   {
-    parameterNames.push_back( APsqName[i] );
-    parameterNames.push_back( deltaPName[i] );
+    parameterNames.push_back(APsqName[i]  );
+    parameterNames.push_back(deltaPName[i]);
   }
   for(unsigned short i = 0; i < 3; i++)
   {
-    parameterNames.push_back( ADsqName[i] );
-    parameterNames.push_back( deltaDName[i] );
+    parameterNames.push_back(ADsqName[i]  );
+    parameterNames.push_back(deltaDName[i]);
   }
   allParameters = *( new ParameterSet(parameterNames) );
 }
 
-//Not only set the physics parameters, but indicate that the cache is no longer valid
-bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
+// Not only set the physics parameters, but indicate that the cache is no longer valid
+bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
 {
   bool isOK = allParameters.SetPhysicsParameters(NewParameterSet);
   // Retrieve the physics parameters and set amplitudes
   // S-wave
-  ASsq      = allParameters.GetPhysicsParameter(ASsqName     )->GetValue();
-  deltaS    = allParameters.GetPhysicsParameter(deltaSName   )->GetValue();
+  ASsq      = allParameters.GetPhysicsParameter(ASsqName  )->GetValue();
+  deltaS    = allParameters.GetPhysicsParameter(deltaSName)->GetValue();
   Swave->SetHelicityAmplitudes(0,sqrt(ASsq), deltaS);
   // P- and D-wave
   for(unsigned short i = 0; i < 3; i++)
@@ -157,21 +159,24 @@ bool Bs2PhiKKTotal::SetPhysicsParameters( ParameterSet * NewParameterSet )
   }
   return isOK;
 }
-//Return a list of parameters not to be integrated
+// Return a list of parameters not to be integrated
 vector<string> Bs2PhiKKTotal::GetDoNotIntegrateList()
 {
   vector<string> list;
   return list;
 }
-//Calculate the function value
-double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
+// Calculate the function value
+double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
 {
   mKK      = measurement->GetObservable(mKKName     )->GetValue();
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
   phi      = measurement->GetObservable(phiName     )->GetValue();
   
-  if(phi < -TMath::Pi() || phi > TMath::Pi() || ctheta_1 < -1 || ctheta_1 > 1 || ctheta_2 < -1 || ctheta_2 > 1 || mKK<493*2)
+  if(phi < -TMath::Pi() || phi > TMath::Pi()
+       || ctheta_1 < -1 || ctheta_1 > 1
+       || ctheta_2 < -1 || ctheta_2 > 1
+       || mKK<2*Bs2PhiKKComponent::mK)
   {
     cout << "Bs2PhiKKComponent::Amplitude() received unphysical datapoint:" << endl;
     cout << "m(KK)      :\t" << mKK << endl;
@@ -184,11 +189,38 @@ double Bs2PhiKKTotal::Evaluate(DataPoint * measurement)
   TComplex amplitude = Swave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
                      + Pwave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
                      + Dwave->Amplitude(mKK, phi, ctheta_1, ctheta_2);
-  evalres = amplitude.Rho2();
+  evalres = amplitude.Rho2() * Acceptance();
   return evalres;
 }
+// Get the angular acceptance from TMutliDimFit output
+double Bs2PhiKKTotal::Acceptance()
+{
+  int nVars = AutoAngAcc::gNVariables;
+  double* datapoint;
+  switch(nVars)
+  {
+    case 3:
+      datapoint = new double[3];
+      datapoint[0] = phi;
+      datapoint[1] = ctheta_1;
+      datapoint[2] = ctheta_2;
+      break;
+    case 4:
+      datapoint = new double[4];
+      datapoint[0] = mKK;
+      datapoint[1] = phi;
+      datapoint[2] = ctheta_1;
+      datapoint[3] = ctheta_2;
+      break;
+    default:
+      return 1; 
+  }
+  double returnVal = AutoAngAcc::Eval(datapoint);
+  delete[] datapoint;
+  return returnVal;
+}
 // Normalise by summing over squares of helicity amplitudes
-double Bs2PhiKKTotal::Normalisation(DataPoint * measurement, PhaseSpaceBoundary * boundary)
+double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)
 {
   double norm = 0;
   norm += ASsq;

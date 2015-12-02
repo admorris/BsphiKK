@@ -24,9 +24,9 @@ TComplex SphericalHarmonic::Y(int l, int m, double ctheta, double phi)
     return TComplex(0,0);
   }
   double c = 1; // Proportionality constant to turn P^{m}_{l} into P^{-m}_{l}
-  if(m<0)
+  if(m < 0)
   {
-    c = TMath::Power(-1,m) * TMath::Factorial(l-m) / TMath::Factorial(l+m);
+    c = TMath::Power(-1, m) * TMath::Factorial(l - m) / TMath::Factorial(l + m);
   }
-  return c*ROOT::Math::sph_legendre(l,TMath::Abs(m),ctheta)*TComplex::Exp(TComplex::I()*m*phi);
+  return c * ROOT::Math::sph_legendre(l, TMath::Abs(m), ctheta) * TComplex::Exp(TComplex::I() * m * phi);
 }

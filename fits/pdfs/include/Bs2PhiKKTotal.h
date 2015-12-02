@@ -47,6 +47,7 @@ class Bs2PhiKKTotal : public BasePDF
       void Initialise();
       bool init;
       void MakePrototypes();
+      double Acceptance();
       bool debug = false;
 };
 #endif

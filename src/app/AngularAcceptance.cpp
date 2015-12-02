@@ -63,10 +63,10 @@ void AngularAcceptance(string filename)
   TFile* outfile = new TFile("AngAcc.root", "RECREATE");
   TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre,"KV");
   // Configuration
-  int maxpowers[3] = {8,8,10};
+  int maxpowers[3] = {2,2,6};
   fit->SetMaxPowers(maxpowers);
-  fit->SetMaxFunctions(1000);
-  fit->SetMaxStudy(10000);
+  fit->SetMaxFunctions(100000);
+  fit->SetMaxStudy(1000000);
   fit->SetMaxTerms(30);
   fit->SetPowerLimit(1);
   fit->SetMinAngle(10);
