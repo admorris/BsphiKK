@@ -13,7 +13,7 @@
 #include "RooDataSet.h"
 #include "RooPlot.h"
 #include "RooAddPdf.h"
-#include "RooProdPdf.h"
+#include "RooGenericPdf.h"
 // Common
 #include "progbar.h"
 #include "itoa.h"
@@ -49,6 +49,7 @@ void AngularAcceptance(string filename)
   RooArgList coefficients;
   RooArgList terms;
   RooLegendre* P[3];
+  RooGenericPdf* term;
   for(int i = 0; i < 3; i++)
   {
     P[i] = new RooLegendre[maxpower[i]];
@@ -64,11 +65,13 @@ void AngularAcceptance(string filename)
       for(int k = 0; k < maxpower[2]; k++)
       {
         coefficients.add(C[i][j][k]);
-        terms.add(*(new RooProdPdf(("P"+itoa(i)+itoa(j)+itoa(k)).c_str(),"",RooArgList(P[0][i],P[1][i],P[2][i]))));
+        term = new RooGenericPdf(("P"+itoa(i)+itoa(j)+itoa(k)).c_str(),"@0*@1*@2",RooArgList(P[0][i],P[1][i],P[2][i]));
+        terms.add(*term);
       }
     }
   }
   RooAddPdf model("mode","",terms,coefficients);
+  cout << "Constructed PDF" << endl;
   // Input
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
