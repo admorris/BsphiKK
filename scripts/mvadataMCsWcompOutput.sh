@@ -2,7 +2,7 @@
 branch='mlp'
 unit='none'
 title='MLP~output'
-range='-l -1 -u 1'
+range='-l 0 -u 1'
 
 cd ../ntuples
 for file in $(ls *mva_Sweighted.root)
