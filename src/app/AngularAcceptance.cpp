@@ -1,114 +1,99 @@
+// Std
 #include <iostream>
 #include <string>
-
+// ROOT
+#include "TMath.h"
 #include "TFile.h"
 #include "TTree.h"
-
 #include "TCanvas.h"
-#include "TH3.h"
-#include "TMultiDimFit.h"
-#include "TAxis.h"
-
+// RooFit
+#include "RooLegendre.h"
+#include "RooRealVar.h"
+#include "RooFormulaVar.h"
+#include "RooDataSet.h"
+#include "RooPlot.h"
+#include "RooAddPdf.h"
+#include "RooProdPdf.h"
+// Common
 #include "progbar.h"
+#include "itoa.h"
 
 using namespace std;
-
-//double D(TH3D* hist, double x, double y, double z) // Don't need this any more, since Interpolate() now works
-//{
-//  int bin_x = hist->GetXaxis()->FindBin(x);
-//  int bin_y = hist->GetYaxis()->FindBin(y);
-//  int bin_z = hist->GetZaxis()->FindBin(z);
-//  return hist->GetBinContent(bin_x,bin_y,bin_z);
-//}
-
+using namespace RooFit;
 void AngularAcceptance(string filename)
 {
+  // Configuration
+  const int maxpower[3] = {1,1,2}; // Actual max power is value-1
+  // Observables
+  RooRealVar obs[3] = {RooRealVar("cos_Phi"   ,"cos #Phi"      ,-1,1)
+                      ,RooRealVar("cos_theta1","cos #theta_{1}",-1,1)
+                      ,RooRealVar("cos_theta2","cos #theta_{2}",-1,1)};
+  RooArgSet Observables;
+  for(int i = 0; i < 3; i++)
+  {
+    Observables.add(obs[i]);
+  }
+  // Coefficients
+  RooRealVar C[maxpower[0]][maxpower[1]][maxpower[2]];
+  for(int i = 0; i < maxpower[0]; i++)
+  {
+    for(int j = 0; j < maxpower[1]; j++)
+    {
+      for(int k = 0; k < maxpower[2]; k++)
+      {
+        C[i][j][k] = RooRealVar(("C"+itoa(i)+itoa(j)+itoa(k)).c_str(),"",0,-1,1);
+      }
+    }
+  }
+  // PDF
+  RooArgList coefficients;
+  RooArgList terms;
+  RooLegendre* P[3];
+  for(int i = 0; i < 3; i++)
+  {
+    P[i] = new RooLegendre[maxpower[i]];
+    for(int j = 0; j < maxpower[i]; j++)
+    {
+      P[i][j] = RooLegendre(("P"+itoa(j)+"("+obs[i].GetName()+")").c_str(),("P_{"+itoa(j)+"}("+obs[i].GetTitle()+")").c_str(),obs[i],j);
+    }
+  }
+  for(int i = 0; i < maxpower[0]; i++)
+  {
+    for(int j = 0; j < maxpower[1]; j++)
+    {
+      for(int k = 0; k < maxpower[2]; k++)
+      {
+        coefficients.add(C[i][j][k]);
+        terms.add(*(new RooProdPdf(("P"+itoa(i)+itoa(j)+itoa(k)).c_str(),"",RooArgList(P[0][i],P[1][i],P[2][i]))));
+      }
+    }
+  }
+  RooAddPdf model("mode","",terms,coefficients);
   // Input
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
-  int n = tree->GetEntries();
-  double x[3],d;
-  tree->SetBranchAddress("Phi_angle", &x[0]);
-  tree->SetBranchAddress("cos_theta1",&x[1]);
-  tree->SetBranchAddress("cos_theta2",&x[2]);
-  // Configure and make the 3D histogram
-  int nbins = 100;
-  double xlow = -3.14159;
-  double xup  = +3.14159;
-  double xrange = xup - xlow;
-  double ylow = -1;
-  double yup  = +1;
-  double yrange = yup - ylow;
-  double zlow = -1;
-  double zup  = +1;
-  double zrange = zup - zlow;
-  // For TH3::Interpolate() to work properly, the points have to be within the centres of the edge bins
-  TH3D* hist = new TH3D("hist","",nbins,xlow-(xrange/(nbins)),xup+(xrange/(nbins))  // Phi range
-                                 ,nbins,ylow-(yrange/(nbins)),yup+(yrange/(nbins))  // cos_theta1 range
-                                 ,nbins,zlow-(zrange/(nbins)),zup+(zrange/(nbins)));// cos_theta2 range
-  // Fill the histogram
-  cout << "Filling a 3D histogram with " << n << " events." << endl;
-  progbar bar(n);
-  for(int i = 0; i < n; i++)
+  RooDataSet data("data","",Observables,Import(*tree));
+  // Do fit
+  model.fitTo(data);
+  // Plot data
+  RooPlot* frame[3];
+  for(int i = 0; i < 3; i++)
   {
-    tree->GetEntry(i);
-    hist->Fill(x[0],x[1],x[2]);
-    if(i%(n/100)==0)
-    {
-      bar.print(i);
-    }
+    frame[i] = obs[i].frame();
+    data.plotOn(frame[i]);
+    model.plotOn(frame[i]);
+    frame[i]->Draw();
+    gPad->SaveAs(("projection"+itoa(i)+".pdf").c_str());
   }
-  bar.terminate();
-  // Output
-  TFile* outfile = new TFile("AngAcc.root", "RECREATE");
-  TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre,"KV");
-  // Configuration
-  int maxpowers[3] = {2,2,6};
-  fit->SetMaxPowers(maxpowers);
-  fit->SetMaxFunctions(100000);
-  fit->SetMaxStudy(1000000);
-  fit->SetMaxTerms(30);
-  fit->SetPowerLimit(1);
-  fit->SetMinAngle(10);
-  fit->SetMaxAngle(10);
-  fit->SetMinRelativeError(.01);
-  // Event loop
-  for(int i = 0; i < n; i++)
-  {
-    tree->GetEntry(i);
-    d = hist->Interpolate(x[0],x[1],x[2]);
-//    d = D(hist,x[0],x[1],x[2]);
-    if(i < n/2)
-    {
-      fit->AddRow(x,d); // Training sample
-    }
-    else
-    {
-      fit->AddTestRow(x,d); // Test sample
-    }
-  }
-  // Print starting parameters
-  fit->Print("p");
-  // Print out the statistics
-  fit->Print("s");
-  // Book histograms
-  fit->MakeHistograms();
-  // Find the parameterization
-  fit->FindParameterization();
-  // Print coefficents
-  fit->Print("rc");
-  // Do the fit
-  fit->Fit("M");
-  // Print result
-  fit->Print("fc");
-  // Write code to file
-  fit->MakeMethod("AutoAngAcc");
-  outfile->Write();
-  outfile->Close();
 }
 
 int main(int argc, char* argv[])
 {
+  if(argc!=2)
+  {
+    cout << "Usage: " << argv[0] << " <filename>" << endl;
+    return 1;
+  }
   AngularAcceptance(argv[1]);
   return 0;
 }
