@@ -164,8 +164,9 @@ void addBranches(string filename = "BsphiKK_data")
   TLorentzVector Bframe_h_P[4], /*Bframe_d_P[4],*/ dframe_h_P[4], dframe_other_h_P[4];
   TVector3 Bframe_e, dframe_e[2], dframe_n[2];
 //  TVector3 CrossProduct[2];
-  Double_t sin_Phi, cos_Phi;
   Double_t Phi_angle; outtree->Branch("Phi_angle", &Phi_angle, "Phi_angle/D" );
+  Double_t cos_Phi  ; outtree->Branch("cos_Phi"  , &cos_Phi  , "cos_Phi/D"   );
+  Double_t sin_Phi  ; outtree->Branch("sin_Phi"  , &sin_Phi  , "sin_Phi/D"   );
   Double_t cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
