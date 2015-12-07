@@ -7,7 +7,6 @@
 #include "TTree.h"
 #include "TCanvas.h"
 // RooFit
-#include "RooLegendre.h"
 #include "RooRealVar.h"
 #include "RooFormulaVar.h"
 #include "RooDataSet.h"
@@ -23,11 +22,11 @@ using namespace RooFit;
 void AngularAcceptance(string filename)
 {
   // Configuration
-  const int maxpower[3] = {1,1,2}; // Actual max power is value-1
+  const int maxpower[3] = {1,1,1}; // Actual max power is value-1
   // Observables
-  RooRealVar obs[3] = {RooRealVar("cos_Phi"   ,"cos #Phi"      ,-1,1)
-                      ,RooRealVar("cos_theta1","cos #theta_{1}",-1,1)
-                      ,RooRealVar("cos_theta2","cos #theta_{2}",-1,1)};
+  RooRealVar obs[3] = {RooRealVar("Phi_angle","#Phi",-TMath::Pi(),+TMath::Pi())
+                          ,RooRealVar("cos_theta1","cos #theta_{1}",-1,1)
+                          ,RooRealVar("cos_theta2","cos #theta_{2}",-1,1)};
   RooArgSet Observables;
   for(int i = 0; i < 3; i++)
   {
@@ -41,53 +40,56 @@ void AngularAcceptance(string filename)
     {
       for(int k = 0; k < maxpower[2]; k++)
       {
-        C[i][j][k] = RooRealVar(("C"+itoa(i)+itoa(j)+itoa(k)).c_str(),"",0,-1,1);
+        C[i][j][k] = RooRealVar(("C"+itoa(i)+itoa(j)+itoa(k)).c_str(),"",0,0,1000);
       }
     }
   }
+  C[0][0][0] = RooRealVar("C000","",100,0,1000);
   // PDF
   RooArgList coefficients;
   RooArgList terms;
-  RooLegendre* P[3];
   RooGenericPdf* term;
-  for(int i = 0; i < 3; i++)
-  {
-    P[i] = new RooLegendre[maxpower[i]];
-    for(int j = 0; j < maxpower[i]; j++)
-    {
-      P[i][j] = RooLegendre(("P"+itoa(j)+"("+obs[i].GetName()+")").c_str(),("P_{"+itoa(j)+"}("+obs[i].GetTitle()+")").c_str(),obs[i],j);
-    }
-  }
+  string LegendreTerms[3];
   for(int i = 0; i < maxpower[0]; i++)
   {
+    LegendreTerms[0] = "ROOT::Math::legendre("+itoa(i)+",[0]/TMath::Pi())";
     for(int j = 0; j < maxpower[1]; j++)
     {
+      LegendreTerms[1] = "ROOT::Math::legendre("+itoa(j)+",[1])";
       for(int k = 0; k < maxpower[2]; k++)
       {
+        LegendreTerms[2] = "ROOT::Math::legendre("+itoa(k)+",[2])";
         coefficients.add(C[i][j][k]);
-        term = new RooGenericPdf(("P"+itoa(i)+itoa(j)+itoa(k)).c_str(),"@0*@1*@2",RooArgList(P[0][i],P[1][i],P[2][i]));
+//        string expression = LegendreTerms[0]+"*"+LegendreTerms[1]+"*"+LegendreTerms[2];
+        string expression = "@0*@1*@2*@3";
+        term = new RooGenericPdf(("P"+itoa(i)+itoa(j)+itoa(k)).c_str(),expression.c_str(),RooArgList(C[i][j][k],obs[0],obs[1],obs[2]));
         terms.add(*term);
+//        cout << C[i][j][k].GetName() << "*" << term->GetName() << endl;
+        term->Print();
       }
     }
   }
-  RooAddPdf model("mode","",terms,coefficients);
+//  RooAddPdf* model = new RooAddPdf("model","",terms);
+  RooGenericPdf* model = term;
   cout << "Constructed PDF" << endl;
   // Input
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
   RooDataSet data("data","",Observables,Import(*tree));
+  cout << "Imported data" << endl;
   // Do fit
-  model.fitTo(data);
+//  model->fitTo(data);
   // Plot data
   RooPlot* frame[3];
   for(int i = 0; i < 3; i++)
   {
     frame[i] = obs[i].frame();
     data.plotOn(frame[i]);
-    model.plotOn(frame[i]);
+    model->plotOn(frame[i]);
     frame[i]->Draw();
     gPad->SaveAs(("projection"+itoa(i)+".pdf").c_str());
   }
+  cout << "Fin." << endl;
 }
 
 int main(int argc, char* argv[])
