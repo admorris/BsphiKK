@@ -1,2 +1,5 @@
 latex/*
 pkgbkg/*
+build/*
+bin/*
+lib/*

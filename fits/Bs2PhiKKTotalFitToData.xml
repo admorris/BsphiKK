@@ -6,7 +6,7 @@
       <Value>852</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -14,7 +14,7 @@
       <Value>76</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -22,7 +22,7 @@
       <Value>108</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -30,7 +30,7 @@
       <Value>76</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -38,7 +38,7 @@
       <Value>24</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -46,7 +46,7 @@
       <Value>41</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -54,7 +54,7 @@
       <Value>89</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1000.0</Maximum>
-      <Type>Free</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     // Phases
