@@ -13,6 +13,8 @@
 #include "TComplex.h"
 // RapidFit
 #include "PDFConfigurator.h"
+// Custrom
+#include "AutoAngAcc.h"
 #define DEBUGFLAG true
 PDF_CREATOR( Bs2PhiKKTotal )
 // Constructor
@@ -215,6 +217,7 @@ double Bs2PhiKKTotal::Acceptance()
       return 1; 
   }
   double returnVal = 1;
+  returnVal = AutoAngAcc::Eval(datapoint);
   delete[] datapoint;
   return returnVal;
 }
