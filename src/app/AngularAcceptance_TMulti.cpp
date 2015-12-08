@@ -56,9 +56,9 @@ void AngularAcceptance(string filename)
   for(int i = 0; i < n; i++)
   {
     tree->GetEntry(i);
-    if(imposesymmetry)
-      hist->Fill(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]));
-    else
+    imposesymmetry ?
+      hist->Fill(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]))
+      :
       hist->Fill(x[0],x[1],x[2]);
     if(i%(n/100)==0)
     {
@@ -83,18 +83,14 @@ void AngularAcceptance(string filename)
   for(int i = 0; i < n; i++)
   {
     tree->GetEntry(i);
-    if(imposesymmetry)
-      d = hist->Interpolate(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]));
-    else
-      d = hist->Interpolate(x[0],x[1],x[2]);
-    if(i < n/2)
-    {
-      fit->AddRow(x,d); // Training sample
-    }
-    else
-    {
+    d = imposesymmetry ?
+      hist->Interpolate(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]))
+      :
+      hist->Interpolate(x[0],x[1],x[2]);
+    (i < n/2) ?
+      fit->AddRow(x,d) // Training sample
+      :
       fit->AddTestRow(x,d); // Test sample
-    }
   }
   // Print starting parameters
   fit->Print("p");
