@@ -108,6 +108,7 @@ void AngularAcceptance(string filename)
   fit->Print("fc");
   // Write code to file
   fit->MakeMethod("AutoAngAcc");
+  hist->Write();
   outfile->Write();
   outfile->Close();
 }
