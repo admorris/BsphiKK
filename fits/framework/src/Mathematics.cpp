@@ -1180,7 +1180,13 @@ namespace Mathematics
 		cout << endl;
 
 		double error(0.);
-		char buf[50];
+		cout << "//BEGIN CODE--------------------------------------------------------------------" << endl;
+		printf("double c[%d][%d][%d][%d];\n", l_max+1, i_max+1, k_max+1, j_max+1);
+		cout << "for ( int l = 0; l <  " << l_max + 1 << "; l++ )" << endl;
+    cout << "	for ( int i = 0; i <  " << i_max + 1 << "; i++ )" << endl;
+    cout << "		for ( int k = 0; k <  " << k_max + 1 << "; k++ )" << endl;
+    cout << "			for ( int j = 0; j <  " << j_max + 1 << "; j++ )" << endl;
+    cout << "				c[l][i][k][j] = 0;" << endl;
 		for ( int l = 0; l < l_max + 1; l++ )
 		{
 			for ( int i = 0; i < i_max + 1; i++ )
@@ -1194,8 +1200,7 @@ namespace Mathematics
 						if (std::isnan(error)) error = 0.;
 						if ( fabs(c[l][i][k][j]/numEvents) > 5.*error )
 						{
-							sprintf( buf, "c[%d][%d][%d][%d] = %f;// +- %f", l, i, k, j, c[l][i][k][j]/numEvents, error );
-							cout << buf << endl;
+							printf("c[%d][%d][%d][%d] = %f;// +- %f\n", l, i, k, j, c[l][i][k][j]/numEvents, error );
 						}
 						else
 						{
@@ -1205,7 +1210,7 @@ namespace Mathematics
 				}
 			}
 		}
-
+		cout << "//END CODE----------------------------------------------------------------------" << endl;
 #ifdef __RAPIDFIT_USE_GSL
 		// Now sample the acceptance surface so that we can make projections to check that it looks sensible
 		AccParam * param = new AccParam(&c[0][0][0][0], i_max, j_max, k_max, l_max, numEvents);

@@ -13,8 +13,7 @@
 #include "TComplex.h"
 // RapidFit
 #include "PDFConfigurator.h"
-// Custrom
-#include "AutoAngAcc.h"
+#include "Bs2PhiKKAcceptance.h"
 #define DEBUGFLAG true
 PDF_CREATOR( Bs2PhiKKTotal )
 // Constructor
@@ -196,30 +195,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
 // Get the angular acceptance from TMutliDimFit output
 double Bs2PhiKKTotal::Acceptance()
 {
-  int nVars = AutoAngAcc::gNVariables;
-  double* datapoint;
-  switch(nVars)
-  {
-    case 3:
-      datapoint = new double[3];
-      datapoint[0] = phi;
-      datapoint[1] = ctheta_1;
-      datapoint[2] = ctheta_2;
-      break;
-    case 4:
-      datapoint = new double[4];
-      datapoint[0] = mKK;
-      datapoint[1] = phi;
-      datapoint[2] = ctheta_1;
-      datapoint[3] = ctheta_2;
-      break;
-    default:
-      return 1; 
-  }
-  double returnVal = 1;
-  returnVal = AutoAngAcc::Eval(datapoint);
-  delete[] datapoint;
-  return returnVal;
+ return 1.0;
 }
 // Normalise by summing over squares of helicity amplitudes
 double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)
