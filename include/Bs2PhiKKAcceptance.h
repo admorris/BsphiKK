@@ -1,0 +1,1 @@
+../fits/pdfs/include/Bs2PhiKKAcceptance.h
