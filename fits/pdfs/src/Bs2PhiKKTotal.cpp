@@ -13,7 +13,6 @@
 #include "TComplex.h"
 // RapidFit
 #include "PDFConfigurator.h"
-#include "Bs2PhiKKAcceptance.h"
 #define DEBUGFLAG true
 PDF_CREATOR( Bs2PhiKKTotal )
 // Constructor
@@ -58,6 +57,8 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   deltaDName[1] = config->getName("deltaDzero" );
   deltaDName[2] = config->getName("deltaDplus" );
   MakePrototypes(); // Should only ever go in the constructor. Never put this in the copy constructor!!
+  mKKmin = config->GetPhaseSpaceBoundary()->GetConstraint("mKK")->GetMinimum();
+  mKKmax = config->GetPhaseSpaceBoundary()->GetConstraint("mKK")->GetMaximum();
   Initialise();
 }
 // Copy constructor
@@ -73,6 +74,9 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) :
   , ctheta_1Name  (copy.ctheta_1Name)
   , ctheta_2Name  (copy.ctheta_2Name)
   , phiName       (copy.phiName)
+  // mKK boundaries
+  , mKKmin(copy.mKKmin)
+  , mKKmax(copy.mKKmax)
 {
   ASsq = copy.ASsq;
   deltaS = copy.deltaS;
@@ -97,6 +101,7 @@ Bs2PhiKKTotal::~Bs2PhiKKTotal()
   delete Swave;
   delete Pwave;
   delete Dwave;
+  delete acc;
 }
 void Bs2PhiKKTotal::Initialise()
 {
@@ -108,6 +113,7 @@ void Bs2PhiKKTotal::Initialise()
   Swave = new Bs2PhiKKComponent(0, 980,100    ,"FT",RBs,RKK);
   Pwave = new Bs2PhiKKComponent(1,mphi,  4.266,"BW",RBs,RKK);
   Dwave = new Bs2PhiKKComponent(2,1525, 73    ,"BW",RBs,RKK);
+  acc = new Bs2PhiKKAcceptance(mKKmin,mKKmax);
   this->SetNumericalNormalisation( true );
 	this->TurnCachingOff();
 }
@@ -195,7 +201,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
 // Get the angular acceptance from TMutliDimFit output
 double Bs2PhiKKTotal::Acceptance()
 {
- return 1.0;
+ return acc->Evaluate(mKK, phi, ctheta_1, ctheta_2);
 }
 // Normalise by summing over squares of helicity amplitudes
 double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)

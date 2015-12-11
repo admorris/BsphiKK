@@ -16,6 +16,7 @@
 #endif
 // Self
 #include "Bs2PhiKKComponent.h"
+#include "Bs2PhiKKAcceptance.h"
 
 class Bs2PhiKKTotal : public BasePDF
 {
@@ -39,10 +40,14 @@ class Bs2PhiKKTotal : public BasePDF
       // Phase of helicity amplitudes
       double        deltaS,     deltaP[3],     deltaD[3];
       ObservableRef deltaSName, deltaPName[3], deltaDName[3];
+      // m(KK) boundaries
+      double mKKmin, mKKmax;
       // The m(KK) components
       Bs2PhiKKComponent* Swave;
       Bs2PhiKKComponent* Pwave;
       Bs2PhiKKComponent* Dwave;
+      // Acceptance object
+      Bs2PhiKKAcceptance* acc;
     private:
       void Initialise();
       bool init;
