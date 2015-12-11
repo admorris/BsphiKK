@@ -113,7 +113,7 @@ void Bs2PhiKKTotal::Initialise()
   Swave = new Bs2PhiKKComponent(0, 980,100    ,"FT",RBs,RKK);
   Pwave = new Bs2PhiKKComponent(1,mphi,  4.266,"BW",RBs,RKK);
   Dwave = new Bs2PhiKKComponent(2,1525, 73    ,"BW",RBs,RKK);
-  acc = new Bs2PhiKKAcceptance(mKKmin,mKKmax);
+  acc = new Bs2PhiKKAcceptance;
   this->SetNumericalNormalisation( true );
 	this->TurnCachingOff();
 }
@@ -178,7 +178,6 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
   ctheta_1 = measurement->GetObservable(ctheta_1Name)->GetValue();
   ctheta_2 = measurement->GetObservable(ctheta_2Name)->GetValue();
   phi      = measurement->GetObservable(phiName     )->GetValue();
-  
   if(phi < -TMath::Pi() || phi > TMath::Pi()
        || ctheta_1 < -1 || ctheta_1 > 1
        || ctheta_2 < -1 || ctheta_2 > 1
@@ -201,7 +200,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
 // Get the angular acceptance from TMutliDimFit output
 double Bs2PhiKKTotal::Acceptance()
 {
- return acc->Evaluate(mKK, phi, ctheta_1, ctheta_2);
+ return acc->Evaluate(mKK, phi, ctheta_1, ctheta_2)/0.04;
 }
 // Normalise by summing over squares of helicity amplitudes
 double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)

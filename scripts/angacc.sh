@@ -10,15 +10,11 @@ cat > $filename << EOF
 #include <iostream>
 using std::cout;
 using std::endl;
-Bs2PhiKKAcceptance::Bs2PhiKKAcceptance(double mKKlo, double mKKhi) :
-    mKK_min(mKKlo)
-  , mKK_max(mKKhi)
+Bs2PhiKKAcceptance::Bs2PhiKKAcceptance()
 {
   createcoefficients();
 }
-Bs2PhiKKAcceptance::Bs2PhiKKAcceptance(const Bs2PhiKKAcceptance& copy) :
-    mKK_min(copy.mKK_min)
-  , mKK_max(copy.mKK_max)
+Bs2PhiKKAcceptance::Bs2PhiKKAcceptance(const Bs2PhiKKAcceptance& copy)
 {
   createcoefficients();
 }
@@ -65,7 +61,7 @@ double Bs2PhiKKAcceptance::Evaluate(double mKK, double phi, double ctheta_1, dou
       }
     }
   }
-  return acceptance>0 ? acceptance : 0;
+  return acceptance;
 }
 EOF
 awk '/BEGIN CONSTANTS/,/END CONSTANTS/' acceptance.log >> $filename

@@ -5,15 +5,11 @@
 #include <iostream>
 using std::cout;
 using std::endl;
-Bs2PhiKKAcceptance::Bs2PhiKKAcceptance(double mKKlo, double mKKhi) :
-    mKK_min(mKKlo)
-  , mKK_max(mKKhi)
+Bs2PhiKKAcceptance::Bs2PhiKKAcceptance()
 {
   createcoefficients();
 }
-Bs2PhiKKAcceptance::Bs2PhiKKAcceptance(const Bs2PhiKKAcceptance& copy) :
-    mKK_min(copy.mKK_min)
-  , mKK_max(copy.mKK_max)
+Bs2PhiKKAcceptance::Bs2PhiKKAcceptance(const Bs2PhiKKAcceptance& copy)
 {
   createcoefficients();
 }
@@ -60,9 +56,11 @@ double Bs2PhiKKAcceptance::Evaluate(double mKK, double phi, double ctheta_1, dou
       }
     }
   }
-  return acceptance>0 ? acceptance : 0;
+  return acceptance;
 }
 //BEGIN CONSTANTS---------------------------------------------------------------
+double Bs2PhiKKAcceptance::mKK_min = 988;
+double Bs2PhiKKAcceptance::mKK_max = 4000;
 int Bs2PhiKKAcceptance::l_max = 7;
 int Bs2PhiKKAcceptance::i_max = 7;
 int Bs2PhiKKAcceptance::k_max = 3;
@@ -89,19 +87,17 @@ for ( int l = 0; l < l_max; l++ )
     }
   }
 }
-c[0][0][0][0] = 0.039543;// +- 0.000116
-c[0][0][2][2] = 0.001709;// +- 0.000244
-c[0][1][1][2] = 0.028771;// +- 0.000382
-c[0][2][0][0] = -0.013098;// +- 0.000524
-c[0][2][2][2] = -0.012249;// +- 0.000530
-c[0][3][1][2] = -0.009074;// +- 0.000631
-c[1][0][0][0] = -0.015890;// +- 0.000510
-c[1][1][1][2] = -0.018535;// +- 0.000871
-c[1][2][2][2] = 0.007741;// +- 0.001132
-c[2][0][0][0] = -0.008893;// +- 0.000701
-c[2][1][1][2] = -0.009025;// +- 0.001164
-c[2][2][0][0] = 0.017517;// +- 0.001493
-c[2][3][1][2] = 0.012133;// +- 0.001801
-c[3][0][0][0] = -0.016349;// +- 0.000852
+c[0][0][0][0] = 0.039238;// +- 0.000117
+c[0][0][2][2] = 0.001649;// +- 0.000245
+c[0][1][1][2] = 0.028974;// +- 0.000382
+c[0][2][0][0] = -0.013317;// +- 0.000527
+c[0][2][2][2] = -0.012303;// +- 0.000533
+c[0][3][1][2] = -0.009180;// +- 0.000633
+c[1][0][0][0] = -0.006845;// +- 0.000530
+c[1][1][1][2] = -0.011658;// +- 0.000890
+c[1][2][0][0] = -0.006250;// +- 0.001138
+c[2][2][0][0] = 0.011776;// +- 0.001537
+c[2][3][1][2] = 0.010826;// +- 0.001848
+c[3][0][0][0] = -0.006937;// +- 0.000876
 //END CODE----------------------------------------------------------------------
 }

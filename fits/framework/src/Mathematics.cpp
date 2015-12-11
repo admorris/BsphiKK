@@ -1181,6 +1181,8 @@ namespace Mathematics
 
     double error(0.);
     cout << "//BEGIN CONSTANTS---------------------------------------------------------------" << endl;
+    cout << "double Bs2PhiKKAcceptance::mKK_min = " << minima[3] << ";" << endl;
+    cout << "double Bs2PhiKKAcceptance::mKK_max = " << maxima[3] << ";" << endl;
     cout << "int Bs2PhiKKAcceptance::l_max = " << l_max + 1 << ";" << endl;
     cout << "int Bs2PhiKKAcceptance::i_max = " << i_max + 1 << ";" << endl;
     cout << "int Bs2PhiKKAcceptance::k_max = " << k_max + 1 << ";" << endl;
@@ -1304,21 +1306,21 @@ namespace Mathematics
     TCanvas * canvas = new TCanvas();
     canvas->Divide( 2, 2, (Float_t)0.01, (Float_t)0.01, 0 );
     canvas->cd(1);
-    cosThetaAcc->Draw();
-    cosThetaAcc->SetMinimum(0);
-    cosThetaAccProj->Draw("same");
+    mKKAcc->Draw();
+    mKKAcc->SetMinimum(0);
+    mKKAccProj->Draw("same");
     canvas->cd(2);
     phiAcc->Draw();
     phiAcc->SetMinimum(0);
     phiAccProj->Draw("same");
     canvas->cd(3);
+    cosThetaAcc->Draw();
+    cosThetaAcc->SetMinimum(0);
+    cosThetaAccProj->Draw("same");
+    canvas->cd(4);
     cosPsiAcc->Draw();
     cosPsiAcc->SetMinimum(0);
     cosPsiAccProj->Draw("same");
-    canvas->cd(4);
-    mKKAcc->Draw();
-    mKKAcc->SetMinimum(0);
-    mKKAccProj->Draw("same");
     canvas->SaveAs("acceptance.pdf");
     return 1.;
   }
