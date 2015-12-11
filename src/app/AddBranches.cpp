@@ -170,6 +170,13 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
+  // Same branches, but with constrained B mass.
+  Double_t BCON_Phi_angle; outtree->Branch("BCON_Phi_angle", &BCON_Phi_angle, "BCON_Phi_angle/D" );
+  Double_t BCON_cos_Phi  ; outtree->Branch("BCON_cos_Phi"  , &BCON_cos_Phi  , "BCON_cos_Phi/D"   );
+  Double_t BCON_sin_Phi  ; outtree->Branch("BCON_sin_Phi"  , &BCON_sin_Phi  , "BCON_sin_Phi/D"   );
+  Double_t BCON_cos_theta[2];
+  outtree->Branch("BCON_cos_theta1",&BCON_cos_theta[0],"BCON_cos_theta1/D");
+  outtree->Branch("BCON_cos_theta2",&BCON_cos_theta[1],"BCON_cos_theta2/D");
 /*Event loop*******************************************************************/
   progbar bar(n);
   for(Int_t i = 0; i < n; i++)
@@ -277,33 +284,62 @@ void addBranches(string filename = "BsphiKK_data")
 /*******************************************************************************
     See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
 *******************************************************************************/
-    // Loop over Kaons
-    for(Int_t j = 0; j < 4; j++)
+    for(int BCON = 0; BCON < 2; BCON++)
     {
-      // Boost into B frame
-      Bframe_h_P[j] = hP[j];
-      Bframe_h_P[j].Boost(-BP.BoostVector());
-      // Boost into daughter frames
-      dframe_h_P[j] = hP[j];
-      dframe_h_P[j].Boost(-dP[j/2].BoostVector());
-      // Boost into "wrong" daughter frames
-      // Thanks Dianne!
-      dframe_other_h_P[j] = hP[j];
-      dframe_other_h_P[j].Boost(-dP[(j-3)/-2].BoostVector());
+      if(BCON==1)
+      {
+        for(Int_t j = 0; j < 4; j++)
+        {
+          hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
+        }
+        BP    = hP[0] + hP[1] + hP[2] + hP[3];
+        dP[0] = hP[0] + hP[1];
+        dP[1] = hP[2] + hP[3];
+      }
+      // Loop over Kaons
+      for(Int_t j = 0; j < 4; j++)
+      {
+        // Boost into B frame
+        Bframe_h_P[j] = hP[j];
+        Bframe_h_P[j].Boost(-BP.BoostVector());
+        // Boost into daughter frames
+        dframe_h_P[j] = hP[j];
+        dframe_h_P[j].Boost(-dP[j/2].BoostVector());
+        // Boost into "wrong" daughter frames
+        // Thanks Dianne!
+        dframe_other_h_P[j] = hP[j];
+        dframe_other_h_P[j].Boost(-dP[(j-3)/-2].BoostVector());
+      }
+      // Loop over daughters
+      for(Int_t j = 0; j < 2; j++)
+      {
+        Int_t minus = 2*j;   // 0 and 2
+        Int_t plus  = 2*j+1; // 1 and 3
+        dframe_e[j] = -1.0 * ((dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()) * (1.0/(dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()).Mag()));
+        if(BCON == 0)
+        {
+          cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);
+        }
+        else
+        {
+          BCON_cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);  
+        }    
+        dframe_n[j] = (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())) * (1.0/(Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag());
+      }
+      Bframe_e = (Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()) * (1.0/(Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()).Mag());
+      if(BCON == 0)
+      {
+        cos_Phi = dframe_n[1].Dot(dframe_n[0]);
+        sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
+        Phi_angle  = TMath::ACos(cos_Phi) * (sin_Phi/TMath::Abs(sin_Phi));
+      }
+      else
+      {
+        BCON_cos_Phi = dframe_n[1].Dot(dframe_n[0]);
+        BCON_sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
+        BCON_Phi_angle  = TMath::ACos(BCON_cos_Phi) * (BCON_sin_Phi/TMath::Abs(BCON_sin_Phi));
+      }
     }
-    // Loop over daughters
-    for(Int_t j = 0; j < 2; j++)
-    {
-      Int_t minus = 2*j;   // 0 and 2
-      Int_t plus  = 2*j+1; // 1 and 3
-      dframe_e[j] = -1.0 * ((dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()) * (1.0/(dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()).Mag()));
-      cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);
-      dframe_n[j] = (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())) * (1.0/(Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag());
-    }
-    Bframe_e = (Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()) * (1.0/(Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()).Mag());
-    cos_Phi = dframe_n[1].Dot(dframe_n[0]);
-    sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
-    Phi_angle  = TMath::ACos(cos_Phi) * (sin_Phi/TMath::Abs(sin_Phi));
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
     if(i%100 == 0)
