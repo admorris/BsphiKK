@@ -1303,7 +1303,7 @@ namespace Mathematics
     mKKAccProj    ->Scale(mKKAcc->Integral()/mKKAccProj->Integral());
     // Make some plots
     gStyle->SetOptStat(0);
-    TCanvas * canvas = new TCanvas();
+    TCanvas * canvas = new TCanvas("acc_can");
     canvas->Divide( 2, 2, (Float_t)0.01, (Float_t)0.01, 0 );
     canvas->cd(1);
     mKKAcc->Draw();
@@ -1321,6 +1321,7 @@ namespace Mathematics
     cosPsiAcc->Draw();
     cosPsiAcc->SetMinimum(0);
     cosPsiAccProj->Draw("same");
+    canvas->SaveAs("acceptance.root");
     canvas->SaveAs("acceptance.pdf");
     return 1.;
   }
