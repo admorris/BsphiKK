@@ -17,6 +17,15 @@ cd ../ntuples
     -b 61
 
 ../bin/PlotBranch \
+    -F BsphiKK_data_1800_mvacut.root \
+    -B KK_M \
+    -T "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" \
+    -O ../latex/figs/mKKmvacut_1050_1800 \
+    -l 900 \
+    -u 1800 \
+    -b 18
+
+../bin/PlotBranch \
     -F BsphiKK_data_1050_1800_mvacut.root \
     -B KK_M \
     -T "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" \
@@ -35,6 +44,12 @@ cd ../ntuples
     -M ../ntuples/BsphiKK_MC_1050_mvacut.root \
     -R ../ntuples/BsphiKK_data_1050_mvacut.root \
     -O ../latex/figs/Bsmassfit_1050_mvacut 
+    --pulls
+
+../bin/BsMassFit \
+    -M ../ntuples/BsphiKK_MC_1800_mvacut.root \
+    -R ../ntuples/BsphiKK_data_1800_mvacut.root \
+    -O ../latex/figs/Bsmassfit_1800_mvacut 
     --pulls
 
 ../bin/BsMassFit \

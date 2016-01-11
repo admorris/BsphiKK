@@ -3,21 +3,21 @@
 # Please run all scripts from within the scripts folder
 #./getoutputdata | tee log/getoutputdata.log
 #./merge.sh | tee log/merge.log
-#./docuts.sh | tee log/docuts.log
-./addBranches.sh | tee log/addBranches.log
-./dovetoes.sh | tee log/dovetoes.log
-./showvetoes.sh | tee log/showvetoes.log
-./vetoeff.sh | tee log/vetoeff.log
-./seleff.sh
-./trigeff.sh
+##./docuts.sh | tee log/docuts.log
+#./addBranches.sh | tee log/addBranches.log
+#./dovetoes.sh | tee log/dovetoes.log
+#./showvetoes.sh | tee log/showvetoes.log
+#./vetoeff.sh | tee log/vetoeff.log
+#./seleff.sh
+#./trigeff.sh
 ./sweight.sh | tee log/sweight.log
 ./plotMKK.sh
-./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
-./trainmva.sh | tee log/trainmva.log
+#./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
+#./trainmva.sh | tee log/trainmva.log
 ./applymva.sh | tee log/applymva.log
-plotmKK_mva.sh | tee log/plotmKK_mva.log
 ./mvaplots.sh | tee log/mvaplots.log
 ./mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
 ./mvacut.sh | tee log/mvacut.log
+./plotmKK_mva.sh | tee log/plotmKK_mva.log
 ./plot4D.sh | tee log/plot4D.log
 ./angacc.sh | tee log/angacc.log
