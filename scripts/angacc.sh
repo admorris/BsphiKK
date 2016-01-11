@@ -73,3 +73,5 @@ awk '/BEGIN CODE/,/END CODE/' acceptance.log >> $filename
 cat >> $filename << EOF
 }
 EOF
+../bin/PlotAngAcc
+
