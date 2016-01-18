@@ -20,4 +20,5 @@
 ./mvacut.sh | tee log/mvacut.log
 ./plotmKK_mva.sh | tee log/plotmKK_mva.log
 ./plot4D.sh | tee log/plot4D.log
+./doBsmassfit.sh | tee log/Bsmassfit.sh
 ./angacc.sh | tee log/angacc.log
