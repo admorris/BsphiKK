@@ -103,6 +103,9 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       continue;
     }
   }
+  REFitModel.SetValue("Nbkg",1830);
+  REFitModel.SetValue("Nsig",4500);
+  REFitModel.SetValue("mean",5366.77);
   REFitModel.Fit(&REdata);
   REFitModel.Plot(REframe);
   plotmaker* REplotter;
