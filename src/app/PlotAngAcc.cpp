@@ -13,8 +13,6 @@
 using namespace std;
 void PlotAngAcc(string filename,string plotfilename)
 {
-  TFile* file = new TFile(filename.c_str());
-  TTree* tree = (TTree*)file->Get("tuple");
   TFile* plotfile = new TFile(plotfilename.c_str() );
   TCanvas* can = (TCanvas*)plotfile->Get("acc_can" );
   TPad* pad = (TPad*)can->GetPrimitive("acc_can_1" );
@@ -59,19 +57,21 @@ void PlotAngAcc(string filename,string plotfilename)
   cosPsiAccData->Draw();
   cosPsiAccProj->Draw("same");
   canvcosPsi->SaveAs("ctheta_2_proj.pdf");
-  
-  TCanvas canv[6];
+  TFile* file = new TFile(filename.c_str());
+  TTree* tree = (TTree*)file->Get("tuple");
+  TCanvas* canv[6];
   string comb[6] = {"ctheta_1:ctheta_2","ctheta_1:phi","ctheta_2:phi","phi:mKK","ctheta_1:mKK","ctheta_2:mKK"};
   for(int i = 0; i < 6; i++)
   {
-    canv[i].Draw();
-    canv[i].cd();
+    canv[i] = new TCanvas(("projection"+comb[i]).c_str(),"",500,500);
+    canv[i]->Draw();
+    canv[i]->cd();
     tree->Draw(comb[i].c_str(),"weight","COLZ");
-    TH2F* graph = (TH2F*)canv[i].GetPrimitive("htemp");
+    TH2F* graph = (TH2F*)canv[i]->GetPrimitive("htemp");
     graph->SetTitle("");
     cout << "Fetched graph" << endl;
     std::replace(comb[i].begin(),comb[i].end(), ':', '-');
-    canv[i].SaveAs((comb[i]+".pdf").c_str());
+    canv[i]->SaveAs((comb[i]+".pdf").c_str());
   }
   
   
