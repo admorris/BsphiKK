@@ -18,18 +18,19 @@ TH1D* plotBsmass(string filename = "LbphiKp_MC")
   cout << "Plotting Bs mass from " << filename << endl;
 /*Input************************************************************************/
   // Open the input file
-  TFile* infile  = new TFile(("../ntuples/"+filename+"_mvaVars.root").c_str());
+  TFile* infile  = new TFile(("../ntuples/"+filename+"_mvacut.root").c_str());
   // Get the input tree
   TTree* intree  = (TTree*)infile->Get("DecayTree");
   // Set branches to read
-  double B_s0_LOKI_Mass;
-  intree->SetBranchAddress("B_s0_LOKI_Mass",&B_s0_LOKI_Mass);
+  double B_s0_LOKI_Mass; intree->SetBranchAddress("B_s0_LOKI_Mass",&B_s0_LOKI_Mass);
+  double KK_M; intree->SetBranchAddress("KK_M",&KK_M);
 /*Output***********************************************************************/
   TH1D* hist = new TH1D(filename.c_str(),"",100,5170,5580);
 /*Fill*************************************************************************/
   for(int i = 0; i < intree->GetEntries(); i++)
   {
     intree->GetEntry(i);
+    if(KK_M>1800) continue;
     hist->Fill(B_s0_LOKI_Mass);
   }
   return hist;
@@ -42,7 +43,7 @@ void plotBsmasses()
   int ngen_BdphiKst  = 2007492+2020493;
   int ngen_Bsphipipi = 4004542+9016672;
   int ngen_Bsphiphi  = 1028748+1029997;
-  int ngen_BsphiKK   = ngen_Bsphiphi;
+  int ngen_BsphiKK   = 1023767+1000157;
   // Fragmentation fraction ratios
   double fLb_fufd    = 0.404*(1-0.031*5); // 0.404(1-0.031*pT(GeV))
   double fs_fufd     = 0.134;
@@ -62,17 +63,21 @@ void plotBsmasses()
   TH1D* LbphiKp      = plotBsmass("LbphiKp_MC"  );
   TH1D* BdphiKst     = plotBsmass("BdphiKst_MC" );
   TH1D* Bsphipipi    = plotBsmass("Bsphipipi_MC");
+  TH1D* Bsphiphi     = plotBsmass("Bsphiphi_MC" );
   TH1D* BsphiKK      = plotBsmass("BsphiKK_MC"  );
+//  double Rdata = 2534/1961; // Ratio of yields from fits with mKK<1050 and 1050<mKK<1800
   TCanvas* can       = new TCanvas("can","");
 /*Calculate normalisation for each mode****************************************/
-  double denominator = B_BsphiKK  *(1.0/ngen_BsphiKK);
+  double denominator = B_Bsphiphi * B_phitoKK *(1.0/ngen_Bsphiphi);
+  double w_BsphiKK   = 1961./2534. * Bsphiphi->GetEntries() / BsphiKK->GetEntries();//B_BsphiKK  *(1.0/ngen_BsphiKK) /denominator;
   double w_LbphiKp   = B_LbphiKp  *(1.0/ngen_LbphiKp)  /denominator;
-  double w_BdphiKst  = B_BdphiKst *(1.0/ngen_BdphiKst) *B_KsttoKpi/denominator;
+  double w_BdphiKst  = B_BdphiKst *(1.0/ngen_BdphiKst) * B_KsttoKpi/denominator;
   double w_Bsphipipi = B_Bsphipipi*(1.0/ngen_Bsphipipi)/denominator;
-  BsphiKK->Scale(1.0); // Probably don't need this line
-  cout << "N_LbphiKp   = \t" << w_LbphiKp*(fLb_fufd/fs_fufd)*LbphiKp->GetEntries()  /BsphiKK->GetEntries() << "×N_BsphiKK" << endl
-       << "N_BdphiKst  = \t" << w_BdphiKst/fs_fd            *BdphiKst->GetEntries() /BsphiKK->GetEntries() << "×N_BsphiKK" << endl
-       << "N_Bsphipipi = \t" << w_Bsphipipi                 *Bsphipipi->GetEntries()/BsphiKK->GetEntries() << "×N_BsphiKK" << endl;
+  cout << "N_BsphiKK   = \t" << w_BsphiKK                   *BsphiKK->GetEntries()  /Bsphiphi->GetEntries() << "×N_Bsphiphi"  << endl
+       << "N_LbphiKp   = \t" << w_LbphiKp*(fLb_fufd/fs_fufd)*LbphiKp->GetEntries()  /Bsphiphi->GetEntries() << "×N_Bsphiphi" << endl
+       << "N_BdphiKst  = \t" << w_BdphiKst/fs_fd            *BdphiKst->GetEntries() /Bsphiphi->GetEntries() << "×N_Bsphiphi" << endl
+       << "N_Bsphipipi = \t" << w_Bsphipipi                 *Bsphipipi->GetEntries()/Bsphiphi->GetEntries() << "×N_Bsphiphi" << endl;
+  BsphiKK->Scale(w_BsphiKK);
   LbphiKp->Scale(w_LbphiKp*(fLb_fufd/fs_fufd));
   BdphiKst->Scale(w_BdphiKst/fs_fd);
   Bsphipipi->Scale(w_Bsphipipi);
@@ -83,6 +88,7 @@ void plotBsmasses()
   total->Add(LbphiKp,  "E");
   total->Add(BdphiKst, "E");
   total->Add(BsphiKK      );
+  total->Add(Bsphiphi     );
   // Create legend
   TLegend* leg = new TLegend(0.6,0.5,0.89,0.8);
   leg->SetHeader("Decay mode");
@@ -111,6 +117,8 @@ void plotBsmasses()
   total->GetXaxis()->SetTitleSize(0.05);
 /*Draw plot********************************************************************/
   can->SaveAs("simulated_backgrounds.pdf");
+  can->SaveAs("simulated_backgrounds.eps");
+  can->SaveAs("simulated_backgrounds.png");
   return;
 }
 int main()
