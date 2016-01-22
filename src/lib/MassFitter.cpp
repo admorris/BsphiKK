@@ -4,8 +4,10 @@
 #include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
+#include "RooBreitWigner.h"
 #include "RooCBShape.h"
 #include "RooExponential.h"
+#include "RooFFTConvPdf.h"
 #include "RooFormulaVar.h"
 #include "RooGaussian.h"
 #include "RooPolynomial.h"
@@ -80,7 +82,7 @@ void MassFitter::SetPDF(string signame, string bkgname)
   {
     throw invalid_argument(("No such PDF " + signame).c_str());
   }
-  if(bkgname=="none")
+  if(bkgname=="none" || bkgname=="None")
   {
     _pdf = sigpdf;
     _haspdf = true;
@@ -171,6 +173,13 @@ void MassFitter::SetValue(string name, double value)
   cout << "Setting " << name << " to " << value << endl;
 }
 /******************************************************************************/
+void MassFitter::SetRange(string name, double valmin, double valmax)
+{
+  RooRealVar* thing = (RooRealVar*)GetThing(name);
+  thing->setRange(valmin, valmax);
+  cout << "Setting " << name << " range to [" << valmin << "," << valmax << "]" << endl;
+}
+/******************************************************************************/
 void MassFitter::FixValue(string name, double value)
 {
   RooRealVar* thing = (RooRealVar*)GetThing(name);
@@ -204,6 +213,14 @@ RooAbsPdf* MassFitter::combine(RooAbsPdf* sigmod, RooAbsPdf* bkgmod)
   RooAddPdf*  model = new RooAddPdf("model","model",RooArgList(*bkgmod,*sigmod),RooArgList(*Nbkg,*Nsig));
   _stuff.push_back(Nsig);
   _stuff.push_back(Nbkg);
+  _stuff.push_back(model);
+  return (RooAbsPdf*)model;
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::convolve(RooAbsPdf* first, RooAbsPdf* second)
+{
+  _mass->setBins(10000,"cache");
+  RooFFTConvPdf* model = new RooFFTConvPdf("sigmod","Convolved PDF",*_mass,*first,*second);
   _stuff.push_back(model);
   return (RooAbsPdf*)model;
 }
@@ -342,6 +359,17 @@ RooAbsPdf* MassFitter::CrystalBall2Gauss()
   _stuff.push_back(gauss2);
   _stuff.push_back(gauss3);
   _stuff.push_back(othbit);
+  _stuff.push_back(sigmod);
+  return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::BreitWigner()
+{
+  RooRealVar*     mean   = new RooRealVar("mean","Mean \\phi mass",1019.461,1018,1021);
+  RooRealVar*     width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
+  RooBreitWigner* sigmod = new RooBreitWigner("sigmod","Breit-Wigner shape",*_mass,*mean,*width);
+  _stuff.push_back(mean);
+  _stuff.push_back(width);
   _stuff.push_back(sigmod);
   return (RooAbsPdf*)sigmod;
 }

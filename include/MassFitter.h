@@ -35,6 +35,7 @@ class MassFitter
     // Parameter values
     double              GetValue(string);
     void                SetValue(string, double);
+    void                SetRange(string, double, double);
     void                FixValue(string, double);
     // Command functions
     RooFitResult*       Fit();
@@ -58,12 +59,14 @@ class MassFitter
     RooAbsPdf*          CrystalBall();
     RooAbsPdf*          CrystalBall1Gauss();
     RooAbsPdf*          CrystalBall2Gauss();
+    RooAbsPdf*          BreitWigner();
     // Background models
     RooAbsPdf*          flatfunction();
     RooAbsPdf*          exponential();
     RooAbsPdf*          straightline();
     // Combine function for total model
     RooAbsPdf*          combine(RooAbsPdf*,RooAbsPdf*);
+    RooAbsPdf*          convolve(RooAbsPdf*,RooAbsPdf*);
     // Keep track of pointers
     vector<RooAbsReal*> _stuff;
 };
