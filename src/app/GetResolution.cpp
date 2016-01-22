@@ -15,6 +15,7 @@
 #include "RooConstVar.h"
 #include "RooGaussian.h"
 // Custom headers
+#include "MassFitter.h"
 #include "plotmaker.h"
 #include "progbar.h"
 using std::cout;
@@ -92,14 +93,24 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   RooDataSet* data;
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*x),Import(*newtree));
-  RooRealVar mean("mean","",0,-10,10);
-  RooRealVar sigma("sigma","mass resolution",20,0,100);
-  RooGaussian* model = new RooGaussian("model","",*x,mean,sigma);
-  model->fitTo(*data);
+//  RooRealVar mean("mean","",0,-10,10);
+//  RooRealVar sigma("sigma","mass resolution",20,0,100);
+//  RooGaussian* model = new RooGaussian("model","",*x,mean,sigma);
+//  model->fitTo(*data);
+  MassFitter* ResFit = new MassFitter(x);
+  ResFit->SetPDF("Double Gaussian","None");
+  ResFit->SetRange("mean",-10,10);
+  ResFit->SetValue("mean",0);
+  ResFit->SetRange("sigma1",0,10);
+  ResFit->SetValue("sigma1",1);
+  ResFit->SetRange("sigma2",0,40);
+  ResFit->SetValue("sigma2",2);
+  ResFit->Fit(data);
   RooPlot* frame = x->frame();
   cout << "Plotting" << endl;
   data->plotOn(frame,Binning(nbins));
-  model->plotOn(frame);
+//  model->plotOn(frame);
+  ResFit->Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
   plotmaker plotter(frame);
   plotter.SetTitle(("#Delta"+xtitle), unit);
