@@ -78,6 +78,14 @@ void MassFitter::SetPDF(string signame, string bkgname)
   {
     sigpdf = CrystalBall2Gauss();
   }
+  else if(signame=="Breit-Wigner" || signame=="Breit Wigner")
+  {
+    sigpdf = BreitWigner();
+  }
+  else if(signame=="Breit-Wigner * Gaussian" || signame=="Breit Wigner * Gaussian")
+  {
+    sigpdf = convolve(BreitWigner(),singleGaussian());
+  }
   else
   {
     throw invalid_argument(("No such PDF " + signame).c_str());
@@ -220,7 +228,7 @@ RooAbsPdf* MassFitter::combine(RooAbsPdf* sigmod, RooAbsPdf* bkgmod)
 RooAbsPdf* MassFitter::convolve(RooAbsPdf* first, RooAbsPdf* second)
 {
   _mass->setBins(10000,"cache");
-  RooFFTConvPdf* model = new RooFFTConvPdf("sigmod","Convolved PDF",*_mass,*first,*second);
+  RooFFTConvPdf* model = new RooFFTConvPdf("convshape","Convolved PDF",*_mass,*first,*second);
   _stuff.push_back(model);
   return (RooAbsPdf*)model;
 }
@@ -365,9 +373,9 @@ RooAbsPdf* MassFitter::CrystalBall2Gauss()
 /******************************************************************************/
 RooAbsPdf* MassFitter::BreitWigner()
 {
-  RooRealVar*     mean   = new RooRealVar("mean","Mean \\phi mass",1019.461,1018,1021);
+  RooRealVar*     mean   = new RooRealVar("mass","Mean \\phi mass",1019.461,1018,1021);
   RooRealVar*     width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
-  RooBreitWigner* sigmod = new RooBreitWigner("sigmod","Breit-Wigner shape",*_mass,*mean,*width);
+  RooBreitWigner* sigmod = new RooBreitWigner("resonance","Breit-Wigner shape",*_mass,*mean,*width);
   _stuff.push_back(mean);
   _stuff.push_back(width);
   _stuff.push_back(sigmod);
