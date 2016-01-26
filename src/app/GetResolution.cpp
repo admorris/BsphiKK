@@ -87,7 +87,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
     newtree->Fill();
   }
   bar.terminate();
-/*Plot************************************************************************/
+/*Fit the resolution**********************************************************/
   using namespace RooFit;
   RooRealVar* x = new RooRealVar("res",xtitle.c_str(),xlow,xup);
   RooDataSet* data;
@@ -102,7 +102,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   ResFit->SetRange("mean",-10,10);
   ResFit->SetValue("mean",0);
   ResFit->SetRange("sigma1",0,10);
-  ResFit->SetValue("sigma1",1);
+  ResFit->SetValue("sigma1",0.5);
   ResFit->SetRange("sigma2",0,40);
   ResFit->SetValue("sigma2",2);
   ResFit->Fit(data);
@@ -118,6 +118,29 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   TCanvas can;
   newtree->Draw("res:mass");
   can.SaveAs("2Dscatter.pdf");
+/*Do convolved fit************************************************************/
+  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),1000,1050);
+  cout << "Importing tree" << endl;
+  data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
+  MassFitter* PhiFit = new MassFitter(m);
+  PhiFit->SetPDF("Breit-Wigner * Gaussian","None");
+  PhiFit->FixValue("mass",1019.461);
+  PhiFit->FixValue("width",4.266);
+  PhiFit->SetRange("mean",-1,1);
+  PhiFit->FixValue("mean",0);
+  PhiFit->SetRange("sigma1",0,10);
+  double s1 = ResFit->GetValue("sigma1");
+  double s2 = ResFit->GetValue("sigma2");
+  double f1 = ResFit->GetValue("fgaus1");
+  PhiFit->SetValue("sigma1",f1*s1+(1-f1)*s2);
+  PhiFit->Fit(data);
+  frame = m->frame();
+  cout << "Plotting" << endl;
+  data->plotOn(frame,(Binning(nbins)));
+  PhiFit->Plot(frame);
+  plotmaker plotter2(frame);
+  plotter2.SetTitle((xtitle), unit);
+  plotter2.Draw()->SaveAs((plotname+"_fit.pdf").c_str());
 }
 /*Main function***************************************************************/
 int main(int argc, char* argv[])

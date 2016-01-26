@@ -197,7 +197,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
   evalres = amplitude.Rho2() * Acceptance();
   return evalres;
 }
-// Get the angular acceptance from TMutliDimFit output
+// Get the angular acceptance
 double Bs2PhiKKTotal::Acceptance()
 {
  return acc->Evaluate(mKK, phi, ctheta_1, ctheta_2)/0.04;
