@@ -139,7 +139,7 @@
         <Name>mKK</Name>
         <TF1>KK_M</TF1>
         <Minimum>988</Minimum>
-        <Maximum>4379</Maximum>
+        <Maximum>1800</Maximum>
         <Unit>MeV/c^{2}</Unit>
       </Observable>
       <Observable>
@@ -173,7 +173,7 @@
 		</PDFConfigurator>
 		<DataSet>
 			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_MC_mvacut.root</FileName>
+			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_MC_1800_mvacut.root</FileName>
 			<NTuplePath>DecayTree</NTuplePath>
 			<NumberEvents>100000</NumberEvents>
 			<CommonPhaseSpace>
