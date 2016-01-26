@@ -1,4 +1,7 @@
 /**
+
+  WARNING: This is a version that should only be used for the Bs→ϕKK angular analysis.
+  
   @namespace Mathematics
 
   Namespace holding some common mathematical functions that are used
@@ -7,6 +10,10 @@
 
   @author Greig A Cowan greig.cowan@cern.ch
   @date 2009-12-22
+  
+  @butcherer Adam Morris adam.morris@cern.ch
+  @butchered 2015/2016
+  I'm so sorry for the hard-coding. 
  */
 
 ///  ROOT Headers
@@ -1005,7 +1012,7 @@ namespace Mathematics
   };
 
 
-  int calculateAcceptanceCoefficients( IDataSet * dataSet, IPDF * PDF )
+  int calculateAcceptanceCoefficients( IDataSet * dataSet, IPDF * PDF, bool weight_with_phase_space = true)
   {
     // This tries to implement the NIKHEF method for calculating the
     // acceptance corefficients using Legendre polynomials and real
@@ -1136,16 +1143,22 @@ namespace Mathematics
       const double mK  = 493.677;
       const double mBs  = 5366.77;
       const double mPhi= 1019.461;
-      double t1 = mKK*mKK-(2*mK)*(2*mK);
-      double t2 = mKK*mKK;
-      double t31 = mBs*mBs - (mKK + mPhi)*(mKK + mPhi);
-      double t32 = mBs*mBs - (mKK - mPhi)*(mKK - mPhi);
-      double p1_st = sqrt(t1*t2)/mKK/2.;
-      double p3    = sqrt(t31*t32)/mBs/2.;
-      double pB = DPHelpers::daughterMomentum(mBs, mPhi, mKK);
-      val = p1_st*p3/1e6; // GeV
+      if(weight_with_phase_space)
+      {
+        double t1 = mKK*mKK-(2*mK)*(2*mK);
+        double t2 = mKK*mKK;
+        double t31 = mBs*mBs - (mKK + mPhi)*(mKK + mPhi);
+        double t32 = mBs*mBs - (mKK - mPhi)*(mKK - mPhi);
+        double p1_st = sqrt(t1*t2)/mKK/2.;
+        double p3    = sqrt(t31*t32)/mBs/2.;
+        double pB = DPHelpers::daughterMomentum(mBs, mPhi, mKK);
+        val = p1_st*p3/1e6; // GeV
+      }
+      else
+      {
+        val = 1.0;
+      }
       if (val < 1e-08) cout << cosTheta << " " << phi <<  " " << cosPsi << " " << mKK << " " << val << " " << endl;
-
       cosThetaAcc->Fill(cosTheta,1/val);
       phiAcc->Fill(phi,1/val);
       cosPsiAcc->Fill(cosPsi,1/val);
@@ -1180,13 +1193,14 @@ namespace Mathematics
     cout << endl;
 
     double error(0.);
+    string classname = weight_with_phase_space ? "Bs2PhiKKAcceptance" : "Bs2PhiKKBackground";
     cout << "//BEGIN CONSTANTS---------------------------------------------------------------" << endl;
-    cout << "double Bs2PhiKKAcceptance::mKK_min = " << minima[3] << ";" << endl;
-    cout << "double Bs2PhiKKAcceptance::mKK_max = " << maxima[3] << ";" << endl;
-    cout << "int Bs2PhiKKAcceptance::l_max = " << l_max + 1 << ";" << endl;
-    cout << "int Bs2PhiKKAcceptance::i_max = " << i_max + 1 << ";" << endl;
-    cout << "int Bs2PhiKKAcceptance::k_max = " << k_max + 1 << ";" << endl;
-    cout << "int Bs2PhiKKAcceptance::j_max = " << j_max + 1 << ";" << endl;
+    cout << "double " << classname << "::mKK_min = " << minima[3] << ";" << endl;
+    cout << "double " << classname << "::mKK_max = " << maxima[3] << ";" << endl;
+    cout << "int " << classname << "::l_max = " << l_max + 1 << ";" << endl;
+    cout << "int " << classname << "::i_max = " << i_max + 1 << ";" << endl;
+    cout << "int " << classname << "::k_max = " << k_max + 1 << ";" << endl;
+    cout << "int " << classname << "::j_max = " << j_max + 1 << ";" << endl;
     cout << "//END CONSTANTS-----------------------------------------------------------------" << endl;
     cout << "//BEGIN CODE--------------------------------------------------------------------" << endl;
     cout << "//double**** c;" << endl;
@@ -1264,7 +1278,8 @@ namespace Mathematics
     tree->Draw("phi>>phiAccProj","weight");
     tree->Draw("ctheta_2>>cosPsiAccProj","weight");
     tree->Draw("mKK>>mKKAccProj","weight");
-    TFile * acceptance_file = TFile::Open("sampled_acceptance.root","RECREATE");
+    string filename = weight_with_phase_space ? "acceptance" : "background";
+    TFile * acceptance_file = TFile::Open(("sampled_"+filename+".root").c_str(),"RECREATE");
     tree->Write();
     acceptance_file->Close();
     delete tree;
@@ -1273,28 +1288,6 @@ namespace Mathematics
     cout << "Can't do this without GSL!" << endl;
     exit(0);
 #endif
-
-    /*
-    // This works for a 3D surface, but need to use ntuple for more dimensions
-    // Fill a histogram with the TF3 acceptance function
-    TF3 * f3 = new TF3("f3", param, &AccParam::parameterisation, -1, 1, -TMath::Pi(), TMath::Pi(), -1, 1, 0, "AccParam", "parameterisation");
-    f3->SetNpx(25);
-    f3->SetNpy(25);
-    f3->SetNpz(25);
-    TH3F * h3 = (TH3F*)f3->CreateHistogram();
-    double cosTheta_i(0.);
-    double phi_i(0.);
-    double cosPsi_i(0.);
-    for (int i = 0; i < 20000000; i++)
-    {
-    f3->GetRandom3( cosTheta_i, phi_i, cosPsi_i );
-    h3->Fill(cosTheta_i, phi_i, cosPsi_i);
-    }
-    TH1D * cosThetaAccProj = h3->ProjectionX();
-    TH1D * phiAccProj = h3->ProjectionY();
-    TH1D * cosPsiAccProj = h3->ProjectionZ();
-     */
-
     std::cout << cosThetaAccProj->Integral() << " " << numEvents << std::endl;
     // Normalise the histograms for drawing
     cosThetaAccProj->Scale(cosThetaAcc->Integral()/cosThetaAccProj->Integral());
@@ -1321,8 +1314,8 @@ namespace Mathematics
     cosPsiAcc->Draw();
     cosPsiAcc->SetMinimum(0);
     cosPsiAccProj->Draw("same");
-    canvas->SaveAs("acceptance.root");
-    canvas->SaveAs("acceptance.pdf");
+    canvas->SaveAs((filename+".root").c_str());
+    canvas->SaveAs((filename+".pdf").c_str());
     return 1.;
   }
 
