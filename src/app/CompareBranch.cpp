@@ -70,12 +70,6 @@ void CompareBranch(string MCfilename, string REfilename, string branchname, stri
   // Get the histograms out of the RooPlot
   RooHist* h_MCdata = frame->getHist("h_MCdata");
   RooHist* h_REdata = frame->getHist("h_REdata");
-  // Get rid of MC datapoint error bars
-  for(int i = 0; i < h_MCdata->GetN(); i++)
-  {
-    h_MCdata->SetPointError(i,0,0,0,0);
-    bincontent.push_back(h_MCdata->GetY()[i]);
-  }
   // Integrate the histograms
   double MCint = integrate(h_MCdata);
   double REint = integrate(h_REdata);
@@ -83,18 +77,26 @@ void CompareBranch(string MCfilename, string REfilename, string branchname, stri
   cout << "First integral \t" << MCint << endl;
   cout << "Second integral\t" << REint << endl;
   cout << "Scale factor   \t" << ratio << endl;
-  // Scale the data plot to match the Monte Carlo
+  // Get rid of MC datapoint error bars and normalise to unity
+  for(int i = 0; i < h_MCdata->GetN(); i++)
+  {
+    h_MCdata->SetPointError(i,0,0,0,0);
+    h_MCdata->GetY()[i] /= MCint;
+    bincontent.push_back(h_MCdata->GetY()[i]);
+  }
+  // Normalise to unity
   for(int i = 0; i < h_REdata->GetN(); i++)
   {
-    h_REdata->GetY(     )[i] *= ratio;
-    h_REdata->GetEYhigh()[i] *= ratio;
-    h_REdata->GetEYlow( )[i] *= ratio;
+    h_REdata->GetY(     )[i] /= REint;
+    h_REdata->GetEYhigh()[i] /= REint;
+    h_REdata->GetEYlow( )[i] /= REint;
     bincontent.push_back(h_REdata->GetY()[i]);
   }
   // Set a sensible maximum so the blurb doesn't sit on top of data points
   double max = *max_element(bincontent.begin(),bincontent.end());
   cout << "The maximum is\t" << max << endl;
   frame->SetMaximum(max*1.3);
+  frame->SetMinimum(0);
   // Draw everything
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
