@@ -73,5 +73,6 @@ awk '/BEGIN CODE/,/END CODE/' acceptance.log >> $filename
 cat >> $filename << EOF
 }
 EOF
-../bin/PlotAngAcc
+../bin/PlotAngAcc sampled_acceptance.root acceptance.root
+mv acceptance_*pdf ../latex/figs/
 

@@ -36,7 +36,7 @@ Bs2PhiKKBackground::~Bs2PhiKKBackground()
 }
 double Bs2PhiKKBackground::Evaluate(double mKK, double phi, double ctheta_1, double ctheta_2)
 {
-  double Background = 0;
+  double background = 0;
   double mKK_mapped = (mKK - mKK_min) / (mKK_max - mKK_min)*2 - 1;
   double Q_l = 0;
   double P_i = 0;
@@ -56,12 +56,12 @@ double Bs2PhiKKBackground::Evaluate(double mKK, double phi, double ctheta_1, dou
           // these are the real valued spherical harmonics
           if ( k == 0 ) Y_jk =       gsl_sf_legendre_sphPlm (j, k, ctheta_1);
           else      Y_jk = sqrt(2) * gsl_sf_legendre_sphPlm (j, k, ctheta_1) * cos(k*phi);
-          Background += c[l][i][k][j]*(Q_l * P_i * Y_jk);
+          background += c[l][i][k][j]*(Q_l * P_i * Y_jk);
         }
       }
     }
   }
-  return Background;
+  return background;
 }
 EOF
 awk '/BEGIN CONSTANTS/,/END CONSTANTS/' background.log >> $filename
@@ -73,3 +73,6 @@ awk '/BEGIN CODE/,/END CODE/' background.log >> $filename
 cat >> $filename << EOF
 }
 EOF
+../bin/PlotAngAcc sampled_background.root background.root
+mv background_*pdf ../latex/figs/
+
