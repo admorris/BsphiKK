@@ -65,7 +65,8 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   // Output tree and branches
   TTree* newtree = new TTree();
   double res ; newtree->Branch("res" ,&res ,"res/D" );
-  double mass; newtree->Branch("mass",&mass,"mass/D");
+  double TRUEMASS; newtree->Branch("TRUEMASS",&TRUEMASS,"TRUEMASS/D");
+  newtree->Branch("SIMMASS",&SIMMASS,"SIMMASS/D");
   cout << "Constructing resolution for " << n << "-body invariant mass" << endl;
   progbar bar(tree->GetEntries());
   for(int i = 0; i < tree->GetEntries(); i++)
@@ -77,8 +78,8 @@ void GetResolution(string filename, vector<string> particlename, string branchna
       TRUEP[j].SetPxPyPzE(TRUEP_X[j],TRUEP_Y[j],TRUEP_Z[j],TRUEP_E[j]);
       TRUEP[n] = TRUEP[n]+TRUEP[j];
     }
-    mass = TRUEP[n].M();
-    res = mass - SIMMASS;
+    TRUEMASS = TRUEP[n].M();
+    res = TRUEMASS - SIMMASS;
     if(i%(tree->GetEntries()/100)==0)
     {
       bar.print(i);
@@ -116,18 +117,19 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   plotter.SetTitle(("#Delta"+xtitle), unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
   TCanvas can;
-  newtree->Draw("res:mass");
-  can.SaveAs("2Dscatter.pdf");
+  newtree->Draw("res:TRUEMASS");
+  can.SaveAs((plotname+"_2Dscatter.pdf").c_str());
 /*Do convolved fit************************************************************/
-  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),1000,1050);
+  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),493*2,1800);
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
   MassFitter* PhiFit = new MassFitter(m);
-  PhiFit->SetPDF("Breit-Wigner * Gaussian","None");
-  PhiFit->FixValue("mass",1019.461);
+//  PhiFit->SetPDF("Breit-Wigner * Gaussian","None");
+  PhiFit->SetPDF("Voigtian","None");
+  PhiFit->FixValue("mean",1019.461);
   PhiFit->FixValue("width",4.266);
-  PhiFit->SetRange("mean",-1,1);
-  PhiFit->FixValue("mean",0);
+//  PhiFit->SetRange("mean",-1,1);
+//  PhiFit->FixValue("mean",0);
   PhiFit->SetRange("sigma1",0,10);
   double s1 = ResFit->GetValue("sigma1");
   double s2 = ResFit->GetValue("sigma2");
