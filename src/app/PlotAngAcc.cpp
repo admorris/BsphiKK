@@ -7,6 +7,9 @@
 #include "TH2F.h"
 #include "TStyle.h"
 #include "TGraph.h"
+
+#include "itoa.h"
+
 #include <string>
 #include <iostream>
 
@@ -15,48 +18,45 @@ void PlotAngAcc(string filename,string plotfilename)
 {
   TFile* plotfile = new TFile(plotfilename.c_str() );
   TCanvas* can = (TCanvas*)plotfile->Get("acc_can" );
-  TPad* pad = (TPad*)can->GetPrimitive("acc_can_1" );
-  TH1D* mKKAccData = (TH1D*)pad->GetPrimitive("mKKAcc"    );
-  TH1D* mKKAccProj = (TH1D*)pad->GetPrimitive("mKKAccProj");
-  pad       = (TPad*)can->GetPrimitive("acc_can_2" );
-  TH1D* phiAccData = (TH1D*)pad->GetPrimitive("phiAcc"    );
-  TH1D* phiAccProj = (TH1D*)pad->GetPrimitive("phiAccProj");
-  pad       = (TPad*)can->GetPrimitive("acc_can_3" );
-  TH1D* cosThetaAccData = (TH1D*)pad->GetPrimitive("cosThetaAcc"    );
-  TH1D* cosThetaAccProj = (TH1D*)pad->GetPrimitive("cosThetaAccProj");
-  pad       = (TPad*)can->GetPrimitive("acc_can_4" );
-  TH1D* cosPsiAccData = (TH1D*)pad->GetPrimitive("cosPsiAcc"    );
-  TH1D* cosPsiAccProj = (TH1D*)pad->GetPrimitive("cosPsiAccProj");
+  string head = plotfilename.substr(0,plotfilename.size()-5);
+  gStyle->SetOptStat(0);  
+  TPad* pad;
+  TCanvas* canv1d;
+  TH1D* AccData;
+  TH1D* AccProj;
+  string histname[4] = {"mKK","phi","cosTheta","cosPsi"};
+  string varname[4] = {"mKK","phi","ctheta_1","ctheta_2"};
+  string axistitle[4] = { "#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]"
+                        , "#it{#Phi}"
+                        , "cos #it{#theta_{1}}"
+                        , "cos #it{#theta_{2}}"
+                        };
+  map<string,string> titlemap;
+  float textsize = 0.05;
+  for(int i = 0; i < 4; i++)
+  {
+    titlemap[varname[i]] = axistitle[i];
+    pad = (TPad*)can->GetPrimitive(("acc_can_"+itoa(i+1)).c_str());
+    AccData = (TH1D*)pad->GetPrimitive((histname[i]+"Acc"    ).c_str());
+    AccProj = (TH1D*)pad->GetPrimitive((histname[i]+"AccProj").c_str());
+    canv1d = new TCanvas();
+    canv1d->cd();
+    pad = new TPad();
+    pad->SetMargin(0.05,0.05,0.05,0.2);
+    pad->cd();
+    AccData->SetMinimum(0);
+    AccData->SetTitle("");
+    AccData->GetXaxis()->SetTitle(axistitle[i].c_str());
+    AccData->Draw();
+    AccProj->Draw("same");
+    AccData->GetXaxis()->SetTitleSize(textsize);
+    AccData->GetXaxis()->SetLabelSize(textsize);
+    AccData->GetXaxis()->CenterTitle();
+    AccData->GetYaxis()->SetLabelSize(textsize);
+    canv1d->SaveAs((head+"_"+varname[i]+"_proj.pdf").c_str());    
+  }
   
-  gStyle->SetOptStat(0);
-  TCanvas* canvmKK = new TCanvas();
-  mKKAccData->SetMinimum(0);
-  mKKAccData->SetTitle("");
-  mKKAccData->GetXaxis()->SetTitle("#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]");
-  mKKAccData->Draw();
-  mKKAccProj->Draw("same");
-  canvmKK->SaveAs("mKK_proj.pdf");
-  TCanvas* canvphi = new TCanvas();
-  phiAccData->SetMinimum(0);
-  phiAccData->SetTitle("");
-  phiAccData->GetXaxis()->SetTitle("#it{#Phi}");
-  phiAccData->Draw();
-  phiAccProj->Draw("same");
-  canvphi->SaveAs("phi_proj.pdf");
-  TCanvas* canvcosTheta = new TCanvas();
-  cosThetaAccData->SetMinimum(0);
-  cosThetaAccData->SetTitle("");
-  cosThetaAccData->GetXaxis()->SetTitle("cos(#it{#theta_{1}})");
-  cosThetaAccData->Draw();
-  cosThetaAccProj->Draw("same");
-  canvcosTheta->SaveAs("ctheta_1_proj.pdf");
-  TCanvas* canvcosPsi = new TCanvas();
-  cosPsiAccData->SetMinimum(0);
-  cosPsiAccData->SetTitle("");
-  cosPsiAccData->GetXaxis()->SetTitle("cos(#it{#theta_{2}})");
-  cosPsiAccData->Draw();
-  cosPsiAccProj->Draw("same");
-  canvcosPsi->SaveAs("ctheta_2_proj.pdf");
+  
   TFile* file = new TFile(filename.c_str());
   TTree* tree = (TTree*)file->Get("tuple");
   TCanvas* canv[6];
@@ -64,14 +64,34 @@ void PlotAngAcc(string filename,string plotfilename)
   for(int i = 0; i < 6; i++)
   {
     canv[i] = new TCanvas(("projection"+comb[i]).c_str(),"",500,500);
-    canv[i]->Draw();
+  }
+  for(int i = 0; i < 6; i++)
+  {
     canv[i]->cd();
+    string::size_type separator = comb[i].find(':');
+    pad = new TPad("pad","",0,0,1,1);
+    pad->SetMargin(0.12,0.08,0.12,0.08);
+    pad->Draw();
+    pad->cd();
     tree->Draw(comb[i].c_str(),"weight","COLZ");
-    TH2F* graph = (TH2F*)canv[i]->GetPrimitive("htemp");
+    TH2F* graph = (TH2F*)pad->GetPrimitive("htemp");
     graph->SetTitle("");
+    graph->GetXaxis()->SetTitleSize(textsize);
+    graph->GetXaxis()->SetLabelSize(textsize);
+    graph->GetXaxis()->CenterTitle();
+    graph->GetYaxis()->SetTitleSize(textsize);
+    graph->GetYaxis()->SetLabelSize(textsize);
+    graph->GetYaxis()->CenterTitle();
+    if(comb[i].find("mKK")!=string::npos)
+    {
+      graph->GetXaxis()->SetNdivisions(505);
+    }
+    cout << titlemap[comb[i].substr(0,separator)] << endl;
+    graph->GetYaxis()->SetTitle(titlemap[comb[i].substr(0,separator)].c_str());
+    graph->GetXaxis()->SetTitle(titlemap[comb[i].substr(separator+1,comb[i].size())].c_str());
     cout << "Fetched graph" << endl;
     std::replace(comb[i].begin(),comb[i].end(), ':', '-');
-    canv[i]->SaveAs((comb[i]+".pdf").c_str());
+    canv[i]->SaveAs((head+"_"+comb[i]+".pdf").c_str());
   }
   
   
