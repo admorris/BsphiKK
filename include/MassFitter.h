@@ -60,6 +60,7 @@ class MassFitter
     RooAbsPdf*          CrystalBall1Gauss();
     RooAbsPdf*          CrystalBall2Gauss();
     RooAbsPdf*          BreitWigner();
+    RooAbsPdf*          Voigtian();
     // Background models
     RooAbsPdf*          flatfunction();
     RooAbsPdf*          exponential();

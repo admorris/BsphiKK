@@ -13,6 +13,7 @@
 #include "RooPolynomial.h"
 #include "RooRealVar.h"
 #include "RooUniform.h"
+#include "RooVoigtian.h"
 // Custom headers
 #include "MassFitter.h"
 using namespace std;
@@ -85,6 +86,10 @@ void MassFitter::SetPDF(string signame, string bkgname)
   else if(signame=="Breit-Wigner * Gaussian" || signame=="Breit Wigner * Gaussian")
   {
     sigpdf = convolve(BreitWigner(),singleGaussian());
+  }
+  else if(signame=="Voigtian" || signame=="Voigt")
+  {
+    sigpdf = Voigtian();
   }
   else
   {
@@ -378,6 +383,19 @@ RooAbsPdf* MassFitter::BreitWigner()
   RooBreitWigner* sigmod = new RooBreitWigner("resonance","Breit-Wigner shape",*_mass,*mean,*width);
   _stuff.push_back(mean);
   _stuff.push_back(width);
+  _stuff.push_back(sigmod);
+  return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
+RooAbsPdf* MassFitter::Voigtian()
+{
+  RooRealVar*  mean   = new RooRealVar("mean","Mean \\phi mass", 1019.461,1018,1021);
+  RooRealVar*  width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
+  RooRealVar*  sigma1 = new RooRealVar("sigma1","Detector resolution",1,0,10);
+  RooVoigtian* sigmod = new RooVoigtian("sigmod","sigmod",*_mass,*mean,*width,*sigma1);
+  _stuff.push_back(mean);
+  _stuff.push_back(width);
+  _stuff.push_back(sigma1);
   _stuff.push_back(sigmod);
   return (RooAbsPdf*)sigmod;
 }
