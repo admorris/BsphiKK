@@ -18,8 +18,9 @@
 #include "MassFitter.h"
 #include "progbar.h"
 #include "plotmaker.h"
+#include "GetTree.h"
 // void BsMassFit(string filename)
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, bool drawregion)
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, bool drawregion, string cuts)
 {
   using namespace std;
 /*Input************************************************************************/
@@ -29,7 +30,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   RooRealVar mass(branchtofit.c_str(),"m(K+K−K+K−) MeV",5200,5600);
 /*Monte Carlo fit**************************************************************/
   TFile* MCfile = new TFile(MCfilename.c_str());
-  TTree* MCtree = ((TTree*)MCfile->Get("DecayTree"));
+  TTree* MCtree = GetTree(MCfile,cuts);
   RooDataSet MCdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*MCtree));
   RooPlot* MCframe = mass.frame();
   MCdata.plotOn(MCframe,Binning(50));
@@ -75,7 +76,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   }
 /*Collision data fit***********************************************************/
   TFile* REfile = new TFile(REfilename.c_str());
-  TTree* REtree = (TTree*)REfile->Get("DecayTree");
+  TTree* REtree = GetTree(REfile,cuts);
   RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
   RooPlot* REframe = mass.frame();
   REdata.plotOn(REframe,Binning(50));
@@ -198,18 +199,19 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname;
+  std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname, cuts;
   desc.add_options()
     ("help,H"      ,                                                                                  "produce help message"         )
     ("sweight,W"   ,                                                                                  "apply sweights to data"       )
     ("draw-region" ,                                                                                  "draw lines at ±3σ"            )
     ("pulls,P"     ,                                                                                  "plot with pulls"              )
-    ("MCfile,M"    , value<std::string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root")  , "set Monte Carlo file"         )
+    ("MCfile,M"    , value<std::string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "set Monte Carlo file"         )
     ("REfile,R"    , value<std::string>(&REfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
-    ("sigPDF,S"    , value<std::string>(&sigPDF    )->default_value("Crystal Ball + 2 Gaussians")   , "signal PDF to fit to data"    )
-    ("bkgPDF,B"    , value<std::string>(&bkgPDF    )->default_value("Exponential")                  , "background PDF to fit to data")
-    ("plotname,O"  , value<std::string>(&plotname  )->default_value("BsphiKK_data")                 , "fit plot filename"            )
-    ("branchname,N", value<std::string>(&branchname)->default_value("B_s0_LOKI_Mass")               , "branch to fit"                )
+    ("sigPDF,S"    , value<std::string>(&sigPDF    )->default_value("Crystal Ball + 2 Gaussians"   ), "signal PDF to fit to data"    )
+    ("bkgPDF,B"    , value<std::string>(&bkgPDF    )->default_value("Exponential"                  ), "background PDF to fit to data")
+    ("plotname,O"  , value<std::string>(&plotname  )->default_value("BsphiKK_data"                 ), "fit plot filename"            )
+    ("branchname,N", value<std::string>(&branchname)->default_value("B_s0_LOKI_Mass"               ), "branch to fit"                )
+    ("cuts,C"      , value<std::string>(&cuts      )->default_value(""                             ), "set optional cuts"            )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -219,6 +221,6 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), vmap.count("draw-region"));
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), vmap.count("draw-region"), cuts);
   return 0;
 }

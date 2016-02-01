@@ -8,6 +8,7 @@
 #include "TPad.h"
 #include <string>
 #include <iostream>
+#include "GetTree.h"
 
 using namespace std;
 void testAngAcc(string filename)
@@ -17,24 +18,7 @@ void testAngAcc(string filename)
 //  double maxima[4] = {1800, TMath::Pi(), 1, 1};
   Bs2PhiKKAcceptance acc;
   TFile* file = new TFile(filename.c_str());
-  TTree* tree;
-  if((TTree*)file->Get("DecayTreeTuple/DecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("DecayTreeTuple/DecayTree");
-  }
-  else if((TTree*)file->Get("DecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("DecayTree");
-  }
-  else if((TTree*)file->Get("MCDecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("MCDecayTree");
-  }
-  else
-  {
-    cout << "Couldn't find tree." << endl;
-    return;
-  }
+  TTree* tree = GetTree(file);
   double mKK;      tree->SetBranchAddress("KK_M"      ,&mKK     );
   double phi;      tree->SetBranchAddress("Phi_angle" ,&phi     );
   double ctheta_1; tree->SetBranchAddress("cos_theta1",&ctheta_1);

@@ -17,11 +17,12 @@
 #include "annotation.h"
 #include "maxOfFive.h"
 #include "maxOfThree.h"
+#include "GetTree.h"
 
 void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins)
 {
   TFile* file = new TFile(filename.c_str());
-  TTree* tree = (TTree*)file->Get("DecayTree");
+  TTree* tree = GetTree(file,cuts);
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
   RooRealVar* w;
@@ -199,7 +200,6 @@ int main(int argc, char* argv[])
     ("upper,u" , value<double     >(&xup   )->default_value(4000                               ), "set branch upper limit"                    )
     ("lower,l" , value<double     >(&xlow  )->default_value(900                                ), "set branch lower limit"                    )
     ("bins,b"  , value<int        >(&nbins )->default_value(50                                 ), "set number of bins"                        )
-    
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);

@@ -18,33 +18,16 @@
 #include "MassFitter.h"
 #include "plotmaker.h"
 #include "progbar.h"
+#include "GetTree.h"
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-void GetResolution(string filename, vector<string> particlename, string branchname, string xtitle, string unit, string plotname, double xlow, double xup, int nbins)
+void GetResolution(string filename, vector<string> particlename, string branchname, string cuts, string xtitle, string unit, string plotname, double xlow, double xup, int nbins)
 {
 /*Input***********************************************************************/
   TFile* file = new TFile(filename.c_str());
-  TTree* tree;
-  if((TTree*)file->Get("DecayTreeTuple/DecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("DecayTreeTuple/DecayTree");
-  }
-  else if((TTree*)file->Get("DecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("DecayTree");
-  }
-  else if((TTree*)file->Get("MCDecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("MCDecayTree");
-  }
-  else
-  {
-    cout << "Couldn't find tree." << endl;
-    return;
-  }
-  cout << "Tree found." << endl;
+  TTree* tree = GetTree(file,cuts);
 /*Construct resolution********************************************************/
   // KK_TRUEP branches are identical to B_s0_TRUEP (bug?)
   // phi_1020_TRUEP is fine, so are individual kaons
@@ -158,6 +141,7 @@ int main(int argc, char* argv[])
     ("file,F"    , value<string        >(&file  )->default_value("ntuples/BsphiKK_MC_mvacut.root"  ), "data ntuple"                           )
     ("particle,P", value<vector<string>>(&partic)->multitoken()                                     , "list particles to sum"                 )
     ("branch,B"  , value<string        >(&branch)->default_value("KK_M"                            ), "mass branch to compare to"             )
+    ("cuts,C"    , value<std::string   >(&cuts  )->default_value(""                                ), "set optional cuts"                     )
     ("title,T"   , value<string        >(&xtitle)->default_value("#it{m}(#it{K^{#plus}K^{#minus}})"), "x-axis title (takes ROOT LaTeX format)")
     ("unit,U"    , value<string        >(&unit  )->default_value("MeV/#it{c}^{2}"                  ), "x-axis unit (takes ROOT LaTeX format)" )
     ("plot,O"    , value<string        >(&plot  )->default_value("massresolution"                  ), "output plot filename"                  )
@@ -180,6 +164,6 @@ int main(int argc, char* argv[])
     partic.push_back("Kminus0");
   }
   cout << "Entering main function" << endl;
-  GetResolution(file,partic,branch,xtitle,unit,plot,xlow,xup,nbins);
+  GetResolution(file,partic,branch,cuts,xtitle,unit,plot,xlow,xup,nbins);
   return 0;
 }

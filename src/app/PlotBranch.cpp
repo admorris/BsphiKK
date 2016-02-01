@@ -11,28 +11,12 @@
 #include "RooRealVar.h"
 // Custom headers
 #include "plotmaker.h"
+#include "GetTree.h"
 
 void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins)
 {
   TFile* file = new TFile(filename.c_str());
-  TTree* tree;
-  if((TTree*)file->Get("DecayTreeTuple/DecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("DecayTreeTuple/DecayTree");
-  }
-  else if((TTree*)file->Get("DecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("DecayTree");
-  }
-  else if((TTree*)file->Get("MCDecayTree") != (TTree*)0x0)
-  {
-    tree  = (TTree*)file->Get("MCDecayTree");
-  }
-  else
-  {
-    cout << "Couldn't find tree." << endl;
-    return;
-  }
+  TTree* tree = GetTree(file,cuts);
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
   RooRealVar* w;
@@ -75,7 +59,6 @@ int main(int argc, char* argv[])
     ("upper,u" , value<double     >(&xup   )->default_value(5600                                   ), "set branch upper limit"                    )
     ("lower,l" , value<double     >(&xlow  )->default_value(5200                                   ), "set branch lower limit"                    )
     ("bins,b"  , value<int        >(&nbins )->default_value(50                                     ), "set number of bins"                        )
-    
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);

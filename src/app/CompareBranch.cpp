@@ -17,6 +17,8 @@
 #include "RooRealVar.h"
 // Custom headers
 #include "plotmaker.h"
+#include "GetTree.h"
+
 // Just sum bin contents for a RooHist 
 inline double integrate(RooHist* hist)
 {
@@ -32,8 +34,8 @@ void CompareBranch(string MCfilename, string REfilename, string branchname, stri
   // Open the files and get the trees
   TFile* MCfile = new TFile(MCfilename.c_str());
   TFile* REfile = new TFile(REfilename.c_str());
-  TTree* MCtree = (TTree*)MCfile->Get("DecayTree");
-  TTree* REtree = (TTree*)REfile->Get("DecayTree");
+  TTree* MCtree = GetTree(MCfile,cuts);
+  TTree* REtree = GetTree(REfile,cuts);
   // RooFit variables
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
