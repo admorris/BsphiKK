@@ -18,6 +18,7 @@
 ./mvaplots.sh | tee log/mvaplots.log
 ./mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
 ./mvacut.sh | tee log/mvacut.log
+./mvacuteff.sh | tee log/mvacuteff.log
 ./plotmKK_mva.sh | tee log/plotmKK_mva.log
 ./plot4D.sh | tee log/plot4D.log
 ./doBsmassfit.sh | tee log/Bsmassfit.log
