@@ -148,11 +148,12 @@ void Bs2PhiKKTotal::MakePrototypes()
 bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
 {
   bool isOK = allParameters.SetPhysicsParameters(NewParameterSet);
-  // Retrieve the physics parameters and set amplitudes
+  double sumq = 0; // Sum in quadriture of amplitudes
+  // Retrieve the physics parameters
   // S-wave
   ASsq      = allParameters.GetPhysicsParameter(ASsqName  )->GetValue();
   deltaS    = allParameters.GetPhysicsParameter(deltaSName)->GetValue();
-  Swave->SetHelicityAmplitudes(0,sqrt(ASsq), deltaS);
+  sumq     += ASsq;
   // P- and D-wave
   for(unsigned short i = 0; i < 3; i++)
   {
@@ -160,6 +161,25 @@ bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
     ADsq[i]   = allParameters.GetPhysicsParameter(ADsqName[i]  )->GetValue();
     deltaP[i] = allParameters.GetPhysicsParameter(deltaPName[i])->GetValue();
     deltaD[i] = allParameters.GetPhysicsParameter(deltaDName[i])->GetValue();
+    sumq     += APsq[i] + ADsq[i];
+  }
+  // Normalise the amplitudes
+  if(abs(sumq-1.0) > 0.0000000001)
+  {
+    ASsq /= sumq;
+    allParameters.GetPhysicsParameter(ASsqName  )->SetValue(ASsq);
+    for(unsigned short i = 0; i < 3; i++)
+    {
+      APsq[i] /= sumq;
+      ADsq[i] /= sumq;
+      allParameters.GetPhysicsParameter(APsqName[i])->SetValue(APsq[i]);
+      allParameters.GetPhysicsParameter(ADsqName[i])->SetValue(ADsq[i]);
+    }
+  }
+  // Set the amplitudes
+  Swave->SetHelicityAmplitudes(0,sqrt(ASsq), deltaS);
+  for(unsigned short i = 0; i < 3; i++)
+  {
     Pwave->SetHelicityAmplitudes(i,sqrt(APsq[i]), deltaP[i]);
     Dwave->SetHelicityAmplitudes(i,sqrt(ADsq[i]), deltaD[i]);
   }
