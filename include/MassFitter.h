@@ -34,6 +34,7 @@ class MassFitter
     void                SetData(RooDataSet*);
     // Parameter values
     double              GetValue(string);
+    double              GetError(string);
     void                SetValue(string, double);
     void                SetRange(string, double, double);
     void                FixValue(string, double);

@@ -179,6 +179,11 @@ double MassFitter::GetValue(string name)
   return (double)((RooRealVar*)GetThing(name))->getValV();
 }
 /******************************************************************************/
+double MassFitter::GetError(string name)
+{
+  return (double)((RooRealVar*)GetThing(name))->getError();
+}
+/******************************************************************************/
 void MassFitter::SetValue(string name, double value)
 {
   RooRealVar* thing = (RooRealVar*)GetThing(name);
