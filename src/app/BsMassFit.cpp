@@ -193,6 +193,19 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     outputFile->Close();
   }
 /******************************************************************************/
+  cout //<< setprecision(2)
+       << "$\\alpha      $ & $" << MCFitModel.GetValue("alpha")  << " \\pm " << MCFitModel.GetError("alpha")  << "$ \\\\" << endl
+       << "$n            $ & $" << MCFitModel.GetValue("n")      << " \\pm " << MCFitModel.GetError("n")      << "$ \\\\" << endl
+       << "$\\sigma_1    $ & $" << MCFitModel.GetValue("sigma1") << " \\pm " << MCFitModel.GetError("sigma1") << "$ \\\\" << endl
+       << "$\\sigma_2    $ & $" << MCFitModel.GetValue("sigma2") << " \\pm " << MCFitModel.GetError("sigma2") << "$ \\\\" << endl
+       << "$\\sigma_3    $ & $" << MCFitModel.GetValue("sigma3") << " \\pm " << MCFitModel.GetError("sigma3") << "$ \\\\" << endl
+       << "$f_1          $ & $" << MCFitModel.GetValue("fgaus1") << " \\pm " << MCFitModel.GetError("fgaus1") << "$ \\\\" << endl
+       << "$f_2          $ & $" << MCFitModel.GetValue("fgaus2") << " \\pm " << MCFitModel.GetError("fgaus2") << "$ \\\\" << endl
+       << "\\hline" << endl
+       << "$\\mu         $ & $" << REFitModel.GetValue("mean")   << " \\pm " << REFitModel.GetError("mean")   << "$ \\\\" << endl
+       << "$N_\\text{sig}$ & $" << REFitModel.GetValue("Nsig")   << " \\pm " << REFitModel.GetError("Nsig")   << "$ \\\\" << endl
+       << "$N_\\text{bkg}$ & $" << REFitModel.GetValue("Nbkg")   << " \\pm " << REFitModel.GetError("Nbkg")   << "$ \\\\" << endl;
+/******************************************************************************/
   return;
 }
 int main(int argc, char* argv[])
