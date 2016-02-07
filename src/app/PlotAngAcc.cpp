@@ -35,6 +35,7 @@ void PlotAngAcc(string filename,string plotfilename)
   float textsize = 0.05;
   for(int i = 0; i < 4; i++)
   {
+    cout << "Drawing " << varname[i] << endl;
     titlemap[varname[i]] = axistitle[i];
     pad = (TPad*)can->GetPrimitive(("acc_can_"+itoa(i+1)).c_str());
     AccData = (TH1D*)pad->GetPrimitive((histname[i]+"Acc"    ).c_str());
@@ -67,6 +68,7 @@ void PlotAngAcc(string filename,string plotfilename)
   }
   for(int i = 0; i < 6; i++)
   {
+    cout << "Drawing " << comb[i] << endl;
     canv[i]->cd();
     string::size_type separator = comb[i].find(':');
     pad = new TPad("pad","",0,0,1,1);

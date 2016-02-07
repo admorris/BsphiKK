@@ -86,12 +86,6 @@ double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, do
   }
   return acceptance;
 }
-double LegendreMomentShape::mKK_min = 988;
-double LegendreMomentShape::mKK_max = 1800;
-int LegendreMomentShape::l_max = 7;
-int LegendreMomentShape::i_max = 7;
-int LegendreMomentShape::k_max = 3;
-int LegendreMomentShape::j_max = 3;
 void LegendreMomentShape::createcoefficients()
 {
   c = new double***[l_max];
