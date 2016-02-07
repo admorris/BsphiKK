@@ -1120,26 +1120,7 @@ namespace Mathematics
       cosPsi   = event->GetObservable("ctheta_2")->GetValue();
       mKK      = event->GetObservable("mKK")->GetValue();
       mKK_mapped = (mKK - minima[3])/(maxima[3]-minima[3])*2.+ (-1);
-
-      /*
-      // for the Bd2JpsiK* time-angular analysis in helicity basis
-      cosTheta = event->GetObservable("helcosthetaL")->GetValue();
-      phi      = event->GetObservable("helphi")->GetValue();
-      cosPsi   = event->GetObservable("helcosthetaK")->GetValue();
-
-      // Now need to calculate the normalisation when integrated over the 3 angles
-      Bd2JpsiKstar_sWave_Fscopy * bpdf = (Bd2JpsiKstar_sWave_Fscopy *) PDF;
-      evalPDFnorm = bpdf->NormAnglesOnlyForAcceptanceWeights(event, boundary);
-       */
-
-      /*
-      // for the Bd2JpsiK* time-angular analysis in transversity basis
-      cosTheta = event->GetObservable("cosTheta")->GetValue();
-      phi      = event->GetObservable("phi")->GetValue();
-      cosPsi   = event->GetObservable("cosPsi")->GetValue();
-      Bd2JpsiKstar_sWave_Fs_withAcc * bpdf = (Bd2JpsiKstar_sWave_Fs_withAcc *) PDF;
-      evalPDFnorm = bpdf->NormAnglesOnlyForAcceptanceWeights(event, boundary);
-       */
+      
       const double mK  = 493.677;
       const double mBs  = 5366.77;
       const double mPhi= 1019.461;
@@ -1191,29 +1172,9 @@ namespace Mathematics
 #endif
     }
     cout << endl;
-
+// Save the coefficients to a file
     double error(0.);
-    string classname = weight_with_phase_space ? "Bs2PhiKKAcceptance" : "Bs2PhiKKBackground";
-    cout << "//BEGIN CONSTANTS---------------------------------------------------------------" << endl;
-    cout << "double " << classname << "::mKK_min = " << minima[3] << ";" << endl;
-    cout << "double " << classname << "::mKK_max = " << maxima[3] << ";" << endl;
-    cout << "int " << classname << "::l_max = " << l_max + 1 << ";" << endl;
-    cout << "int " << classname << "::i_max = " << i_max + 1 << ";" << endl;
-    cout << "int " << classname << "::k_max = " << k_max + 1 << ";" << endl;
-    cout << "int " << classname << "::j_max = " << j_max + 1 << ";" << endl;
-    cout << "//END CONSTANTS-----------------------------------------------------------------" << endl;
-    cout << "//BEGIN CODE--------------------------------------------------------------------" << endl;
-    cout << "//double**** c;" << endl;
-    cout << "c = new double***[l_max];" << endl;
-    cout << "for ( int l = 0; l < l_max; l++ )\n{" << endl;
-    cout << "  c[l] = new double**[i_max];" << endl;
-    cout << "  for ( int i = 0; i < i_max; i++ )\n  {" << endl;
-    cout << "    c[l][i] = new double*[k_max];" << endl;
-    cout << "    for ( int k = 0; k < k_max; k++ )\n    {" << endl;
-    cout << "      c[l][i][k] = new double[j_max];" << endl;
-    cout << "      for ( int j = 0; j < j_max; j++ )\n      {" << endl;
-    cout << "        c[l][i][k][j] = 0;" << endl;
-    cout << "      }\n    }\n  }\n}" << endl;
+    double signif(0.);
     for ( int l = 0; l < l_max + 1; l++ )
     {
       for ( int i = 0; i < i_max + 1; i++ )
@@ -1225,9 +1186,14 @@ namespace Mathematics
             if (j < k) continue;
             error = sqrt(1./numEvents/numEvents * ( c_sq[l][i][k][j] - c[l][i][k][j]*c[l][i][k][j]/numEvents) );
             if (std::isnan(error)) error = 0.;
-            if ( fabs(c[l][i][k][j]/numEvents) > 5.*error )
+            signif = error != 0 ? fabs(c[l][i][k][j]/numEvents)/error : 1000;
+            if ( signif <= 5 && signif > 2)
             {
-              printf("c[%d][%d][%d][%d] = %f;// +- %f\n", l, i, k, j, c[l][i][k][j]/numEvents, error );
+              printf("// rejected: c[%d][%d][%d][%d] = %f ± %f with significance %fσ\n", l, i, k, j, c[l][i][k][j]/numEvents, error, signif );
+            }
+            if ( signif > 5 )
+            {
+              printf("c[%d][%d][%d][%d] = %f;// ± %f with significance %fσ\n", l, i, k, j, c[l][i][k][j]/numEvents, error, signif );
             }
             else
             {
@@ -1237,7 +1203,14 @@ namespace Mathematics
         }
       }
     }
-    cout << "//END CODE----------------------------------------------------------------------" << endl;
+    TTree* outputTree = new TTree("LegendreMomentsTree","");
+    char branchtitle[20];
+    sprintf(branchtitle,"c[%d][%d][%d][%d]/D",l_max+1,i_max+1,k_max+1,j_max+1);
+    outputTree->Branch("c",c,branchtitle);
+    outputTree->Branch("mKK_min",&minima[3],"mKK_min/D");
+    outputTree->Branch("mKK_max",&maxima[3],"mKK_max/D");
+    outputTree->Fill();
+    outputTree->SaveAs("LegendreMoments.root");
 #ifdef __RAPIDFIT_USE_GSL
     // Now sample the acceptance surface so that we can make projections to check that it looks sensible
     AccParam * param = new AccParam(&c[0][0][0][0], i_max, j_max, k_max, l_max, numEvents);
