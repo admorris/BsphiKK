@@ -3,7 +3,7 @@
  *  RapidFit PDF for Bs2PhiKKTotal
  *
  *  @author Adam Morris
- *  @date Nov-Dec 2015
+ *  @date Feb 2016
  */
 // Self
 #include "Bs2PhiKKTotal.h"
@@ -59,6 +59,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   MakePrototypes(); // Should only ever go in the constructor. Never put this in the copy constructor!!
   mKKmin = config->GetPhaseSpaceBoundary()->GetConstraint("mKK")->GetMinimum();
   mKKmax = config->GetPhaseSpaceBoundary()->GetConstraint("mKK")->GetMaximum();
+  acc = new LegendreMomentShape("LegendreMoments_Acceptance.root");
   Initialise();
 }
 // Copy constructor
@@ -93,6 +94,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) :
     deltaPName[i] = copy.deltaPName[i];
     deltaDName[i] = copy.deltaDName[i];
   }
+  acc = new LegendreMomentShape(*copy.acc);
   Initialise();
 }
 // Destructor
@@ -113,13 +115,13 @@ void Bs2PhiKKTotal::Initialise()
   Swave = new Bs2PhiKKComponent(0, 980,100    ,"FT",RBs,RKK);
   Pwave = new Bs2PhiKKComponent(1,mphi,  4.266,"BW",RBs,RKK);
   Dwave = new Bs2PhiKKComponent(2,1525, 73    ,"BW",RBs,RKK);
-  acc = new Bs2PhiKKAcceptance;
   this->SetNumericalNormalisation( true );
 	this->TurnCachingOff();
 }
 // Make the data point and parameter set
 void Bs2PhiKKTotal::MakePrototypes()
 {
+  cout << "Making prototypes" << endl;
   // Make the DataPoint prototype
   // The ordering here matters. It has to be the same as the XML file, apparently.
   allObservables.push_back(mKKName     );
@@ -163,8 +165,9 @@ bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
     deltaD[i] = allParameters.GetPhysicsParameter(deltaDName[i])->GetValue();
     sumq     += APsq[i] + ADsq[i];
   }
+  cout << "Sum of amplitudes is " << sumq << endl;
   // Normalise the amplitudes
-  if(abs(sumq-1.0) > 0.0000000001)
+  if(abs(sumq-1.0) > 0.00001)
   {
     ASsq /= sumq;
     allParameters.GetPhysicsParameter(ASsqName  )->SetValue(ASsq);
@@ -209,18 +212,50 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
     cout << "cos(theta1):\t" << ctheta_1 << endl;
     cout << "cos(theta2):\t" << ctheta_2 << endl;
   }
-  // Sum-square of component amplitudes 
   double evalres;
-  TComplex amplitude = Swave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
-                     + Pwave->Amplitude(mKK, phi, ctheta_1, ctheta_2)
-                     + Dwave->Amplitude(mKK, phi, ctheta_1, ctheta_2);
-  evalres = amplitude.Rho2() * Acceptance();
+  // Only do convolution around the phi
+  evalres = (TMath::Abs(mKK-Bs2PhiKKComponent::mphi)<30) ? Convolution() : EvaluateBase(mKK, phi, ctheta_1, ctheta_2);
   return evalres;
 }
-// Get the angular acceptance
-double Bs2PhiKKTotal::Acceptance()
+// Base function for evaluation
+double Bs2PhiKKTotal::EvaluateBase(double _mKK, double _phi, double _ctheta_1, double _ctheta_2)
 {
- return acc->Evaluate(mKK, phi, ctheta_1, ctheta_2)/0.04;
+  // Sum-square of component amplitudes 
+  TComplex amplitude = Swave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2)
+                     + Pwave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2)
+                     + Dwave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2);
+  return  amplitude.Rho2() * Acceptance(_mKK, _phi, _ctheta_1, _ctheta_2);
+}
+// Do Gaussian convolution
+double Bs2PhiKKTotal::Convolution()
+{
+  double MassResolution = 0.747;
+  unsigned int nsteps = 1000;
+  // Range of convolution integral
+	double xlo = -5 * MassResolution;
+	double xhi = +5 * MassResolution;
+
+	double stepSize = (xhi-xlo) / (double)nsteps;
+
+	double sum=0.;
+
+	double running_xlo=xlo-0.5*stepSize;
+	double running_xhi=xhi+0.5*stepSize;
+
+	for(unsigned int i=0; i < nsteps/2; i++)
+	{
+		running_xlo += stepSize;
+		sum += EvaluateBase(mKK - running_xlo, phi, ctheta_1, ctheta_2) * TMath::Gaus( running_xlo, 0, MassResolution );
+
+		running_xhi -= stepSize;
+		sum += EvaluateBase(mKK - running_xhi, phi, ctheta_1, ctheta_2) * TMath::Gaus( running_xhi, 0, MassResolution );
+	}
+  return sum * stepSize;
+}
+// Get the angular acceptance
+double Bs2PhiKKTotal::Acceptance(double _mKK, double _phi, double _ctheta_1, double _ctheta_2)
+{
+ return acc->Evaluate(_mKK, _phi, _ctheta_1, _ctheta_2)/0.04;
 }
 // Normalise by summing over squares of helicity amplitudes
 double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)
