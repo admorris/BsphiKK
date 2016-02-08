@@ -3,58 +3,58 @@
 	  // Magnitudes squared
     <PhysicsParameter>
       <Name>ASzero2</Name>
-      <Value>852</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APminus2</Name>
-      <Value>76</Value>
+      <Value>0.333</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>108</Value>
+      <Value>0.334</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APplus2</Name>
-      <Value>76</Value>
+      <Value>0.333</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADminus2</Name>
-      <Value>24</Value>
+      <Value>0</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>41</Value>
+      <Value>0</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADplus2</Name>
-      <Value>89</Value>
+      <Value>0</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     // Phases
@@ -139,7 +139,7 @@
         <Name>mKK</Name>
         <TF1>KK_M</TF1>
         <Minimum>988</Minimum>
-        <Maximum>1800</Maximum>
+        <Maximum>1052</Maximum>
         <Unit>MeV/c^{2}</Unit>
       </Observable>
       <Observable>
@@ -173,7 +173,7 @@
 		</PDFConfigurator>
 		<DataSet>
 			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mva.root</FileName>
+			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mva.root</FileName>
 			<CutString>mlp>0.62</CutString>
 			<NTuplePath>DecayTree</NTuplePath>
 			<NumberEvents>1000000</NumberEvents>
