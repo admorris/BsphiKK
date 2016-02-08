@@ -3,7 +3,7 @@
  *  RapidFit PDF for Bs2PhiKKTotal
  *
  *  @author Adam Morris
- *  @date Nov-Dec 2015
+ *  @date Feb 2016
  */
 #ifndef Bs2PhiKKTotal_H
 #define Bs2PhiKKTotal_H
@@ -16,7 +16,7 @@
 #endif
 // Self
 #include "Bs2PhiKKComponent.h"
-#include "Bs2PhiKKAcceptance.h"
+#include "LegendreMomentShape.h"
 
 class Bs2PhiKKTotal : public BasePDF
 {
@@ -42,17 +42,22 @@ class Bs2PhiKKTotal : public BasePDF
       ObservableRef deltaSName, deltaPName[3], deltaDName[3];
       // m(KK) boundaries
       double mKKmin, mKKmax;
+      // Acceptance object
+      LegendreMomentShape* acc;
+    private:
       // The m(KK) components
       Bs2PhiKKComponent* Swave;
       Bs2PhiKKComponent* Pwave;
       Bs2PhiKKComponent* Dwave;
-      // Acceptance object
-      Bs2PhiKKAcceptance* acc;
-    private:
+      // Stuff to do on creation
       void Initialise();
       bool init;
       void MakePrototypes();
-      double Acceptance();
+      // Calculation
+      double EvaluateBase(double, double, double, double);
+      double Acceptance(double, double, double, double);
+      double Convolution();
+      //
       bool debug = false;
 };
 #endif
