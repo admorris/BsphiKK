@@ -2,35 +2,42 @@
 #include <gsl/gsl_sf_legendre.h>
 #include <cmath>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
-#include <string>
-#include "TFile.h"
-#include "TTree.h"
 #include "TBranch.h"
-using std::cout;
-using std::endl;
-using std::string;
-using std::size_t;
-using std::vector;
-using std::atoi;
-LegendreMomentShape::LegendreMomentShape(string filename)
+#include "itoa.h"
+using namespace std;
+LegendreMomentShape::LegendreMomentShape(string _filename) : filename(_filename), init(true)
 {
-  TFile file(filename.c_str());
-  TTree* tree = (TTree*)file.Get("LegendreMomentsTree");
+  cout << "Opening " << filename << endl;
+  file = TFile::Open(filename.c_str());
+  if(file->IsZombie())
+  {
+    delete file;
+    cout << "No file found. Defaulting to uniform shape." << endl;
+    return;
+  }
+  tree = (TTree*)file->Get("LegendreMomentsTree");
+  if(tree == (TTree*)0x0) throw runtime_error("LegendreMomentsTree not found");
+  tree->SetBranchAddress("mKK_min",&mKK_min);
+  tree->SetBranchAddress("mKK_max",&mKK_max);
   string branchtitle = tree->GetBranch("c")->GetTitle();
-  tree->SetBranchAddress("c",c);
+  cout << branchtitle << endl;
   vector<int*> maxima = {&l_max,&i_max,&k_max,&j_max};
-  size_t lfound(0), rfound(0);
+  size_t found(0);
   for(auto maximum: maxima)
   {
-    lfound = branchtitle.find("[",lfound+1);
-    rfound = branchtitle.find("]",rfound+1);
-    *maximum = atoi(branchtitle.substr(lfound+1,rfound).c_str());
+    found = branchtitle.find('[',found+1);
+    branchtitle.find(']',found);
+    *maximum = atoi(branchtitle.substr(found+1,1).c_str());
   }
   createcoefficients();
   tree->GetEntry(0);
-  file.Close();
+  delete tree;
+  delete file;
+  init = false;
 }
+
 LegendreMomentShape::LegendreMomentShape(const LegendreMomentShape& copy) : 
     mKK_min(copy.mKK_min)
   , mKK_max(copy.mKK_max)
@@ -38,29 +45,43 @@ LegendreMomentShape::LegendreMomentShape(const LegendreMomentShape& copy) :
   , i_max(copy.i_max)
   , k_max(copy.k_max)
   , j_max(copy.j_max)
+  , init(copy.init)
+  , filename(copy.filename)
 {
   copycoefficients(copy.c);
 }
 LegendreMomentShape::~LegendreMomentShape()
 {
-  for ( int l = 0; l < l_max; l++ )
+  if(!init)
   {
-    for ( int i = 0; i < i_max; i++ )
+    for ( int l = 0; l < l_max; l++ )
     {
-      for ( int k = 0; k < k_max; k++ )
+      for ( int i = 0; i < i_max; i++ )
       {
-        delete c[l][i][k];
+        for ( int k = 0; k < k_max; k++ )
+        {
+          delete c[l][i][k];
+        }
+        delete c[l][i];
       }
-      delete c[l][i];
+      delete c[l];
     }
-    delete c[l];
+    delete c;
   }
-  delete c;
+  else
+  {
+    cout << "Deleting unused LegendreMomentShape" << endl;
+  }
 }
 double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, double ctheta_2)
 {
+  if(init) return 1;
   double acceptance = 0;
   double mKK_mapped = (mKK - mKK_min) / (mKK_max - mKK_min)*2 - 1;
+  if(abs(mKK_mapped) > 1)
+  {
+    return 0;
+  }
   double Q_l = 0;
   double P_i = 0;
   double Y_jk = 0;
@@ -72,7 +93,7 @@ double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, do
       {
         for ( int j = 0; j < j_max; j++ )
         {
-          if (j < k) continue; // must have l >= k
+          if (j < k) continue; // must have j >= k
           Q_l  = gsl_sf_legendre_Pl   (l,  mKK_mapped);
           P_i  = gsl_sf_legendre_Pl   (i,  ctheta_2);
           // only consider case where k >= 0
@@ -88,6 +109,7 @@ double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, do
 }
 void LegendreMomentShape::createcoefficients()
 {
+  char branchtitle[10];
   c = new double***[l_max];
   for ( int l = 0; l < l_max; l++ )
   {
@@ -100,7 +122,13 @@ void LegendreMomentShape::createcoefficients()
         c[l][i][k] = new double[j_max];
         for ( int j = 0; j < j_max; j++ )
         {
-          c[l][i][k][j] = 0;
+          if (j < k)
+          {
+            c[l][i][k][j] = 0;
+            continue;
+          }
+          sprintf(branchtitle,"c%d%d%d%d",l,i,k,j);
+          tree->SetBranchAddress(branchtitle,&c[l][i][k][j]);
         }
       }
     }

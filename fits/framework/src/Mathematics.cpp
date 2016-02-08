@@ -1023,8 +1023,8 @@ namespace Mathematics
     ComponentRef * thisRef = new ComponentRef( "0", "dummyObservable" );
     PhaseSpaceBoundary * boundary = dataSet->GetBoundary();
 
-    const int l_max(6);
-    const int i_max(6);
+    const int l_max(3);
+    const int i_max(3);
     const int k_max(2);
     const int j_max(2);
     //const int l_max(6); //mKK
@@ -1173,8 +1173,15 @@ namespace Mathematics
     }
     cout << endl;
 // Save the coefficients to a file
+    TTree* outputTree = new TTree("LegendreMomentsTree","");
+    char branchtitle[20];
+    sprintf(branchtitle,"c[%d][%d][%d][%d]/D",l_max+1,i_max+1,k_max+1,j_max+1);
+    outputTree->Branch("c",c,branchtitle);
+    outputTree->Branch("mKK_min",&minima[3],"mKK_min/D");
+    outputTree->Branch("mKK_max",&maxima[3],"mKK_max/D");
     double error(0.);
     double signif(0.);
+    char branchname[5];
     for ( int l = 0; l < l_max + 1; l++ )
     {
       for ( int i = 0; i < i_max + 1; i++ )
@@ -1199,16 +1206,12 @@ namespace Mathematics
             {
               c[l][i][k][j] = 0.;
             }
+            sprintf(branchname,"c%d%d%d%d",l,i,k,j);
+            outputTree->Branch(branchname,&c[l][i][k][j],((string)branchname+"/D").c_str());
           }
         }
       }
     }
-    TTree* outputTree = new TTree("LegendreMomentsTree","");
-    char branchtitle[20];
-    sprintf(branchtitle,"c[%d][%d][%d][%d]/D",l_max+1,i_max+1,k_max+1,j_max+1);
-    outputTree->Branch("c",c,branchtitle);
-    outputTree->Branch("mKK_min",&minima[3],"mKK_min/D");
-    outputTree->Branch("mKK_max",&maxima[3],"mKK_max/D");
     outputTree->Fill();
     outputTree->SaveAs("LegendreMoments.root");
 #ifdef __RAPIDFIT_USE_GSL
