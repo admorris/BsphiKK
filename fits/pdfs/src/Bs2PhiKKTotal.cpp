@@ -165,7 +165,6 @@ bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
     deltaD[i] = allParameters.GetPhysicsParameter(deltaDName[i])->GetValue();
     sumq     += APsq[i] + ADsq[i];
   }
-  cout << "Sum of amplitudes is " << sumq << endl;
   // Normalise the amplitudes
   if(abs(sumq-1.0) > 0.00001)
   {
