@@ -213,7 +213,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
   }
   double evalres;
   // Only do convolution around the phi
-  evalres = TMath::Abs(mKK-Bs2PhiKKComponent::mphi)<20 ? Convolution() : EvaluateBase(mKK, phi, ctheta_1, ctheta_2);
+  evalres = /* TMath::Abs(mKK-Bs2PhiKKComponent::mphi)<20 ? Convolution() : */ EvaluateBase(mKK, phi, ctheta_1, ctheta_2);
   return evalres;
 }
 // Base function for evaluation
