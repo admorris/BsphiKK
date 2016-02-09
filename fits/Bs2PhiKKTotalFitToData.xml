@@ -123,7 +123,7 @@
   <FitFunction>
     <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
     <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-    <FixedIntegrationPoints>100000</FixedIntegrationPoints>
+    <FixedIntegrationPoints>100</FixedIntegrationPoints>
     <Threads>16</Threads>
   </FitFunction>
   
@@ -176,7 +176,7 @@
 			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mva.root</FileName>
 			<CutString>mlp>0.62</CutString>
 			<NTuplePath>DecayTree</NTuplePath>
-			<NumberEvents>1000000</NumberEvents>
+			<NumberEvents>1000</NumberEvents>
 			<CommonPhaseSpace>
 			</CommonPhaseSpace>
 		</DataSet>

@@ -213,7 +213,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
   }
   double evalres;
   // Only do convolution around the phi
-  evalres = (TMath::Abs(mKK-Bs2PhiKKComponent::mphi)<30) ? Convolution() : EvaluateBase(mKK, phi, ctheta_1, ctheta_2);
+  evalres = TMath::Abs(mKK-Bs2PhiKKComponent::mphi)<20 ? Convolution() : EvaluateBase(mKK, phi, ctheta_1, ctheta_2);
   return evalres;
 }
 // Base function for evaluation
@@ -229,26 +229,26 @@ double Bs2PhiKKTotal::EvaluateBase(double _mKK, double _phi, double _ctheta_1, d
 double Bs2PhiKKTotal::Convolution()
 {
   double MassResolution = 0.747;
-  unsigned int nsteps = 1000;
+  unsigned int nsteps = 100;
+  //Numerical integration method (super slow!)
   // Range of convolution integral
-	double xlo = -5 * MassResolution;
-	double xhi = +5 * MassResolution;
-
-	double stepSize = (xhi-xlo) / (double)nsteps;
-
-	double sum=0.;
-
-	double running_xlo=xlo-0.5*stepSize;
-	double running_xhi=xhi+0.5*stepSize;
-
-	for(unsigned int i=0; i < nsteps/2; i++)
-	{
-		running_xlo += stepSize;
-		sum += EvaluateBase(mKK - running_xlo, phi, ctheta_1, ctheta_2) * TMath::Gaus( running_xlo, 0, MassResolution );
-
-		running_xhi -= stepSize;
-		sum += EvaluateBase(mKK - running_xhi, phi, ctheta_1, ctheta_2) * TMath::Gaus( running_xhi, 0, MassResolution );
-	}
+  double xlo = -5 * MassResolution;
+  double xhi = +5 * MassResolution;
+  // Step size
+  double stepSize = (xhi-xlo) / (double)nsteps;
+  // Result
+  double sum=0.;
+  // Shift away from mean so it's not calculated twice
+  double running_xlo=xlo-0.5*stepSize;
+  double running_xhi=xhi+0.5*stepSize;
+  // Do the integral
+  for(unsigned int i=0; i < nsteps/2; i++)
+  {
+    running_xlo += stepSize;
+    running_xhi -= stepSize;
+    sum += EvaluateBase(mKK - running_xlo, phi, ctheta_1, ctheta_2) * TMath::Gaus( running_xlo, 0, MassResolution );
+    sum += EvaluateBase(mKK - running_xhi, phi, ctheta_1, ctheta_2) * TMath::Gaus( running_xhi, 0, MassResolution );
+  }
   return sum * stepSize;
 }
 // Get the angular acceptance

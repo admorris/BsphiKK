@@ -57,7 +57,6 @@ class Bs2PhiKKTotal : public BasePDF
       double EvaluateBase(double, double, double, double);
       double Acceptance(double, double, double, double);
       double Convolution();
-      //
       bool debug = false;
 };
 #endif
