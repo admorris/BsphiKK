@@ -1,5 +1,10 @@
 <RapidFit>
 	<ParameterSet>
+    <PhysicsParameter>
+      <Name>SignalFraction</Name>
+      <Value>0.91833</Value>
+      <Type>Fixed</Type>
+    </PhysicsParameter>
 	  // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
@@ -134,13 +139,6 @@
     <FixedIntegrationPoints>100</FixedIntegrationPoints>
     <Threads>16</Threads>
   </FitFunction>
-  
-  <CommonPDF>
-  	<PDF>
-		  <Name>Bs2PhiKKTotal</Name>
-    </PDF>
-  </CommonPDF>
-  
   <CommonPhaseSpace>
 	  <PhaseSpaceBoundary>
       <Observable>
@@ -171,14 +169,29 @@
         <Maximum>1.0</Maximum>
         <Unit>Unitless</Unit>
       </Observable>
+      <Observable>
+        <Name>mphiKK</Name>
+        <TF1>B_s0_LOKI_Mass</TF1>
+        <Minimum>5326.12</Minimum>
+        <Maximum>5406.56</Maximum>
+        <Unit>MeV/c^{2}</Unit>
+      </Observable>
     </PhaseSpaceBoundary>
   </CommonPhaseSpace>
   
 	<ToFit>
     // Choose the PDF
-    <CommonPDF>True</CommonPDF>
-		<PDFConfigurator>
-		</PDFConfigurator>
+    <SumPDF>
+    	<PDF>
+		    <Name>Bs2PhiKKTotal</Name>
+		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
+      </PDF>
+    	<PDF>
+		    <Name>LegendreMomentShapePDF</Name>
+		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Background.root</ConfigurationParameter>
+      </PDF>
+      <FractionName>SignalFraction</FractionName>
+    </SumPDF>
 		<DataSet>
 			<Source>File</Source>
 			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mva.root</FileName>
