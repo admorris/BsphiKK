@@ -62,7 +62,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   MakePrototypes(); // Should only ever go in the constructor. Never put this in the copy constructor!!
   mKKmin = config->GetPhaseSpaceBoundary()->GetConstraint("mKK")->GetMinimum();
   mKKmax = config->GetPhaseSpaceBoundary()->GetConstraint("mKK")->GetMaximum();
-  acc = new LegendreMomentShape("LegendreMoments_Acceptance.root");
+  acc = new LegendreMomentShape(config->getConfigurationValue("CoefficientsFile"));
   Initialise();
 }
 // Copy constructor
@@ -269,8 +269,9 @@ double Bs2PhiKKTotal::Acceptance(double _mKK, double _phi, double _ctheta_1, dou
  return acc->Evaluate(_mKK, _phi, _ctheta_1, _ctheta_2)/0.04;
 }
 // Normalise by summing over squares of helicity amplitudes
-double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)
+double Bs2PhiKKTotal::Normalisation(PhaseSpaceBoundary* boundary)
 {
+  (void)boundary;
   double norm = 0;
   norm += ANonRes;
   norm += ASsq;

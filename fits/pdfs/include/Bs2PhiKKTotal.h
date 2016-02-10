@@ -27,7 +27,7 @@ class Bs2PhiKKTotal : public BasePDF
       ~Bs2PhiKKTotal();
       // Required methods
       virtual double Evaluate(DataPoint*);
-      virtual double Normalisation(DataPoint*, PhaseSpaceBoundary*);
+      virtual double Normalisation(PhaseSpaceBoundary*);
       virtual bool SetPhysicsParameters(ParameterSet*);
       virtual vector<string> GetDoNotIntegrateList();
     protected:
