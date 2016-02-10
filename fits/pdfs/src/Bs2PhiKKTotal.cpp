@@ -7,6 +7,7 @@
  */
 // Self
 #include "Bs2PhiKKTotal.h"
+#include "Bs2PhiKKNonResonant.h"
 // Std Libraries
 #include <iostream>
 // ROOT Libraries
@@ -31,6 +32,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
   , init(true)
 {
   // Set physics parameters to zero for now
+  ANonRes   = 0;
   ASsq      = 0;
   deltaS    = 0;
   for(unsigned short i = 0; i < 3; i++)
@@ -40,6 +42,7 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(PDFConfigurator* config) :
     deltaP[i] = 0;
     deltaD[i] = 0;
   }
+  ANonResName = config->getName("ANonRes2");
   // Magnitude-squared of helicity amplitudes
   ASsqName    = config->getName("ASzero2" );
   APsqName[0] = config->getName("APminus2");
@@ -79,8 +82,10 @@ Bs2PhiKKTotal::Bs2PhiKKTotal(const Bs2PhiKKTotal& copy) :
   , mKKmin(copy.mKKmin)
   , mKKmax(copy.mKKmax)
 {
+  ANonRes = copy.ANonRes;
   ASsq = copy.ASsq;
   deltaS = copy.deltaS;
+  ANonResName = copy.ANonResName;
   ASsqName = copy.ASsqName;
   deltaSName = copy.deltaSName;
   for(unsigned short i = 0; i < 3; i++)
@@ -130,8 +135,9 @@ void Bs2PhiKKTotal::MakePrototypes()
   allObservables.push_back(ctheta_2Name);
   // Make the parameter set
   vector<string> parameterNames;
-  parameterNames.push_back(ASsqName  );
-  parameterNames.push_back(deltaSName);
+  parameterNames.push_back(ANonResName);
+  parameterNames.push_back(ASsqName   );
+  parameterNames.push_back(deltaSName );
   // Separate loops for P-wave and D-wave for readability in fit output
   for(unsigned short i = 0; i < 3; i++)
   {
@@ -152,10 +158,12 @@ bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
   bool isOK = allParameters.SetPhysicsParameters(NewParameterSet);
   double sumq = 0; // Sum in quadriture of amplitudes
   // Retrieve the physics parameters
+  // Non-resonant
+  ANonRes   = allParameters.GetPhysicsParameter(ANonResName)->GetValue();
   // S-wave
-  ASsq      = allParameters.GetPhysicsParameter(ASsqName  )->GetValue();
-  deltaS    = allParameters.GetPhysicsParameter(deltaSName)->GetValue();
-  sumq     += ASsq;
+  ASsq      = allParameters.GetPhysicsParameter(ASsqName   )->GetValue();
+  deltaS    = allParameters.GetPhysicsParameter(deltaSName )->GetValue();
+  sumq     += ANonRes + ASsq;
   // P- and D-wave
   for(unsigned short i = 0; i < 3; i++)
   {
@@ -168,8 +176,10 @@ bool Bs2PhiKKTotal::SetPhysicsParameters(ParameterSet* NewParameterSet)
   // Normalise the amplitudes
   if(abs(sumq-1.0) > 0.00001)
   {
+    ANonRes /= sumq;
     ASsq /= sumq;
-    allParameters.GetPhysicsParameter(ASsqName  )->SetValue(ASsq);
+    allParameters.GetPhysicsParameter(ANonResName)->SetValue(ANonRes);
+    allParameters.GetPhysicsParameter(ASsqName   )->SetValue(ASsq);
     for(unsigned short i = 0; i < 3; i++)
     {
       APsq[i] /= sumq;
@@ -214,7 +224,7 @@ double Bs2PhiKKTotal::Evaluate(DataPoint* measurement)
   double evalres;
   // Only do convolution around the phi
   evalres = /* TMath::Abs(mKK-Bs2PhiKKComponent::mphi)<20 ? Convolution() : */ EvaluateBase(mKK, phi, ctheta_1, ctheta_2);
-  return evalres;
+  return evalres>0 ? evalres : 1e-9;
 }
 // Base function for evaluation
 double Bs2PhiKKTotal::EvaluateBase(double _mKK, double _phi, double _ctheta_1, double _ctheta_2)
@@ -222,8 +232,10 @@ double Bs2PhiKKTotal::EvaluateBase(double _mKK, double _phi, double _ctheta_1, d
   // Sum-square of component amplitudes 
   TComplex amplitude = Swave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2)
                      + Pwave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2)
-                     + Dwave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2);
-  return  amplitude.Rho2() * Acceptance(_mKK, _phi, _ctheta_1, _ctheta_2);
+                     + Dwave->Amplitude(_mKK, _phi, _ctheta_1, _ctheta_2)
+                     + TComplex(sqrt(ANonRes*Bs2PhiKKNonResonant::Evaluate(mKK)),0);
+  double Gamma = amplitude.Rho2()*1e12; // Sensible order of magnitude
+  return  (Gamma) * Acceptance(_mKK, _phi, _ctheta_1, _ctheta_2);
 }
 // Do Gaussian convolution
 double Bs2PhiKKTotal::Convolution()
@@ -260,6 +272,7 @@ double Bs2PhiKKTotal::Acceptance(double _mKK, double _phi, double _ctheta_1, dou
 double Bs2PhiKKTotal::Normalisation(DataPoint* measurement, PhaseSpaceBoundary* boundary)
 {
   double norm = 0;
+  norm += ANonRes;
   norm += ASsq;
   for(unsigned short i = 0; i < 3; i++)
   {

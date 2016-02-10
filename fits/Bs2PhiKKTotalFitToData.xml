@@ -2,6 +2,14 @@
 	<ParameterSet>
 	  // Magnitudes squared
     <PhysicsParameter>
+      <Name>ANonRes2</Name>
+      <Value>0.01</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Type>Float</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
       <Name>ASzero2</Name>
       <Value>0.0</Value>
       <Minimum>0.0</Minimum>
@@ -11,26 +19,26 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APminus2</Name>
-      <Value>0.333</Value>
+      <Value>0.3175</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>0.334</Value>
+      <Value>0.365</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APplus2</Name>
-      <Value>0.333</Value>
+      <Value>0.3175</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -38,7 +46,7 @@
       <Value>0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -46,7 +54,7 @@
       <Value>0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -54,7 +62,7 @@
       <Value>0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     // Phases
@@ -139,7 +147,7 @@
         <Name>mKK</Name>
         <TF1>KK_M</TF1>
         <Minimum>988</Minimum>
-        <Maximum>1052</Maximum>
+        <Maximum>1200</Maximum>
         <Unit>MeV/c^{2}</Unit>
       </Observable>
       <Observable>
@@ -173,10 +181,10 @@
 		</PDFConfigurator>
 		<DataSet>
 			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mva.root</FileName>
+			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mva.root</FileName>
 			<CutString>mlp>0.62</CutString>
 			<NTuplePath>DecayTree</NTuplePath>
-			<NumberEvents>1000</NumberEvents>
+			<NumberEvents>10000</NumberEvents>
 			<CommonPhaseSpace>
 			</CommonPhaseSpace>
 		</DataSet>

@@ -34,6 +34,9 @@ class Bs2PhiKKTotal : public BasePDF
       // K+K− mass and helicity angles
       double        mKK,     ctheta_1,     ctheta_2,     phi;
       ObservableRef mKKName, ctheta_1Name, ctheta_2Name, phiName;
+      // Non-resonant component
+      double        ANonRes;
+      ObservableRef ANonResName;
       // Magnitude-squared of helicity amplitudes
       double        ASsq,     APsq[3],     ADsq[3];
       ObservableRef ASsqName, APsqName[3], ADsqName[3];
