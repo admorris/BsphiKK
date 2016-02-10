@@ -1,5 +1,12 @@
+/** @class LegendreMomentShapePDF LegendreMomentShapePDF.cpp
+ *
+ *  RapidFit PDF for LegendreMomentShapePDF
+ *
+ *  @author Adam Morris
+ *  @date Feb 2016
+ */
 #include "LegendreMomentShapePDF.h"
-#include "LegendreMomentShape.h"
+PDF_CREATOR( LegendreMomentShapePDF )
 
 LegendreMomentShapePDF::LegendreMomentShapePDF(PDFConfigurator* config) :
   // Dependent variables
