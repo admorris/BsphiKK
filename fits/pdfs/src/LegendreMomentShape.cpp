@@ -10,12 +10,17 @@
 using namespace std;
 LegendreMomentShape::LegendreMomentShape(string _filename) : filename(_filename), init(true)
 {
-  cout << "Opening " << filename << endl;
-  file = TFile::Open(filename.c_str());
+  
+  if(!filename.empty())
+  {
+    cout << "Opening " << filename << endl;
+    file = TFile::Open(filename.c_str());
+  }
+  else return;
   if(file->IsZombie())
   {
-    delete file;
     cout << "No file found. Defaulting to uniform shape." << endl;
+    delete file;
     return;
   }
   tree = (TTree*)file->Get("LegendreMomentsTree");
@@ -49,7 +54,7 @@ LegendreMomentShape::LegendreMomentShape(const LegendreMomentShape& copy) :
   , init(copy.init)
   , filename(copy.filename)
 {
-  copycoefficients(copy.c);
+  if(!init) copycoefficients(copy.c);
 }
 LegendreMomentShape::~LegendreMomentShape()
 {
@@ -110,6 +115,7 @@ double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, do
 }
 double LegendreMomentShape::Integral(double mKKhi, double mKKlo, double phihi, double philo, double ctheta_1hi, double ctheta_1lo, double ctheta_2hi, double ctheta_2lo)
 {
+  if(init) return 1;
   double result = 0;
   double mKK_mappedhi = map(mKKhi);
   double mKK_mappedlo = map(mKKlo);
