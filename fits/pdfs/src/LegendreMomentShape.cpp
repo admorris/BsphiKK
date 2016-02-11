@@ -8,7 +8,7 @@
 #include "TBranch.h"
 #include "itoa.h"
 using namespace std;
-LegendreMomentShape::LegendreMomentShape(string _filename) : filename(_filename), init(true)
+LegendreMomentShape::LegendreMomentShape(string _filename) : filename(_filename), init(true), copied(false)
 {
   
   if(!filename.empty())
@@ -39,6 +39,20 @@ LegendreMomentShape::LegendreMomentShape(string _filename) : filename(_filename)
   }
   createcoefficients();
   tree->GetEntry(0);
+  storecoefficients();
+  for ( int l = 0; l < l_max; l++ )
+  {
+    for ( int i = 0; i < i_max; i++ )
+    {
+      for ( int k = 0; k < k_max; k++ )
+      {
+        delete c[l][i][k];
+      }
+      delete c[l][i];
+    }
+    delete c[l];
+  }
+  delete c;
   delete tree;
   delete file;
   init = false;
@@ -47,43 +61,20 @@ LegendreMomentShape::LegendreMomentShape(string _filename) : filename(_filename)
 LegendreMomentShape::LegendreMomentShape(const LegendreMomentShape& copy) : 
     mKK_min(copy.mKK_min)
   , mKK_max(copy.mKK_max)
-  , l_max(copy.l_max)
-  , i_max(copy.i_max)
-  , k_max(copy.k_max)
-  , j_max(copy.j_max)
+  , coeffs(copy.coeffs)
   , init(copy.init)
-  , filename(copy.filename)
+  , copied(true)
 {
-  if(!init) copycoefficients(copy.c);
 }
 LegendreMomentShape::~LegendreMomentShape()
 {
-  if(!init)
-  {
-    for ( int l = 0; l < l_max; l++ )
-    {
-      for ( int i = 0; i < i_max; i++ )
-      {
-        for ( int k = 0; k < k_max; k++ )
-        {
-          delete c[l][i][k];
-        }
-        delete c[l][i];
-      }
-      delete c[l];
-    }
-    delete c;
-  }
-  else
-  {
-    cout << "Deleting unused LegendreMomentShape" << endl;
-  }
+
 }
 double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, double ctheta_2)
 {
   if(init) return 1;
   double result = 0;
-  double mKK_mapped = map(mKK);
+  double mKK_mapped = (mKK - mKK_min) / (mKK_max - mKK_min)*2 - 1;;
   if(abs(mKK_mapped) > 1)
   {
     return 0;
@@ -91,25 +82,15 @@ double LegendreMomentShape::Evaluate(double mKK, double phi, double ctheta_1, do
   double Q_l = 0;
   double P_i = 0;
   double Y_jk = 0;
-  for ( int l = 0; l < l_max; l++ )
+  for(auto coeff : coeffs)
   {
-    for ( int i = 0; i < i_max; i++ )
-    {
-      for ( int k = 0; k < k_max; k++ )
-      {
-        for ( int j = 0; j < j_max; j++ )
-        {
-          if (j < k) continue; // must have j >= k
-          Q_l  = gsl_sf_legendre_Pl   (l,  mKK_mapped);
-          P_i  = gsl_sf_legendre_Pl   (i,  ctheta_2);
-          // only consider case where k >= 0
-          // these are the real valued spherical harmonics
-          if ( k == 0 ) Y_jk =       gsl_sf_legendre_sphPlm (j, k, ctheta_1);
-          else      Y_jk = sqrt(2) * gsl_sf_legendre_sphPlm (j, k, ctheta_1) * cos(k*phi);
-          result += c[l][i][k][j]*(Q_l * P_i * Y_jk);
-        }
-      }
-    }
+    Q_l  = gsl_sf_legendre_Pl   (coeff.l,  mKK_mapped);
+    P_i  = gsl_sf_legendre_Pl   (coeff.i,  ctheta_2);
+    // only consider case where k >= 0
+    // these are the real valued spherical harmonics
+    if ( coeff.k == 0 ) Y_jk =       gsl_sf_legendre_sphPlm (coeff.j, coeff.k, ctheta_1);
+    else      Y_jk = sqrt(2) * gsl_sf_legendre_sphPlm (coeff.j, coeff.k, ctheta_1) * cos(coeff.k*phi);
+    result += coeff.val*(Q_l * P_i * Y_jk);
   }
   return result;
 }
@@ -117,8 +98,8 @@ double LegendreMomentShape::Integral(double mKKhi, double mKKlo, double phihi, d
 {
   if(init) return 1;
   double result = 0;
-  double mKK_mappedhi = map(mKKhi);
-  double mKK_mappedlo = map(mKKlo);
+  double mKK_mappedhi = (mKKhi - mKK_min) / (mKK_max - mKK_min)*2 - 1;;
+  double mKK_mappedlo = (mKKlo - mKK_min) / (mKK_max - mKK_min)*2 - 1;;
   if(abs(mKK_mappedhi)>1 || abs(mKK_mappedlo)>1) return 0;
   double Q_lhi = 0;
   double Q_llo = 0;
@@ -126,35 +107,25 @@ double LegendreMomentShape::Integral(double mKKhi, double mKKlo, double phihi, d
   double P_ilo = 0;
   double Y_jkhi = 0;
   double Y_jklo = 0;
-  for ( int l = 0; l < l_max; l++ )
+  for(auto coeff : coeffs)
   {
-    for ( int i = 0; i < i_max; i++ )
+    Q_lhi  = coeff.l>0 ? (gsl_sf_legendre_Pl(coeff.l+1, mKK_mappedhi) - gsl_sf_legendre_Pl(coeff.l-1, mKK_mappedhi)) / (2*coeff.l+1) : mKK_mappedhi;
+    Q_llo  = coeff.l>0 ? (gsl_sf_legendre_Pl(coeff.l+1, mKK_mappedlo) - gsl_sf_legendre_Pl(coeff.l-1, mKK_mappedlo)) / (2*coeff.l+1) : mKK_mappedlo;
+    P_ihi  = coeff.i>0 ? (gsl_sf_legendre_Pl(coeff.i+1,   ctheta_2hi) - gsl_sf_legendre_Pl(coeff.i-1,   ctheta_2hi)) / (2*coeff.i+1) : ctheta_2hi;
+    P_ilo  = coeff.i>0 ? (gsl_sf_legendre_Pl(coeff.i+1,   ctheta_2lo) - gsl_sf_legendre_Pl(coeff.i-1,   ctheta_2lo)) / (2*coeff.i+1) : ctheta_2lo;
+    // only consider case where k >= 0
+    // these are the real valued spherical harmonics
+    if ( coeff.k == 0 )
     {
-      for ( int k = 0; k < k_max; k++ )
-      {
-        for ( int j = 0; j < j_max; j++ )
-        {
-          if (j < k) continue; // must have j >= k
-          Q_lhi  = l>0 ? (gsl_sf_legendre_Pl(l+1, mKK_mappedhi) - gsl_sf_legendre_Pl(l-1, mKK_mappedhi)) / (2*l+1) : mKK_mappedhi;
-          Q_llo  = l>0 ? (gsl_sf_legendre_Pl(l+1, mKK_mappedlo) - gsl_sf_legendre_Pl(l-1, mKK_mappedlo)) / (2*l+1) : mKK_mappedlo;
-          P_ihi  = i>0 ? (gsl_sf_legendre_Pl(i+1,   ctheta_2hi) - gsl_sf_legendre_Pl(i-1,   ctheta_2hi)) / (2*i+1) : ctheta_2hi;
-          P_ilo  = i>0 ? (gsl_sf_legendre_Pl(i+1,   ctheta_2lo) - gsl_sf_legendre_Pl(i-1,   ctheta_2lo)) / (2*i+1) : ctheta_2lo;
-          // only consider case where k >= 0
-          // these are the real valued spherical harmonics
-          if ( k == 0 )
-          {
-            Y_jkhi = int_legendre_sphPlm(j, k, ctheta_1hi);
-            Y_jklo = int_legendre_sphPlm(j, k, ctheta_1lo);
-          }
-          else 
-          {
-            Y_jkhi = sqrt(2) * int_legendre_sphPlm (j, k, ctheta_1hi) * sin(k*phihi)/(double)k;
-            Y_jklo = sqrt(2) * int_legendre_sphPlm (j, k, ctheta_1lo) * sin(k*philo)/(double)k;
-          }
-          result += c[l][i][k][j]*((Q_lhi - Q_llo) * (P_ihi - P_ilo) * (Y_jkhi - Y_jklo));
-        }
-      }
+      Y_jkhi = int_legendre_sphPlm(coeff.j, coeff.k, ctheta_1hi);
+      Y_jklo = int_legendre_sphPlm(coeff.j, coeff.k, ctheta_1lo);
     }
+    else 
+    {
+      Y_jkhi = sqrt(2) * int_legendre_sphPlm (coeff.j, coeff.k, ctheta_1hi) * sin(coeff.k*phihi)/(double)coeff.k;
+      Y_jklo = sqrt(2) * int_legendre_sphPlm (coeff.j, coeff.k, ctheta_1lo) * sin(coeff.k*philo)/(double)coeff.k;
+    }
+    result += coeff.val*((Q_lhi - Q_llo) * (P_ihi - P_ilo) * (Y_jkhi - Y_jklo));
   }
   return result;
 }
@@ -194,23 +165,27 @@ void LegendreMomentShape::createcoefficients()
     }
   }
 }
-void LegendreMomentShape::copycoefficients(double**** otherc)
+void LegendreMomentShape::storecoefficients()
 {
-  c = new double***[l_max];
   for ( int l = 0; l < l_max; l++ )
   {
-    c[l] = new double**[i_max];
     for ( int i = 0; i < i_max; i++ )
     {
-      c[l][i] = new double*[k_max];
       for ( int k = 0; k < k_max; k++ )
       {
-        c[l][i][k] = new double[j_max];
         for ( int j = 0; j < j_max; j++ )
         {
-          c[l][i][k][j] = otherc[l][i][k][j];
+          if (abs(c[l][i][k][j]) < 1e-12) continue;
+          coefficient coeff;
+          coeff.l = l;
+          coeff.i = i;
+          coeff.k = k;
+          coeff.j = j;
+          coeff.val = c[l][i][k][j];
+          coeffs.push_back(coeff);
         }
       }
     }
   }
+  cout << coeffs.size() << " coefficients stored" << endl;
 }
