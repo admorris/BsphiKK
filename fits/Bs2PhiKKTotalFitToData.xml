@@ -16,10 +16,10 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ASzero2</Name>
-      <Value>0.0</Value>
+      <Value>0.01</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -48,7 +48,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADminus2</Name>
-      <Value>0</Value>
+      <Value>0.01</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Float</Type>
@@ -56,7 +56,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>0</Value>
+      <Value>0.01</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Float</Type>
@@ -64,7 +64,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADplus2</Name>
-      <Value>0</Value>
+      <Value>0.01</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Float</Type>
