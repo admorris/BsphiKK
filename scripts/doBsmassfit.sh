@@ -16,7 +16,8 @@ cd ../ntuples/
     -M ../ntuples/BsphiKK_MC_1800_mvacut.root \
     -R ../ntuples/BsphiKK_data_1800_mvacut.root \
     -O ../latex/figs/Bsmassfit_1800_mvacut \
-    --pulls
+    --pulls \
+    --draw-region 2
 
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_1050_1800_mvacut.root \

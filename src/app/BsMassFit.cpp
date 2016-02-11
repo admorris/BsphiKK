@@ -20,7 +20,7 @@
 #include "plotmaker.h"
 #include "GetTree.h"
 // void BsMassFit(string filename)
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, bool drawregion, string cuts)
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts)
 {
   using namespace std;
 /*Input************************************************************************/
@@ -143,12 +143,12 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   cout << "S:\t" << sigmodint3->getValV()*Nsig << endl;
   RooAbsReal* bkgmodint3 = bkgmod->createIntegral(mass,NormSet(mass),Range("threesigma"));
   cout << "B:\t" << bkgmodint3->getValV()*Nbkg << endl;
-  if(drawregion)
+  if(drawregion!=0)
   {
     cout << "Drawing lines" << endl;
 //    canv->cd(0);
-    TLine* hiline = new TLine(mean+3*resolution,0,mean+3*resolution,REframe->GetMaximum());
-    TLine* loline = new TLine(mean-3*resolution,0,mean-3*resolution,REframe->GetMaximum());
+    TLine* hiline = new TLine(mean+drawregion*resolution,0,mean+drawregion*resolution,REframe->GetMaximum());
+    TLine* loline = new TLine(mean-drawregion*resolution,0,mean-drawregion*resolution,REframe->GetMaximum());
 //    hiline->SetLineColor(2);
 //    loline->SetLineColor(2);
     hiline->SetLineStyle(2);
@@ -213,10 +213,11 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
   std::string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname, cuts;
+  int drawregion;
   desc.add_options()
     ("help,H"      ,                                                                                  "produce help message"         )
     ("sweight,W"   ,                                                                                  "apply sweights to data"       )
-    ("draw-region" ,                                                                                  "draw lines at ±3σ"            )
+    ("draw-region" , value<int>(&drawregion        )->default_value(0                              ), "draw lines at ±Nσ"            )
     ("pulls,P"     ,                                                                                  "plot with pulls"              )
     ("MCfile,M"    , value<std::string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "set Monte Carlo file"         )
     ("REfile,R"    , value<std::string>(&REfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "set collision data file"      )
@@ -234,6 +235,6 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), vmap.count("draw-region"), cuts);
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts);
   return 0;
 }
