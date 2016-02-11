@@ -39,7 +39,7 @@ LegendreMomentShapePDF::LegendreMomentShapePDF(const LegendreMomentShapePDF& cop
 }
 LegendreMomentShapePDF::~LegendreMomentShapePDF()
 {
-  delete shape;
+//  delete shape;
 }
 void LegendreMomentShapePDF::Initialise()
 {

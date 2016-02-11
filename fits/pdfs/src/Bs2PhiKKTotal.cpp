@@ -108,7 +108,7 @@ Bs2PhiKKTotal::~Bs2PhiKKTotal()
   delete Swave;
   delete Pwave;
   delete Dwave;
-  delete acc;
+//  delete acc;
 }
 void Bs2PhiKKTotal::Initialise()
 {
