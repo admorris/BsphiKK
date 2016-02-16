@@ -62,6 +62,7 @@ class MassFitter
     RooAbsPdf*          CrystalBall2Gauss();
     RooAbsPdf*          BreitWigner();
     RooAbsPdf*          Voigtian();
+    RooAbsPdf*          ThresholdShape();
     // Background models
     RooAbsPdf*          flatfunction();
     RooAbsPdf*          exponential();

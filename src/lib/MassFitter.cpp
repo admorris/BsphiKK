@@ -6,6 +6,7 @@
 #include "RooAddPdf.h"
 #include "RooBreitWigner.h"
 #include "RooCBShape.h"
+#include "RooDstD0BG.h"
 #include "RooExponential.h"
 #include "RooFFTConvPdf.h"
 #include "RooFormulaVar.h"
@@ -90,6 +91,10 @@ void MassFitter::SetPDF(string signame, string bkgname)
   else if(signame=="Voigtian" || signame=="Voigt")
   {
     sigpdf = Voigtian();
+  }
+  else if(signame=="RooDstD0BG" || signame=="Threshold" || signame=="ThresholdShape")
+  {
+    sigpdf = ThresholdShape();
   }
   else
   {
@@ -405,6 +410,21 @@ RooAbsPdf* MassFitter::Voigtian()
   return (RooAbsPdf*)sigmod;
 }
 /******************************************************************************/
+RooAbsPdf* MassFitter::ThresholdShape()
+{
+  RooRealVar* dm0    = new RooRealVar("dm0","dm0",2*493,0,4000);
+  RooRealVar* a      = new RooRealVar("a","A",0,-1,1);
+  RooRealVar* b      = new RooRealVar("b","B",0,-1,1);
+  RooRealVar* c      = new RooRealVar("c","C",0,-1,1);
+  RooDstD0BG* sigmod = new RooDstD0BG("sigmod","sigmod",*_mass,*dm0,*c,*a,*b);
+  _stuff.push_back(dm0);
+  _stuff.push_back(a);
+  _stuff.push_back(b);
+  _stuff.push_back(c);
+  _stuff.push_back(sigmod);
+  return (RooAbsPdf*)sigmod;
+}
+/******************************************************************************/
 RooAbsPdf* MassFitter::flatfunction()
 {
   RooUniform* bkgmod = new RooUniform("bkgmod","Flat background",*_mass);
@@ -420,6 +440,7 @@ RooAbsPdf* MassFitter::exponential()
   _stuff.push_back(bkgmod);
   return (RooAbsPdf*)bkgmod;
 }
+/******************************************************************************/
 RooAbsPdf* MassFitter::straightline()
 {
   RooRealVar*    slope  = new RooRealVar("slope","Gradient",0,-1.0,1.0);
