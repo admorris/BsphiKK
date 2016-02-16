@@ -43,7 +43,7 @@ void plotBsmasses()
   int ngen_BdphiKst  = 2007492+2020493;
   int ngen_Bsphipipi = 4004542+9016672;
   int ngen_Bsphiphi  = 1028748+1029997;
-  int ngen_BsphiKK   = 1023767+1000157;
+//  int ngen_BsphiKK   = 1023767+1000157;
   // Fragmentation fraction ratios
   double fLb_fufd    = 0.404*(1-0.031*5); // 0.404(1-0.031*pT(GeV))
   double fs_fufd     = 0.134;
@@ -53,8 +53,8 @@ void plotBsmasses()
   double B_KsttoKpi  = 2.0/3.0;
   double B_Bsphiphi  = 1.82e-5; // Get B_BsphiKK from B_BsJpsiKK, B_BsJpsiphi and B_Bsphiphi
   double B_BsJpsiphi = 1.05e-3;
-  double B_BsJpsiKK  = 7.70e-4-B_phitoKK*B_BsJpsiphi; // Assumes
-  double B_BsphiKK   = B_BsJpsiKK*B_Bsphiphi/B_BsJpsiphi;
+//  double B_BsJpsiKK  = 7.70e-4-B_phitoKK*B_BsJpsiphi; // Assumes // TODO: figure out what I was going to write here!
+//  double B_BsphiKK   = B_BsJpsiKK*B_Bsphiphi/B_BsJpsiphi;
   double B_LbJpsipK  = 3.04e-4; // LHCb-PAPER-2015-032 draft
   double B_LbphiKp   = B_LbJpsipK*B_Bsphiphi/B_BsJpsiphi;
   double B_Bsphipipi = 3.76e-6; // Haofei's result
