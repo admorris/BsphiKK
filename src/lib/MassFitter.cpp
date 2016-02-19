@@ -413,9 +413,9 @@ RooAbsPdf* MassFitter::Voigtian()
 RooAbsPdf* MassFitter::ThresholdShape()
 {
   RooRealVar* dm0    = new RooRealVar("dm0","dm0",2*493,0,4000);
-  RooRealVar* a      = new RooRealVar("a","A",0,-1,1);
-  RooRealVar* b      = new RooRealVar("b","B",0,-1,1);
-  RooRealVar* c      = new RooRealVar("c","C",0,-1,1);
+  RooRealVar* a      = new RooRealVar("a","A",2,-100,100);
+  RooRealVar* b      = new RooRealVar("b","B",-3.5,-100,100);
+  RooRealVar* c      = new RooRealVar("c","C",10,-100,100);
   RooDstD0BG* sigmod = new RooDstD0BG("sigmod","sigmod",*_mass,*dm0,*c,*a,*b);
   _stuff.push_back(dm0);
   _stuff.push_back(a);
