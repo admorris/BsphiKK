@@ -187,7 +187,7 @@
 		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
       </PDF>
     	<PDF>
-		    <Name>LegendreMomentShapePDF</Name>
+		    <Name>Bs2PhiKKBackground</Name>
 		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Background.root</ConfigurationParameter>
       </PDF>
       <FractionName>SignalFraction</FractionName>
