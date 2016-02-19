@@ -14,7 +14,7 @@
 #include "MassFitter.h"
 #include "GetTree.h"
 
-void FitBranch(string filename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins)
+void FitBranch(string filename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, bool drawpulls)
 {
   TFile* file = new TFile(filename.c_str());
   TTree* tree = GetTree(file,cuts);
@@ -40,9 +40,20 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
   data->plotOn(frame,Binning(nbins));
   FitModel.Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
-  plotmaker plotter(frame);
-  plotter.SetTitle(xtitle, unit);
-  plotter.Draw()->SaveAs((plotname+".pdf").c_str());
+  plotmaker* plotter;
+  if(drawpulls)
+  {
+    RooHist* pullhist = frame->pullHist();
+    RooPlot* pullframe = x->frame(Title("Pull"));
+    pullframe->addPlotable(pullhist,"B");
+    plotter = new plotmaker(frame,pullframe);
+  }
+  else
+  {
+    plotter = new plotmaker(frame);
+  }
+  plotter->SetTitle(xtitle, unit);
+  plotter->Draw()->SaveAs((plotname+".pdf").c_str());
 }
 
 int main(int argc, char* argv[])
@@ -54,9 +65,10 @@ int main(int argc, char* argv[])
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                      "produce help message"                      )
+    ("pulls,P"     ,                                                                                  "plot with pulls"              )
     ("file,F"  , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mva.root"        ), "set data file"                             )
     ("branch,B", value<std::string>(&branch)->default_value("B_s0_LOKI_Mass"                       ), "set branch to plot"                        )
-    ("model,M" , value<std::string>(&model)->default_value("Gaussian"                              ), "set model to use in fit"                   )
+    ("model,M" , value<std::string>(&model )->default_value("Gaussian"                             ), "set model to use in fit"                   )
     ("weight,W", value<std::string>(&weight)->default_value(""                                     ), "set weighting variable"                    )
     ("cuts,C"  , value<std::string>(&cuts  )->default_value(""                                     ), "set optional cuts"                         )
     ("title,T" , value<std::string>(&xtitle)->default_value("#it{m}(#it{#phi K^{#plus}K^{#minus}})"), "set x-axis title (takes ROOT LaTeX format)")
@@ -75,6 +87,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins);
+  FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,vmap.count("pulls"));
   return 0;
 }
