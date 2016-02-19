@@ -1,143 +1,19 @@
 <RapidFit>
+  // Appease RapidFit by providing unnecessary but mandatory XML tags
 	<ParameterSet>
-	  // Magnitudes squared
-    <PhysicsParameter>
-      <Name>ASzero2</Name>
-      <Value>852</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>APminus2</Name>
-      <Value>76</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>APzero2</Name>
-      <Value>108</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>APplus2</Name>
-      <Value>76</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>ADminus2</Name>
-      <Value>24</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>ADzero2</Name>
-      <Value>41</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>ADplus2</Name>
-      <Value>89</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1000.0</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    // Phases
-    <PhysicsParameter>
-      <Name>deltaSzero</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>deltaPminus</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>deltaPzero</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>deltaPplus</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>deltaDminus</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>deltaDzero</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>deltaDplus</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>3.1415927</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
   </ParameterSet>
-  // Choose the minimiser
   <Minimiser>
     <MinimiserName>Minuit</MinimiserName>
   </Minimiser>
-  // Choose the fit function
   <FitFunction>
-    <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
-    <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-    <FixedIntegrationPoints>10000</FixedIntegrationPoints>
-    <Threads>16</Threads>
+    <FunctionName>NegativeLogLikelihood</FunctionName>
   </FitFunction>
-  
-  <CommonPDF>
-  	<PDF>
-		  <Name>Bs2PhiKKTotal</Name>
-    </PDF>
-  </CommonPDF>
-  
+  // Define the variables and their branch names
   <CommonPhaseSpace>
 	  <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
-        <TF1>KK_M</TF1>
+        <TF1>BCON_KK_M</TF1>
         <Minimum>988</Minimum>
         <Maximum>1800</Maximum>
         <Unit>MeV/c^{2}</Unit>
@@ -168,7 +44,9 @@
   
 	<ToFit>
     // Choose the PDF
-    <CommonPDF>True</CommonPDF>
+  	<PDF>
+		  <Name>Bs2PhiKKTotal</Name>
+    </PDF>
 		<PDFConfigurator>
 		</PDFConfigurator>
 		<DataSet>
@@ -180,22 +58,4 @@
 			</CommonPhaseSpace>
 		</DataSet>
 	</ToFit>
-	<Output>
-    <ComponentProjection>
-      <Name>mKK</Name>
-      <DrawPull>False</DrawPull>
-    </ComponentProjection>
-    <ComponentProjection>
-      <Name>phi</Name>
-      <DrawPull>False</DrawPull>
-    </ComponentProjection>
-    <ComponentProjection>
-      <Name>ctheta_1</Name>
-      <DrawPull>False</DrawPull>
-    </ComponentProjection>
-    <ComponentProjection>
-      <Name>ctheta_2</Name>
-      <DrawPull>False</DrawPull>
-    </ComponentProjection>
-  </Output>
 </RapidFit>
