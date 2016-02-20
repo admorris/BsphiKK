@@ -5,6 +5,26 @@
       <Value>0.91833</Value>
       <Type>Fixed</Type>
     </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>A</Name>
+      <Value>2</Value>
+      <Type>Fixed</Type>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>B</Name>
+      <Value>-3.5</Value>
+      <Type>Fixed</Type>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>C</Name>
+      <Value>10</Value>
+      <Type>Fixed</Type>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>M</Name>
+      <Value>986</Value>
+      <Type>Fixed</Type>
+    </PhysicsParameter>
 	  // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
