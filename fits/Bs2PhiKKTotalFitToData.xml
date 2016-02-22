@@ -7,39 +7,39 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>A</Name>
-      <Value>2</Value>
+      <Value>1.97009</Value>
       <Type>Fixed</Type>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>B</Name>
-      <Value>-3.5</Value>
+      <Value>-3.50295</Value>
       <Type>Fixed</Type>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>C</Name>
-      <Value>10</Value>
+      <Value>10.3624</Value>
       <Type>Fixed</Type>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>M</Name>
-      <Value>986</Value>
+      <Value>986.115</Value>
       <Type>Fixed</Type>
     </PhysicsParameter>
 	  // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
-      <Value>0.01</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>10.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ASzero2</Name>
-      <Value>0.01</Value>
+      <Value>0.1</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -47,7 +47,7 @@
       <Value>0.3175</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -55,7 +55,7 @@
       <Value>0.365</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -63,31 +63,31 @@
       <Value>0.3175</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADminus2</Name>
-      <Value>0.01</Value>
+      <Value>0.05</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>0.01</Value>
+      <Value>0.05</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADplus2</Name>
-      <Value>0.01</Value>
+      <Value>0.05</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     // Phases
@@ -156,7 +156,7 @@
   <FitFunction>
     <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
     <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-    <FixedIntegrationPoints>100</FixedIntegrationPoints>
+    <FixedIntegrationPoints>1000</FixedIntegrationPoints>
     <Threads>16</Threads>
   </FitFunction>
   <CommonPhaseSpace>
@@ -225,18 +225,36 @@
 	<Output>
     <ComponentProjection>
       <Name>mKK</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
       <DrawPull>False</DrawPull>
+      <Ymax>100</Ymax>
+      <Ymin>-10</Ymin>
     </ComponentProjection>
     <ComponentProjection>
       <Name>phi</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
       <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>ctheta_1</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
       <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>ctheta_2</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
       <DrawPull>False</DrawPull>
     </ComponentProjection>
   </Output>
