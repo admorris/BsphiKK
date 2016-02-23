@@ -3,7 +3,7 @@
     <PhysicsParameter>
       <Name>SignalFraction</Name>
       <Value>0.91833</Value>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>A</Name>
@@ -165,7 +165,7 @@
         <Name>mKK</Name>
         <TF1>BCON_KK_M</TF1>
         <Minimum>988</Minimum>
-        <Maximum>1200</Maximum>
+        <Maximum>1800</Maximum>
         <Unit>MeV/c^{2}</Unit>
       </Observable>
       <Observable>
@@ -240,6 +240,7 @@
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
+      <Ymin>0</Ymin>
     </ComponentProjection>
     <ComponentProjection>
       <Name>ctheta_1</Name>
@@ -248,6 +249,7 @@
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
+      <Ymin>0</Ymin>
     </ComponentProjection>
     <ComponentProjection>
       <Name>ctheta_2</Name>
@@ -256,6 +258,7 @@
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
+      <Ymin>0</Ymin>
     </ComponentProjection>
   </Output>
 </RapidFit>
