@@ -2,7 +2,9 @@
 	<ParameterSet>
     <PhysicsParameter>
       <Name>SignalFraction</Name>
-      <Value>0.91833</Value>
+      <Value>0.9999990</Value>
+      <Maximum>0.99999999990</Maximum>
+      <Minimum>0.99999999000</Minimum>
       <Type>Float</Type>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -30,13 +32,13 @@
       <Name>ANonRes2</Name>
       <Value>0.0</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ASzero2</Name>
-      <Value>0.1</Value>
+      <Value>1.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -68,7 +70,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADminus2</Name>
-      <Value>0.05</Value>
+      <Value>0.09</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -76,7 +78,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>0.05</Value>
+      <Value>0.09</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -84,7 +86,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADplus2</Name>
-      <Value>0.05</Value>
+      <Value>0.09</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -156,7 +158,7 @@
   <FitFunction>
     <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
     <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-    <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+    <FixedIntegrationPoints>10000</FixedIntegrationPoints>
     <Threads>16</Threads>
   </FitFunction>
   <CommonPhaseSpace>
@@ -196,6 +198,72 @@
         <Maximum>5406.56</Maximum>
         <Unit>MeV/c^{2}</Unit>
       </Observable>
+      <Observable>
+        <Name>ReFSzero</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ReFPminus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ImFPminus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ReFPzero</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ReFPplus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ImFPplus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ReFDminus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ImFDminus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ReFDzero</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ReFDplus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ImFDplus</Name>
+        <Minimum>-1</Minimum>
+        <Maximum>1</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
     </PhaseSpaceBoundary>
   </CommonPhaseSpace>
   
@@ -214,8 +282,8 @@
     </SumPDF>
 		<DataSet>
 			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mva.root</FileName>
-			<CutString>mlp>0.62</CutString>
+			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_1800_mvacut.root</FileName>
+//			<CutString>mlp>0.62</CutString>
 			<NTuplePath>DecayTree</NTuplePath>
 			<NumberEvents>10000</NumberEvents>
 			<CommonPhaseSpace>
