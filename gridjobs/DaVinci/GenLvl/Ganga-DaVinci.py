@@ -9,7 +9,7 @@ Splitter = SplitByFiles(filesPerJob = 20, maxFiles = -1, ignoremissing = True, b
 Output   = [ DiracFile('*.root'), LocalFile('summary.xml') ]
 Backend  = Dirac()
 #Input    = [ File ( './LFNs.py' ) ]
-Options = [ File ( './tupleResult.py' ), File ( './LFNs.py' ) ] # This isn't the proper way to do this
+Options = [ File ( './tupleResult.py' ), File ( './PwaveLFNs.py' ) ] # This isn't the proper way to do this
 Application.optsfile = Options
 j = Job ()
 j.name         = JobName
