@@ -3,7 +3,7 @@
 # https://github.com/ganga-devs/ganga/commit/30e0ef56537ce8f5b2ac6b89a9666cd8024b137b
 JobName = 'BsPhiKKGen'
 Application = DaVinci()
-Application.version = 'v36r1'
+Application.version = 'v37r0'
 
 Splitter = SplitByFiles(filesPerJob = 20, maxFiles = -1, ignoremissing = True, bulksubmit=True)
 Output   = [ DiracFile('*.root'), LocalFile('summary.xml') ]
