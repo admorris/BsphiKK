@@ -22,6 +22,7 @@
 using namespace std;
 void addBranches(string filename = "BsphiKK_data")
 {
+  bool isMC = filename.find("MC") != string::npos;
 //  gSystem->Load("libprogbar.so");
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
@@ -106,6 +107,29 @@ void addBranches(string filename = "BsphiKK_data")
   intree->SetBranchAddress("B_s0_BCON_PZ_kaon0",&h_BCON_PZ[1]);
   intree->SetBranchAddress("B_s0_BCON_PZ_kaon3",&h_BCON_PZ[2]);
   intree->SetBranchAddress("B_s0_BCON_PZ_kaon2",&h_BCON_PZ[3]);
+/*MC only branches*************************************************************/
+  TLorentzVector h_TRUEP[4];
+  Double_t h_TRUEPX[4];
+  Double_t h_TRUEPY[4];
+  Double_t h_TRUEPZ[4];
+  if(isMC)
+  {
+/*TRUEPX Branches**************************************************************/
+    intree->SetBranchAddress("Kminus_TRUEP_X", &h_TRUEPX[0]);
+    intree->SetBranchAddress("Kplus_TRUEP_X",  &h_TRUEPX[1]);
+    intree->SetBranchAddress("Kminus0_TRUEP_X",&h_TRUEPX[2]);
+    intree->SetBranchAddress("Kplus0_TRUEP_X", &h_TRUEPX[3]);
+/*TRUEPY Branches**************************************************************/
+    intree->SetBranchAddress("Kminus_TRUEP_Y", &h_TRUEPY[0]);
+    intree->SetBranchAddress("Kplus_TRUEP_Y",  &h_TRUEPY[1]);
+    intree->SetBranchAddress("Kminus0_TRUEP_Y",&h_TRUEPY[2]);
+    intree->SetBranchAddress("Kplus0_TRUEP_Y", &h_TRUEPY[3]);
+/*TRUEPZ Branches**************************************************************/
+    intree->SetBranchAddress("Kminus_TRUEP_Z", &h_TRUEPZ[0]);
+    intree->SetBranchAddress("Kplus_TRUEP_Z",  &h_TRUEPZ[1]);
+    intree->SetBranchAddress("Kminus0_TRUEP_Z",&h_TRUEPZ[2]);
+    intree->SetBranchAddress("Kplus0_TRUEP_Z", &h_TRUEPZ[3]);
+  }
 /*ProbNNp Branches*************************************************************/
   Double_t h_ProbNNp[4];
   intree->SetBranchAddress("Kminus_ProbNNp", &h_ProbNNp[0]);
@@ -141,22 +165,23 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t h_PT[4]; // Necessary for min Kaon PT
 /*New mass branches************************************************************/
   // phi KK
-  TLorentzVector BCON_KK_P;   Double_t BCON_KK_M;   outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
-  TLorentzVector phiKplusP;   Double_t phiKplusM;   outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
-  TLorentzVector phiKminusP;  Double_t phiKminusM;  outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
+  TLorentzVector BCON_KK_P;   Double_t BCON_KK_M;         outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
+  TLorentzVector KK_TRUEP;    Double_t KK_TRUEM; if(isMC) outtree->Branch("KK_TRUEM",   &KK_TRUEM,   "KK_TRUEM/D"   );
+  TLorentzVector phiKplusP;   Double_t phiKplusM;         outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
+  TLorentzVector phiKminusP;  Double_t phiKminusM;        outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
   // phi pipi
-  TLorentzVector phipipiP;    Double_t phipipiM;    outtree->Branch("phipipiM",   &phipipiM,   "phipipiM/D"   );
-  TLorentzVector pipiP;       Double_t pipiM;       outtree->Branch("pipiM",      &pipiM,      "pipiM/D"      );
-  TLorentzVector phipiplusP;  Double_t phipiplusM;  outtree->Branch("phipiplusM", &phipiplusM, "phipiplusM/D" );
-  TLorentzVector phipiminusP; Double_t phipiminusM; outtree->Branch("phipiminusM",&phipiminusM,"phipiminusM/D");
+  TLorentzVector phipipiP;    Double_t phipipiM;          outtree->Branch("phipipiM",   &phipipiM,   "phipipiM/D"   );
+  TLorentzVector pipiP;       Double_t pipiM;             outtree->Branch("pipiM",      &pipiM,      "pipiM/D"      );
+  TLorentzVector phipiplusP;  Double_t phipiplusM;        outtree->Branch("phipiplusM", &phipiplusM, "phipiplusM/D" );
+  TLorentzVector phipiminusP; Double_t phipiminusM;       outtree->Branch("phipiminusM",&phipiminusM,"phipiminusM/D");
   // phi K pi
-  TLorentzVector KpiP;        Double_t KpiM;        outtree->Branch("KpiM",       &KpiM,       "KpiM/D"       );
-  TLorentzVector phiKpiP;     Double_t phiKpiM;     outtree->Branch("phiKpiM",    &phiKpiM,    "phiKpiM/D"    );
+  TLorentzVector KpiP;        Double_t KpiM;              outtree->Branch("KpiM",       &KpiM,       "KpiM/D"       );
+  TLorentzVector phiKpiP;     Double_t phiKpiM;           outtree->Branch("phiKpiM",    &phiKpiM,    "phiKpiM/D"    );
   // phi K p
-  TLorentzVector phipP;       Double_t phipM;       outtree->Branch("phipM",      &phipM,      "phipM/D"      );
-  TLorentzVector phipbarP;    Double_t phipbarM;    outtree->Branch("phipbarM",   &phipbarM,   "phipbarM/D"   );
-  TLorentzVector KpP;         Double_t KpM;         outtree->Branch("KpM",        &KpM,        "KpM/D"        );
-  TLorentzVector phiKpP;      Double_t phiKpM;      outtree->Branch("phiKpM",     &phiKpM,     "phiKpM/D"     );
+  TLorentzVector phipP;       Double_t phipM;             outtree->Branch("phipM",      &phipM,      "phipM/D"      );
+  TLorentzVector phipbarP;    Double_t phipbarM;          outtree->Branch("phipbarM",   &phipbarM,   "phipbarM/D"   );
+  TLorentzVector KpP;         Double_t KpM;               outtree->Branch("KpM",        &KpM,        "KpM/D"        );
+  TLorentzVector phiKpP;      Double_t phiKpM;            outtree->Branch("phiKpM",     &phiKpM,     "phiKpM/D"     );
   // PID variables for tracks identified as something else
   Double_t pion_ProbNNk;    outtree->Branch("pion_ProbNNk",   &pion_ProbNNk,   "pion_ProbNNk/D" );
   Double_t pion_ProbNNpi;   outtree->Branch("pion_ProbNNpi",  &pion_ProbNNpi,  "pion_ProbNNpi/D");
@@ -210,6 +235,13 @@ void addBranches(string filename = "BsphiKK_data")
     for(Int_t j = 0; j < 4; j++) h_PT[j] = TMath::Sqrt(TMath::Power(h_PX[j],2)+TMath::Power(h_PY[j],2));
     minK_PT_GeV     = minOfFour(h_PT[0],h_PT[1],h_PT[2],h_PT[3])/1000;
 /*Mass branches****************************************************************/
+    // MC truth mass
+    if(isMC)
+    {
+      for(Int_t j = 0; j < 4; j++) h_TRUEP[j].SetXYZM(h_TRUEPX[j],h_TRUEPY[j],h_TRUEPZ[j],Kmass);
+      KK_TRUEP = h_TRUEP[2] + h_TRUEP[3];
+      KK_TRUEM = KK_TRUEP.M();
+    }
     // Track 4-momenta with constrained Bs mass
     for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
     BCON_KK_P = hP[2] + hP[3];
