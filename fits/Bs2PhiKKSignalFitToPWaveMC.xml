@@ -27,7 +27,7 @@
       <Value>0.0187467</Value>
       <Minimum>0</Minimum>
       <Maximum>1</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -43,7 +43,7 @@
       <Value>0.633365</Value>
       <Minimum>0</Minimum>
       <Maximum>1</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -84,7 +84,7 @@
       <Value>-1.80834</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -100,7 +100,7 @@
       <Value>2.54037</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -143,7 +143,7 @@
 	  <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
-        <TF1>KK_M</TF1>
+        <TF1>KK_TRUEM</TF1>
         <Minimum>988</Minimum>
         <Maximum>1080</Maximum>
         <Unit>MeV/c^{2}</Unit>
