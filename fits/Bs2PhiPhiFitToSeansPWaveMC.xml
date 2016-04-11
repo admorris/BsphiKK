@@ -1,0 +1,421 @@
+<RapidFit>
+// βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
+//  0  1  0.536  2.71  0.590  0.0  0.604  2.39
+  <ParameterSet>
+    // Lifetimes
+    <PhysicsParameter>
+      <Name>gamma</Name>
+      <Value>0.665</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>ps^{-1}</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>  
+      <Name>deltaGamma</Name>
+      <Value>0.091</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>ps^{-1}</Unit>
+    </PhysicsParameter>
+
+    // Amplitudes
+    <PhysicsParameter>
+      <Name>Aperp_sq</Name>
+      <Value>0.365</Value> // 0.604^2
+      <Minimum>0.0</Minimum>
+      <Maximum>0.7</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>Azero_sq</Name>
+      <Value>0.348</Value> // 0.590^2
+      <Minimum>0.0</Minimum>
+      <Maximum>0.7</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+
+    // S-wave control
+    <PhysicsParameter>
+      <Name>Csp</Name>
+      <Value>0.36</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>As_sq</Name>
+      <Value>0.0</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>deltaS</Name>
+      <Value>0.0</Value>
+      <Minimum>-6.28</Minimum>
+      <Maximum>6.28</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>Ass_sq</Name>
+      <Value>0.0</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>deltaSS</Name>
+      <Value>0</Value>
+      <Minimum>-6.28</Minimum>
+      <Maximum>6.28</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+
+    // Mixing frequency
+    <PhysicsParameter>
+      <Name>deltaM</Name>
+      <Value>17.8</Value>
+      <Minimum>10.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+
+    // Strong phases
+    <PhysicsParameter>
+      <Name>delta_1</Name>
+      <Value>-0.01</Value>
+      <Minimum>-10.28</Minimum>
+      <Maximum>10.28</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>delta_2</Name>
+      <Value>2.39</Value>
+      <Minimum>-10.28</Minimum>
+      <Maximum>10.28</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+
+    // CP-violating phase
+    <PhysicsParameter>
+      <Name>Phi_s</Name>
+      <Value>0.0</Value>
+      <Minimum>-3.14159</Minimum>
+      <Maximum>3.14159</Maximum>
+      <Type>Fixed</Type>
+      <BlindString>BsGoofy</BlindString>
+      <BlindScale>3.14159</BlindScale>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>lambda</Name>
+      <Value>1.0</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.5</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+
+    // Signal time resolution
+    <PhysicsParameter>
+      <Name>timeResolution1</Name>            // This is the first Gaussian width
+      <Value>0.0397</Value>0.0397                 // when set to 0.00 then the fancy error function stuff is bypassed
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>timeResolutionScale</Name>            
+      <Value>1.0</Value>                   
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>timeResolutionOffset</Name>            
+      <Value>0.0</Value>                   
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+    // 2011
+    <PhysicsParameter>
+      <Name>timeResolutionScale_2011</Name>            
+      <Value>1.0</Value>                   
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>timeResolutionOffset_2011</Name>            
+      <Value>0.0</Value>                   
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+    //2012
+    <PhysicsParameter>
+      <Name>timeResolutionScale_2012</Name>            
+      <Value>1.0</Value>                   
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>timeResolutionOffset_2012</Name>            
+      <Value>0.0</Value>                   
+      <Type>Fixed</Type>
+      <Unit>ps</Unit>
+    </PhysicsParameter>
+
+    // Delta SetPoint values
+    <PhysicsParameter>
+      <Name>mistagDeltaSetPoint_OS</Name>
+      <Value>0.0</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagDeltaSetPoint_SS</Name>
+      <Value>0.0</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    // Delta p_0 values
+    <PhysicsParameter>
+      <Name>mistagDeltaP0_OS</Name>
+      <Value>0.014</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagDeltaP0_SS</Name>
+      <Value>-0.0156</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    // Delta p_1 values
+    <PhysicsParameter>
+      <Name>mistagDeltaP1_OS</Name>
+      <Value>0.066</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagDeltaP1_SS</Name>
+      <Value>0.007</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+
+    // Mistag calibration OS
+    <PhysicsParameter>
+      <Name>mistagP0_OS</Name>
+      <Value>0.373</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagP1_OS</Name>
+      <Value>0.982</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>2.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagSetPoint_OS</Name>
+      <Value>0.367</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    // Mistag calibration SSK
+    <PhysicsParameter>
+      <Name>mistagP0_SS</Name>
+      <Value>0.443</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagP1_SS</Name>
+      <Value>0.978</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>2.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>mistagSetPoint_SS</Name>
+      <Value>0.438</Value>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+  </ParameterSet>
+  <Minimiser>
+    <MinimiserName>Minuit</MinimiserName>
+    <ConfigureMinimiser>#MinosErrors</ConfigureMinimiser>
+  </Minimiser>
+
+ 
+
+
+  // Minimising weighted NLL
+  <FitFunction>
+    <FunctionName>NegativeLogLikelihoodThreaded</FunctionName>
+    <Threads>1</Threads>
+    <SetIntegratorTest>False</SetIntegratorTest>
+    <UseGSLNumericalIntegration>False</UseGSLNumericalIntegration>
+  </FitFunction>
+  <NumberRepeats>1</NumberRepeats>
+
+  <CommonPhaseSpace>
+    <PhaseSpaceBoundary>
+        <Observable>
+          <Name>time</Name>
+          <Minimum>0.3</Minimum>
+          <Maximum>10.0</Maximum>
+          <Unit>ps</Unit>
+        </Observable>
+
+        <Observable>
+          <Name>mass</Name>
+          <Minimum>5276.77</Minimum>
+          <Maximum>5476.77</Maximum>
+          <Unit>ps</Unit>
+        </Observable>
+        
+        <Observable>
+          <Name>phi</Name>
+          <Minimum>-3.14159</Minimum>
+          <Maximum>3.14159</Maximum>
+          <Unit>rad</Unit>
+        </Observable>
+
+        <Observable>
+          <Name>ctheta_1</Name>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+        
+        <Observable>
+          <Name>ctheta_2</Name>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+
+        <Observable>
+          <Name>B_s0_LOKI_DTF_CTAUERR</Name>
+          <Minimum>0.0</Minimum>
+          <Maximum>0.125</Maximum>
+          <TF1>B_s0_LOKI_DTF_CTAUERR/0.299792458</TF1>
+          <Unit>Unitless</Unit>
+        </Observable>
+
+        <Observable>
+          <Name>B_s0_TAGDECISION_OS</Name>
+          <Value>0</Value>
+          <Unit>Unitless</Unit>
+        </Observable>
+        <Observable>
+          <Name>B_s0_SS_nnetKaon_DEC</Name>
+          <Value>0</Value>
+          <Unit>Unitless</Unit>
+        </Observable>
+        <Observable>
+          <Name>B_s0_TAGOMEGA_OS</Name>
+          <Minimum>0.0</Minimum>
+          <Maximum>0.5</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+        <Observable>
+          <Name>B_s0_SS_nnetKaon_PROB</Name>
+          <Minimum>0.0</Minimum>
+          <Maximum>0.5</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+    </PhaseSpaceBoundary>
+  </CommonPhaseSpace>
+
+  <ToFit>
+    <PDF>
+      <Name>Bs2PhiPhi_v4</Name>
+      <ConfigurationParameter>UseTimeAcceptance:false</ConfigurationParameter>
+      <ConfigurationParameter>UseSWave:false</ConfigurationParameter>
+      <ConfigurationParameter>UseAccepWeights:false</ConfigurationParameter>
+      <ConfigurationParameter>AccOrig:MC</ConfigurationParameter>
+      <ConfigurationParameter>UseAccepInEval:false</ConfigurationParameter>
+      <ConfigurationParameter>perEvTime:false</ConfigurationParameter>
+      <ConfigurationParameter>PlotComponents:true</ConfigurationParameter>
+      <ConfigurationParameter>DebugMistagModel:false</ConfigurationParameter>
+      <ParameterSubstitution>tagdecision_os:B_s0_TAGDECISION_OS</ParameterSubstitution>
+      <ParameterSubstitution>tagomega_os:B_s0_TAGOMEGA_OS</ParameterSubstitution>
+      <ParameterSubstitution>tagdecision_ss:B_s0_SS_nnetKaon_DEC</ParameterSubstitution>
+      <ParameterSubstitution>tagomega_ss:B_s0_SS_nnetKaon_PROB</ParameterSubstitution>
+    </PDF>
+    <DataSet>
+      <Source>File</Source>
+      <NumberEvents>400000</NumberEvents>
+      <FileName>/afs/cern.ch/work/s/sbenson/public/Stripping20-21_Bsphiphi/Calibrated_MC/phiphi_MC2012_NEWTAG_calib_SigRegion_FullSel.root</FileName>  
+      <NTuplePath>DecayTree/DecayTree</NTuplePath>
+      <CommonPhaseSpace>
+      </CommonPhaseSpace>
+    </DataSet>
+  </ToFit>
+  <Output>
+    <ComponentProjection>
+      <Name>phi</Name>
+      <PDFpoints>1000</PDFpoints>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_1</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_2</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+  </Output> 
+</RapidFit>
