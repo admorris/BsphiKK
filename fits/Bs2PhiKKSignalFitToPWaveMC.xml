@@ -14,6 +14,7 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
+    
     <PhysicsParameter>
       <Name>ASzero2</Name>
       <Value>0.0</Value>
@@ -22,6 +23,7 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
+    
     <PhysicsParameter>
       <Name>APminus2</Name>
       <Value>0.0187467</Value>
@@ -46,6 +48,7 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
+    
     <PhysicsParameter>
       <Name>ADminus2</Name>
       <Value>0.0</Value>
@@ -70,6 +73,7 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
+    
     // Phases
     <PhysicsParameter>
       <Name>deltaSzero</Name>
@@ -79,6 +83,7 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
+    
     <PhysicsParameter>
       <Name>deltaPminus</Name>
       <Value>-1.80834</Value>
@@ -103,6 +108,7 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
+    
     <PhysicsParameter>
       <Name>deltaDminus</Name>
       <Value>0.0</Value>
@@ -177,6 +183,8 @@
     	<PDF>
 		    <Name>Bs2PhiKKTotal</Name>
 		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
+		    <ConfigurationParameter>UseTimeIntegratedPwavePDF:False</ConfigurationParameter>
+		    <ConfigurationParameter>UseTimeIntegratedDwavePDF:False</ConfigurationParameter>
       </PDF>
 		<DataSet>
 			<Source>File</Source>
