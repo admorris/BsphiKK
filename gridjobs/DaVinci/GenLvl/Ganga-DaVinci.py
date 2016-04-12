@@ -5,13 +5,18 @@ LFNsFile = 'PwaveLFNs.txt'
 Application = DaVinci()
 Application.version = 'v37r0'
 
+debug = False
+
 Splitter = SplitByFiles(ignoremissing = True, bulksubmit=True)
-Output   = [ DiracFile('*.root'), LocalFile('summary.xml') ]
+Output   = [ DiracFile('DVntuple.root'), LocalFile('histo.root'), LocalFile('summary.xml') ]
 Backend  = Dirac()
 Input    = []
 LFNs = [line.rstrip('\n') for line in open(LFNsFile)]
-for line in LFNs:
-  Input.append(DiracFile(lfn=line))
+if not debug:
+  for line in LFNs:
+    Input.append(DiracFile(lfn=line))
+else:
+  Input.append(DiracFile(lfn=LFNs[0]))
 Options  = [ File ( './tupleResult.py' ) ]
 Application.optsfile = Options
 j = Job ()
