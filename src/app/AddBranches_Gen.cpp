@@ -61,6 +61,16 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t B_s0_Eta; outtree->Branch("B_s0_Eta", &B_s0_Eta, "B_s0_Eta/D");
   Double_t Phi_Eta;  outtree->Branch("Phi_Eta",  &Phi_Eta,  "Phi_Eta/D" );
   Double_t KK_Eta;   outtree->Branch("KK_Eta",   &KK_Eta,   "KK_Eta/D"  );
+  Double_t K_Eta[4];
+  outtree->Branch("Kminus_Eta",  &K_Eta[0], "Kminus_Eta/D" );
+  outtree->Branch("Kplus_Eta",   &K_Eta[1], "Kplus_Eta/D"  );
+  outtree->Branch("Kminus0_Eta", &K_Eta[2], "Kminus0_Eta/D");
+  outtree->Branch("Kplus0_Eta",  &K_Eta[3], "Kplus0_Eta/D" );
+  Double_t K_Theta[4];
+  outtree->Branch("Kminus_Theta",  &K_Theta[0], "Kminus_Theta/D" );
+  outtree->Branch("Kplus_Theta",   &K_Theta[1], "Kplus_Theta/D"  );
+  outtree->Branch("Kminus0_Theta", &K_Theta[2], "Kminus0_Theta/D");
+  outtree->Branch("Kplus0_Theta",  &K_Theta[3], "Kplus0_Theta/D" );
 /*Helicity angle branches******************************************************/
   // Track 4-momentum in B frame and daughter frames
   TLorentzVector Bframe_h_P[4], dframe_h_P[4], dframe_other_h_P[4];
@@ -86,10 +96,15 @@ void addBranches(string filename = "BsphiKK_data")
     dP[0] = hP[0] + hP[1];
     dP[1] = hP[2] + hP[3];
     KK_M = dP[1].M();
-/*Pseudorapidity***************************************************************/
+/*Pseudorapidity and polar angle***********************************************/
     B_s0_Eta = BP.Eta();
     Phi_Eta  = dP[0].Eta();
     KK_Eta   = dP[1].Eta();
+    for(Int_t j = 0; j < 4; j++)
+    {
+      K_Eta[j] = hP[j].Eta();
+      K_Theta[j] = hP[j].Theta();
+    }
 /*Helicity angles**************************************************************/
 /*******************************************************************************
     See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
