@@ -93,7 +93,7 @@
     // Strong phases
     <PhysicsParameter>
       <Name>delta_1</Name>
-      <Value>-0.01</Value>
+      <Value>2.71</Value>
       <Minimum>-10.28</Minimum>
       <Maximum>10.28</Maximum>
       <Type>Fixed</Type>
@@ -341,12 +341,14 @@
 
         <Observable>
           <Name>B_s0_TAGDECISION_OS</Name>
-          <Value>0</Value>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
           <Unit>Unitless</Unit>
         </Observable>
         <Observable>
           <Name>B_s0_SS_nnetKaon_DEC</Name>
-          <Value>0</Value>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
           <Unit>Unitless</Unit>
         </Observable>
         <Observable>
