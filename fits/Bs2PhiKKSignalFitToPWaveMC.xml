@@ -184,12 +184,15 @@
 		    <Name>Bs2PhiKKTotal</Name>
 		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
 		    <ConfigurationParameter>UseTimeIntegratedPwavePDF:False</ConfigurationParameter>
-		    <ConfigurationParameter>UseTimeIntegratedDwavePDF:False</ConfigurationParameter>
+		    <ConfigurationParameter>UseAcceptance:True</ConfigurationParameter>
+		    <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
+		    <ConfigurationParameter>DrawPwave:False</ConfigurationParameter>
+		    <ConfigurationParameter>DrawAcceptance:True</ConfigurationParameter>		    
+		    <ConfigurationParameter>MassIndependent:True</ConfigurationParameter>
       </PDF>
 		<DataSet>
 			<Source>File</Source>
 			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvacut.root</FileName>
-			<CutString>mlp>0.62&&B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass</CutString>
 			<NTuplePath>DecayTree</NTuplePath>
 			<NumberEvents>100000</NumberEvents>
 			<CommonPhaseSpace>
@@ -203,7 +206,7 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>phi</Name>
@@ -211,7 +214,7 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
     </ComponentProjection>
     <ComponentProjection>
@@ -220,7 +223,7 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
     </ComponentProjection>
     <ComponentProjection>
@@ -229,7 +232,7 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>1000</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
+      <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
     </ComponentProjection>
   </Output>
