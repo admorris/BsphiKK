@@ -18,13 +18,13 @@ LIBEXT     = so
 
 # Directories
 PWD        = $(shell pwd)
-SRCDIR     = $(PWD)/src
+SRCDIR     = src
 BINSRCDIR  = app
 LIBSRCDIR  = lib
-HDRDIR     = $(PWD)/include
-OBJDIR     = $(PWD)/build
-LIBDIR     = $(PWD)/lib
-BINDIR     = $(PWD)/bin
+HDRDIR     = include
+OBJDIR     = build
+LIBDIR     = lib
+BINDIR     = bin
 # Get files and make list of objects and libraries
 BINSRCS   := $(shell find $(SRCDIR)/$(BINSRCDIR) -name '*.$(SRCEXT)')
 LIBSRCS   := $(shell find $(SRCDIR)/$(LIBSRCDIR) -name '*.$(SRCEXT)')
@@ -39,7 +39,7 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS) 
 LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar -lplotmaker -lGetTree -lboost_program_options $(EXTRA_ROOTLIBS) 
 
-all : $(BINS)
+all : $(BINS) Makefile
 libs : $(LIBS)
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
