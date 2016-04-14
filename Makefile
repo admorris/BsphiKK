@@ -1,4 +1,5 @@
-# Much of this makefile is nicked from RapidFit and slimmed down considerably
+# Location of "common" libraries from ssh://git@gitlab.cern.ch:7999/admorris/common.git
+COMMONDIR  = ../common
 # Compiler and shell
 CC         = g++
 SHELL      = /bin/bash
@@ -25,25 +26,28 @@ HDRDIR     = include
 OBJDIR     = build
 LIBDIR     = lib
 BINDIR     = bin
+COMHDRDIR  = $(COMMONDIR)/include
+COMLIBDIR  = $(COMMONDIR)/lib
 # Get files and make list of objects and libraries
 BINSRCS   := $(shell find $(SRCDIR)/$(BINSRCDIR) -name '*.$(SRCEXT)')
 LIBSRCS   := $(shell find $(SRCDIR)/$(LIBSRCDIR) -name '*.$(SRCEXT)')
 HDRS      := $(shell find $(HDRDIR) -name '*.$(HDREXT)')
 LIBS      := $(patsubst $(SRCDIR)/$(LIBSRCDIR)/%.$(SRCEXT), $(LIBDIR)/lib%.$(LIBEXT), $(LIBSRCS))
 BINS      := $(patsubst $(SRCDIR)/$(BINSRCDIR)/%.$(SRCEXT), $(BINDIR)/%, $(BINSRCS))
+COMLIBS   := $(shell find $(COMLIBDIR) -name '*.$(LIBEXT)')
 
 # Where the output is
 OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT) $(BINDIR)/*
 
 # Compiler flags
-CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS) 
-LIBFLAGS   = -L$(LIBDIR) $(ROOTLIBS) -lCloneInfo -lCloneTagger -lprogbar -lplotmaker -lGetTree -lboost_program_options $(EXTRA_ROOTLIBS) 
+CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) 
+LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS) 
 
 all : $(BINS) Makefile
 libs : $(LIBS)
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
-	$(CC) $(LIBFLAGS) $^ $(LIBS) -o $@
+	$(CC) $(LIBFLAGS) $^ $(LIBS) $(COMLIBS) -o $@
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT)
 	$(CC) -shared $< -o $@
