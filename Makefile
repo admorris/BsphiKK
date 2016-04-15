@@ -1,5 +1,5 @@
 # Location of "common" libraries from ssh://git@gitlab.cern.ch:7999/admorris/common.git
-COMMONDIR  = ../common
+COMMONDIR  = $(PWD)/../common
 # Compiler and shell
 CC         = g++
 SHELL      = /bin/bash
@@ -24,7 +24,7 @@ BINSRCDIR  = app
 LIBSRCDIR  = lib
 HDRDIR     = include
 OBJDIR     = build
-LIBDIR     = lib
+LIBDIR     = $(PWD)/lib
 BINDIR     = bin
 COMHDRDIR  = $(COMMONDIR)/include
 COMLIBDIR  = $(COMMONDIR)/lib

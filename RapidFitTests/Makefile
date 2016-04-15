@@ -1,5 +1,7 @@
 # RapidFit directory
-RAPIDDIR   = ../../RapidFit
+RAPIDDIR   = $(PWD)/../../RapidFit
+# Location of "common" libraries from ssh://git@gitlab.cern.ch:7999/admorris/common.git
+COMMONDIR  = $(PWD)/../../common
 
 # Compiler and shell
 CC         = g++
@@ -34,6 +36,10 @@ RFINCPDFDIR = $(RAPIDDIR)/pdfs/include
 RFINCUTILS  = $(RAPIDDIR)/utils/include
 RFLIBDIR    = $(RAPIDDIR)/lib
 
+# Common directories
+COMHDRDIR  = $(COMMONDIR)/include
+COMLIBDIR  = $(COMMONDIR)/lib
+
 # Get files and make list of objects and libraries
 BINSRCS   := $(shell find $(SRCDIR)/$(BINSRCDIR) -name '*.$(SRCEXT)')
 LIBSRCS   := $(shell find $(SRCDIR)/$(LIBSRCDIR) -name '*.$(SRCEXT)')
@@ -41,19 +47,20 @@ HDRS      := $(shell find $(HDRDIR) -name '*.$(HDREXT)')
 LIBS      := $(patsubst $(SRCDIR)/$(LIBSRCDIR)/%.$(SRCEXT), $(LIBDIR)/lib%.$(LIBEXT), $(LIBSRCS))
 BINS      := $(patsubst $(SRCDIR)/$(BINSRCDIR)/%.$(SRCEXT), $(BINDIR)/%, $(BINSRCS))
 RFLIBS    := $(shell find $(RFLIBDIR) -name '*.$(LIBEXT)')
+COMLIBS   := $(shell find $(COMLIBDIR) -name '*.$(LIBEXT)')
 
 # Where the output is
 OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT) $(BINDIR)/*
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(RFINCDIR) -I$(RFINCPDFDIR) -I$(RFINCUTILS) $(ROOTCFLAGS) 
-LIBFLAGS   = -L$(LIBDIR) -L$(RFLIBDIR) $(ROOTLIBS) -lprogbar -lGetTree -lboost_program_options $(EXTRA_ROOTLIBS) 
+LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) -L$(RFLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS) 
 
 all : $(BINS) Makefile
 libs : $(LIBS)
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
-	$(CC) $(LIBFLAGS) $^ $(LIBS) $(RFLIBS) -o $@
+	$(CC) $(LIBFLAGS) $^ $(LIBS) $(COMLIBS) $(RFLIBS) -o $@
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT)
 	$(CC) -shared $< -o $@
