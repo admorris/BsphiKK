@@ -13,7 +13,7 @@ then
 cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BKGCATcut}&&${BsMcut}" ${mode}_duplicates.root
 elif [ "$mode" == "BsphiKK_sideband" ]
 then
-cutapplier ~/${EOS_nTuples_dir}/BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&B_s0_LOKI_Mass>5600" ${mode}_duplicates.root
+cutapplier ~/${EOS_nTuples_dir}/BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&B_s0_LOKI_Mass>5440&&B_s0_LOKI_Mass<5600" ${mode}_duplicates.root
 else
 cutapplier ~/${EOS_nTuples_dir}/${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BsMcut}" ${mode}_duplicates.root
 fi
@@ -26,5 +26,5 @@ mv -v *duplicates*root ~/${EOS_nTuples_dir}/
 # Unmount EOS after use
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
 ###########################################################
-
 exit 0
+
