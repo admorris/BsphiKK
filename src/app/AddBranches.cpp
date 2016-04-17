@@ -18,7 +18,6 @@
 #include "progbar.h"
 #include "minOfFour.h"
 #include "safeLog.h"
-#include "SphericalHarmonic.h"
 using namespace std;
 // Normal track indices go in alphabetical order (minus before plus)
 // Note that LOKI uses a different order (plus before minus)
@@ -188,19 +187,6 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t BCON_cos_theta[2];
   outtree->Branch("BCON_cos_theta1",&BCON_cos_theta[0],"BCON_cos_theta1/D");
   outtree->Branch("BCON_cos_theta2",&BCON_cos_theta[1],"BCON_cos_theta2/D");
-/*Angular terms****************************************************************/
-  TComplex FSzero, FPminus, FPzero, FPplus, FDminus, FDzero, FDplus;
-  Double_t ReFSzero ; outtree->Branch("ReFSzero" , &ReFSzero , "ReFSzero/D" );
-  Double_t ReFPminus; outtree->Branch("ReFPminus", &ReFPminus, "ReFPminus/D");
-  Double_t ImFPminus; outtree->Branch("ImFPminus", &ImFPminus, "ImFPminus/D");
-  Double_t ReFPzero ; outtree->Branch("ReFPzero" , &ReFPzero , "ReFPzero/D" );
-  Double_t ReFPplus ; outtree->Branch("ReFPplus" , &ReFPplus , "ReFPplus/D" );
-  Double_t ImFPplus ; outtree->Branch("ImFPplus" , &ImFPplus , "ImFPplus/D" );
-  Double_t ReFDminus; outtree->Branch("ReFDminus", &ReFDminus, "ReFDminus/D");
-  Double_t ImFDminus; outtree->Branch("ImFDminus", &ImFDminus, "ImFDminus/D");
-  Double_t ReFDzero ; outtree->Branch("ReFDzero" , &ReFDzero , "ReFDzero/D" );
-  Double_t ReFDplus ; outtree->Branch("ReFDplus" , &ReFDplus , "ReFDplus/D" );
-  Double_t ImFDplus ; outtree->Branch("ImFDplus" , &ImFDplus , "ImFDplus/D" );
 /*Event loop*******************************************************************/
   progbar bar(n);
   for(Int_t i = 0; i < n; i++)
@@ -367,24 +353,6 @@ void addBranches(string filename = "BsphiKK_data")
         BCON_Phi_angle  = TMath::ACos(BCON_cos_Phi) * (BCON_sin_Phi/TMath::Abs(BCON_sin_Phi));
       }
     }
-    FSzero  = SphericalHarmonic::Y(1,  0, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(0,  0, cos_theta[1], 0);
-    FPminus = SphericalHarmonic::Y(1,  1, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(1, -1, cos_theta[1], 0);
-    FPzero  = SphericalHarmonic::Y(1,  0, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(1,  0, cos_theta[1], 0);
-    FPplus  = SphericalHarmonic::Y(1, -1, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(1,  1, cos_theta[1], 0);
-    FDminus = SphericalHarmonic::Y(1,  1, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(2, -1, cos_theta[1], 0);
-    FDzero  = SphericalHarmonic::Y(1,  0, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(2,  0, cos_theta[1], 0);
-    FDplus  = SphericalHarmonic::Y(1, -1, -cos_theta[0], -Phi_angle) * SphericalHarmonic::Y(2,  1, cos_theta[1], 0);
-    ReFSzero  = FSzero.Re();
-    ReFPminus = FPminus.Re();
-    ImFPminus = FPminus.Im();
-    ReFPzero  = FPzero.Re();
-    ReFPplus  = FPplus.Re();
-    ImFPplus  = FPplus.Im();
-    ReFDminus = FDminus.Re();
-    ImFDminus = FDminus.Im();
-    ReFDzero  = FDzero.Re();
-    ReFDplus  = FDplus.Re();
-    ImFDplus  = FDplus.Im();
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
     if(i%100 == 0)
