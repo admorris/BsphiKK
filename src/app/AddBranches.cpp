@@ -20,6 +20,9 @@
 #include "safeLog.h"
 #include "SphericalHarmonic.h"
 using namespace std;
+// Normal track indices go in alphabetical order (minus before plus)
+// Note that LOKI uses a different order (plus before minus)
+// Do not to change this without careful scrutiny of what is happening with creating the new branches
 void addBranches(string filename = "BsphiKK_data")
 {
   bool isMC = filename.find("MC") != string::npos;
@@ -40,7 +43,7 @@ void addBranches(string filename = "BsphiKK_data")
   // Integers for mass hypothesis decisions (0-3: correspond to track indices)
   Int_t pion, proton, kaon;
   // Track 4-momentum
-  TLorentzVector hP[4], pionP, protonP;
+  TLorentzVector hP[4], h_TRUEP[4], h_BCONP[4], pionP, protonP;
   // B and daughter 4-momentum
   TLorentzVector BP, dP[4];
 /*Input branches***************************************************************/
@@ -50,27 +53,6 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t B_s0_ENDVERTEX_CHI2; intree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&B_s0_ENDVERTEX_CHI2);
   Double_t B_s0_P;              intree->SetBranchAddress("B_s0_P",             &B_s0_P             );
   Double_t B_s0_PT;             intree->SetBranchAddress("B_s0_PT",            &B_s0_PT            );
-/*PX Branches******************************************************************/
-  // Track indices go in alphabetical order (minus before plus)
-  // Note that LOKI uses a different order (plus before minus)
-  // Do not to change this without careful scrutiny of what is happening with creating the new branches
-  Double_t h_PX[4];
-  intree->SetBranchAddress("Kminus_PX",&h_PX[0]);
-  intree->SetBranchAddress("Kplus_PX",&h_PX[1]);
-  intree->SetBranchAddress("Kminus0_PX",&h_PX[2]);
-  intree->SetBranchAddress("Kplus0_PX",&h_PX[3]);
-/*PY Branches******************************************************************/
-  Double_t h_PY[4];
-  intree->SetBranchAddress("Kminus_PY",&h_PY[0]);
-  intree->SetBranchAddress("Kplus_PY",&h_PY[1]);
-  intree->SetBranchAddress("Kminus0_PY",&h_PY[2]);
-  intree->SetBranchAddress("Kplus0_PY",&h_PY[3]);
-/*PZ Branches******************************************************************/
-  Double_t h_PZ[4];
-  intree->SetBranchAddress("Kminus_PZ",&h_PZ[0]);
-  intree->SetBranchAddress("Kplus_PZ",&h_PZ[1]);
-  intree->SetBranchAddress("Kminus0_PZ",&h_PZ[2]);
-  intree->SetBranchAddress("Kplus0_PZ",&h_PZ[3]);
 /*LOKI PX Branches*************************************************************/
   Double_t h_LOKI_PX[4];
   intree->SetBranchAddress("B_s0_PX_kaon1",&h_LOKI_PX[0]);
@@ -108,7 +90,6 @@ void addBranches(string filename = "BsphiKK_data")
   intree->SetBranchAddress("B_s0_BCON_PZ_kaon3",&h_BCON_PZ[2]);
   intree->SetBranchAddress("B_s0_BCON_PZ_kaon2",&h_BCON_PZ[3]);
 /*MC only branches*************************************************************/
-  TLorentzVector h_TRUEP[4];
   Double_t h_TRUEPX[4];
   Double_t h_TRUEPY[4];
   Double_t h_TRUEPZ[4];
@@ -162,7 +143,7 @@ void addBranches(string filename = "BsphiKK_data")
   Float_t B_s0_Eta;       outtree->Branch("B_s0_Eta",       &B_s0_Eta,       "B_s0_Eta/F"       );
   Float_t minK_ln_IPCHI2; outtree->Branch("minK_ln_IPCHI2", &minK_ln_IPCHI2, "minK_ln_IPCHI2/F" );
   Float_t minK_PT_GeV;    outtree->Branch("minK_PT_GeV",    &minK_PT_GeV,    "minK_PT_GeV/F"    );
-  Double_t h_PT[4]; // Necessary for min Kaon PT
+  Double_t h_LOKI_PT[4]; // Necessary for min Kaon PT
 /*New mass branches************************************************************/
   // phi KK
   TLorentzVector BCON_KK_P;   Double_t BCON_KK_M;         outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
@@ -232,8 +213,8 @@ void addBranches(string filename = "BsphiKK_data")
     B_s0_PT_fiveGeV = B_s0_PT/5000; // Change units for sensible range of numbers
     B_s0_Eta        = TMath::ACosH(B_s0_P/B_s0_PT);
     minK_ln_IPCHI2  = safeLog(minOfFour(h_IPCHI2_OWNPV[0],h_IPCHI2_OWNPV[1],h_IPCHI2_OWNPV[2],h_IPCHI2_OWNPV[3]));
-    for(Int_t j = 0; j < 4; j++) h_PT[j] = TMath::Sqrt(TMath::Power(h_PX[j],2)+TMath::Power(h_PY[j],2));
-    minK_PT_GeV     = minOfFour(h_PT[0],h_PT[1],h_PT[2],h_PT[3])/1000;
+    for(Int_t j = 0; j < 4; j++) h_LOKI_PT[j] = TMath::Sqrt(TMath::Power(h_LOKI_PX[j],2)+TMath::Power(h_LOKI_PY[j],2));
+    minK_PT_GeV     = minOfFour(h_LOKI_PT[0],h_LOKI_PT[1],h_LOKI_PT[2],h_LOKI_PT[3])/1000;
 /*Mass branches****************************************************************/
     // MC truth mass
     if(isMC)
@@ -243,11 +224,11 @@ void addBranches(string filename = "BsphiKK_data")
       KK_TRUEM = KK_TRUEP.M();
     }
     // Track 4-momenta with constrained Bs mass
-    for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
-    BCON_KK_P = hP[2] + hP[3];
+    for(Int_t j = 0; j < 4; j++) h_BCONP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
+    BCON_KK_P = h_BCONP[2] + h_BCONP[3];
     BCON_KK_M = BCON_KK_P.M();
     // Initial 4K hypothesis
-    for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_PX[j],h_PY[j],h_PZ[j],Kmass);
+    for(Int_t j = 0; j < 4; j++) hP[j].SetXYZM(h_LOKI_PX[j],h_LOKI_PY[j],h_LOKI_PZ[j],Kmass);
     // Reconstruct B and daughter 4-momentum
     BP    = hP[0] + hP[1] + hP[2] + hP[3];
     dP[0] = hP[0] + hP[1];
@@ -276,20 +257,20 @@ void addBranches(string filename = "BsphiKK_data")
     pion_ProbNNpi = h_ProbNNpi[pion];
     pion_ProbNNp  = h_ProbNNp[pion] ;
     // phi K pi
-    pionP.SetXYZM(h_PX[pion],h_PY[pion],h_PZ[pion],pimass);
+    pionP.SetXYZM(h_LOKI_PX[pion],h_LOKI_PY[pion],h_LOKI_PZ[pion],pimass);
     phiKpiP = hP[0] + hP[1] + pionP + hP[kaon];
     phiKpiM = phiKpiP.M();
     // K pi
     KpiP = pionP + hP[kaon];
     KpiM = KpiP.M();
     // phi pi-
-    pionP.SetXYZM(h_PX[2],h_PY[2],h_PZ[2],pimass);
+    pionP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pimass);
     pipiP       = pionP; // Half of the pi pi 4momentum
     phipiminusP = hP[0] + hP[1] + pionP;
     phipiminusM = phipiminusP.M();
     phipipiP    = phipiminusP; // 3/4 of phi pi pi 4momentum
     // phi pi+
-    pionP.SetXYZM(h_PX[3],h_PY[3],h_PZ[3],pimass);
+    pionP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pimass);
     pipiP     += pionP; // Other half of the pi pi 4momentum
     phipipiP  += pionP; // Other 1/4 of the phi pi pi 4momentum
     phipiplusP = hP[0] + hP[1] + pionP;
@@ -316,18 +297,18 @@ void addBranches(string filename = "BsphiKK_data")
     proton_ProbNNpi = h_ProbNNpi[proton];
     proton_ProbNNp  = h_ProbNNp[proton] ;
     // phi K proton
-    protonP.SetXYZM(h_PX[proton],h_PY[proton],h_PZ[proton],pmass);
+    protonP.SetXYZM(h_LOKI_PX[proton],h_LOKI_PY[proton],h_LOKI_PZ[proton],pmass);
     phiKpP = hP[0] + hP[1] + protonP + hP[kaon];
     phiKpM = phiKpP.M();
     // K proton
     KpP = protonP + hP[kaon];
     KpM = KpP.M();
     // phi proton
-    protonP.SetXYZM(h_PX[3],h_PY[3],h_PZ[3],pmass);
+    protonP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pmass);
     phipP = hP[0] + hP[1] + protonP;
     phipM = phipP.M();
     // phi anti-proton
-    protonP.SetXYZM(h_PX[2],h_PY[2],h_PZ[2],pmass);
+    protonP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pmass);
     phipbarP = hP[0] + hP[1] + protonP;
     phipbarM = phipbarP.M();
 /*Helicity angles**************************************************************/
@@ -338,26 +319,22 @@ void addBranches(string filename = "BsphiKK_data")
     {
       if(BCON==1)
       {
-        for(Int_t j = 0; j < 4; j++)
-        {
-          hP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
-        }
-        BP    = hP[0] + hP[1] + hP[2] + hP[3];
-        dP[0] = hP[0] + hP[1];
-        dP[1] = hP[2] + hP[3];
+        BP    = h_BCONP[0] + h_BCONP[1] + h_BCONP[2] + h_BCONP[3];
+        dP[0] = h_BCONP[0] + h_BCONP[1];
+        dP[1] = h_BCONP[2] + h_BCONP[3];
       }
       // Loop over Kaons
       for(Int_t j = 0; j < 4; j++)
       {
         // Boost into B frame
-        Bframe_h_P[j] = hP[j];
+        Bframe_h_P[j] = BCON==1 ? h_BCONP[j] : hP[j];
         Bframe_h_P[j].Boost(-BP.BoostVector());
         // Boost into daughter frames
-        dframe_h_P[j] = hP[j];
+        dframe_h_P[j] = BCON==1 ? h_BCONP[j] : hP[j];
         dframe_h_P[j].Boost(-dP[j/2].BoostVector());
         // Boost into "wrong" daughter frames
         // Thanks Dianne!
-        dframe_other_h_P[j] = hP[j];
+        dframe_other_h_P[j] = BCON==1 ? h_BCONP[j] : hP[j];
         dframe_other_h_P[j].Boost(-dP[(j-3)/-2].BoostVector());
       }
       // Loop over daughters
