@@ -41,7 +41,7 @@ BKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
 cuts=(${trigcut} ${ghstcut} ${trackisMuoncut} ${phiMcut} ${KpTcut} ${BsFDCHI2cut} ${BsIPCHI2cut} ${KpiPIDcut} ${KpPIDcut})
 ###############################################################################
 phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
-KptightPIDval=0.1
+KptightPIDval=0.2
 LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${KptightPIDval}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${KptightPIDval}))"
 Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${KptightPIDval}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${KptightPIDval}))&&(TMath::Abs(phipbarM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${KptightPIDval}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${KptightPIDval}))"
 DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
