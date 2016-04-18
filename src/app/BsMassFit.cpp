@@ -157,6 +157,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     loline->Draw();
   }
   canv->SaveAs((plotfilename+".pdf").c_str());
+  canv->SaveAs((plotfilename+".root").c_str());
 /*S-weight the given ntuple****************************************************/
   if(doSweight)
   {
