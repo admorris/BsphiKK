@@ -1,25 +1,45 @@
-#include "TFile.h"
-#include "TTree.h"
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <iostream>
+#include <vector>
+#include <algorithm>
+
+std::vector<int> GetSortedKeys(std::string line)
+{
+  std::vector<int> keys;
+  size_t ltab = line.find('\t',0); // skip event number
+  for(int i = 0; i < 4; i++)
+  {
+    ltab = line.find('\t',ltab+1); // skip run number on i = 0
+    keys.push_back(atoi(line.substr(ltab,line.find('\t',ltab+1)).c_str()));
+  }
+  std::sort(keys.begin(),keys.end());
+  return keys;
+}
 
 int main(int argc, char* argv[])
 {
-  // Get the tree
-  TFile* file = new TFile(argv[1]);
-  TTree* tree = (TTree*) file->Get("DecayTree");
-  // Variables to read
-  ULong64_t evt; tree->SetBranchAddress("eventNumber"      , &evt);
-  UInt_t    run; tree->SetBranchAddress("runNumber"        , &run);
-  int      key1; tree->SetBranchAddress("Kminus_TRACK_Key" ,&key1);
-  int      key2; tree->SetBranchAddress("Kminus0_TRACK_Key",&key2);
-  int      key3; tree->SetBranchAddress("Kplus_TRACK_Key"  ,&key3);
-  int      key4; tree->SetBranchAddress("Kplus0_TRACK_Key" ,&key4);
-  // Event loop
-  int num_entries = tree->GetEntries();
-  for (int i = 0; i < num_entries; ++i)
+  std::ifstream file(argv[1]);
+  std::string thisline(""),lastline(""),thisevtno,lastevtno;
+  while(file.good())
   {
-    tree->GetEntry(i);
-    std::cout << evt << "\t" << run << "\t"<< key1 << "\t" << key2 << "\t" << key3 << "\t" << key4 << std::endl;
+    lastline = thisline;
+    std::getline(file,thisline,'\n');
+    lastevtno = lastline.substr(0,lastline.find('\t'));
+    thisevtno = thisline.substr(0,thisline.find('\t'));
+    if(lastevtno == thisevtno)
+    {
+      std::cout << lastline << std::endl << thisline;
+      std::vector<int> lastkeys = GetSortedKeys(lastline);
+      std::vector<int> thiskeys = GetSortedKeys(thisline);
+      if(lastkeys[0] == thiskeys[0]
+      && lastkeys[1] == thiskeys[1]
+      && lastkeys[2] == thiskeys[2]
+      && lastkeys[3] == thiskeys[3])
+        std::cout << "CLONE";
+      std::cout << std::endl << "***" << std::endl;
+    }
   }
   return 0;
 }
