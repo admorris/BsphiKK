@@ -9,6 +9,7 @@
 #include "TLatex.h"
 // RooFit headers
 #include "RooDataSet.h"
+#include "RooDataHist.h"
 #include "RooHist.h"
 #include "RooPlot.h"
 #include "RooRealVar.h"
@@ -19,14 +20,26 @@
 #include "maxOfThree.h"
 #include "GetTree.h"
 
-void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins)
+void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale)
 {
-  TFile* file = new TFile(filename.c_str());
-  TTree* tree = GetTree(file,cuts);
+  TFile* file = new TFile(filename.c_str()), * ofile;
+  TTree* tree = GetTree(file,cuts), * otree;
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
+  x->setBins(nbins);
   RooRealVar* w;
-  RooDataSet* data;
+  RooDataSet* data, * odata;
+  RooDataHist* overlayhist;
+  bool plotoverlay = overlay != "";
+  if(plotoverlay)
+  {
+    ofile = new TFile(overlay.c_str());
+    otree = GetTree(ofile,cuts);
+    file->cd();
+    std::cout << "Importing tree" << endl;
+    odata = new RooDataSet("overlaydata","",RooArgSet(*x),Import(*otree));
+    overlayhist = new RooDataHist("overlayhist","",RooArgSet(*x),*odata,scale);
+  }
   std::cout << "Importing tree" << endl;
   if(weight!="")
   {
@@ -42,6 +55,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   data->plotOn(frame,Binning(nbins));
   frame->SetMinimum(0);
   RooHist* hist = frame->getHist();
+  if(plotoverlay) overlayhist->plotOn(frame,Binning(nbins),DrawOption("B1"),FillColor(kOrange));
   
   unsigned int n;
   annotation** particles;
@@ -150,9 +164,9 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     // Loop through the particles
     for(unsigned int i = 0; i < n; i++)
     {
-      line = &(particles[i]->line);
+      line  = &(particles[i]->line);
       label = &(particles[i]->label);
-        cout << "Labelling particle at " << line->GetX1() << " MeV" << endl;
+      cout << "Labelling particle at " << line->GetX1() << " MeV" << endl;
       // Find the right bin for the line
       bin=0;
       for(int j = 0; j < N-1 && hist->GetX()[j]+hist->GetErrorXhigh(j) < line->GetX1(); j++)
@@ -185,21 +199,23 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  std::string file, branch, cuts, xtitle, unit, plot, weight;
-  double xlow, xup;
+  std::string file, branch, cuts, xtitle, unit, plot, weight, overlay;
+  double xlow, xup, scale;
   int nbins;
   desc.add_options()
-    ("help,H"  ,                                                                                  "produce help message"                      )
-    ("file,F"  , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "set data file"                             )
-    ("branch,B", value<std::string>(&branch)->default_value("KK_M"                             ), "set branch to plot"                        )
-    ("weight,W", value<std::string>(&weight)->default_value("Nsig_sw"                          ), "set weighting variable"                    )
-    ("cuts,C"  , value<std::string>(&cuts  )->default_value(""                                 ), "set optional cuts"                         )
-    ("title,T" , value<std::string>(&xtitle)->default_value("#it{m}(#it{K^{#plus}K^{#minus}})" ), "set x-axis title (takes ROOT LaTeX format)")
-    ("unit,U"  , value<std::string>(&unit  )->default_value("MeV/#it{c}^{2}"                   ), "set unit (takes ROOT LaTeX format)"        )
-    ("plot,O"  , value<std::string>(&plot  )->default_value("plottedbranch"                    ), "set output plot filename"                  )
-    ("upper,u" , value<double     >(&xup   )->default_value(4000                               ), "set branch upper limit"                    )
-    ("lower,l" , value<double     >(&xlow  )->default_value(900                                ), "set branch lower limit"                    )
-    ("bins,b"  , value<int        >(&nbins )->default_value(50                                 ), "set number of bins"                        )
+    ("help,H"  ,                                                                                   "produce help message"                  )
+    ("file,F"  , value<std::string>(&file   )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"                             )
+    ("branch,B", value<std::string>(&branch )->default_value("KK_M"                             ), "branch to plot"                        )
+    ("weight,W", value<std::string>(&weight )->default_value(""                                 ), "weighting variable"                    )
+    ("cuts,C"  , value<std::string>(&cuts   )->default_value(""                                 ), "optional cuts"                         )
+    ("title,T" , value<std::string>(&xtitle )->default_value("#it{m}(#it{K^{#plus}K^{#minus}})" ), "x-axis title (takes ROOT LaTeX format)")
+    ("unit,U"  , value<std::string>(&unit   )->default_value("MeV/#it{c}^{2}"                   ), "unit (takes ROOT LaTeX format)"        )
+    ("plot,O"  , value<std::string>(&plot   )->default_value("plottedbranch"                    ), "output plot filename"                  )
+    ("upper,u" , value<double     >(&xup    )->default_value(4000                               ), "branch upper limit"                    )
+    ("lower,l" , value<double     >(&xlow   )->default_value(900                                ), "branch lower limit"                    )
+    ("bins,b"  , value<int        >(&nbins  )->default_value(50                                 ), "number of bins"                        )
+    ("overlay" , value<std::string>(&overlay)->default_value(""                                 ), "file to overlay the same branch from"  )
+    ("scale"   , value<double     >(&scale  )->default_value(1                                  ), "scale factor for the overlaid branch"  )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -210,6 +226,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins);
+  AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale);
   return 0;
 }

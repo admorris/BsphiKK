@@ -7,6 +7,11 @@ for i in `seq 0 11`
 do
   for suffix in ${suffices[@]}
   do
+    extra=""
+    if [ "${branches[$i]}" == "phiKpM" ]
+    then
+      extra="--overlay ../ntuples/LbphiKp_MC${suffix}.root --scale 0.25"
+    fi
     ../bin/AnnotateBranch \
       -F ../ntuples/BsphiKK_data${suffix}.root \
       -B ${branches[$i]} \
@@ -14,6 +19,6 @@ do
       -O ../latex/figs/${branches[$i]}$suffix \
       -l ${lower[$i]} \
       -u ${upper[$i]} \
-      -b 50
+      -b 50 ${extra}
   done
 done
