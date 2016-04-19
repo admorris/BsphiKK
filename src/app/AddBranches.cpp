@@ -162,6 +162,11 @@ void addBranches(string filename = "BsphiKK_data")
   TLorentzVector phipbarP;    Double_t phipbarM;          outtree->Branch("phipbarM",   &phipbarM,   "phipbarM/D"   );
   TLorentzVector KpP;         Double_t KpM;               outtree->Branch("KpM",        &KpM,        "KpM/D"        );
   TLorentzVector phiKpP;      Double_t phiKpM;            outtree->Branch("phiKpM",     &phiKpM,     "phiKpM/D"     );
+  // phi pi p
+  TLorentzVector pipP;        Double_t pipM;              outtree->Branch("pipM",       &pipM,       "pipM/D"       );
+  TLorentzVector pipbarP;     Double_t pipbarM;           outtree->Branch("pipbarM",    &pipbarM,    "pibarM/D"     );
+  TLorentzVector phipipP;     Double_t phipipM;           outtree->Branch("phipipM",    &phipipM,    "phipipM/D"    );
+  TLorentzVector phipipbarP;  Double_t phipipbarM;        outtree->Branch("phipipbarM", &phipipbarM, "phipipbarM/D" );
   // PID variables for tracks identified as something else
   Double_t pion_ProbNNk;    outtree->Branch("pion_ProbNNk",   &pion_ProbNNk,   "pion_ProbNNk/D" );
   Double_t pion_ProbNNpi;   outtree->Branch("pion_ProbNNpi",  &pion_ProbNNpi,  "pion_ProbNNpi/D");
@@ -297,6 +302,20 @@ void addBranches(string filename = "BsphiKK_data")
     protonP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pmass);
     phipbarP = hP[0] + hP[1] + protonP;
     phipbarM = phipbarP.M();
+    // phi pi− proton
+    protonP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pmass);
+    pionP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pimass);
+    pipP = pionP + protonP;
+    pipM = pipP.M();
+    phipipP = hP[0] + hP[1] + protonP + pionP;
+    phipipM = phipipP.M();
+    // phi pi+ anti-proton
+    protonP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pmass);
+    pionP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pimass);
+    pipbarP = pionP + protonP;
+    pipbarM = pipP.M();
+    phipipbarP = hP[0] + hP[1] + protonP + pionP;
+    phipipbarM = phipipbarP.M();
 /*Helicity angles**************************************************************/
 /*******************************************************************************
     See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
