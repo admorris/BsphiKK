@@ -4,18 +4,21 @@ cd ../ntuples/
     -M ../ntuples/BsphiKK_MC_mvacut.root \
     -R ../ntuples/BsphiKK_data_mvacut.root \
     -O ../latex/figs/Bsmassfit_mvacut \
+    -N B_s0_LOKI_Mass \
     --pulls
 
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_1050_mvacut.root \
     -R ../ntuples/BsphiKK_data_1050_mvacut.root \
     -O ../latex/figs/Bsmassfit_1050_mvacut \
+    -N B_s0_LOKI_Mass \
     --pulls
 
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_1800_mvacut.root \
     -R ../ntuples/BsphiKK_data_1800_mvacut.root \
     -O ../latex/figs/Bsmassfit_1800_mvacut \
+    -N B_s0_LOKI_Mass \
     --pulls \
     --draw-region 2
 
@@ -23,5 +26,6 @@ cd ../ntuples/
     -M ../ntuples/BsphiKK_MC_1050_1800_mvacut.root \
     -R ../ntuples/BsphiKK_data_1050_1800_mvacut.root \
     -O ../latex/figs/Bsmassfit_1050_1800_mvacut \
+    -N B_s0_LOKI_Mass \
     --pulls
 
