@@ -21,9 +21,9 @@ void GetVetoEff(string filename)
 //  }
   string cut[] =
   {
-    "TMath::Abs(phiKpiM-5279.58)>50||(TMath::Abs(phiKpiM-5279.58)<50&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi)"
-  , "TMath::Abs(phiKpM-5619.5)>30||(TMath::Abs(phiKpM-5619.5)<30&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.1)"
-  , "TMath::Abs(phipM-2286.46)>24||(TMath::Abs(phipM-2286.46)<24&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.1)&&TMath::Abs(phipbarM-2286.46)>24||(TMath::Abs(phipbarM-2286.46)<24&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.1&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.1)"
+    "TMath::Abs(phiKpiM-5279.58)>60||(TMath::Abs(phiKpiM-5279.58)<50&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi)"
+  , "TMath::Abs(phiKpM-5619.5)>60||(TMath::Abs(phiKpM-5619.5)<60&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp)"
+  , "TMath::Abs(phipM-2286.46)>24||(TMath::Abs(phipM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&TMath::Abs(phipbarM-2286.46)>24||(TMath::Abs(phipbarM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp) "
   , "TMath::Abs(phiKplusM-1968.3)>24&&TMath::Abs(phiKminusM-1968.3)>24"
   , "TMath::Abs(phipiplusM-1869.61)>24&&TMath::Abs(phipiminusM-1869.61)>24"
   , "TMath::Abs(phipiplusM-1968.3)>24&&TMath::Abs(phipiminusM-1968.3)>24"
