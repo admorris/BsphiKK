@@ -49,7 +49,7 @@ RooPlot* MakeBranchPlot(string filename, string branchname, string xtitle, strin
   }
   RooPlot* frame = x->frame();
   cout << "Plotting" << endl;
-  if(plotoverlay) overlayhist->plotOn(frame,Binning(nbins),DrawOption("B1"),FillColor(kOrange));
+  if(plotoverlay) overlayhist->plotOn(frame,Binning(nbins),DrawOption("B1"),FillColor(kOrange),LineWidth(0));
   data->plotOn(frame,Binning(nbins));
   frame->SetMinimum(0);
   return frame;
