@@ -3,6 +3,7 @@
 // Standard C++ headers
 #include <vector>
 #include <string>
+#include <stdexcept>
 // RooFit headers
 #include "RooAbsPdf.h"
 #include "RooAbsReal.h"
@@ -15,6 +16,18 @@
 using namespace std;
 using namespace RooFit;
 using namespace RooStats;
+struct pdf_t
+{
+  RooAbsPdf* pdf;
+  vector<RooAbsReal*> stuff;
+  RooAbsReal* GetThing(string name)
+  {
+    for(auto thing : stuff)
+      if((string)thing->GetName() == name)
+        return thing;
+    throw invalid_argument(("No such parameter: "+name).c_str());
+  }
+};
 class MassFitter
 {
   public:
@@ -44,6 +57,7 @@ class MassFitter
     void                Plot(RooPlot*);
     SPlot*              GetsPlot();
   private:
+    vector<pdf_t>       _pdfs;
     RooAbsPdf*          _pdf;
     RooDataSet*         _data;
     RooRealVar*         _mass;
