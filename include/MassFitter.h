@@ -16,75 +16,89 @@
 using namespace std;
 using namespace RooFit;
 using namespace RooStats;
-struct pdf_t
+class Component
 {
-  RooAbsPdf* pdf;
-  vector<RooAbsReal*> stuff;
-  RooAbsReal* GetThing(string name)
-  {
-    for(auto thing : stuff)
-      if((string)thing->GetName() == name)
-        return thing;
-    throw invalid_argument(("No such parameter: "+name).c_str());
-  }
+  public:
+    // *structors
+    Component(string,RooAbsPdf*);
+    ~Component();
+    // Functions for interaction
+    RooAbsReal* GetThing(string);
+    void        AddThing(RooAbsReal* thing) { _stuff.push_back(thing); }
+    RooAbsPdf*  GetPDF()                       { return _pdf     ; }
+    void        SetPDF(RooAbsPdf* pdf)         { _pdf = pdf      ; }
+    string      GetName()                      { return _name    ; }
+    void        SetName(string name)           { _name = name    ; }
+    RooRealVar* GetYieldVar();
+    void        SetYieldVar(RooRealVar*);
+    int         GetStyle()                     { return _style   ; }
+    void        SetStyle(int style)            { _style = style  ; }
+    int         GetColour()                    { return _colour  ; }
+    void        SetColour(int colour)          { _colour = colour; }
+    // Parameter values
+    double      GetValue(string name) { return (double)((RooRealVar*)GetThing(name))->getValV(); }
+    void        SetValue(string, double);
+    void        FixValue(string, double);
+    void        FloatPar(string name) { ((RooRealVar*)GetThing(name))->setConstant(false); }
+    double      GetError(string name) { return (double)((RooRealVar*)GetThing(name))->getError(); }
+    void        SetRange(string, double, double);
+  protected:
+    // Pointers to components and parameters
+    vector<RooAbsReal*> _stuff;
+    // Unique name
+    string _name;
+    // Pointer to the yield
+    RooRealVar* _yield;
+    // Pointer to the PDF
+    RooAbsPdf* _pdf;
+    // Line style and colour
+    int _style;
+    int _colour;
+    // Flags
+    bool _hasyieldvar;
 };
 class MassFitter
 {
   public:
-    // Constructor
+    // *structors
     MassFitter(RooRealVar*);
-    // Copy constructor
     MassFitter(const MassFitter&);
-    // Destructor
     ~MassFitter();
-    // Get and set private variables
-    RooAbsPdf*          GetPDF()    { return _pdf;  }
-    void                SetPDF(RooAbsPdf*);
-    void                SetPDF(string,string);
-    void                ResetPDF();
-    RooAbsReal*         GetThing(string);
-    RooDataSet*         GetData()   { return _data; }
+    // Fit model and dataset
+    Component*          GetComponent(string);
+    Component*          AddComponent(string,string);
+    Component*          AddComponent(string,string,RooRealVar*);
+    RooDataSet*         GetData() { return _data; }
     void                SetData(RooDataSet*);
-    // Parameter values
-    double              GetValue(string);
-    double              GetError(string);
-    void                SetValue(string, double);
-    void                SetRange(string, double, double);
-    void                FixValue(string, double);
     // Command functions
     RooFitResult*       Fit();
     RooFitResult*       Fit(RooDataSet*);
     void                Plot(RooPlot*);
-    SPlot*              GetsPlot();
+    SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
   private:
-    vector<pdf_t>       _pdfs;
+    vector<Component*>  _components;
     RooAbsPdf*          _pdf;
     RooDataSet*         _data;
     RooRealVar*         _mass;
     void                init();
-    // Settings
-    vector<string>      _builtins;
+    void                assemble();
     // Flags
     bool                _haspdf;
     bool                _hasdata;
+    bool                _useyieldvars;
     // Signal models
-    RooAbsPdf*          singleGaussian();
-    RooAbsPdf*          doubleGaussian();
-    RooAbsPdf*          tripleGaussian();
-    RooAbsPdf*          CrystalBall();
-    RooAbsPdf*          CrystalBall1Gauss();
-    RooAbsPdf*          CrystalBall2Gauss();
-    RooAbsPdf*          BreitWigner();
-    RooAbsPdf*          Voigtian();
-    RooAbsPdf*          ThresholdShape();
+    Component*          singleGaussian(string);
+    Component*          doubleGaussian(string);
+    Component*          tripleGaussian(string);
+    Component*          CrystalBall(string);
+    Component*          CrystalBall1Gauss(string);
+    Component*          CrystalBall2Gauss(string);
+    Component*          BreitWigner(string);
+    Component*          Voigtian(string);
+    Component*          ThresholdShape(string);
     // Background models
-    RooAbsPdf*          flatfunction();
-    RooAbsPdf*          exponential();
-    RooAbsPdf*          straightline();
-    // Combine function for total model
-    RooAbsPdf*          combine(RooAbsPdf*,RooAbsPdf*);
-    RooAbsPdf*          convolve(RooAbsPdf*,RooAbsPdf*);
-    // Keep track of pointers
-    vector<RooAbsReal*> _stuff;
+    Component*          flatfunction(string);
+    Component*          exponential(string);
+    Component*          straightline(string);
 };
 #endif

@@ -82,13 +82,13 @@ void GetResolution(string filename, vector<string> particlename, string branchna
 //  RooGaussian* model = new RooGaussian("model","",*x,mean,sigma);
 //  model->fitTo(*data);
   MassFitter* ResFit = new MassFitter(x);
-  ResFit->SetPDF("Double Gaussian","None");
-  ResFit->SetRange("mean",-10,10);
-  ResFit->SetValue("mean",0);
-  ResFit->SetRange("sigma1",0,10);
-  ResFit->SetValue("sigma1",0.5);
-  ResFit->SetRange("sigma2",0,40);
-  ResFit->SetValue("sigma2",2);
+  Component* ResMod = ResFit->AddComponent("Resolution","Double Gaussian");
+  ResMod->SetRange("mean",-10,10);
+  ResMod->SetValue("mean",0);
+  ResMod->SetRange("sigma1",0,10);
+  ResMod->SetValue("sigma1",0.5);
+  ResMod->SetRange("sigma2",0,40);
+  ResMod->SetValue("sigma2",2);
   ResFit->Fit(data);
   RooPlot* frame = x->frame();
   cout << "Plotting" << endl;
@@ -107,17 +107,16 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
   MassFitter* PhiFit = new MassFitter(m);
-//  PhiFit->SetPDF("Breit-Wigner * Gaussian","None");
-  PhiFit->SetPDF("Voigtian","None");
-  PhiFit->FixValue("mean",1019.461);
-  PhiFit->FixValue("width",4.266);
-//  PhiFit->SetRange("mean",-1,1);
-//  PhiFit->FixValue("mean",0);
-  PhiFit->SetRange("sigma1",0,10);
-  double s1 = ResFit->GetValue("sigma1");
-  double s2 = ResFit->GetValue("sigma2");
-  double f1 = ResFit->GetValue("fgaus1");
-  PhiFit->SetValue("sigma1",f1*s1+(1-f1)*s2);
+  Component* PhiMod = PhiFit->AddComponent("phi","Voigtian");
+  PhiMod->FixValue("mean",1019.461);
+  PhiMod->FixValue("width",4.266);
+//  PhiMod->SetRange("mean",-1,1);
+//  PhiMod->FixValue("mean",0);
+  PhiMod->SetRange("sigma1",0,10);
+  double s1 = ResMod->GetValue("sigma1");
+  double s2 = ResMod->GetValue("sigma2");
+  double f1 = ResMod->GetValue("fgaus1");
+  PhiMod->SetValue("sigma1",f1*s1+(1-f1)*s2);
   PhiFit->Fit(data);
   frame = m->frame();
   cout << "Plotting" << endl;
@@ -131,17 +130,18 @@ void GetResolution(string filename, vector<string> particlename, string branchna
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
+  using std::string;
   options_description desc("Allowed options",120);
   string file, branch, cuts, xtitle, unit, plot, weight;
   vector<string> partic;
   double xlow, xup;
   int nbins;
   desc.add_options()
-    ("help,H"    ,                                                                                    "produce help message"                  )
+    ("help,H"    ,                                                                                    "produce help message"                   )
     ("file,F"    , value<string         >(&file  )->default_value("ntuples/BsphiKK_MC_mvacut.root"  ), "data ntuple"                           )
     ("particle,P", value<vector<string> >(&partic)->multitoken()                                     , "list particles to sum"                 )
     ("branch,B"  , value<string         >(&branch)->default_value("KK_M"                            ), "mass branch to compare to"             )
-    ("cuts,C"    , value<std::string    >(&cuts  )->default_value(""                                ), "set optional cuts"                     )
+    ("cuts,C"    , value<string         >(&cuts  )->default_value(""                                ), "set optional cuts"                     )
     ("title,T"   , value<string         >(&xtitle)->default_value("#it{m}(#it{K^{#plus}K^{#minus}})"), "x-axis title (takes ROOT LaTeX format)")
     ("unit,U"    , value<string         >(&unit  )->default_value("MeV/#it{c}^{2}"                  ), "x-axis unit (takes ROOT LaTeX format)" )
     ("plot,O"    , value<string         >(&plot  )->default_value("massresolution"                  ), "output plot filename"                  )
