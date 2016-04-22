@@ -40,7 +40,7 @@ RooRealVar* Component::GetYieldVar()
 {
   if(!_hasyieldvar)
   {
-    _yield = new RooRealVar(("N_"+_name).c_str(),("Auto-generated yield for component "+_name).c_str(),1);
+    _yield = new RooRealVar(("N_"+_name).c_str(),("Auto-generated yield for component "+_name).c_str(),1,0,1e6);
     _stuff.push_back(_yield);
   }
   return _yield;
