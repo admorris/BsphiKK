@@ -34,9 +34,6 @@ Component::~Component()
 {
   for(auto thing : _stuff)
     delete thing;
-  _stuff.clear();
-  delete _pdf;
-  delete _yield;
 }
 /******************************************************************************/
 RooRealVar* Component::GetYieldVar()
@@ -99,10 +96,10 @@ MassFitter::MassFitter(const MassFitter& input) :
 }
 MassFitter::~MassFitter()
 {
+  if(_components.size()>1)
+    delete _pdf;
   for(auto component : _components)
     delete component;
-  _components.clear();
-  delete _pdf;
 }
 /******************************************************************************/
 void MassFitter::init()
@@ -113,6 +110,19 @@ void MassFitter::init()
   cout << "MassFitter instance initialised" << endl;
 }
 /******************************************************************************/
+Component* MassFitter::AddComponent(string name, RooAbsPdf* thepdf, RooRealVar* yield)
+{
+  Component* newpdf = AddComponent(name,thepdf);
+  newpdf->SetYieldVar(yield);
+  _useyieldvars = true;
+  return newpdf;
+}
+Component* MassFitter::AddComponent(string name, RooAbsPdf* thepdf)
+{
+  Component* newpdf = new Component(name, thepdf);
+  _components.push_back(newpdf);
+  return newpdf;
+}
 Component* MassFitter::AddComponent(string name, string type, RooRealVar* yield)
 {
   Component* newpdf = AddComponent(name, type);
@@ -254,11 +264,11 @@ Component* MassFitter::singleGaussian(string name)
 {
   RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
-  RooGaussian*   sigmod    = new RooGaussian(name.c_str(),"Gaussian",*_mass,*mean,*sigma1);
-  Component* pdf = new Component(name,sigmod);
+  RooGaussian*   thepdf    = new RooGaussian(name.c_str(),"Gaussian",*_mass,*mean,*sigma1);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(sigma1);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -271,8 +281,8 @@ Component* MassFitter::doubleGaussian(string name)
   RooFormulaVar* ominf1    = new RooFormulaVar("ominf1","(1-@0)*(@0<1)",RooArgList(*fgaus1));
   RooGaussian*   gauss1    = new RooGaussian("gauss1","First gaussian",*_mass,*mean,*sigma1);
   RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",*_mass,*mean,*sigma2);
-  RooAddPdf*     sigmod    = new RooAddPdf(name.c_str(),"Double Gaussian",RooArgList(*gauss1,*gauss2),RooArgList(*fgaus1,*ominf1));
-  Component* pdf = new Component(name,sigmod);
+  RooAddPdf*     thepdf    = new RooAddPdf(name.c_str(),"Double Gaussian",RooArgList(*gauss1,*gauss2),RooArgList(*fgaus1,*ominf1));
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(sigma1);
   pdf->AddThing(sigma2);
@@ -280,7 +290,7 @@ Component* MassFitter::doubleGaussian(string name)
   pdf->AddThing(ominf1);
   pdf->AddThing(gauss1);
   pdf->AddThing(gauss2);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -298,8 +308,8 @@ Component* MassFitter::tripleGaussian(string name)
   RooGaussian*   gauss2    = new RooGaussian("gauss2","Second gaussian",*_mass,*mean,*sigma2);
   RooGaussian*   gauss3    = new RooGaussian("gauss3","Third gaussian",*_mass,*mean,*sigma3);
   RooAddPdf*     othbit    = new RooAddPdf("othbit","othbit",RooArgList(*gauss2,*gauss3),RooArgList(*fgaus2,*ominf2));
-  RooAddPdf*     sigmod    = new RooAddPdf(name.c_str(),"Triple Gaussian",RooArgList(*gauss1,*othbit),RooArgList(*fgaus1,*ominf1));
-  Component* pdf = new Component(name,sigmod);
+  RooAddPdf*     thepdf    = new RooAddPdf(name.c_str(),"Triple Gaussian",RooArgList(*gauss1,*othbit),RooArgList(*fgaus1,*ominf1));
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(sigma1);
   pdf->AddThing(sigma2);
@@ -312,7 +322,7 @@ Component* MassFitter::tripleGaussian(string name)
   pdf->AddThing(gauss2);
   pdf->AddThing(gauss3);
   pdf->AddThing(othbit);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -322,13 +332,13 @@ Component* MassFitter::CrystalBall(string name)
   RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,0,10);
 	RooRealVar*    n         = new RooRealVar("n","n",1.0);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
-  RooCBShape*    sigmod    = new RooCBShape(name.c_str(),"Crystal Ball",*_mass,*mean,*sigma1,*alpha,*n);
-  Component* pdf = new Component(name,sigmod);
+  RooCBShape*    thepdf    = new RooCBShape(name.c_str(),"Crystal Ball",*_mass,*mean,*sigma1,*alpha,*n);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(alpha);
   pdf->AddThing(n);
   pdf->AddThing(sigma1);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -343,8 +353,8 @@ Component* MassFitter::CrystalBall1Gauss(string name)
   RooFormulaVar* ominf1    = new RooFormulaVar("ominf1","(1-@0)*(@0<1)",RooArgList(*fgaus1));
   RooCBShape*    CBshape   = new RooCBShape("CBshape","Crystal Ball",*_mass,*mean,*sigma1,*alpha,*n);
   RooGaussian*   gauss2    = new RooGaussian("gauss2","First gaussian",*_mass,*mean,*sigma2);
-  RooAddPdf*     sigmod    = new RooAddPdf(name.c_str(),"Crystal Ball + Gaussian",RooArgList(*CBshape,*gauss2),RooArgList(*fgaus1,*ominf1));
-  Component* pdf = new Component(name,sigmod);
+  RooAddPdf*     thepdf    = new RooAddPdf(name.c_str(),"Crystal Ball + Gaussian",RooArgList(*CBshape,*gauss2),RooArgList(*fgaus1,*ominf1));
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(alpha);
   pdf->AddThing(n);
@@ -354,7 +364,7 @@ Component* MassFitter::CrystalBall1Gauss(string name)
   pdf->AddThing(ominf1);
   pdf->AddThing(CBshape);
   pdf->AddThing(gauss2);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -374,8 +384,8 @@ Component* MassFitter::CrystalBall2Gauss(string name)
   RooGaussian*   gauss2    = new RooGaussian("gauss2","First gaussian ",*_mass,*mean,*sigma2);
   RooGaussian*   gauss3    = new RooGaussian("gauss3","Second gaussian",*_mass,*mean,*sigma3);
   RooAddPdf*     othbit    = new RooAddPdf("othbit","othbit",RooArgList(*gauss2,*gauss3),RooArgList(*fgaus2,*ominf2));
-  RooAddPdf*     sigmod    = new RooAddPdf(name.c_str(),"Crystal Ball + 2 Gaussians",RooArgList(*CBshape,*othbit),RooArgList(*fgaus1,*ominf1));
-  Component* pdf = new Component(name,sigmod);
+  RooAddPdf*     thepdf    = new RooAddPdf(name.c_str(),"Crystal Ball + 2 Gaussians",RooArgList(*CBshape,*othbit),RooArgList(*fgaus1,*ominf1));
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(alpha);
   pdf->AddThing(n);
@@ -390,7 +400,7 @@ Component* MassFitter::CrystalBall2Gauss(string name)
   pdf->AddThing(gauss2);
   pdf->AddThing(gauss3);
   pdf->AddThing(othbit);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -398,11 +408,11 @@ Component* MassFitter::BreitWigner(string name)
 {
   RooRealVar*     mean   = new RooRealVar("mass","Mean \\phi mass",1019.461,1018,1021);
   RooRealVar*     width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
-  RooBreitWigner* sigmod = new RooBreitWigner(name.c_str(),"Breit Wigner",*_mass,*mean,*width);
-  Component* pdf = new Component(name,sigmod);
+  RooBreitWigner* thepdf = new RooBreitWigner(name.c_str(),"Breit Wigner",*_mass,*mean,*width);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(width);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -411,12 +421,12 @@ Component* MassFitter::Voigtian(string name)
   RooRealVar*  mean   = new RooRealVar("mean","Mean \\phi mass", 1019.461,1018,1021);
   RooRealVar*  width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
   RooRealVar*  sigma1 = new RooRealVar("sigma1","Detector resolution",1,0,10);
-  RooVoigtian* sigmod = new RooVoigtian(name.c_str(),"Voigtian",*_mass,*mean,*width,*sigma1);
-  Component* pdf = new Component(name,sigmod);
+  RooVoigtian* thepdf = new RooVoigtian(name.c_str(),"Voigtian",*_mass,*mean,*width,*sigma1);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
   pdf->AddThing(width);
   pdf->AddThing(sigma1);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
@@ -426,40 +436,40 @@ Component* MassFitter::ThresholdShape(string name)
   RooRealVar* a      = new RooRealVar("a","A",2,-100,100);
   RooRealVar* b      = new RooRealVar("b","B",-3.5,-100,100);
   RooRealVar* c      = new RooRealVar("c","C",10,-100,100);
-  RooDstD0BG* sigmod = new RooDstD0BG(name.c_str(),"Threshold shape",*_mass,*dm0,*c,*a,*b);
-  Component* pdf = new Component(name,sigmod);
+  RooDstD0BG* thepdf = new RooDstD0BG(name.c_str(),"Threshold shape",*_mass,*dm0,*c,*a,*b);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(dm0);
   pdf->AddThing(a);
   pdf->AddThing(b);
   pdf->AddThing(c);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
 Component* MassFitter::flatfunction(string name)
 {
-  RooUniform* sigmod = new RooUniform(name.c_str(),"Flat background",*_mass);
-  Component* pdf = new Component(name,sigmod);
-  pdf->AddThing(sigmod);
+  RooUniform* thepdf = new RooUniform(name.c_str(),"Flat background",*_mass);
+  Component* pdf = new Component(name,thepdf);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
 Component* MassFitter::exponential(string name)
 {
   RooRealVar*     slope  = new RooRealVar("slope","Exponent",0,-1.0,1.0);
-  RooExponential* sigmod = new RooExponential(name.c_str(),"Exponential background",*_mass,*slope);
-  Component* pdf = new Component(name,sigmod);
+  RooExponential* thepdf = new RooExponential(name.c_str(),"Exponential background",*_mass,*slope);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(slope);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }
 /******************************************************************************/
 Component* MassFitter::straightline(string name)
 {
   RooRealVar*    slope  = new RooRealVar("slope","Gradient",0,-1.0,1.0);
-  RooPolynomial* sigmod = new RooPolynomial(name.c_str(),"Straight line background",*_mass,*slope);
-  Component* pdf = new Component(name,sigmod);
+  RooPolynomial* thepdf = new RooPolynomial(name.c_str(),"Straight line background",*_mass,*slope);
+  Component* pdf = new Component(name,thepdf);
   pdf->AddThing(slope);
-  pdf->AddThing(sigmod);
+  pdf->AddThing(thepdf);
   return pdf;
 }

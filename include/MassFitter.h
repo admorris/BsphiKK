@@ -68,6 +68,8 @@ class MassFitter
     Component*          GetComponent(string);
     Component*          AddComponent(string,string);
     Component*          AddComponent(string,string,RooRealVar*);
+    Component*          AddComponent(string,RooAbsPdf*);
+    Component*          AddComponent(string,RooAbsPdf*,RooRealVar*);
     RooDataSet*         GetData() { return _data; }
     void                SetData(RooDataSet*);
     // Command functions
