@@ -112,7 +112,7 @@ void MassFitter::init()
 /******************************************************************************/
 Component* MassFitter::AddComponent(string name, RooAbsPdf* thepdf, RooRealVar* yield)
 {
-  Component* newpdf = AddComponent(name,thepdf);
+  Component* newpdf = AddComponent(name, thepdf);
   newpdf->SetYieldVar(yield);
   _useyieldvars = true;
   return newpdf;
