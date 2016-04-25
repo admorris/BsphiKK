@@ -1,5 +1,5 @@
-#ifndef __PeakingBackgroundFunctions_h__
-#define __PeakingBackgroundFunctions_h__
+#ifndef __GetDataFunctions_h__
+#define __GetDataFunctions_h__
 // ROOT headers
 #include "TFile.h"
 #include "TTree.h"
@@ -9,14 +9,14 @@
 #include "RooDataSet.h"
 #include "RooDataHist.h"
 #include "RooHistPdf.h"
-RooHistPdf* PeakingBackgroundHist(string name, string filename, string cuts, RooRealVar* massvar)
+RooHistPdf* GetDataHist(string name, string filename, string cuts, RooRealVar* massvar)
 {
   TTree* tree = GetTree(filename,cuts);
   RooDataSet* data = new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));
   RooDataHist* hist = new RooDataHist((name+"hist").c_str(),"",*massvar,*data);
   return new RooHistPdf("shape","",*massvar,*hist);
 }
-RooDataSet* PeakingBackgroundData(string name, string filename, string cuts, RooRealVar* massvar)
+RooDataSet* GetData(string name, string filename, string cuts, RooRealVar* massvar)
 {
   TTree* tree = GetTree(filename,cuts);
   return new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));

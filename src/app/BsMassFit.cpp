@@ -22,7 +22,7 @@
 #include "plotmaker.h"
 #include "GetTree.h"
 #include "itoa.h"
-#include "PeakingBackgroundFunctions.h"
+#include "GetData.h"
 void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts)
 {
   using namespace std;
@@ -79,15 +79,15 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
         if(PBbranch=="HISTPDF")
         {
           PBmass = &mass;
-          PBdata = PeakingBackgroundData(name,PBfilename,cuts,PBmass);
-          PDFtoPlot = PeakingBackgroundHist(name,PBfilename,cuts,PBmass);
+          PBdata = GetData(name,PBfilename,cuts,PBmass);
+          PDFtoPlot = GetDataHist(name,PBfilename,cuts,PBmass);
           comp = phiKKFitter.AddComponent(name,PDFtoPlot,yield);
           comp->SetStyle(kSolid);
         }
         else
         {
           PBmass = new RooRealVar(PBbranch.c_str(),"m(K+K−K+K−) MeV",5000,5600);
-          PBdata = PeakingBackgroundData(name,PBfilename,cuts,PBmass);
+          PBdata = GetData(name,PBfilename,cuts,PBmass);
           PBFitter = new MassFitter(PBmass);
           Component* PBMod = PBFitter->AddComponent(("temp"+name).c_str(),shapename);
           if(shapename == "Crystal Ball + 1 Gaussian")
@@ -106,7 +106,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       else
       {
         PBmass = &mass;
-        PBdata = PeakingBackgroundData(name,PBfilename,cuts,PBmass);
+        PBdata = GetData(name,PBfilename,cuts,PBmass);
         comp = phiKKFitter.AddComponent(name,shapename,yield);
         if(shapename == "Crystal Ball + 1 Gaussian")
         {
