@@ -204,7 +204,7 @@ Component* MassFitter::AddComponent(string name, string type)
 {
   Component* newpdf;
   cout << "Will attempt to construct PDF with name " << type << endl;
-  if(type=="Single Gaussian")
+  if(type=="Single Gaussian" || type == "Gaussian")
   {
     newpdf = singleGaussian(name);
   }
