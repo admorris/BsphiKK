@@ -22,14 +22,19 @@
 #include "plotmaker.h"
 #include "GetTree.h"
 #include "itoa.h"
-// void BsMassFit(string filename)
-RooHistPdf* PeakingBackgroundHist(string name, string filename, RooRealVar* massvar, string cuts)
+RooHistPdf* PeakingBackgroundHist(string name, string filename, string cuts, RooRealVar* massvar)
 {
   TFile* file = new TFile(filename.c_str());
   TTree* tree = GetTree(file,cuts);
   RooDataSet* data = new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));
   RooDataHist* hist = new RooDataHist((name+"hist").c_str(),"",*massvar,*data);
   return new RooHistPdf(name.c_str(),"",*massvar,*hist);
+}
+RooDataSet* PeakingBackgroundData(string name, string filename, string cuts, RooRealVar* massvar)
+{
+  TFile* file = new TFile(filename.c_str());
+  TTree* tree = GetTree(file,cuts);
+  return new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));
 }
 void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy)
 {
@@ -39,64 +44,11 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   using namespace RooFit;
   cout << "Fitting to the branch " << branchtofit << endl;
   RooRealVar mass(branchtofit.c_str(),"m(K+K−K+K−) MeV",5200,5600);
-/*Monte Carlo fit**************************************************************/
-  TFile* MCfile = new TFile(MCfilename.c_str());
-  TTree* MCtree = GetTree(MCfile,cuts);
-  RooDataSet MCdata("REdata","\\phi \\phi \\text{ mass data}",mass,RooFit::Import(*MCtree));
-  RooPlot* MCframe = mass.frame();
-  MCdata.plotOn(MCframe,Binning(50));
-  MassFitter MCFitModel(&mass);
-  Component* MCSigMod = MCFitModel.AddComponent("B_s^0#to#phi#phi",SignalModel);
-  MCFitModel.Fit(&MCdata);
-  MCFitModel.Plot(MCframe);
-  plotmaker* MCplotter;
-  if(drawpulls)
-  {
-    RooHist* pullhist = MCframe->pullHist();
-    RooPlot* pullframe = mass.frame(Title("Pull"));
-    pullframe->addPlotable(pullhist,"B");
-    MCplotter = new plotmaker(MCframe,pullframe);
-  }
-  else
-  {
-    MCplotter = new plotmaker(MCframe);
-  }
-  MCplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
-  MCplotter->Draw()->SaveAs((plotfilename+"_MC.pdf").c_str());
-  // This bit is really horrible, sorry.
-  double resolution = 0, f1, f2, s1, s2, s3;
-  if (SignalModel == "Single Gaussian" || SignalModel == "Crystal Ball")
-  {
-    resolution = MCSigMod->GetValue("sigma1");
-  }
-  if (SignalModel == "Double Gaussian" || SignalModel == "Crystal Ball + 1 Gaussian")
-  {
-    f1 = MCSigMod->GetValue("fgaus1");
-    s1 = MCSigMod->GetValue("sigma1");
-    s2 = MCSigMod->GetValue("sigma2");
-    resolution = sqrt(f1*s1*s1 + (1-f1)*s2*s2);
-  }
-  if (SignalModel == "Triple Gaussian" || SignalModel == "Crystal Ball + 2 Gaussians")
-  {
-    f1 = MCSigMod->GetValue("fgaus1");
-    f2 = MCSigMod->GetValue("fgaus2");
-    s1 = MCSigMod->GetValue("sigma1");
-    s2 = MCSigMod->GetValue("sigma2");
-    s3 = MCSigMod->GetValue("sigma3");
-    resolution = sqrt(f1*s1*s1 + (1-f1)*(f2*s2*s2 + (1-f2)*s3*s3));
-  }
-/*Collision data fit***********************************************************/
-  TFile* REfile = new TFile(REfilename.c_str());
-  TTree* REtree = GetTree(REfile,cuts);
-  RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
-  RooPlot* REframe = mass.frame();
-  REdata.plotOn(REframe,Binning(50));
+/*Set up the fitter************************************************************/
   MassFitter REFitModel(&mass);
-  RooRealVar* Nsig  = new RooRealVar("Nsig","Number of signal events",4500,0,120000);
-  RooRealVar* Nbkg  = new RooRealVar("Nbkg","Number of background events",1830,0,20000);
-//  RooRealVar* NBdphiKst = new RooRealVar("NBdphiKst","Number of B^0 #to #phi K^*",1);
-//  RooRealVar* NLbphiKp  = new RooRealVar("NLbphiKp" ,"Number of #Lambda_b #to #phi K p",1);
-  Component* RESigMod = REFitModel.AddComponent("B_s^0#to#phi#phi",SignalModel,Nsig);
+  RooRealVar* Nsig  = new RooRealVar("N","Number of signal events",4500,0,120000);
+  RooRealVar* Nbkg  = new RooRealVar("N","Number of background events",1830,0,20000);
+  Component* RESigMod = REFitModel.AddComponent("Signal",SignalModel,Nsig);
   Component* REBkgMod = REFitModel.AddComponent("Combinatorial",BackgroundModel,Nbkg);
   unsigned int npkbkgs = backgrounds.size();
   if(npkbkgs == yields.size() && npkbkgs > 0)
@@ -105,32 +57,32 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     {
       string name = "peaking"+itoa(i);
       double N = yields[i];
-      RooRealVar* yield = N>0? new RooRealVar(("N"+name).c_str(),"",N) : new RooRealVar(("N"+name).c_str(),"",0,0,10000);
-      REFitModel.AddComponent(name,PeakingBackgroundHist(name,backgrounds[i],&mass,cuts),yield);
+      RooRealVar* yield = N>0? new RooRealVar("N","",N) : new RooRealVar("N","",0,0,10000);
+      Component* comp = REFitModel.AddComponent(name,"Crystal Ball",yield);
+      RooDataSet* PBdata = PeakingBackgroundData(name,backgrounds[i],cuts,&mass);
+      comp->SetRange("mean",mass.getMin(),mass.getMax());
+      comp->SetValue("mean",PBdata->mean(mass));
+      comp->FixShapeTo(PBdata);
     }
   }
-  string fixme[] =
-  {
-    "sigma1"
-  , "sigma2"
-  , "sigma3"
-  , "fgaus1"
-  , "fgaus2"
-  , "alpha"
-  , "n"
-  };
-  for(unsigned int i = 0; i < sizeof(fixme)/sizeof(string); i++)
-  {
-    try
-    {
-      RESigMod->FixValue(fixme[i],MCSigMod->GetValue(fixme[i]));
-    }
-    catch(exception& e)
-    {
-      cout << e.what() << endl;
-      continue;
-    }
-  }
+/*Monte Carlo fit**************************************************************/
+  TFile* MCfile = new TFile(MCfilename.c_str());
+  TTree* MCtree = GetTree(MCfile,cuts);
+  RooDataSet MCdata("MCdata","\\phi \\phi \\text{ mass data}",mass,RooFit::Import(*MCtree));
+  RESigMod->FixShapeTo(&MCdata);
+/*Collision data fit***********************************************************/
+  TFile* REfile = new TFile(REfilename.c_str());
+  TTree* REtree = GetTree(REfile,cuts);
+  RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
+  RooPlot* REframe = mass.frame();
+  REdata.plotOn(REframe,Binning(50));
+  double resolution = 0, f1, f2, s1, s2, s3;
+  f1 = RESigMod->GetValue("fgaus1");
+  f2 = RESigMod->GetValue("fgaus2");
+  s1 = RESigMod->GetValue("sigma1");
+  s2 = RESigMod->GetValue("sigma2");
+  s3 = RESigMod->GetValue("sigma3");
+  resolution = sqrt(f1*s1*s1 + (1-f1)*(f2*s2*s2 + (1-f2)*s3*s3));
   RESigMod->SetRange("scalef",0.9,1.1);
   RESigMod->FloatPar("scalef");
   RESigMod->SetValue("mean",5366.77);
@@ -159,15 +111,15 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   cout << "Integrating fitted data PDF over μ±2σ" << endl;
   mass.setRange("twosigma",mean-2*resolution,mean+2*resolution);
   RooAbsReal* sigmodint2 = sigmod->createIntegral(mass,NormSet(mass),Range("twosigma"));
-  cout << "S:\t" << sigmodint2->getValV()*Nsig->getValV() << endl;
+  cout << "S:\t" << sigmodint2->getVal()*Nsig->getVal() << endl;
   RooAbsReal* bkgmodint2 = bkgmod->createIntegral(mass,NormSet(mass),Range("twosigma"));
-  cout << "B:\t" << bkgmodint2->getValV()*Nbkg->getValV() << endl;
+  cout << "B:\t" << bkgmodint2->getVal()*Nbkg->getVal() << endl;
   cout << "Integrating fitted data PDF over μ±3σ" << endl;
   mass.setRange("threesigma",mean-3*resolution,mean+3*resolution);
   RooAbsReal* sigmodint3 = sigmod->createIntegral(mass,NormSet(mass),Range("threesigma"));
-  cout << "S:\t" << sigmodint3->getValV()*Nsig->getValV() << endl;
+  cout << "S:\t" << sigmodint3->getVal()*Nsig->getVal() << endl;
   RooAbsReal* bkgmodint3 = bkgmod->createIntegral(mass,NormSet(mass),Range("threesigma"));
-  cout << "B:\t" << bkgmodint3->getValV()*Nbkg->getValV() << endl;
+  cout << "B:\t" << bkgmodint3->getVal()*Nbkg->getVal() << endl;
   if(drawregion!=0)
   {
     cout << "Drawing lines" << endl;
@@ -220,17 +172,17 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   }
 /******************************************************************************/
   cout //<< setprecision(2)
-       << "$\\alpha      $ & $" << MCSigMod->GetValue("alpha")  << " \\pm " << MCSigMod->GetError("alpha")  << "$ \\\\" << endl
-       << "$n            $ & $" << MCSigMod->GetValue("n")      << " \\pm " << MCSigMod->GetError("n")      << "$ \\\\" << endl
-       << "$\\sigma_1    $ & $" << MCSigMod->GetValue("sigma1") << " \\pm " << MCSigMod->GetError("sigma1") << "$ \\\\" << endl
-       << "$\\sigma_2    $ & $" << MCSigMod->GetValue("sigma2") << " \\pm " << MCSigMod->GetError("sigma2") << "$ \\\\" << endl
-       << "$\\sigma_3    $ & $" << MCSigMod->GetValue("sigma3") << " \\pm " << MCSigMod->GetError("sigma3") << "$ \\\\" << endl
-       << "$f_1          $ & $" << MCSigMod->GetValue("fgaus1") << " \\pm " << MCSigMod->GetError("fgaus1") << "$ \\\\" << endl
-       << "$f_2          $ & $" << MCSigMod->GetValue("fgaus2") << " \\pm " << MCSigMod->GetError("fgaus2") << "$ \\\\" << endl
+       << "$\\alpha      $ & $" << RESigMod->GetValue("alpha")  << " \\pm " << RESigMod->GetError("alpha")  << "$ \\\\" << endl
+       << "$n            $ & $" << RESigMod->GetValue("n")      << " \\pm " << RESigMod->GetError("n")      << "$ \\\\" << endl
+       << "$\\sigma_1    $ & $" << RESigMod->GetValue("sigma1") << " \\pm " << RESigMod->GetError("sigma1") << "$ \\\\" << endl
+       << "$\\sigma_2    $ & $" << RESigMod->GetValue("sigma2") << " \\pm " << RESigMod->GetError("sigma2") << "$ \\\\" << endl
+       << "$\\sigma_3    $ & $" << RESigMod->GetValue("sigma3") << " \\pm " << RESigMod->GetError("sigma3") << "$ \\\\" << endl
+       << "$f_1          $ & $" << RESigMod->GetValue("fgaus1") << " \\pm " << RESigMod->GetError("fgaus1") << "$ \\\\" << endl
+       << "$f_2          $ & $" << RESigMod->GetValue("fgaus2") << " \\pm " << RESigMod->GetError("fgaus2") << "$ \\\\" << endl
        << "\\hline" << endl
        << "$\\mu         $ & $" << RESigMod->GetValue("mean")   << " \\pm " << RESigMod->GetError("mean")   << "$ \\\\" << endl
-       << "$N_\\text{sig}$ & $" << RESigMod->GetValue("Nsig")   << " \\pm " << RESigMod->GetError("Nsig")   << "$ \\\\" << endl
-       << "$N_\\text{bkg}$ & $" << REBkgMod->GetValue("Nbkg")   << " \\pm " << REBkgMod->GetError("Nbkg")   << "$ \\\\" << endl;
+       << "$N_\\text{sig}$ & $" << RESigMod->GetValue("N")      << " \\pm " << RESigMod->GetError("N")      << "$ \\\\" << endl
+       << "$N_\\text{bkg}$ & $" << REBkgMod->GetValue("N")      << " \\pm " << REBkgMod->GetError("N")      << "$ \\\\" << endl;
 /******************************************************************************/
   return;
 }
