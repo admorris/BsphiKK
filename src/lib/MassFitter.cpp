@@ -4,6 +4,8 @@
 #include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
+#include "RooArgusBG.h"
+#include "RooBifurGauss.h"
 #include "RooBreitWigner.h"
 #include "RooCBShape.h"
 #include "RooDstD0BG.h"
@@ -34,7 +36,7 @@ Component::~Component()
 {
   for(auto thing : _stuff)
     delete thing;
-  delete _yield;
+//  delete _yield; // Probably don't want to do this
   delete _pdf;
 }
 /******************************************************************************/
@@ -49,7 +51,7 @@ void Component::Rename(RooAbsReal* thing)
   thing->SetName((_name+thing->GetName()).c_str());
 }
 /******************************************************************************/
-RooRealVar* Component::GetYieldVar()
+RooAbsReal* Component::GetYieldVar()
 {
   if(!_hasyieldvar)
   {
@@ -59,7 +61,7 @@ RooRealVar* Component::GetYieldVar()
   return _yield;
 }
 /******************************************************************************/
-void Component::SetYieldVar(RooRealVar* yield)
+void Component::SetYieldVar(RooAbsReal* yield)
 {
   _yield = yield;
   Rename(_yield);
@@ -86,6 +88,13 @@ void Component::SetValue(string name, double value)
   cout << "Setting " << name << " to " << value << endl;
 }
 /******************************************************************************/
+void Component::SetError(string name, double value)
+{
+  RooRealVar* thing = (RooRealVar*)GetThing(name);
+  thing->setError(value);
+  cout << "Setting the error on " << name << " to " << value << endl;
+}
+/******************************************************************************/
 void Component::SetRange(string name, double valmin, double valmax)
 {
   RooRealVar* thing = (RooRealVar*)GetThing(name);
@@ -107,6 +116,41 @@ void Component::FixShapeTo(RooDataSet* data)
   for(auto thing : _stuff)
     if(strcmp(thing->ClassName(),"RooRealVar")==0)
       ((RooRealVar*)thing)->setConstant();
+}
+/******************************************************************************/
+void Component::FixShapeTo(const Component& other)
+{
+  unsigned int othlen = other._stuff.size(), mylen = _stuff.size();
+  if(othlen != mylen)
+  {
+    cout << "Number of stored objects does not match." << endl;
+    return;
+  }
+  for(unsigned int i = 0; i < mylen; i++)
+  {
+    string othname = ((string)other._stuff[i]->GetName()).substr(other._name.length())
+         , myname  = ((string)_stuff[i]->GetName()).substr(_name.length());
+    if(myname != othname)
+    {
+      cout << "Stored object names do not match." << endl;
+      return;
+    }
+    if(strcmp(other._stuff[i]->ClassName(),_stuff[i]->ClassName())!=0)
+    {
+      cout << "Stored object classes do not match." << endl;
+      return;
+    }
+    if(strcmp(other._stuff[i]->ClassName(),"RooRealVar")==0 && strcmp(_stuff[i]->ClassName(),"RooRealVar")==0)
+    {
+      RooRealVar* othvar = (RooRealVar*)other._stuff[i]
+               ,* myvar  = (RooRealVar*)_stuff[i];
+      cout << "Fixing " << myname << endl;
+      myvar->setRange(othvar->getMin(),othvar->getMax());
+      myvar->setVal(othvar->getVal());
+      myvar->setError(othvar->getError());
+      myvar->setConstant();
+    }
+  }
 }
 /******************************************************************************/
 /******************************************************************************/
@@ -136,7 +180,7 @@ void MassFitter::init()
   cout << "MassFitter instance initialised" << endl;
 }
 /******************************************************************************/
-Component* MassFitter::AddComponent(string name, RooAbsPdf* thepdf, RooRealVar* yield)
+Component* MassFitter::AddComponent(string name, RooAbsPdf* thepdf, RooAbsReal* yield)
 {
   Component* newpdf = AddComponent(name, thepdf);
   newpdf->SetYieldVar(yield);
@@ -149,7 +193,7 @@ Component* MassFitter::AddComponent(string name, RooAbsPdf* thepdf)
   _components.push_back(newpdf);
   return newpdf;
 }
-Component* MassFitter::AddComponent(string name, string type, RooRealVar* yield)
+Component* MassFitter::AddComponent(string name, string type, RooAbsReal* yield)
 {
   Component* newpdf = AddComponent(name, type);
   newpdf->SetYieldVar(yield);
@@ -176,7 +220,7 @@ Component* MassFitter::AddComponent(string name, string type)
   {
     newpdf = CrystalBall(name);
   }
-  else if(type=="Crystal Ball + 1 Gaussian")
+  else if(type=="Crystal Ball + 1 Gaussian" || type=="Crystal Ball + Gaussian")
   {
     newpdf = CrystalBall1Gauss(name);
   }
@@ -207,6 +251,10 @@ Component* MassFitter::AddComponent(string name, string type)
   else if(type=="Exponential")
   {
     newpdf = exponential(name);
+  }
+  else if(type=="Argus")
+  {
+    newpdf = Argus(name);
   }
   else
   {
@@ -284,6 +332,19 @@ void MassFitter::Plot(RooPlot* frame)
 SPlot* MassFitter::GetsPlot(RooRealVar* Nsig, RooRealVar* Nbkg)
 {
   return new SPlot("sData","An SPlot", *_data, _pdf, RooArgList(*Nsig,*Nbkg));
+}
+/******************************************************************************/
+Component* MassFitter::BifurcatedGaussian(string name)
+{
+  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
+  RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
+  RooBifurGauss* thepdf    = new RooBifurGauss("shape","Bifurcated Gaussian",*_mass,*mean,*sigma1,*sigma2);
+  Component* pdf = new Component(name,thepdf);
+  pdf->AddThing(mean);
+  pdf->AddThing(sigma1);
+  pdf->AddThing(sigma2);
+  return pdf;
 }
 /******************************************************************************/
 Component* MassFitter::singleGaussian(string name)
@@ -486,7 +547,7 @@ Component* MassFitter::Voigtian(string name)
 /******************************************************************************/
 Component* MassFitter::ThresholdShape(string name)
 {
-  RooRealVar* dm0    = new RooRealVar("dm0","dm0",2*493,0,4000);
+  RooRealVar* dm0    = new RooRealVar("dm0","dm0",2*493.677,0.,4000.);
   RooRealVar* a      = new RooRealVar("a","A",2,-100,100);
   RooRealVar* b      = new RooRealVar("b","B",-3.5,-100,100);
   RooRealVar* c      = new RooRealVar("c","C",10,-100,100);
@@ -496,6 +557,19 @@ Component* MassFitter::ThresholdShape(string name)
   pdf->AddThing(a);
   pdf->AddThing(b);
   pdf->AddThing(c);
+  return pdf;
+}
+/******************************************************************************/
+Component* MassFitter::Argus(string name)
+{
+  RooRealVar* m0 = new RooRealVar("m0","Resonance mass",5251);
+  RooRealVar* c  = new RooRealVar("c","Slope",0,-10,10);
+  RooRealVar* p  = new RooRealVar("p","Power",0.5,0,5);
+  RooArgusBG* thepdf = new RooArgusBG("shape","Argus shape",*_mass,*m0,*c,*p);
+  Component* pdf = new Component(name,thepdf);
+  pdf->AddThing(m0);
+  pdf->AddThing(c);
+  pdf->AddThing(p);
   return pdf;
 }
 /******************************************************************************/

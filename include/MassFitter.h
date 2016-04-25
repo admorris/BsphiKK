@@ -30,18 +30,20 @@ class Component
     void        SetPDF(RooAbsPdf* pdf)         { _pdf = pdf      ; }
     string      GetName()                      { return _name    ; }
     void        SetName(string name)           { _name = name    ; }
-    RooRealVar* GetYieldVar();
-    void        SetYieldVar(RooRealVar*);
+    RooAbsReal* GetYieldVar();
+    void        SetYieldVar(RooAbsReal*);
     int         GetStyle()                     { return _style   ; }
     void        SetStyle(int style)            { _style = style  ; }
     int         GetColour()                    { return _colour  ; }
     void        SetColour(int colour)          { _colour = colour; }
     void        FixShapeTo(RooDataSet* data);
+    void        FixShapeTo(const Component&);
     // Parameter values
     double      GetValue(string name) { return (double)((RooRealVar*)GetThing(name))->getVal(); }
     void        SetValue(string, double);
     void        FixValue(string, double);
     void        FloatPar(string name) { ((RooRealVar*)GetThing(name))->setConstant(false); }
+    void        SetError(string, double);
     double      GetError(string name) { return (double)((RooRealVar*)GetThing(name))->getError(); }
     void        SetRange(string, double, double);
   protected:
@@ -50,7 +52,7 @@ class Component
     // Unique name
     string _name;
     // Pointer to the yield
-    RooRealVar* _yield;
+    RooAbsReal* _yield;
     // Pointer to the PDF
     RooAbsPdf* _pdf;
     // Line style and colour
@@ -69,9 +71,9 @@ class MassFitter
     // Fit model and dataset
     Component*          GetComponent(string);
     Component*          AddComponent(string,string);
-    Component*          AddComponent(string,string,RooRealVar*);
+    Component*          AddComponent(string,string,RooAbsReal*);
     Component*          AddComponent(string,RooAbsPdf*);
-    Component*          AddComponent(string,RooAbsPdf*,RooRealVar*);
+    Component*          AddComponent(string,RooAbsPdf*,RooAbsReal*);
     RooDataSet*         GetData() { return _data; }
     void                SetData(RooDataSet*);
     // Command functions
@@ -91,6 +93,7 @@ class MassFitter
     bool                _hasdata;
     bool                _useyieldvars;
     // Signal models
+    Component*          BifurcatedGaussian(string);
     Component*          singleGaussian(string);
     Component*          doubleGaussian(string);
     Component*          tripleGaussian(string);
@@ -101,6 +104,7 @@ class MassFitter
     Component*          Voigtian(string);
     Component*          ThresholdShape(string);
     // Background models
+    Component*          Argus(string);
     Component*          flatfunction(string);
     Component*          exponential(string);
     Component*          straightline(string);
