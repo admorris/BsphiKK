@@ -23,6 +23,7 @@ class Component
     Component(string,RooAbsPdf*);
     ~Component();
     // Functions for interaction
+    void        Rename(RooAbsReal*);
     RooAbsReal* GetThing(string);
     void        AddThing(RooAbsReal*);
     RooAbsPdf*  GetPDF()                       { return _pdf     ; }

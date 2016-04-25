@@ -27,7 +27,7 @@ Component::Component(string name, RooAbsPdf* pdf) :
 , _colour(kBlack)
 , _hasyieldvar(false)
 {
-
+  Rename(_pdf);
 }
 /******************************************************************************/
 Component::~Component()
@@ -40,8 +40,13 @@ Component::~Component()
 /******************************************************************************/
 void Component::AddThing(RooAbsReal* thing)
 {
-  thing->SetName((_name+thing->GetName()).c_str());
+  Rename(thing);
   _stuff.push_back(thing);
+}
+/******************************************************************************/
+void Component::Rename(RooAbsReal* thing)
+{
+  thing->SetName((_name+thing->GetName()).c_str());
 }
 /******************************************************************************/
 RooRealVar* Component::GetYieldVar()
@@ -57,6 +62,7 @@ RooRealVar* Component::GetYieldVar()
 void Component::SetYieldVar(RooRealVar* yield)
 {
   _yield = yield;
+  Rename(_yield);
   _hasyieldvar = true;
 }
 /******************************************************************************/
