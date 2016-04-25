@@ -24,7 +24,7 @@ class Component
     ~Component();
     // Functions for interaction
     RooAbsReal* GetThing(string);
-    void        AddThing(RooAbsReal* thing) { _stuff.push_back(thing); }
+    void        AddThing(RooAbsReal*);
     RooAbsPdf*  GetPDF()                       { return _pdf     ; }
     void        SetPDF(RooAbsPdf* pdf)         { _pdf = pdf      ; }
     string      GetName()                      { return _name    ; }
@@ -35,8 +35,9 @@ class Component
     void        SetStyle(int style)            { _style = style  ; }
     int         GetColour()                    { return _colour  ; }
     void        SetColour(int colour)          { _colour = colour; }
+    void        FixShapeTo(RooDataSet* data);
     // Parameter values
-    double      GetValue(string name) { return (double)((RooRealVar*)GetThing(name))->getValV(); }
+    double      GetValue(string name) { return (double)((RooRealVar*)GetThing(name))->getVal(); }
     void        SetValue(string, double);
     void        FixValue(string, double);
     void        FloatPar(string name) { ((RooRealVar*)GetThing(name))->setConstant(false); }
