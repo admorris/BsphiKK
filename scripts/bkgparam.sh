@@ -3,7 +3,7 @@ cd ../fits
 fitting -f background.xml --calculateBackgroundCoefficients ## Angular part only
 mv LegendreMoments.root LegendreMoments_Background.root
 ../bin/PlotAngAcc sampled_background.root background.root
-mv background_*pdf ../latex/figs/
+mv -v background_*pdf ../latex/figs/
 cd ../ntuples
 ## Fit for the mass-dependent part
 ../bin/FitBranch -F BsphiKK_data_mvacut.root \
