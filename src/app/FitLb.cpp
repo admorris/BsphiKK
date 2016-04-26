@@ -22,40 +22,69 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   std::cout << "Importing trees" << endl;
   RooDataSet* Cdata = GetData("collision",filename,cuts,x)
            ,* Sdata = GetData("Lb",Sfilename,cuts,x)
-           ,* Bdata = GetData("Bs",Bfilename,cuts,x)
+//           ,* Bdata = GetData("Bs",Bfilename,cuts,x)
            ;
   std::cout << "Done" << endl;
   RooPlot* Cframe = x->frame()
         ,* Sframe = x->frame()
-        ,* Bframe = x->frame()
+//        ,* Bframe = x->frame()
         ;
   MassFitter FitModel(x);
   plotmaker* plotter;
   RooRealVar NLb("N","",100,0,10000);
   RooRealVar NBs("N","",100,0,100000);
+/*Fit to LbphiKp MC************************************************************/
   Component* SigMod = FitModel.AddComponent("Lb",modelname,&NLb);
   SigMod->SetRange("mean",xlow,xup);
   SigMod->SetValue("mean",5619.5);
   SigMod->FixShapeTo(Sdata);
   Sdata->plotOn(Sframe,Binning(nbins));
   SigMod->GetPDF()->plotOn(Sframe);
-  plotter = new plotmaker(Sframe);
+  if(drawpulls)
+  {
+    RooPlot* pullframe = x->frame(Title("Pull"));
+    pullframe->addPlotable(Sframe->pullHist(),"B");
+    plotter = new plotmaker(Sframe,pullframe);
+  }
+  else
+  {
+    plotter = new plotmaker(Sframe);
+  }
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+"S.pdf").c_str());
   SigMod->FloatPar("mean");
+/*Fit to BsphiKK MC************************************************************/
   Component* BkgMod = FitModel.AddComponent("Bs","Exponential",&NBs);
-  BkgMod->FixShapeTo(Bdata);
-  Bdata->plotOn(Bframe,Binning(nbins));
-  BkgMod->GetPDF()->plotOn(Bframe);
-  plotter = new plotmaker(Bframe);
-  plotter->SetTitle(xtitle, unit);
-  plotter->Draw()->SaveAs((plotname+"B.pdf").c_str());
+//  BkgMod->FixShapeTo(Bdata);
+//  Bdata->plotOn(Bframe,Binning(nbins));
+//  BkgMod->GetPDF()->plotOn(Bframe);
+//  if(drawpulls)
+//  {
+//    RooPlot* pullframe = x->frame(Title("Pull"));
+//    pullframe->addPlotable(Bframe->pullHist(),"B");
+//    plotter = new plotmaker(Bframe,pullframe);
+//  }
+//  else
+//  {
+//    plotter = new plotmaker(Bframe);
+//  }
+//  plotter->SetTitle(xtitle, unit);
+//  plotter->Draw()->SaveAs((plotname+"B.pdf").c_str());
+/*Fit to collision data********************************************************/
   FitModel.Fit(Cdata);
-  std::cout << "Plotting" << endl;
   Cdata->plotOn(Cframe,Binning(nbins));
   FitModel.Plot(Cframe);
   Cframe->SetMaximum(Cframe->GetMaximum()*1.3);
-  plotter = new plotmaker(Cframe);
+  if(drawpulls)
+  {
+    RooPlot* pullframe = x->frame(Title("Pull"));
+    pullframe->addPlotable(Cframe->pullHist(),"B");
+    plotter = new plotmaker(Cframe,pullframe);
+  }
+  else
+  {
+    plotter = new plotmaker(Cframe);
+  }
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+".pdf").c_str());
 }
@@ -73,7 +102,7 @@ int main(int argc, char* argv[])
     ("pulls,P" ,                                                                             "plot with pulls"     )
     ("file,F"  , value<string>(&file  )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"           )
     ("Sfile"   , value<string>(&sfile )->default_value("ntuples/LbphiKp_MC_mvaVars.root"  ), "signal MC file"      )
-    ("Bfile"   , value<string>(&bfile )->default_value("ntuples/BsphiKK_MC_mvaVars.root"  ), "background MC file"  )
+//    ("Bfile"   , value<string>(&bfile )->default_value("ntuples/BsphiKK_MC_mvaVars.root"  ), "background MC file"  )
     ("branch,B", value<string>(&branch)->default_value("phiKpM"                           ), "branch to plot"      )
     ("model,M" , value<string>(&model )->default_value("Crystal Ball + 2 Gaussians"       ), "model to use in fit" )
     ("cuts,C"  , value<string>(&cuts  )->default_value("KK_M<1800"                        ), "optional cuts"       )
