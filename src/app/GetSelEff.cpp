@@ -24,35 +24,45 @@ void GetSelEff(string filename, bool save, string DBfilename)
   {
     trigger+="&&(B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600)";
   }
-  string cut[] =
+  Cut_t cuts[] =
   {
-    "Kminus_TRACK_GhostProb<0.3&&Kplus_TRACK_GhostProb<0.3&&Kminus0_TRACK_GhostProb<0.3&&Kplus0_TRACK_GhostProb<0.3"
-  , "Kminus_isMuon==0&&Kplus_isMuon==0&&Kminus0_isMuon==0&&Kplus0_isMuon==0"
-  , "Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
-  , "TMath::Abs(phi_1020_MM-1019.461)<15"
-  , "B_s0_FDCHI2_OWNPV>250"
-  , "B_s0_IPCHI2_OWNPV<20"
-  , "Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025"
-  , "Kplus_ProbNNk*(1-Kplus_ProbNNp)>0.01&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>0.01&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.01&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.01"
+    Cut_t("GhostProb","Kminus_TRACK_GhostProb<0.3&&Kplus_TRACK_GhostProb<0.3&&Kminus0_TRACK_GhostProb<0.3&&Kplus0_TRACK_GhostProb<0.3")
+  , Cut_t("isMuon","Kminus_isMuon==0&&Kplus_isMuon==0&&Kminus0_isMuon==0&&Kplus0_isMuon==0")
+  , Cut_t("PT","Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500")
+  , Cut_t("PhiWindow","TMath::Abs(phi_1020_MM-1019.461)<15")
+  , Cut_t("BsFDchisq","B_s0_FDCHI2_OWNPV>250")
+  , Cut_t("BsIPchisq","B_s0_IPCHI2_OWNPV<20")
+  , Cut_t("KpiPID","Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025")
+  , Cut_t("KpPID","Kplus_ProbNNk*(1-Kplus_ProbNNp)>0.01&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>0.01&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.01&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.01")
   };
-  string totalcut = "B_s0_M>0";
-  const unsigned int n = sizeof(cut)/sizeof(string);
-  double eff[n];
+  string totalcut = "B_s0_M>0";// Something true for all events so the others can be appended with &&
+  const unsigned int n = sizeof(cuts)/sizeof(Cut_t);
+  // Calulate efficiency for each cut
   for(unsigned int i = 0; i < n; i++)
   {
-    totalcut+="&&(" + cut[i] + ")";
-    eff[i] = CutEff(filename,"B_s0_M",trigger,cut[i]);
+    totalcut+="&&(" + cuts[i].cut + ")";
+    cuts[i].eff = CutEff(filename,"B_s0_M",trigger,cuts[i].cut);
   }
   double totaleff = CutEff(filename,"B_s0_M",trigger,totalcut);
+  // Print table
   cout << "Cut & Efficiency \\\\" << endl;
   for(unsigned int i = 0; i < n; i++)
   {
-    cout << cut[i] << " & " << eff[i]*100 << "\\% \\\\" << endl;
+    cout << cuts[i].name << " & " << cuts[i].eff*100 << "\\% \\\\" << endl;
   }
   cout << "total" << " & " << totaleff*100 <<  "\\% \\\\" << endl;
+  // Save to database
   if(save)
   {
     ResultDB rdb(DBfilename);
+    size_t mode_start = filename.find('/')==string::npos ? 0 : filename.find_last_of('/');
+    size_t mode_end   = filename.find(".root");
+    string mode = filename.substr(mode_start+1,mode_end);// filename between final '/' and '.root'
+    for(unsigned int i = 0; i < n; i++)
+    {
+      rdb.Update(mode+cuts[i].name,"percent",cuts[i].eff,0);
+    }
+    rdb.Update(mode+"total","percent",totaleff,0);
   }
 }
 int main(int argc, char* argv[])
