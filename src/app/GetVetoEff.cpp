@@ -1,9 +1,13 @@
+// C++ headers
 #include <string>
 #include <iostream>
 #include <iomanip>
+// BOOST headers
+#include "boost/program_options.hpp"
+// Custom headers
 #include "CutEff.h"
 using namespace std;
-void GetVetoEff(string filename)
+void GetVetoEff(string filename, bool save = false)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
   string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)";
@@ -47,14 +51,29 @@ void GetVetoEff(string filename)
 }
 int main(int argc, char* argv[])
 {
-  if(argc==2)
+  string filename;
+  using namespace boost::program_options;
+  options_description desc("Allowed options",120);
+  desc.add_options()
+    ("help,H",                      "produce help message")
+    ("save"  ,                      "save the results"    )
+    ("input-file", value<string>(), "input file"          )
+  ;
+  variables_map vmap;
+  positional_options_description pd;
+  pd.add("input-file", 1);
+  store(command_line_parser(argc, argv).options(desc).positional(pd).run(), vmap);
+  notify(vmap);
+  if (vmap.count("help"))
   {
-    GetVetoEff((string)argv[1]);
+    std::cout << desc << endl;
+    return 1;
   }
-  else
+  if(filename.empty())
   {
     cout << "Usage: " << argv[0] << " <filename>" << endl;
     return 1;
   }
+  GetVetoEff(filename,vmap.count("save"));
   return 0;
 }
