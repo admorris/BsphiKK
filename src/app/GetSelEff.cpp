@@ -6,8 +6,9 @@
 #include "boost/program_options.hpp"
 // Custom headers
 #include "CutEff.h"
+#include "ResultDB.h"
 using namespace std;
-void GetSelEff(string filename, bool save = false)
+void GetSelEff(string filename, bool save, string DBfilename)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
   string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)";
@@ -48,18 +49,22 @@ void GetSelEff(string filename, bool save = false)
   {
     cout << cut[i] << " & " << eff[i]*100 << "\\% \\\\" << endl;
   }
-  
   cout << "total" << " & " << totaleff*100 <<  "\\% \\\\" << endl;
+  if(save)
+  {
+    ResultDB rdb(DBfilename);
+  }
 }
 int main(int argc, char* argv[])
 {
-  string filename;
+  string filename, dbf;
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
   desc.add_options()
-    ("help,H",                      "produce help message")
-    ("save"  ,                      "save the results"    )
-    ("input-file", value<string>(), "input file"          )
+    ("help,H",                                                        "produce help message")
+    ("save"  ,                                                        "save the results"    )
+    ("output-file", value<string>(&dbf)->default_value("SelEff.csv"), "output file"         )
+    ("input-file" , value<string>(                                 ), "input file"          )
   ;
   variables_map vmap;
   positional_options_description pd;
@@ -76,6 +81,6 @@ int main(int argc, char* argv[])
     cout << "Usage: " << argv[0] << " <filename>" << endl;
     return 1;
   }
-  GetSelEff(filename,vmap.count("save"));
+  GetSelEff(filename,vmap.count("save"),dbf);
   return 0;
 }
