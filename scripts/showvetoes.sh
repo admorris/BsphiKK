@@ -11,6 +11,9 @@ do
     if [ "${branches[$i]}" == "phiKpM" ]
     then
       extra="--overlay ../ntuples/LbphiKp_MC${suffix}.root --scale 0.25"
+    elif [ "${branches[$i]}" == "phiKpiM" ]
+    then
+      extra="--overlay ../ntuples/BdphiKst_MC${suffix}.root --scale 0.25"
     fi
     ../bin/AnnotateBranch \
       -F ../ntuples/BsphiKK_data${suffix}.root \
@@ -19,6 +22,6 @@ do
       -O ../latex/figs/${branches[$i]}$suffix \
       -l ${lower[$i]} \
       -u ${upper[$i]} \
-      -b 50 ${extra}
+      -b 50 ${extra} &
   done
 done
