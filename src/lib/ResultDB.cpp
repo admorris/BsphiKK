@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <regex>
 result::result()
   : name("temp")
   , type("decimal")
@@ -125,6 +126,7 @@ void ResultDB::Export(string filename)
   ofstream output(filename);
   for(auto row : _table)
   {
+    string macroname = regex_replace(row.name,regex("[^A-Za-z]"),"");
     string value, error, both;
     string scval, scerr, scbo;
     int ov = order(row.value);
@@ -136,6 +138,8 @@ void ResultDB::Export(string filename)
     {
       error = "0";
       scerr = "0";
+      nvsf = ov<0? 3 : ov + 1;
+      ndp = 3-ov;
     }
     else
     {
@@ -148,11 +152,11 @@ void ResultDB::Export(string filename)
     scbo = scinot(roundSF(row.value,nvsf),roundSF(row.error,nesf),nvsf-1);
     output << "%-----------------------------------------------" << endl;
     output << "% Ndp: " << ndp << "\t Val s.f. :" << nvsf << "\t Err s.f. :" << nesf << endl;
-    output << "\\def\\" << row.name <<    "val{" << value << "}" << endl;
-    output << "\\def\\" << row.name <<    "err{" << error << "}" << endl;
-    output << "\\def\\" << row.name <<       "{" << both  << "}" << endl;
-    output << "\\def\\" << row.name << "scival{" << scval << "}" << endl;
-    output << "\\def\\" << row.name << "scierr{" << scerr << "}" << endl;
-    output << "\\def\\" << row.name <<    "sci{" << scbo  << "}" << endl;
+    output << "\\def\\" << macroname <<    "val{" << value << "}" << endl;
+    output << "\\def\\" << macroname <<    "err{" << error << "}" << endl;
+    output << "\\def\\" << macroname <<       "{" << both  << "}" << endl;
+    output << "\\def\\" << macroname << "scival{" << scval << "}" << endl;
+    output << "\\def\\" << macroname << "scierr{" << scerr << "}" << endl;
+    output << "\\def\\" << macroname <<    "sci{" << scbo  << "}" << endl;
   }
 }
