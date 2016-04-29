@@ -15,6 +15,5 @@ cd ../ntuples
                  -l 900 \
                  -u 1800 \
                  -b 20 \
-                 -O ../latex/figs/BackgroundFit \
-                 --pulls
+                 -O ../latex/figs/background_mKK_proj
 
