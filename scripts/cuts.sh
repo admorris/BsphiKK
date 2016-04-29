@@ -16,8 +16,8 @@ Ddwindow="24"
 phimass="1019.461"
 phiwindow="15"
 ###############################################################################
-#Same trigger lines as Haofei's analysis
-trigcut="(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)"
+#Removed Hlt2Topo2BodyBBDTDecision_TOS and Hlt2IncPhiDecision_TOS because they bias the mass distribution
+trigcut="(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS)"
 #Tighter cut on track ghost prob than stripping
 ghstcut="Kminus_TRACK_GhostProb<0.3&&Kplus_TRACK_GhostProb<0.3&&Kminus0_TRACK_GhostProb<0.3&&Kplus0_TRACK_GhostProb<0.3"
 #Get rid of K->mu

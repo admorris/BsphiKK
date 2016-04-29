@@ -12,7 +12,7 @@ void GetTrigEff(string filename, bool save, string DBfilename)
 {
   string L0[]={"B_s0_L0HadronDecision_TOS", "B_s0_L0Global_TIS"};
   string Hlt1="B_s0_Hlt1TrackAllL0Decision_TOS";
-  string Hlt2[]={"B_s0_Hlt2Topo2BodyBBDTDecision_TOS", "B_s0_Hlt2Topo3BodyBBDTDecision_TOS", "B_s0_Hlt2Topo4BodyBBDTDecision_TOS", "B_s0_Hlt2IncPhiDecision_TOS"};
+  string Hlt2[]={"B_s0_Hlt2Topo3BodyBBDTDecision_TOS", "B_s0_Hlt2Topo4BodyBBDTDecision_TOS"};
   CutResult_t L0eff[]   = 
   {
     CutEff(filename,"B_s0_M","",L0[0])
@@ -24,13 +24,9 @@ void GetTrigEff(string filename, bool save, string DBfilename)
   {
     CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0])
   , CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[1])
-  , CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[2])
-  , CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[3])
   };
-  CutResult_t totHlt2eff = CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+"||"+Hlt2[3]);
-  CutResult_t toteff = CutEff(filename,"B_s0_M","","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+"||"+Hlt2[3]+")");
-  CutResult_t TNInPh2BPCR = CutEff(filename,"B_s0_M","",  "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("             +Hlt2[1]+"||"+Hlt2[2]+             ")");
-  CutResult_t TotNoIncPCR = CutEff(filename,"B_s0_M","",  "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+             ")");
+  CutResult_t totHlt2eff = CutEff(filename,"B_s0_M",   "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]    );
+  CutResult_t toteff     = CutEff(filename,"B_s0_M","","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+")");
   cout << "Line & Efficiency \\\\" << endl
   << L0[0]   << " & " << L0eff[0].GetEff()*100   << "\\% \\\\" << endl
   << L0[1]   << " & " << L0eff[1].GetEff()*100   << "\\% \\\\" << endl
@@ -38,12 +34,9 @@ void GetTrigEff(string filename, bool save, string DBfilename)
   << Hlt1    << " & " << Hlt1eff.GetEff()*100    << "\\% \\\\" << endl
   << Hlt2[0] << " & " << Hlt2eff[0].GetEff()*100 << "\\% \\\\" << endl
   << Hlt2[1] << " & " << Hlt2eff[1].GetEff()*100 << "\\% \\\\" << endl
-  << Hlt2[2] << " & " << Hlt2eff[2].GetEff()*100 << "\\% \\\\" << endl
-  << Hlt2[3] << " & " << Hlt2eff[3].GetEff()*100 << "\\% \\\\" << endl
   << "Hlt2"  << " & " << totHlt2eff.GetEff()*100 << "\\% \\\\" << endl
   << "Total" << " & " << toteff.GetEff()*100     << "\\% \\\\" << endl
-  << "Total w/o inc phi or 2body" << " & " << TNInPh2BPCR.GetEff()*100     << "\\% \\\\" << endl
-  << "Total w/o inc phi" << " & " << TotNoIncPCR.GetEff()*100     << "\\% \\\\" << endl;
+  ;
   if(save)
   {
     ResultDB rdb(DBfilename);
@@ -54,10 +47,8 @@ void GetTrigEff(string filename, bool save, string DBfilename)
     rdb.Update(mode+"Global","percent",L0eff[1].GetEff(),L0eff[1].GetEffErr());
     rdb.Update(mode+"L0","percent",totL0eff.GetEff(),totL0eff.GetEffErr());
     rdb.Update(mode+"Hlt1","percent",Hlt1eff.GetEff(),Hlt1eff.GetEffErr());
-    rdb.Update(mode+"2Body","percent",Hlt2eff[0].GetEff(),Hlt2eff[0].GetEffErr());
-    rdb.Update(mode+"3Body","percent",Hlt2eff[1].GetEff(),Hlt2eff[1].GetEffErr());
-    rdb.Update(mode+"4Body","percent",Hlt2eff[2].GetEff(),Hlt2eff[2].GetEffErr());
-    rdb.Update(mode+"IncPhi","percent",Hlt2eff[3].GetEff(),Hlt2eff[3].GetEffErr());
+    rdb.Update(mode+"3Body","percent",Hlt2eff[1].GetEff(),Hlt2eff[0].GetEffErr());
+    rdb.Update(mode+"4Body","percent",Hlt2eff[2].GetEff(),Hlt2eff[1].GetEffErr());
     rdb.Update(mode+"Hlt2","percent",totHlt2eff.GetEff(),totHlt2eff.GetEffErr());
     rdb.Update(mode+"total","percent",toteff.GetEff(),toteff.GetEffErr());
     rdb.Save();
