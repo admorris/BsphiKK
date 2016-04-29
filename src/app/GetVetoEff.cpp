@@ -39,9 +39,13 @@ void GetVetoEff(string filename, bool save, string DBfilename)
   for(unsigned int i = 0; i < n; i++)
   {
     totalcut+="&&(" + cuts[i].cut + ")";
-    cuts[i].eff = CutEff(filename,"B_s0_M",trigger,cuts[i].cut);
+    CutResult_t CR = CutEff(filename,"B_s0_M",trigger,cuts[i].cut);
+    cuts[i].eff = CR.GetEff();
+    cuts[i].efferr = CR.GetEffErr();
   }
-  double totaleff = CutEff(filename,"B_s0_M",trigger,totalcut);
+  CutResult_t CR = CutEff(filename,"B_s0_M",trigger,totalcut);
+  double totaleff = CR.GetEff();
+  double totalefferr = CR.GetEffErr();
   // Print table
   cout << "Cut & Efficiency \\\\" << endl;
   for(unsigned int i = 0; i < n; i++)
@@ -53,14 +57,15 @@ void GetVetoEff(string filename, bool save, string DBfilename)
   if(save)
   {
     ResultDB rdb(DBfilename);
-    size_t mode_start = filename.find('/')==string::npos ? 0 : filename.find_last_of('/');
+    size_t mode_start = filename.find('/')==string::npos ? 0 : filename.find_last_of('/') + 1;
     size_t mode_end   = filename.find(".root");
-    string mode = filename.substr(mode_start+1,mode_end);// filename between final '/' and '.root'
+    string mode = filename.substr(mode_start,mode_end-mode_start);// filename between final '/' and '.root'
     for(unsigned int i = 0; i < n; i++)
     {
       rdb.Update(mode+cuts[i].name,"percent",cuts[i].eff,0);
     }
     rdb.Update(mode+"total","percent",totaleff,0);
+    rdb.Save();
   }
 }
 int main(int argc, char* argv[])
@@ -72,7 +77,7 @@ int main(int argc, char* argv[])
     ("help,H",                                                         "produce help message")
     ("save"  ,                                                         "save the results"    )
     ("output-file", value<string>(&dbf)->default_value("VetoEff.csv"), "output file"         )
-    ("input-file" , value<string>(                                  ), "input file"          )
+    ("input-file" , value<string>(&filename                         ), "input file"          )
   ;
   variables_map vmap;
   positional_options_description pd;
