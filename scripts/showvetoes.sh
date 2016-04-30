@@ -1,3 +1,4 @@
+#!/bin/bash
 suffices=(_mvaVars _mvaVars_vetoes)
 branches=(phiKplusM phiKminusM phipipiM pipiM phipiplusM phipiminusM phiKpiM KpiM phipM phipbarM phiKpM KpM)
 titles=("#it{#phi K}^{#plus}" "#it{#phi K}^{#minus}" "#it{#phi}#it{#pi}^{#plus}#it{#pi}^{#minus}" "#it{#pi}^{#plus}#it{#pi}^{#minus}" "#it{#phi}#it{#pi}^{#plus}" "#it{#phi}#it{#pi}^{#minus}" "#it{#phi K #pi}" "#it{K #pi}" "#it{#phi}#it{p}" "#it{#phi}#it{#bar{p}}" "#it{#phi K p}" "#it{K p}")
@@ -22,6 +23,6 @@ do
       -O ../latex/figs/${branches[$i]}$suffix \
       -l ${lower[$i]} \
       -u ${upper[$i]} \
-      -b 50 ${extra} &
+      -b 50 ${extra}
   done
 done
