@@ -16,7 +16,7 @@
 ./trigeff.sh
 ## Preliminary m(KK) plots
 ./sweight.sh | tee log/sweight.log
-./plotMKK.sh
+./plotmKK.sh
 ## Multivariate selection
 ./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
 ./trainmva.sh | tee log/trainmva.log
