@@ -262,10 +262,10 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     {
       newtree->GetEntry(i);
       const RooArgSet* row = REdata.get(i);
-      Nsig_sw =  row->getRealValue("Nsig_sw");
-      L_Nsig  =  row->getRealValue("L_Nsig" );
-      Nbkg_sw =  row->getRealValue("Nbkg_sw");
-      L_Nbkg  =  row->getRealValue("L_Nbkg" );
+      Nsig_sw =  row->getRealValue("SignalN_sw");
+      L_Nsig  =  row->getRealValue("L_SignalN" );
+      Nbkg_sw =  row->getRealValue("CombinatorialN_sw");
+      L_Nbkg  =  row->getRealValue("L_CombinatorialN" );
       if (i % 100)
         bar.print(i);
       b_Nsig_sw->Fill();
