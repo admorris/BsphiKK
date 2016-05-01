@@ -7,6 +7,6 @@ do
 done
 # Unmount EOS after use
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
-../bin/ExportResults ../scripts/tables/SelEffs.csv ../latex/SelEffs.tex
+../bin/ExportResults ../scripts/tables/SelEffs.csv ../latex/results/SelEffs.tex
 ###########################################################
 exit 0
