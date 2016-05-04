@@ -126,15 +126,18 @@ void ResultDB::Export(string filename)
   ofstream output(filename);
   for(auto row : _table)
   {
+    bool perc = row.type == "percent";
+    double factor = perc ? 100 : 1;
+    double val = row.value*factor, err = row.error*factor;
     string macroname = regex_replace(row.name,regex("[^A-Za-z]"),"");
     string value, error, both;
     string scval, scerr, scbo;
-    int ov = order(row.value);
-    int oe = order(row.error);
+    int ov = order(val);
+    int oe = order(err);
     int ndp = oe<0 ? -oe : 0;
     int nesf = oe>0 ? 1 + oe : 1;
     int nvsf = ov>=oe? 1 + ov + ndp : 1;
-    if(abs(row.error)<1e-100) // No error
+    if(abs(err)<1e-100) // No error
     {
       error = "0";
       scerr = "0";
@@ -143,13 +146,13 @@ void ResultDB::Export(string filename)
     }
     else
     {
-      error = tostring(roundSF(row.error,nesf),ndp);
-      scerr = scinot(row.error,ndp+nesf-1);
+      error = tostring(roundSF(err,nesf),ndp);
+      scerr = scinot(err,ndp+nesf-1);
     }
-    value = tostring(roundSF(row.value,nvsf),ndp);
-    scval = scinot(row.value,ndp+nvsf-1);
+    value = tostring(roundSF(val,nvsf),ndp);
+    scval = scinot(val,ndp+nvsf-1);
     both = value + " \\pm " + error;
-    scbo = scinot(roundSF(row.value,nvsf),roundSF(row.error,nesf),nvsf-1);
+    scbo = scinot(roundSF(val,nvsf),roundSF(err,nesf),nvsf-1);
     output << "%-----------------------------------------------" << endl;
     output << "% Ndp: " << ndp << "\t Val s.f. :" << nvsf << "\t Err s.f. :" << nesf << endl;
     output << "\\def\\" << macroname <<    "val{" << value << "}" << endl;
