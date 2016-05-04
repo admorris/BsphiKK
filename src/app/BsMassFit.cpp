@@ -147,8 +147,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     }
   }
 /*Monte Carlo fit**************************************************************/
-  TFile* MCfile = new TFile(MCfilename.c_str());
-  TTree* MCtree = GetTree(MCfile,cuts);
+  TTree* MCtree = GetTree(MCfilename,cuts);
   RooDataSet MCdata("MCdata","\\phi \\phi \\text{ mass data}",mass,RooFit::Import(*MCtree));
   SigMod->FixShapeTo(&MCdata);
   RooPlot* MCframe = mass.frame();
@@ -170,8 +169,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   TCanvas* MCcanv = MCplotter->Draw();
   MCcanv->SaveAs((plotfilename+"_MC.pdf").c_str());
 /*Collision data fit***********************************************************/
-  TFile* REfile = new TFile(REfilename.c_str());
-  TTree* REtree = GetTree(REfile,cuts);
+  TTree* REtree = GetTree(REfilename,cuts);
   RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
   RooPlot* REframe = mass.frame();
   REdata.plotOn(REframe,Binning(50));
@@ -247,9 +245,10 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   {
     using namespace RooStats;
     string trailer = "_Sweighted.root";
-    string outputName = ((string)REfile->GetName()).substr(0, ((string)REfile->GetName()).size() - 5) + trailer;
+    string outputName = REfilename.substr(0, REfilename.size() - 5) + trailer;
     TFile* outputFile = new TFile(outputName.c_str(),"RECREATE");
-    TTree* newtree = REtree->CloneTree(-1);
+    outputFile->cd();
+    TTree* newtree = REtree->CloneTree(0);
     cout << "copied the tree" << endl;
     RooStats::SPlot* sData = phiKKFitter.GetsPlot(Nsig,Nbkg);
     sData->GetName(); // Just to prevent compiler warning
