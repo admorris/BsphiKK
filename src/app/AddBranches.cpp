@@ -15,25 +15,25 @@
 #include "TLegend.h"
 #include "TStyle.h"
 // Custom headers
-#include "progbar.h"
 #include "minOfFour.h"
 #include "safeLog.h"
+#include "GetTree.h"
 using namespace std;
 // Normal track indices go in alphabetical order (minus before plus)
 // Note that LOKI uses a different order (plus before minus)
 // Do not to change this without careful scrutiny of what is happening with creating the new branches
-void addBranches(string filename = "BsphiKK_data")
+void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputfilename = "BsphiKK_data_mvaVars.root")
 {
-  bool isMC = filename.find("MC") != string::npos;
-//  gSystem->Load("libprogbar.so");
-  cout << "Adding branches to " << filename << endl;
+  bool isMC = inputfilename.find("MC") != string::npos;
+  cout << "Reading from " << inputfilename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
-  TFile* infile  = new TFile((filename+"_cuts.root"   ).c_str()),
-       * outfile = new TFile((filename+"_mvaVars.root").c_str(),"RECREATE");
+  TFile* infile  = new TFile(inputfilename.c_str()),
+       * outfile = new TFile(outputfilename.c_str(),"RECREATE");
   // Get the input tree and create an empty output tree
-  TTree* intree  = (TTree*)infile->Get("DecayTree"),
-       * outtree = intree->CloneTree(0);
+  TTree* intree  = GetTree(infile);
+  outfile->cd();
+  TTree* outtree = intree->CloneTree(0);
   // Read the number of events in the input file
   Int_t n = intree->GetEntries();
 /*PDG masses*******************************************************************/
@@ -193,7 +193,6 @@ void addBranches(string filename = "BsphiKK_data")
   outtree->Branch("BCON_cos_theta1",&BCON_cos_theta[0],"BCON_cos_theta1/D");
   outtree->Branch("BCON_cos_theta2",&BCON_cos_theta[1],"BCON_cos_theta2/D");
 /*Event loop*******************************************************************/
-  progbar bar(n);
   for(Int_t i = 0; i < n; i++)
   {
     intree->GetEntry(i);
@@ -372,15 +371,10 @@ void addBranches(string filename = "BsphiKK_data")
         BCON_Phi_angle  = TMath::ACos(BCON_cos_Phi) * (BCON_sin_Phi/TMath::Abs(BCON_sin_Phi));
       }
     }
-/*Fill tree and show progress**************************************************/
     outtree->Fill();
-    if(i%100 == 0)
-    {
-      bar.print(i);
-    }
   }
-  bar.terminate();
 /*Write the output*************************************************************/
+  cout << "Writing to " << outputfilename << endl;
   outtree->Write();
   infile->Close();
   outfile->Close();
@@ -388,16 +382,14 @@ void addBranches(string filename = "BsphiKK_data")
 }
 int main(int argc, char* argv[])
 {
-  if(argc==1)
+  if(argc == 3)
   {
-    cout << "Please provide a filename." << endl;
+    addBranches((string)argv[1],(string)argv[2]);
+    return 0;
+  }
+  else
+  {
+    cerr << "Usage: " << argv[0] << " <input file> <output file>" << endl;
     return 1;
   }
-  else if(argc>2)
-  {
-    cout << "Too many arguments." << endl;
-    return 1;
-  }
-  addBranches((string)argv[1]);
-  return 0;
 }
