@@ -28,7 +28,7 @@ KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
 phiMcut="TMath::Abs(phi_1020_LOKI_Mass-${phimass})<${phiwindow}"
 #phi and rho IP chi2 cuts
 phiIPCHI2cut="phi_1020_IPCHI2_OWNPV>16"
-KKIPCHI2cut="KK_1020_IPCHI2_OWNPV>16"
+KKIPCHI2cut="KK_IPCHI2_OWNPV>16"
 #Bs mass window cut
 BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
 #Bs flight distance chi-squared cut
