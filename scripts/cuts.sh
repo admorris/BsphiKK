@@ -25,7 +25,10 @@ trackisMuoncut="Kminus_isMuon==0&&Kplus_isMuon==0&&Kminus0_isMuon==0&&Kplus0_isM
 #Kaon PT>500 (as in PhiRhoLine) to all Kaons
 KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
 #Phi mass window cut
-phiMcut="TMath::Abs(phi_1020_MM-${phimass})<${phiwindow}"
+phiMcut="TMath::Abs(phi_1020_LOKI_Mass-${phimass})<${phiwindow}"
+#phi and rho IP chi2 cuts
+phiIPCHI2cut="phi_1020_IPCHI2_OWNPV>16"
+KKIPCHI2cut="KK_1020_IPCHI2_OWNPV>16"
 #Bs mass window cut
 BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
 #Bs flight distance chi-squared cut
@@ -38,7 +41,6 @@ KpiPIDcut="Kminus_ProbNNk*(1-Kminus_ProbNNpi)>${KpiPIDval}&&Kplus_ProbNNk*(1-Kpl
 KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>${KpPIDval}&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>${KpPIDval}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${KpPIDval}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${KpPIDval}"
 #Monte Carlo background category
 BKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
-cuts=(${trigcut} ${ghstcut} ${trackisMuoncut} ${phiMcut} ${KpTcut} ${BsFDCHI2cut} ${BsIPCHI2cut} ${KpiPIDcut} ${KpPIDcut})
 ###############################################################################
 phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
