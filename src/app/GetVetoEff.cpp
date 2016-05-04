@@ -7,23 +7,12 @@
 // Custom headers
 #include "CutEff.h"
 #include "ResultDB.h"
+#include "GetTree.h"
 using namespace std;
 void GetVetoEff(string filename, bool save, string DBfilename)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
   string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)";
-//  if(filename.find("MC")!=string::npos)
-//  {
-//    trigger+="&&(B_s0_BKGCAT<20||B_s0_BKGCAT==50)";
-//  }
-//  if(filename.find("data")!=string::npos)
-//  {
-//    trigger+="&&(B_s0_LOKI_Mass>5600)";
-//  }
-//  else
-//  {
-//    trigger+="&&(B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600)";
-//  }
   Cut_t cuts[] =
   {
     Cut_t("BdPhiKstar","TMath::Abs(phiKpiM-5279.58)>60||(TMath::Abs(phiKpiM-5279.58)<50&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi)")
@@ -35,15 +24,17 @@ void GetVetoEff(string filename, bool save, string DBfilename)
   };
   string totalcut = "B_s0_M>0";// Something true for all events so the others can be appended with &&
   const unsigned int n = sizeof(cuts)/sizeof(Cut_t);
+  TTree* intree = GetTree(filename);
+  new TCanvas;
   // Calulate efficiency for each cut
   for(unsigned int i = 0; i < n; i++)
   {
     totalcut+="&&(" + cuts[i].cut + ")";
-    CutResult_t CR = CutEff(filename,"B_s0_M",trigger,cuts[i].cut);
+    CutResult_t CR = CutEff(intree,"B_s0_M",trigger,cuts[i].cut);
     cuts[i].eff = CR.GetEff();
     cuts[i].efferr = CR.GetEffErr();
   }
-  CutResult_t CR = CutEff(filename,"B_s0_M",trigger,totalcut);
+  CutResult_t CR = CutEff(intree,"B_s0_M",trigger,totalcut);
   double totaleff = CR.GetEff();
   double totalefferr = CR.GetEffErr();
   // Print table

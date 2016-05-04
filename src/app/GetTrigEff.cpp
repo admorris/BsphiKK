@@ -7,26 +7,29 @@
 // Custom headers
 #include "CutEff.h"
 #include "ResultDB.h"
+#include "GetTree.h"
 using namespace std;
 void GetTrigEff(string filename, bool save, string DBfilename)
 {
   string L0[]={"B_s0_L0HadronDecision_TOS", "B_s0_L0Global_TIS"};
   string Hlt1="B_s0_Hlt1TrackAllL0Decision_TOS";
   string Hlt2[]={"B_s0_Hlt2Topo3BodyBBDTDecision_TOS", "B_s0_Hlt2Topo4BodyBBDTDecision_TOS"};
+  TTree* intree = GetTree(filename);
+  new TCanvas;
   CutResult_t L0eff[]   = 
   {
-    CutEff(filename,"B_s0_M","",L0[0])
-  , CutEff(filename,"B_s0_M","",L0[1])
+    CutEff(intree,"B_s0_M","",L0[0])
+  , CutEff(intree,"B_s0_M","",L0[1])
   };
-  CutResult_t totL0eff  = CutEff(filename,"B_s0_M","",L0[0]+"||"+L0[1]);
-  CutResult_t Hlt1eff   = CutEff(filename,"B_s0_M",L0[0]+"||"+L0[1],Hlt1);
+  CutResult_t totL0eff  = CutEff(intree,"B_s0_M","",L0[0]+"||"+L0[1]);
+  CutResult_t Hlt1eff   = CutEff(intree,"B_s0_M",L0[0]+"||"+L0[1],Hlt1);
   CutResult_t Hlt2eff[] = 
   {
-    CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0])
-  , CutEff(filename,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[1])
+    CutEff(intree,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0])
+  , CutEff(intree,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[1])
   };
-  CutResult_t totHlt2eff = CutEff(filename,"B_s0_M",   "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]    );
-  CutResult_t toteff     = CutEff(filename,"B_s0_M","","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+")");
+  CutResult_t totHlt2eff = CutEff(intree,"B_s0_M",   "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]    );
+  CutResult_t toteff     = CutEff(intree,"B_s0_M","","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+")");
   cout << "Line & Efficiency \\\\" << endl
   << L0[0]   << " & " << L0eff[0].GetEff()*100   << "\\% \\\\" << endl
   << L0[1]   << " & " << L0eff[1].GetEff()*100   << "\\% \\\\" << endl

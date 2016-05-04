@@ -7,6 +7,7 @@
 // Custom headers
 #include "CutEff.h"
 #include "ResultDB.h"
+#include "GetTree.h"
 using namespace std;
 void GetSelEff(string filename, bool save, string DBfilename)
 {
@@ -34,18 +35,21 @@ void GetSelEff(string filename, bool save, string DBfilename)
   , Cut_t("BsIPchisq","B_s0_IPCHI2_OWNPV<20")
   , Cut_t("KpiPID","Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025")
   , Cut_t("KpPID","Kplus_ProbNNk*(1-Kplus_ProbNNp)>0.01&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>0.01&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.01&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.01")
+  , Cut_t("DauIPchi2","phi_1020_IPCHI2_OWNPV>16&&KK_IPCHI2_OWNPV>16")
   };
   string totalcut = "B_s0_M>0";// Something true for all events so the others can be appended with &&
   const unsigned int n = sizeof(cuts)/sizeof(Cut_t);
+  TTree* intree = GetTree(filename);
+  new TCanvas;
   // Calulate efficiency for each cut
   for(unsigned int i = 0; i < n; i++)
   {
     totalcut+="&&(" + cuts[i].cut + ")";
-    CutResult_t CR = CutEff(filename,"B_s0_M",trigger,cuts[i].cut);
+    CutResult_t CR = CutEff(intree,"B_s0_M",trigger,cuts[i].cut);
     cuts[i].eff = CR.GetEff();
     cuts[i].efferr = CR.GetEffErr();
   }
-  CutResult_t CR = CutEff(filename,"B_s0_M",trigger,totalcut);
+  CutResult_t CR = CutEff(intree,"B_s0_M",trigger,totalcut);
   double totaleff = CR.GetEff();
   double totalefferr = CR.GetEffErr();
   // Print table
