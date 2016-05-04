@@ -1,30 +1,20 @@
 #include "TTree.h"
 #include "TFile.h"
 #include "CutEff.h"
+#include "GetTree.h"
 #include <string>
 #include <iostream>
 Cut_t::Cut_t(string n, string c) : name(n), cut(c) {}
 CutResult_t::CutResult_t(double b, double a) : before(b), after(a) {}
 CutResult_t CutEff(string filename, string branchtoplot, string beforecut, string cut)
 {
-  return CutEff(filename, branchtoplot, beforecut, cut,"");
-}
-CutResult_t CutEff(string filename, string branchtoplot, string beforecut, string cut, string plotname)
-{
 /*Input************************************************************************/
   // Open the input file
-  TFile* infile  = new TFile(filename.c_str());
-  // Get the input tree
-  TTree* intree;
-  if((TTree*)infile->Get("DecayTree") == (TTree*)0x0)
-  {
-    cout << "Tree DecayTree not found. Trying DecayTreeTuple/DecayTree" << endl;
-    intree  = (TTree*)infile->Get("DecayTreeTuple/DecayTree");
-  }
-  else
-  {
-    intree  = (TTree*)infile->Get("DecayTree");
-  }
+  TTree* intree = GetTree(filename);
+  return CutEff(intree, branchtoplot, beforecut, cut);
+}
+CutResult_t CutEff(TTree* intree, string branchtoplot, string beforecut, string cut)
+{
   // Draw "before" and fetch the yield
   Long64_t nocutyield = intree->Draw(branchtoplot.c_str(),beforecut.c_str());
   string aftercut;

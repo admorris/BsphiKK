@@ -2,6 +2,8 @@
 #define __CUTEFF_H__
 #include <string>
 #include <cmath>
+#include "TTree.h"
+#include "TCanvas.h" // might want it to run faster
 using namespace std;
 struct Cut_t
 {
@@ -24,5 +26,5 @@ struct CutResult_t
   }
 };
 CutResult_t CutEff(string, string, string, string);
-CutResult_t CutEff(string, string, string, string, string);
+CutResult_t CutEff(TTree*, string, string, string);
 #endif

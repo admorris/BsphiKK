@@ -6,13 +6,8 @@
 /******************************************************************************/
 int main(int argc, char* argv[])
 {
-  if(argc==6)
+  if(argc==5)
   {
-    CutEff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4], (string)argv[5]);
-  }
-  else if(argc==5)
-  {
-    cout << (string)argv[1] << " " << (string)argv[2] << " " << (string)argv[3] << " " << (string)argv[4] << endl;
     CutEff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4]);
   }
   else if(argc>6)
@@ -22,7 +17,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-    cout << "Usage: " << argv[0] << " <filename> <branch to plot> <initial cut> <final cut> [<plot name>]" << endl;
+    cout << "Usage: " << argv[0] << " <filename> <branch to plot> <initial cut> <final cut>" << endl;
     return 1;
   }
   return 0;
