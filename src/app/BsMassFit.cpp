@@ -18,7 +18,6 @@
 #include "RooStats/SPlot.h"
 // Custom headers
 #include "MassFitter.h"
-#include "progbar.h"
 #include "plotmaker.h"
 #include "GetTree.h"
 #include "itoa.h"
@@ -252,27 +251,20 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     cout << "copied the tree" << endl;
     RooStats::SPlot* sData = phiKKFitter.GetsPlot(Nsig,Nbkg);
     sData->GetName(); // Just to prevent compiler warning
-    float Nsig_sw; TBranch*  b_Nsig_sw = newtree->Branch("Nsig_sw", &Nsig_sw,"Nsig_sw/F");
-    float Nbkg_sw; TBranch*  b_Nbkg_sw = newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
-    float L_Nsig;  TBranch*  b_L_Nsig  = newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
-    float L_Nbkg;  TBranch*  b_L_Nbkg  = newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
-    progbar bar(REdata.numEntries());
+    float Nsig_sw; newtree->Branch("Nsig_sw", &Nsig_sw,"Nsig_sw/F");
+    float Nbkg_sw; newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
+    float L_Nsig;  newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
+    float L_Nbkg;  newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
     for (int i = 0; i < REdata.numEntries(); ++i)
     {
-      newtree->GetEntry(i);
+      REtree->GetEntry(i);
       const RooArgSet* row = REdata.get(i);
       Nsig_sw =  row->getRealValue("SignalN_sw");
       L_Nsig  =  row->getRealValue("L_SignalN" );
       Nbkg_sw =  row->getRealValue("CombinatorialN_sw");
       L_Nbkg  =  row->getRealValue("L_CombinatorialN" );
-      if (i % 100)
-        bar.print(i);
-      b_Nsig_sw->Fill();
-      b_L_Nsig->Fill();
-      b_Nbkg_sw->Fill();
-      b_L_Nbkg->Fill();
+      newtree->Fill();
     }
-    bar.terminate();
     newtree->Write();
     outputFile->Close();
   }
