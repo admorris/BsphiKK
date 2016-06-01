@@ -9,7 +9,6 @@
 // GSL headers
 #include <gsl/gsl_sf_legendre.h>
 // Custom headers
-#include "progbar.h"
 #include "GetTree.h"
 using namespace std;
 void addBranches(string ntuplefile = "BsphiKK_data", string accfile = "LegendreMoments_Acceptance.root")
@@ -63,7 +62,6 @@ void addBranches(string ntuplefile = "BsphiKK_data", string accfile = "LegendreM
   double mKK_min = acc.mKK_min;
   double mKK_max = acc.mKK_max;
 /*Event loop*******************************************************************/
-  progbar bar(nevt);
   for(Int_t ievt = 0; ievt < nevt; ievt++)
   {
     intree->GetEntry(ievt);
@@ -86,14 +84,9 @@ void addBranches(string ntuplefile = "BsphiKK_data", string accfile = "LegendreM
               else          Y_jk = sqrt(2) * gsl_sf_legendre_sphPlm (j, k, ctheta_1) * cos(k*phi);
               acc_g += c[l][i][k][j]*(Q_l * P_i * Y_jk);
             }
-/*Fill tree and show progress**************************************************/
+/*Fill tree *******************************************************************/
     outtree->Fill();
-    if(ievt%(nevt/100) == 0)
-    {
-      bar.print(ievt);
-    }
   }
-  bar.terminate();
 /*Write the output*************************************************************/
   outfile->cd();
   outtree->Write();
