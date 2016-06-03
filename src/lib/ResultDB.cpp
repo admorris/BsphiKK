@@ -138,12 +138,14 @@ void ResultDB::Export(string filename)
     int e3sf, nvsf, nesf;
     if(abs(err)<1e-100)
     {
-      if(ov<=0) val = roundSF(val,3); // Round to 3sf if no error and order <= 0
-      else val = roundDP(val,0); // If no error and order >1, round to nearest int
+      if(ov<2) val = roundSF(val,3); // Round to 3sf if no error and order < 2
+      else val = roundDP(val,0); // If no error and order > 2, round to nearest int
       err = 0;
       error = "0";
       scerr = "0";
-      ndp = 3-ov;
+      ndp = 2-ov;
+      nvsf = 3;
+      nesf = 0;
     }
     else
     {
@@ -165,16 +167,17 @@ void ResultDB::Export(string filename)
       {
         err = roundSF(err,1);
         nesf = 2;
+        oe++;
       }
       ndp = oe<0 ? nesf-1-oe : 0;
       nvsf = nesf + ov - oe;
       val = roundSF(val,nvsf);
       err = roundSF(err,nesf);
       error = tostring(err,ndp);
-      scerr = scinot(err,ndp+nesf-1);
+      scerr = scinot(err,nesf-1);
     }
     value = tostring(val,ndp);
-    scval = scinot(val,ndp+nvsf-1);
+    scval = scinot(val,nvsf-1);
     both = value + " \\pm " + error;
     scbo = scinot(val,err,nvsf-1);
     if(perc)
