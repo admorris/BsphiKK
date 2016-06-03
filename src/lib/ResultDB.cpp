@@ -134,7 +134,7 @@ void ResultDB::Export(string filename)
     string scval, scerr, scbo;
     int ov = order(val);
     int oe = order(err);
-    int ndp = oe<0 ? -oe : 0;
+    int ndp;
     int e3sf, nvsf, nesf;
     if(abs(err)<1e-100)
     {
@@ -166,6 +166,7 @@ void ResultDB::Export(string filename)
         err = roundSF(err,1);
         nesf = 2;
       }
+      ndp = oe<0 ? nesf-1-oe : 0;
       nvsf = nesf + ov - oe;
       val = roundSF(val,nvsf);
       err = roundSF(err,nesf);
