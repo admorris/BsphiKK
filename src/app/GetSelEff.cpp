@@ -17,7 +17,7 @@ void GetSelEff(string filename, bool save, string DBfilename)
   {
     trigger+="&&(B_s0_BKGCAT<20||B_s0_BKGCAT==50)";
   }
-  if(filename.find("data")!=string::npos)
+  if(filename.find("data")!=string::npos) // Sideband cut
   {
     trigger+="&&(B_s0_LOKI_Mass>5600)";
   }
@@ -68,9 +68,9 @@ void GetSelEff(string filename, bool save, string DBfilename)
     string mode = filename.substr(mode_start,mode_end-mode_start);// filename between final '/' and '.root'
     for(unsigned int i = 0; i < n; i++)
     {
-      rdb.Update(mode+cuts[i].name,"percent",cuts[i].eff,0);
+      rdb.Update("SelEff"+mode+cuts[i].name,"percent",cuts[i].eff,0);
     }
-    rdb.Update(mode+"total","percent",totaleff,0);
+    rdb.Update("SelEff"+mode+"total","percent",totaleff,0);
     rdb.Save();
   }
 }

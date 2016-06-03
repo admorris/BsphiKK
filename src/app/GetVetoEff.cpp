@@ -53,9 +53,9 @@ void GetVetoEff(string filename, bool save, string DBfilename)
     string mode = filename.substr(mode_start,mode_end-mode_start);// filename between final '/' and '.root'
     for(unsigned int i = 0; i < n; i++)
     {
-      rdb.Update(mode+cuts[i].name,"percent",cuts[i].eff,0);
+      rdb.Update("VetoEff"+mode+cuts[i].name,"percent",cuts[i].eff,0);
     }
-    rdb.Update(mode+"total","percent",totaleff,0);
+    rdb.Update("VetoEff"+mode+"total","percent",totaleff,0);
     rdb.Save();
   }
 }
