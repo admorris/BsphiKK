@@ -50,8 +50,8 @@ void GetTrigEff(string filename, bool save, string DBfilename)
     rdb.Update(mode+"Global","percent",L0eff[1].GetEff(),L0eff[1].GetEffErr());
     rdb.Update(mode+"Lzero","percent",totL0eff.GetEff(),totL0eff.GetEffErr());
     rdb.Update(mode+"HltOne","percent",Hlt1eff.GetEff(),Hlt1eff.GetEffErr());
-    rdb.Update(mode+"ThreeBody","percent",Hlt2eff[1].GetEff(),Hlt2eff[0].GetEffErr());
-    rdb.Update(mode+"FourBody","percent",Hlt2eff[2].GetEff(),Hlt2eff[1].GetEffErr());
+    rdb.Update(mode+"ThreeBody","percent",Hlt2eff[0].GetEff(),Hlt2eff[0].GetEffErr());
+    rdb.Update(mode+"FourBody","percent",Hlt2eff[1].GetEff(),Hlt2eff[1].GetEffErr());
     rdb.Update(mode+"HltTwo","percent",totHlt2eff.GetEff(),totHlt2eff.GetEffErr());
     rdb.Update(mode+"total","percent",toteff.GetEff(),toteff.GetEffErr());
     rdb.Save();
