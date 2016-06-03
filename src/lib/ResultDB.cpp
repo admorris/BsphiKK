@@ -135,31 +135,63 @@ void ResultDB::Export(string filename)
     int ov = order(val);
     int oe = order(err);
     int ndp = oe<0 ? -oe : 0;
-    int nesf = oe>0 ? 1 + oe : 1;
-    int nvsf = ov>=oe? 1 + ov + ndp : 1;
-    if(abs(err)<1e-100) // No error
+    int e3sf, nvsf, nesf;
+    if(abs(err)<1e-100)
     {
+      if(ov<=0) val = roundSF(val,3); // Round to 3sf if no error and order <= 0
+      else val = roundDP(val,0); // If no error and order >1, round to nearest int
+      err = 0;
       error = "0";
       scerr = "0";
-      nvsf = ov<0? 3 : ov + 1;
       ndp = 3-ov;
     }
     else
     {
-      error = tostring(roundSF(err,nesf),ndp);
+      e3sf = floor(err*pow(10,3-ceil(log10(abs(err))))); // first 3 significant digits of the error as a 3-digit int
+      nesf = 1;
+      if(e3sf < 100)
+      {
+        cerr << "Something is wrong with the rounding" << endl;
+      }
+      else if(e3sf < 355)
+      {
+        nesf = 2;
+      }
+      else if(e3sf < 950)
+      {
+        nesf = 1;
+      }
+      else
+      {
+        err = roundSF(err,1);
+        nesf = 2;
+      }
+      nvsf = nesf + ov - oe;
+      val = roundSF(val,nvsf);
+      err = roundSF(err,nesf);
+      error = tostring(err,ndp);
       scerr = scinot(err,ndp+nesf-1);
     }
-    value = tostring(roundSF(val,nvsf),ndp);
+    value = tostring(val,ndp);
     scval = scinot(val,ndp+nvsf-1);
     both = value + " \\pm " + error;
-    scbo = scinot(roundSF(val,nvsf),roundSF(err,nesf),nvsf-1);
+    scbo = scinot(val,err,nvsf-1);
+    if(perc)
+    {
+      value += "\\,\\%";
+      error += "\\,\\%";
+      both = "("+both+")\\,\\%";
+      scval += "\\,\\%";
+      scerr += "\\,\\%";
+      scbo = "("+scbo+")\\,\\%";
+    }
     output << "%-----------------------------------------------" << endl;
     output << "% Ndp: " << ndp << "\t Val s.f. :" << nvsf << "\t Err s.f. :" << nesf << endl;
-    output << "\\def\\" << macroname <<    "val{" << value << "}" << endl;
-    output << "\\def\\" << macroname <<    "err{" << error << "}" << endl;
-    output << "\\def\\" << macroname <<       "{" << both  << "}" << endl;
-    output << "\\def\\" << macroname << "scival{" << scval << "}" << endl;
-    output << "\\def\\" << macroname << "scierr{" << scerr << "}" << endl;
-    output << "\\def\\" << macroname <<    "sci{" << scbo  << "}" << endl;
+    output << "\\def\\" << macroname <<    "val{\\ensuremath{" << value << "}}" << endl;
+    output << "\\def\\" << macroname <<    "err{\\ensuremath{" << error << "}}" << endl;
+    output << "\\def\\" << macroname <<       "{\\ensuremath{" << both  << "}}" << endl;
+    output << "\\def\\" << macroname << "scival{\\ensuremath{" << scval << "}}" << endl;
+    output << "\\def\\" << macroname << "scierr{\\ensuremath{" << scerr << "}}" << endl;
+    output << "\\def\\" << macroname <<    "sci{\\ensuremath{" << scbo  << "}}" << endl;
   }
 }

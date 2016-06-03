@@ -14,6 +14,7 @@ int order(double value)
 double roundSF(double value, int nsf)
 {
   if(abs(value)<1e-100) return 0;
+  if(nsf<1) return 0;
   double factor = pow(10.0, nsf - ceil(log10(abs(value))));
   return round(value * factor) / factor;
 }
