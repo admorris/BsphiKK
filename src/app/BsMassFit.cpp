@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <algorithm>
 // BOOST headers
 #include "boost/program_options.hpp"
 // ROOT headers
@@ -22,7 +23,8 @@
 #include "GetTree.h"
 #include "itoa.h"
 #include "GetData.h"
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts)
+#include "ResultDB.h"
+void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename)
 {
   using namespace std;
 /*Input************************************************************************/
@@ -278,19 +280,51 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     newtree->Write();
     outputFile->Close();
   }
+  struct parameter
+  {
+    parameter(string _n, string _l, Component* _c) : name(_n), latex(_l)
+    {
+      value = _c->GetValue(_n);
+      error = _c->GetError(_n);
+    }
+    string name;
+    string latex;
+    double value;
+    double error;
+    string safename()
+    {
+      string temp = name;
+      replace(temp.begin(),temp.end(),'1','A'); // Numbers can't go in LaTeX macros
+      replace(temp.begin(),temp.end(),'2','B');
+      replace(temp.begin(),temp.end(),'3','C');
+      return temp;
+    }
+  };
+  vector<parameter> pars;
+  pars.push_back(parameter("alpha" ,"\\alpha"      ,SigMod));
+  pars.push_back(parameter("n"     ,"n"            ,SigMod));
+  pars.push_back(parameter("sigma1","\\sigma_1"    ,SigMod));
+  pars.push_back(parameter("sigma2","\\sigma_2"    ,SigMod));
+  pars.push_back(parameter("sigma3","\\sigma_3"    ,SigMod));
+  pars.push_back(parameter("fgaus1","f_1"          ,SigMod));
+  pars.push_back(parameter("fgaus2","f_2"          ,SigMod));
+  pars.push_back(parameter("mean"  ,"\\mu"         ,SigMod));
+  pars.push_back(parameter("N"     ,"N_\\text{sig}",SigMod));
+  pars.push_back(parameter("N"     ,"N_\\text{bkg}",BkgMod));
 /******************************************************************************/
-  cout //<< setprecision(2)
-       << "$\\alpha      $ & $" << SigMod->GetValue("alpha")  << " \\pm " << SigMod->GetError("alpha")  << "$ \\\\" << endl
-       << "$n            $ & $" << SigMod->GetValue("n")      << " \\pm " << SigMod->GetError("n")      << "$ \\\\" << endl
-       << "$\\sigma_1    $ & $" << SigMod->GetValue("sigma1") << " \\pm " << SigMod->GetError("sigma1") << "$ \\\\" << endl
-       << "$\\sigma_2    $ & $" << SigMod->GetValue("sigma2") << " \\pm " << SigMod->GetError("sigma2") << "$ \\\\" << endl
-       << "$\\sigma_3    $ & $" << SigMod->GetValue("sigma3") << " \\pm " << SigMod->GetError("sigma3") << "$ \\\\" << endl
-       << "$f_1          $ & $" << SigMod->GetValue("fgaus1") << " \\pm " << SigMod->GetError("fgaus1") << "$ \\\\" << endl
-       << "$f_2          $ & $" << SigMod->GetValue("fgaus2") << " \\pm " << SigMod->GetError("fgaus2") << "$ \\\\" << endl
-       << "\\hline" << endl
-       << "$\\mu         $ & $" << SigMod->GetValue("mean")   << " \\pm " << SigMod->GetError("mean")   << "$ \\\\" << endl
-       << "$N_\\text{sig}$ & $" << SigMod->GetValue("N")      << " \\pm " << SigMod->GetError("N")      << "$ \\\\" << endl
-       << "$N_\\text{bkg}$ & $" << BkgMod->GetValue("N")      << " \\pm " << BkgMod->GetError("N")      << "$ \\\\" << endl;
+  if(resname!="")
+  {
+    ResultDB table(DBfilename);
+    for(auto par : pars)
+    {
+      table.Update(resname+par.safename(),"",par.value,par.error);
+    }
+    table.Save();
+  }
+  for(auto par : pars)
+  {
+    cout << "$" << par.latex << "$ & $" << par.value << " \\pm " << par.error << "$ \\\\" << endl;
+  }
 /******************************************************************************/
   return;
 }
@@ -299,7 +333,7 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname, cuts;
+  string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf;
   vector<string> pkbkgs, yopts;
   vector<double> yields;
   int drawregion;
@@ -319,6 +353,8 @@ int main(int argc, char* argv[])
     ("yields"      , value<vector<double>>(&yields)->multitoken(                              ), "background yields"              )
     ("yopts"       , value<vector<string>>(&yopts)->multitoken(                               ), "BG yield options: abs, rel, flo")
     ("logy"        ,                                                                             "log y scale"                    )
+    ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"               ), "output file"                    )
+    ("save-results", value<string>(&resname   )->default_value(""                             ), "name to save results as"        )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -328,6 +364,6 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts);
+  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf);
   return 0;
 }
