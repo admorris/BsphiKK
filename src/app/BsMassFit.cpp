@@ -35,7 +35,14 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   RooRealVar* Nsig  = new RooRealVar("N","Number of signal events",4500,0,120000);
   RooRealVar* Nbkg  = new RooRealVar("N","Number of background events",1830,0,20000);
   Component* SigMod = phiKKFitter.AddComponent("Signal",SignalModel,Nsig);
+  SigMod->SetColour(4);
+  SigMod->SetStyle(9);
   Component* BkgMod = phiKKFitter.AddComponent("Combinatorial",BackgroundModel,Nbkg);
+  BkgMod->SetColour(6);
+  BkgMod->SetStyle(3);
+  int builtinstyles = 3;
+  int linecolors[builtinstyles] = {8, 28, 1};
+  int linestyles[builtinstyles] = {1, 2, 5};
   unsigned int npkbkgs = backgrounds.size();
   vector<Component*> PkgMod;
 /*Peaking background fit*******************************************************/
@@ -71,6 +78,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       }
       string shapename = "Crystal Ball + 1 Gaussian";
       Component* comp;
+      
       if(cbnpos != string::npos)
       {
         // Different branch name and range
@@ -143,6 +151,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
         delete PBFitter;
       }
       delete PBplotter;
+      comp->SetColour(linecolors[i]);
+      comp->SetStyle(linestyles[i]);
     }
   }
 /*Monte Carlo fit**************************************************************/
