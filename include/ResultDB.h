@@ -63,6 +63,7 @@ class ResultDB
     bool Save(string filename = "");
     bool Close();
     void Update(string, string, double, double);
+    result Get(string resultname){ return *find(resultname); }
     void Export(string);
   private:
     result* find(string);
