@@ -9,13 +9,13 @@ for mode in ${modes[@]}; do
 done
 wait
 for mode in ${modes[@]}; do
-  for label in 1050 1800 1050-1800; do
+  for label in 1050 1800 1050_1800; do
     line=$(grep "accepted" log_${mode}_${label}.tmp)
     value=$(echo $line | sed -r 's/^accepted:\s*?(.*?)\s*\+\/-.*$/\1/')
     error=$(echo $line | sed -r 's/^accepted:.*?\+\/-\s*(.*?)\s*$/\1/')
     ../bin/UpdateResults ${table} ${mode}_$(echo ${label} | sed 's/1050/A/' | sed 's/1800/B/') yield ${value} ${error}
   done
-rm log_${mode}*.tmp
+rm -v log_${mode}*.tmp
 done
 cd ../fits/
 ../bin/BsMassFit \
