@@ -13,5 +13,6 @@ int main(int argc, char* argv[])
   double value = numerator.value/denominator.value;
   double error = sqrt(pow(numerator.error/numerator.value,2)+pow(denominator.error/denominator.value,2));
   rdb.Update(argv[4],"percent",value,error);
+  rdb.Save();
   return 0;
 }
