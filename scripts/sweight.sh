@@ -15,35 +15,48 @@ for mode in ${modes[@]}; do
     error=$(echo $line | sed -r 's/^accepted:.*?\+\/-\s*(.*?)\s*$/\1/')
     ../bin/UpdateResults ${table} ${mode}_$(echo ${label} | sed 's/1050/A/' | sed 's/1800/B/') yield ${value} ${error}
   done
-rm -v log_${mode}*.tmp
+  rm -v log_${mode}*.tmp
 done
+../bin/ExportResults ${table} ../latex/results/mKKcutResults.tex
 cd ../fits/
+table=../scripts/tables/MassFits.csv
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_mvaVars_vetoes.root \
     -R ../ntuples/BsphiKK_data_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit \
     -N B_s0_LOKI_Mass \
     --sweight \
-    --pulls
+    --pulls \
+    --save-results initialmassfit \
+    --output-file ${table}
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_1050_mvaVars_vetoes.root \
     -R ../ntuples/BsphiKK_data_1050_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit1050 \
     -N B_s0_LOKI_Mass \
     --sweight \
-    --pulls
+    --pulls \
+    --save-results initialmassfitA \
+    --output-file ${table}
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_1800_mvaVars_vetoes.root \
     -R ../ntuples/BsphiKK_data_1800_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit1800 \
     -N B_s0_LOKI_Mass \
     --sweight \
-    --pulls
+    --pulls \
+    --save-results initialmassfitB \
+    --output-file ${table}
 ../bin/BsMassFit \
     -M ../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root \
     -R ../ntuples/BsphiKK_data_1050_1800_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit10501800 \
     -N B_s0_LOKI_Mass \
     --sweight \
-    --pulls
+    --pulls \
+    --save-results initialmassfitAB \
+    --output-file ${table}
+    
+../bin/ExportResults ${table} ../latex/results/MassFits.tex
+exit 0
 
