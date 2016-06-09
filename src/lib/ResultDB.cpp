@@ -60,7 +60,7 @@ bool ResultDB::Open(string filename)
   {
     result row;
     input >> row.name >> row.type >> row.value >> row.error;
-    if(row.name != "temp")
+    if(row.name != "temp") // why is this here?
       _table.push_back(row);
   } while(!input.eof());
   input.close();
@@ -102,6 +102,8 @@ bool ResultDB::Close()
 }
 void ResultDB::Update(string name, string type, double value, double error)
 {
+  if(name == "") name = "temp";
+  if(type == "") type = "default";
   find(name)->set(type, value, error);
   _ismod = true;
 }
@@ -191,11 +193,11 @@ void ResultDB::Export(string filename)
     }
     output << "%-----------------------------------------------" << endl;
     output << "% Ndp: " << ndp << "\t Val s.f. :" << nvsf << "\t Err s.f. :" << nesf << endl;
-    output << "\\def\\" << macroname <<    "val{\\ensuremath{" << value << "}}" << endl;
-    output << "\\def\\" << macroname <<    "err{\\ensuremath{" << error << "}}" << endl;
-    output << "\\def\\" << macroname <<       "{\\ensuremath{" << both  << "}}" << endl;
-    output << "\\def\\" << macroname << "scival{\\ensuremath{" << scval << "}}" << endl;
-    output << "\\def\\" << macroname << "scierr{\\ensuremath{" << scerr << "}}" << endl;
-    output << "\\def\\" << macroname <<    "sci{\\ensuremath{" << scbo  << "}}" << endl;
+    output << "\\def\\" << macroname <<    "val{\\ensuremath{" << value << "}\\xspace}" << endl;
+    output << "\\def\\" << macroname <<    "err{\\ensuremath{" << error << "}\\xspace}" << endl;
+    output << "\\def\\" << macroname <<       "{\\ensuremath{" << both  << "}\\xspace}" << endl;
+    output << "\\def\\" << macroname << "scival{\\ensuremath{" << scval << "}\\xspace}" << endl;
+    output << "\\def\\" << macroname << "scierr{\\ensuremath{" << scerr << "}\\xspace}" << endl;
+    output << "\\def\\" << macroname <<    "sci{\\ensuremath{" << scbo  << "}\\xspace}" << endl;
   }
 }
