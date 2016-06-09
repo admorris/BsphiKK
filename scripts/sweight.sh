@@ -13,7 +13,7 @@ for mode in ${modes[@]}; do
     line=$(grep "accepted" log_${mode}_${label}.tmp)
     value=$(echo $line | sed -r 's/^accepted:\s*?(.*?)\s*\+\/-.*$/\1/')
     error=$(echo $line | sed -r 's/^accepted:.*?\+\/-\s*(.*?)\s*$/\1/')
-    ../bin/UpdateResults ${table} ${mode}_$(echo ${label} | sed 's/1050/A/' | sed 's/1800/B/') yield ${value} ${error}
+    ../bin/UpdateResults ${table} ${mode}_mKKcut$(echo ${label} | sed 's/1050/A/' | sed 's/1800/B/')_evts yield ${value} ${error}
   done
   rm -v log_${mode}*.tmp
 done
