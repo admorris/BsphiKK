@@ -267,7 +267,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     float Nbkg_sw; newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
     float L_Nsig;  newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
     float L_Nbkg;  newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
-    for (int i = 0; i < REdata.numEntries(); ++i)
+    for (int i = 0; i < REdata.numEntries(); i++)
     {
       REtree->GetEntry(i);
       const RooArgSet* row = REdata.get(i);
@@ -276,13 +276,16 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       Nbkg_sw =  row->getRealValue("CombinatorialN_sw");
       L_Nbkg  =  row->getRealValue("L_CombinatorialN" );
       newtree->Fill();
+      if((i%1000)==0) cout << i << "/" << REdata.numEntries() << endl;
     }
+    cout << "Done" << endl;
     newtree->Write();
     outputFile->Close();
+    cout << "Written to " << outputFile->GetName() << endl;
   }
   struct parameter
   {
-    parameter(string _n, string _l, Component* _c) : name(_n), latex(_l)
+    parameter(string _n, string _l, Component* _c) : name(_c->GetName()+_n), latex(_l)
     {
       value = _c->GetValue(_n);
       error = _c->GetError(_n);
@@ -317,9 +320,10 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     ResultDB table(DBfilename);
     for(auto par : pars)
     {
-      table.Update(resname+par.safename(),"",par.value,par.error);
+      table.Update(resname+par.safename(),"N",par.value,par.error);
     }
     table.Save();
+    cout << "Results saved to " << DBfilename << endl;
   }
   for(auto par : pars)
   {
