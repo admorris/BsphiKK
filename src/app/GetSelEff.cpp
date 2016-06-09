@@ -45,11 +45,11 @@ void GetSelEff(string filename, bool save, string DBfilename)
   for(unsigned int i = 0; i < n; i++)
   {
     totalcut+="&&(" + cuts[i].cut + ")";
-    CutResult_t CR = CutEff(intree,"B_s0_M",trigger,cuts[i].cut);
+    CutResult_t CR = CutEff(intree,trigger,cuts[i].cut);
     cuts[i].eff = CR.GetEff();
     cuts[i].efferr = CR.GetEffErr();
   }
-  CutResult_t CR = CutEff(intree,"B_s0_M",trigger,totalcut);
+  CutResult_t CR = CutEff(intree,trigger,totalcut);
   double totaleff = CR.GetEff();
   double totalefferr = CR.GetEffErr();
   // Print table

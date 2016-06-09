@@ -18,18 +18,18 @@ void GetTrigEff(string filename, bool save, string DBfilename)
   new TCanvas;
   CutResult_t L0eff[]   = 
   {
-    CutEff(intree,"B_s0_M","",L0[0])
-  , CutEff(intree,"B_s0_M","",L0[1])
+    CutEff(intree,"",L0[0])
+  , CutEff(intree,"",L0[1])
   };
-  CutResult_t totL0eff  = CutEff(intree,"B_s0_M","",L0[0]+"||"+L0[1]);
-  CutResult_t Hlt1eff   = CutEff(intree,"B_s0_M",L0[0]+"||"+L0[1],Hlt1);
+  CutResult_t totL0eff  = CutEff(intree,"",L0[0]+"||"+L0[1]);
+  CutResult_t Hlt1eff   = CutEff(intree,L0[0]+"||"+L0[1],Hlt1);
   CutResult_t Hlt2eff[] = 
   {
-    CutEff(intree,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0])
-  , CutEff(intree,"B_s0_M","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[1])
+    CutEff(intree,"("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[0])
+  , CutEff(intree,"("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",Hlt2[1])
   };
-  CutResult_t totHlt2eff = CutEff(intree,"B_s0_M",   "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]    );
-  CutResult_t toteff     = CutEff(intree,"B_s0_M","","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+")");
+  CutResult_t totHlt2eff = CutEff(intree,   "("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]    );
+  CutResult_t toteff     = CutEff(intree,"","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+")");
   cout << "Line & Efficiency \\\\" << endl
   << L0[0]   << " & " << L0eff[0].GetEff()*100   << "\\% \\\\" << endl
   << L0[1]   << " & " << L0eff[1].GetEff()*100   << "\\% \\\\" << endl

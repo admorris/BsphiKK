@@ -111,7 +111,7 @@ void PlotTrigEff(string filename)
       mKK[ibin] = (binhi+binlo)/2.0;
       mKKE[ibin] = binw/2.0;
       string mKKcut = "(KK_M>"+tostr(binlo)+"&&KK_M<"+tostr(binhi)+")";
-      CutResult_t Result = CutEff(intree,"B_s0_M",mKKcut+Plot.befcut,Plot.aftcut);
+      CutResult_t Result = CutEff(intree,mKKcut+Plot.befcut,Plot.aftcut);
       Plot.y [ibin] = Result.GetEff()   *100.0;
       Plot.ye[ibin] = Result.GetEffErr()*100.0;
     }

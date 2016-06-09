@@ -25,6 +25,6 @@ struct CutResult_t
     return sqrt((1-eff)*eff/before);
   }
 };
-CutResult_t CutEff(string, string, string, string);
-CutResult_t CutEff(TTree*, string, string, string);
+CutResult_t CutEff(string, string, string);
+CutResult_t CutEff(TTree*, string, string);
 #endif

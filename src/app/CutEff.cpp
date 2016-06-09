@@ -6,18 +6,13 @@
 /******************************************************************************/
 int main(int argc, char* argv[])
 {
-  if(argc==5)
+  if(argc==4)
   {
-    CutEff((string)argv[1], (string)argv[2], (string)argv[3], (string)argv[4]);
-  }
-  else if(argc>6)
-  {
-    cout << "Too many arguments." << endl;
-    return 1;
+    CutEff((string)argv[1], (string)argv[2], (string)argv[3]);
   }
   else
   {
-    cout << "Usage: " << argv[0] << " <filename> <branch to plot> <initial cut> <final cut>" << endl;
+    cout << "Usage: " << argv[0] << " <filename> <initial cut> <final cut>" << endl;
     return 1;
   }
   return 0;
