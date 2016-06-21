@@ -76,7 +76,7 @@ FourDHist::FourDHist(const FourDHist& orig)
   for(unsigned int ibin = 0; ibin < nbins; ibin++)
     bincontent[ibin] = orig.bincontent[ibin];
 }
-void SetAxisNames(string newwname
+void FourDHist::SetAxisNames(string newwname
                  ,string newxname
                  ,string newyname
                  ,string newzname)
@@ -105,8 +105,7 @@ int FourDHist::FindBin(double w, double x, double y, double z)
 }
 int FourDHist::GetBin(unsigned int binw, unsigned int binx, unsigned int biny, unsigned int binz)
 {
-  bin = binw + waxis.GetNbins() * (binx + xaxis.GetNbins() * (biny + yaxis.GetNbins() * (binz)));
-  return bin;
+  return binw + waxis.GetNbins() * (binx + xaxis.GetNbins() * (biny + yaxis.GetNbins() * (binz)));
 }
 void FourDHist::Fill(double w, double x, double y, double z)
 {
@@ -167,6 +166,7 @@ TH1D* FourDHist::Project(unsigned int axisindex)
   }
   return hist;
 }
+/*
 void AngularAcceptance(string filename)
 {
   bool imposesymmetry = true;
@@ -208,7 +208,7 @@ void AngularAcceptance(string filename)
     }
   }
 }
-
+*/
 int main(int argc, char* argv[])
 {
   AngularAcceptance(argv[1]);
