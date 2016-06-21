@@ -1,32 +1,113 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
+#include "TAxis.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TH1D.h"
+#include "TH2D.h"
 
 using namespace std;
 
 class FourDHist
 {
   public:
-    FourDHist(int,double,double,
-              int,double,double,
-              int,double,double,
-              int,double,double); // nbins, low, high ×4
-    Fill(double,double,double,double);
+    FourDHist();
+    FourDHist(unsigned int,double,double,
+              unsigned int,double,double,
+              unsigned int,double,double,
+              unsigned int,double,double); // nbins, low, high ×4
+    FourDHist(const FourDHist&);
+    ~FourDHist();
+    Fill(double,double,double,double); // w,x,y,z
+    TH1D* Project(unsigned short); // dim
+    TH2D* Project(unsigned short,unsigned short); // dim1,dim2
+  protected:
+    unsigned int nbins;
+    double* bincontent;
+    TAxis waxis;
+    TAxis xaxis;
+    TAxis yaxis;
+    TAxis zaxis;
+    vector<TAxis*> axes;
   private:
-    int nbinsw,
-    double wlo,whi,xlo,xhi,ylo,yhi,zlo,zhi; // Limits
-    double**** bincontent;
+    int FindBin(double,double,double,double); // w,x,y,z
+    int GetBin(unsigned int,unsigned int,unsigned int,unsigned int); // binw,binx,biny,binz
 };
-FourDHist::FourDHist( int,double,double,
-                      int,double,double,
-                      int,double,double,
-                      int,double,double)
-: 
+FourDHist::FourDHist();
+FourDHist::FourDHist(unsigned int nbinsw, double wlo, double whi,
+                     unsigned int nbinsx, double xlo, double xhi,
+                     unsigned int nbinsy, double ylo, double yhi,
+                     unsigned int nbinsz, double zlo, double zhi)
 {
-
+  if(!nbinsw || !nbinsx || !nbinsy || !nbinsz)
+    throw std::out_of_range ("Can't have 0 bins in any dimension");
+  nbins = nbinsw*nbinsx*nbinsy*nbinsz;
+  for(unsigned int ibin = 0; ibin < nbins; ibin++)
+    bincontent[ibin] = 0;
+  bincontent = new double[nbins];
+  waxis = TAxis(nbinsw, wlo, whi);
+  xaxis = TAxis(nbinsx, xlo, xhi);
+  yaxis = TAxis(nbinsy, ylo, yhi);
+  zaxis = TAxis(nbinsz, zlo, zhi);
+  axes.push_back(&waxis);
+  axes.push_back(&xaxis);
+  axes.push_back(&yaxis);
+  axes.push_back(&zaxis);
+}
+FourDHist::~FourDHist()
+{
+  delete[] bincontent;
+}
+FourDHist::FourDHist(const FourDHist& orig)
+{
+  waxis = orig.waxis;
+  xaxis = orig.xaxis;
+  yaxis = orig.yaxis;
+  zaxis = orig.zaxis;
+  nbins = orig.nbins;
+  bincontent = new double[nbins];
+  for(unsigned int ibin = 0; ibin < nbins; ibin++)
+    bincontent[ibin] = orig.bincontent[ibin];
+}
+int FourDHist::FindBin(double w, double x, double y, double z)
+{
+  unsigned int bin;
+  int binw, binx, biny, binz;
+  binw = waxis.FindBin(w)-1;
+  binx = xaxis.FindBin(x)-1;
+  biny = yaxis.FindBin(y)-1;
+  binz = zaxis.FindBin(z)-1;
+  if(binw == -1 || binw >= waxis.GetNbins()
+  || binx == -1 || binx >= xaxis.GetNbins()
+  || biny == -1 || biny >= yaxis.GetNbins()
+  || binz == -1 || binz >= zaxis.GetNbins())
+  {
+    return -1;
+  }
+  return GetBin(binw,binx,biny,binz);
+}
+int FourDHist::GetBin(unsigned int binw, unsigned int binx, unsigned int biny, unsigned int binz)
+{
+  bin = binw + waxis.GetNbins() * (binx + xaxis.GetNbins() * (biny + yaxis.GetNbins() * (binz)));
+  return bin;
+}
+void FourDHist::Fill(double w, double x, double y, double z)
+{
+  int bin = FindBin(w,x,y,z);
+  if(bin >=0 && bin < nbins)
+    bincontent[bin]++;
+}
+TH1D* FourDHist::Project(unsigned int axisindex)
+{
+  TAxis* axis;
+  if(axisindex<4)
+    axis = axes[axisindex];
+  else
+    return new TH1D();
+  
 }
 void AngularAcceptance(string filename)
 {
