@@ -113,7 +113,7 @@ void FourDHist::Fill(double w, double x, double y, double z)
   if(bin >=0 && bin < nbins)
     bincontent[bin]++;
 }
-TH1D* FourDHist::Project(unsigned int axisindex)
+TH1D* FourDHist::Project(short unsigned int axisindex)
 {
   if(axisindex>=4)
     return new TH1D();
