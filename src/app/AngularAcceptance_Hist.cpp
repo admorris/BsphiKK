@@ -165,6 +165,7 @@ TH1D* FourDHist::Project(unsigned int axisindex)
     }
     hist->SetBinContent(*ibin,bintegral);
   }
+  return hist;
 }
 void AngularAcceptance(string filename)
 {
