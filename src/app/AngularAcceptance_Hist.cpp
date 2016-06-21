@@ -14,14 +14,15 @@ using namespace std;
 class FourDHist
 {
   public:
-    FourDHist();
+//    FourDHist();
     FourDHist(unsigned int,double,double,
               unsigned int,double,double,
               unsigned int,double,double,
               unsigned int,double,double); // nbins, low, high ×4
     FourDHist(const FourDHist&);
     ~FourDHist();
-    Fill(double,double,double,double); // w,x,y,z
+    void SetAxisNames(string,string,string,string);
+    void Fill(double,double,double,double); // w,x,y,z
     TH1D* Project(unsigned short); // dim
     TH2D* Project(unsigned short,unsigned short); // dim1,dim2
   protected:
@@ -31,12 +32,15 @@ class FourDHist
     TAxis xaxis;
     TAxis yaxis;
     TAxis zaxis;
-    vector<TAxis*> axes;
+    string wname;
+    string xname;
+    string yname;
+    string zname;
   private:
     int FindBin(double,double,double,double); // w,x,y,z
     int GetBin(unsigned int,unsigned int,unsigned int,unsigned int); // binw,binx,biny,binz
 };
-FourDHist::FourDHist();
+//FourDHist::FourDHist();
 FourDHist::FourDHist(unsigned int nbinsw, double wlo, double whi,
                      unsigned int nbinsx, double xlo, double xhi,
                      unsigned int nbinsy, double ylo, double yhi,
@@ -52,10 +56,10 @@ FourDHist::FourDHist(unsigned int nbinsw, double wlo, double whi,
   xaxis = TAxis(nbinsx, xlo, xhi);
   yaxis = TAxis(nbinsy, ylo, yhi);
   zaxis = TAxis(nbinsz, zlo, zhi);
-  axes.push_back(&waxis);
-  axes.push_back(&xaxis);
-  axes.push_back(&yaxis);
-  axes.push_back(&zaxis);
+  wname = "w";
+  xname = "x";
+  yname = "y";
+  zname = "z";
 }
 FourDHist::~FourDHist()
 {
@@ -71,6 +75,16 @@ FourDHist::FourDHist(const FourDHist& orig)
   bincontent = new double[nbins];
   for(unsigned int ibin = 0; ibin < nbins; ibin++)
     bincontent[ibin] = orig.bincontent[ibin];
+}
+void SetAxisNames(string newwname
+                 ,string newxname
+                 ,string newyname
+                 ,string newzname)
+{
+  wname = newwname;
+  xname = newxname;
+  yname = newyname;
+  zname = newzname;
 }
 int FourDHist::FindBin(double w, double x, double y, double z)
 {
@@ -102,12 +116,55 @@ void FourDHist::Fill(double w, double x, double y, double z)
 }
 TH1D* FourDHist::Project(unsigned int axisindex)
 {
-  TAxis* axis;
-  if(axisindex<4)
-    axis = axes[axisindex];
-  else
+  if(axisindex>=4)
     return new TH1D();
-  
+  TH1D* hist; // return quantity
+  // Dish out the axes
+  TAxis* axes[] =
+  {
+     &waxis
+    ,&xaxis
+    ,&yaxis
+    ,&zaxis
+  };
+  TAxis* projaxis
+      ,* intaxis1
+      ,* intaxis2
+      ,* intaxis3;
+  projaxis = axes[axisindex];
+  intaxis1 = axes[(axisindex+1)%4];
+  intaxis2 = axes[(axisindex+2)%4];
+  intaxis3 = axes[(axisindex+3)%4];
+  // Now we know the projection axis, we can make the hist object
+  hist = new TH1D(("projection").c_str(),"",projaxis->GetNbins(),projaxis->GetXmin(),projaxis->GetXmax());
+  // Assign the bin indices
+  unsigned int binw,binx,biny,binz;
+  unsigned int* bins[] =
+  {
+     &binw
+    ,&binx
+    ,&biny
+    ,&binz
+  }
+  unsigned int* ibin = bins[axisindex];
+  unsigned int* i1 = bins[(axisindex+1)%4];
+  unsigned int* i2 = bins[(axisindex+2)%4];
+  unsigned int* i3 = bins[(axisindex+3)%4];
+  for(*ibin = 0; *ibin < projaxis->GetNbins(); *ibin++)
+  {
+    double bintegral = 0; // bin integral :)
+    for(*i1 = 0; *i1 < intaxis1->GetNbins(); *i1++)
+    {
+      for(*i2 = 0; *i2 < intaxis2->GetNbins(); *i2++)
+      {
+        for(*i3 = 0; *i3 < intaxis3->GetNbins(); *i3++)
+        {
+          bintegral += bincontent[GetBin(binw,binx,biny,binz)];
+        }
+      }
+    }
+    hist->SetBinContent(*ibin,bintegral);
+  }
 }
 void AngularAcceptance(string filename)
 {
