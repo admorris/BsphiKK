@@ -46,7 +46,7 @@ void AngularAcceptance(string selfile, string genfile)
     ,5,493*2,1800
   );
   selhist.SetAxisNames("phi","ctheta_1","ctheta_2","mKK");
-  selhist.SetAxisTitles("#Phi","#cos(#theta_{1})","#cos(#theta_{2})","m(K^{#plus}K^{#minus})");
+  selhist.SetAxisTitles("#Phi","cos(#theta_{1})","cos(#theta_{2})","m(K^{#plus}K^{#minus})");
   Fill(x, tree, selhist, sym);
   tree = GetTree(genfile);
   FourDHist genhist = selhist;
