@@ -30,6 +30,8 @@ using std::endl;
 #include "TGLabel.h"
 #include "TGNumberEntry.h"
 
+#include "../include/ResultDB.h"
+
 // this macro plots the signal and background efficiencies
 // as a function of the MVA cut.
 
@@ -259,19 +261,19 @@ StatDialogMVAEffs::StatDialogMVAEffs(const TGWindow* p, Float_t ns, Float_t nb) 
 
    TGLabel *sigLab = new TGLabel(fMain,"Signal events");
    fMain->AddFrame(sigLab, new TGLayoutHints(kLHintsLeft | kLHintsTop,5,5,5,5));
-
-   fSigInput = new TGNumberEntry(fMain, (Double_t) fNSignal,5,-1,(TGNumberFormat::EStyle) 5);
-   fSigInput->SetLimits(TGNumberFormat::kNELLimitMin,0,1);
-   fMain->AddFrame(fSigInput, new TGLayoutHints(kLHintsLeft | kLHintsTop,5,5,5,5));
-   fSigInput->Resize(100,24);
-
+   
+//   fSigInput = new TGNumberEntry(fMain, (Double_t) fNSignal,5,-1,(TGNumberFormat::EStyle) 5);
+//   fSigInput->SetLimits(TGNumberFormat::kNELLimitMin,0,1);
+//   fMain->AddFrame(fSigInput, new TGLayoutHints(kLHintsLeft | kLHintsTop,5,5,5,5));
+//   fSigInput->Resize(100,24);
+   
    TGLabel *bkgLab = new TGLabel(fMain, "Background events");
    fMain->AddFrame(bkgLab, new TGLayoutHints(kLHintsLeft | kLHintsTop,5,5,5,5));
 
-   fBkgInput = new TGNumberEntry(fMain, (Double_t) fNBackground,5,-1,(TGNumberFormat::EStyle) 5);
-   fBkgInput->SetLimits(TGNumberFormat::kNELLimitMin,0,1);
-   fMain->AddFrame(fBkgInput, new TGLayoutHints(kLHintsLeft | kLHintsTop,5,5,5,5));
-   fBkgInput->Resize(100,24);
+//   fBkgInput = new TGNumberEntry(fMain, (Double_t) fNBackground,5,-1,(TGNumberFormat::EStyle) 5);
+//   fBkgInput->SetLimits(TGNumberFormat::kNELLimitMin,0,1);
+//   fMain->AddFrame(fBkgInput, new TGLayoutHints(kLHintsLeft | kLHintsTop,5,5,5,5));
+//   fBkgInput->Resize(100,24);
 
    fButtons = new TGHorizontalFrame(fMain, totalWidth,30);
 
@@ -283,20 +285,20 @@ StatDialogMVAEffs::StatDialogMVAEffs(const TGWindow* p, Float_t ns, Float_t nb) 
   
    fMain->AddFrame(fButtons,new TGLayoutHints(kLHintsLeft | kLHintsBottom,5,5,5,5));
 
-   fMain->SetWindowName("Significance");
-   fMain->SetWMPosition(0,0);
-   fMain->MapSubwindows();
-   fMain->Resize(fMain->GetDefaultSize());
-   fMain->MapWindow();
+//   fMain->SetWindowName("Significance");
+//   fMain->SetWMPosition(0,0);
+//   fMain->MapSubwindows();
+//   fMain->Resize(fMain->GetDefaultSize());
+//   fMain->MapWindow();
 
-   fSigInput->Connect("ValueSet(Long_t)","StatDialogMVAEffs",this, "SetNSignal()");
-   fBkgInput->Connect("ValueSet(Long_t)","StatDialogMVAEffs",this, "SetNBackground()");
+//   fSigInput->Connect("ValueSet(Long_t)","StatDialogMVAEffs",this, "SetNSignal()");
+//   fBkgInput->Connect("ValueSet(Long_t)","StatDialogMVAEffs",this, "SetNBackground()");
 
-   fDrawButton->Connect("Clicked()","TGNumberEntry",fSigInput, "ValueSet(Long_t)");
-   fDrawButton->Connect("Clicked()","TGNumberEntry",fBkgInput, "ValueSet(Long_t)");
-   fDrawButton->Connect("Clicked()", "StatDialogMVAEffs", this, "Redraw()");   
+//   fDrawButton->Connect("Clicked()","TGNumberEntry",fSigInput, "ValueSet(Long_t)");
+//   fDrawButton->Connect("Clicked()","TGNumberEntry",fBkgInput, "ValueSet(Long_t)");
+//   fDrawButton->Connect("Clicked()", "StatDialogMVAEffs", this, "Redraw()");   
 
-   fCloseButton->Connect("Clicked()", "StatDialogMVAEffs", this, "Close()");
+//   fCloseButton->Connect("Clicked()", "StatDialogMVAEffs", this, "Close()");
 }
 
 void StatDialogMVAEffs::UpdateCanvases() 
@@ -553,19 +555,25 @@ void StatDialogMVAEffs::PrintResults( const MethodInfo* info )
                  info->origSigE->GetBinContent( maxbin ),
                  info->origBgdE->GetBinContent( maxbin ) )
         << endl;
+   ResultDB table("../scripts/tables/mvaeffs.csv");
+   table.Update((string)info->methodTitle.Data()+"signif","N",info->maxSignificance,0);
+   table.Update((string)info->methodTitle.Data()+"optcut","N",info->sSig->GetXaxis()->GetBinCenter( maxbin ),0);
+   table.Save();
 }
 
-void mvaeffs( TString fin = "TMVA.root", 
+void mvaeffs( TString fin = "TMVA.root", Float_t ns = 1920.59, Float_t nb = 1148.17,
               Bool_t useTMVAStyle = kTRUE, TString formula="S/sqrt(S+B)" )
 {
+//   gSystem->Load("../lib/libResultDB.so");
+
    TMVAGlob::Initialize( useTMVAStyle );
 
-   StatDialogMVAEffs* gGui = new StatDialogMVAEffs(gClient->GetRoot(), 1920.59, 1148.17);
+   StatDialogMVAEffs* gGui = new StatDialogMVAEffs(gClient->GetRoot(), ns, nb);
 
    TFile* file = TMVAGlob::OpenFile( fin );
    gGui->ReadHistograms(file);
    gGui->SetFormula(formula);
    gGui->UpdateSignificanceHists();
    gGui->DrawHistograms();
-   gGui->RaiseDialog();   
+//   gGui->RaiseDialog();   
 }
