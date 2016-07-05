@@ -8,15 +8,30 @@ FourDHist::FourDHist(int nbinsw, double wlo, double whi,
                      int nbinsy, double ylo, double yhi,
                      int nbinsz, double zlo, double zhi)
 {
+  waxis = TAxis(nbinsw, wlo, whi);
+  xaxis = TAxis(nbinsx, xlo, xhi);
+  yaxis = TAxis(nbinsy, ylo, yhi);
+  zaxis = TAxis(nbinsz, zlo, zhi);
+  Initialise(nbinsw, nbinsx, nbinsy, nbinsz);
+}
+FourDHist::FourDHist(int nbinsw, double* wbins,
+                     int nbinsx, double* xbins,
+                     int nbinsy, double* ybins,
+                     int nbinsz, double* zbins)
+{
+  waxis = TAxis(nbinsw, wbins);
+  xaxis = TAxis(nbinsx, xbins);
+  yaxis = TAxis(nbinsy, ybins);
+  zaxis = TAxis(nbinsz, zbins);
+  Initialise(nbinsw, nbinsx, nbinsy, nbinsz);
+}
+void FourDHist::Initialise(int nbinsw, int nbinsx, int nbinsy, int nbinsz)
+{
   if(!nbinsw || !nbinsx || !nbinsy || !nbinsz)
     throw std::out_of_range ("Can't have 0 bins in any dimension");
   nbins = nbinsw*nbinsx*nbinsy*nbinsz;
   bincontent = new double[nbins];
   Clear();
-  waxis = TAxis(nbinsw, wlo, whi);
-  xaxis = TAxis(nbinsx, xlo, xhi);
-  yaxis = TAxis(nbinsy, ylo, yhi);
-  zaxis = TAxis(nbinsz, zlo, zhi);
   waxis.SetNameTitle("w","w");
   xaxis.SetNameTitle("x","x");
   yaxis.SetNameTitle("y","y");
@@ -93,6 +108,29 @@ void FourDHist::Clear()
 {
   for(int ibin = 0; ibin < nbins; ibin++)
     bincontent[ibin] = 0;
+}
+double FourDHist::MaxBinContent()
+{
+  double maxbincontent = bincontent[0];
+  for(int ibin = 1; ibin < nbins; ibin++)
+    if(bincontent[ibin] > maxbincontent)
+      maxbincontent = bincontent[ibin];
+  return maxbincontent;
+}
+double FourDHist::MinBinContent()
+{
+  double minbincontent = bincontent[0];
+  for(int ibin = 1; ibin < nbins; ibin++)
+    if(bincontent[ibin] < minbincontent)
+      minbincontent = bincontent[ibin];
+  return minbincontent;
+}
+TH1D* FourDHist::BinContentHist()
+{
+  TH1D* hist = new TH1D("BinContentHist","",100,MinBinContent(),MaxBinContent());
+  for(int ibin = 0; ibin < nbins; ibin++)
+    hist->Fill(bincontent[ibin]);
+  return hist;
 }
 // Comparison of bins and ranges to allow arithmetic
 bool FourDHist::IsCompatible(const FourDHist& other)

@@ -12,12 +12,20 @@ class FourDHist
               int,double,double,
               int,double,double,
               int,double,double); // nbins, low, high ×4
+    FourDHist(int,double*,
+              int,double*,
+              int,double*,
+              int,double*); // nbins, array of bin edges [nbins+1] ×4
     FourDHist(const FourDHist&);
     ~FourDHist();
+    void Initialise(int,int,int,int);
     void SetAxisNames(string,string,string,string);
     void SetAxisTitles(string,string,string,string);
     void Fill(double,double,double,double); // w,x,y,z
     void Clear();
+    double MaxBinContent();
+    double MinBinContent();
+    TH1D* BinContentHist();
     bool Add(const FourDHist&);
     bool Subtract(const FourDHist&);
     bool Multiply(const FourDHist&);
