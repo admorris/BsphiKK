@@ -11,6 +11,10 @@
 */
 using namespace std;
 // Constructor
+FourDHist::FourDHist()
+{
+
+}
 FourDHist::FourDHist(int nbinsw, double wlo, double whi,
                      int nbinsx, double xlo, double xhi,
                      int nbinsy, double ylo, double yhi,

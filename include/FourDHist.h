@@ -8,6 +8,7 @@ using std::string;
 class FourDHist
 {
   public:
+    FourDHist();
     FourDHist(int,double,double,
               int,double,double,
               int,double,double,

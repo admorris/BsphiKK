@@ -9,6 +9,7 @@
 #include "TMath.h"
 #include "TCanvas.h"
 #include "TStyle.h"
+#include "TKDTreeBinning.h"
 
 #include "GetTree.h"
 #include "FourDHist.h"
@@ -32,19 +33,47 @@ void Fill(double* x, TTree* tree, FourDHist& hist, bool sym)
       :
       hist.Fill(x[0],x[1],x[2],x[3]);
   }
+  cout << "The emptiest bin contains " << hist.MinBinContent() << " events" << endl;
 }
 void AngularAcceptance(string selfile, string genfile)
 {
   bool sym = true;
-  TTree* tree = GetTree(selfile);
+  TTree* tree = GetTree(selfile,"KK_M<1800");
   double x[4];
+  // Begin adaptive binning stuff
+  const int n = tree->GetEntries();
+  double data[n*4];
+  tree->SetBranchAddress("Phi_angle" ,&x[0]);
+  tree->SetBranchAddress("cos_theta1",&x[1]);
+  tree->SetBranchAddress("cos_theta2",&x[2]);
+  tree->SetBranchAddress("KK_M"      ,&x[3]);
+  for(int i = 0; i < n; i++)
+  {
+    tree->GetEntry(i);
+    for(int j = 0; j < 4; j++)
+      data[n*j+i] = sym ? TMath::Abs(x[j]) : x[j];
+  }
+  double target_error = 0.1;
+  int nbins = n*pow(target_error,2);
+  cout << "Using " << nbins << " bins." << endl;
+  TKDTreeBinning magicbinningthing(n,4,data,nbins);
+  double** bins = new double*[4];
+  for(int idim = 0; idim < 4; idim++)
+  {
+    bins[idim] = new double[n];//?
+  }
+  // End adaptive binning stuff
   FourDHist selhist
   (
-     5,sym? 0 : -TMath::Pi(), TMath::Pi()
-    ,5,sym? 0 : -1, 1
-    ,5,sym? 0 : -1, 1
-    ,5,493*2,1800
+     4,sym? 0 : -TMath::Pi(), TMath::Pi()
+    ,4,sym? 0 : -1, 1
+    ,4,sym? 0 : -1, 1
+    ,4,493*2,1800
   );
+//  FourDHist selhist
+//  (
+//    
+//  )
   selhist.SetAxisNames("phi","ctheta_1","ctheta_2","mKK");
   selhist.SetAxisTitles("#Phi","cos(#theta_{1})","cos(#theta_{2})","m(K^{#plus}K^{#minus})");
   Fill(x, tree, selhist, sym);
@@ -52,11 +81,14 @@ void AngularAcceptance(string selfile, string genfile)
   FourDHist genhist = selhist;
   genhist.Clear();
   Fill(x, tree, genhist, sym);
+  selhist.BinContentHist()->Draw();
+  gPad->SaveAs("SelBinDist.pdf");
+  genhist.BinContentHist()->Draw();
+  gPad->SaveAs("GenBinDist.pdf");
   FourDHist acchist = selhist / genhist;
   TFile output("AcceptanceProjections.root","RECREATE");
   TH1* h;
   gStyle->SetOptStat(0);
-//  TCanvas
   for(int i = 0; i < 4; i++)
   {
     h = acchist.Project(i);
