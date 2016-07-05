@@ -221,14 +221,38 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   cout << "The mass resolution (σ) in Monte Carlo is: " << resolution << " MeV/c^2" << endl;
   RooAbsPdf* sigmod = SigMod->GetPDF();
   RooAbsPdf* bkgmod = BkgMod->GetPDF();
+  double Nsigtwosigma   , Nsigtwosigmaerr
+       , Nsigthreesigma , Nsigthreesigmaerr
+       , Nbkgtwosigma   , Nbkgtwosigmaerr
+       , Nbkgthreesigma , Nbkgthreesigmaerr
+       ;
   for(int window = 2; window <= 3; window++)
   {
       cout << "Integrating fitted data PDF over μ±" << window << "σ" << endl;
       mass.setRange((itoa(window)+"sigma").c_str(),mean-window*resolution,mean+window*resolution);
       RooAbsReal* sigmodint = sigmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
-      cout << "S:\t" << sigmodint->getVal()*Nsig->getVal() << endl;
       RooAbsReal* bkgmodint = bkgmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
-      cout << "B:\t" << bkgmodint->getVal()*Nbkg->getVal() << endl;
+      double tempNsig    = sigmodint->getVal()*Nsig->getVal()
+           , tempNsigerr = sigmodint->getVal()*Nsig->getError()
+           , tempNbkg    = bkgmodint->getVal()*Nbkg->getVal()
+           , tempNbkgerr = bkgmodint->getVal()*Nbkg->getError()
+           ;
+      if(window == 2)
+      {
+        Nsigtwosigma    = tempNsig;
+        Nsigtwosigmaerr = tempNsigerr;
+        Nbkgtwosigma    = tempNbkg;
+        Nbkgtwosigmaerr = tempNbkgerr;
+      }
+      else if(window == 3)
+      {
+        Nsigthreesigma    = tempNsig;
+        Nsigthreesigmaerr = tempNsigerr;
+        Nbkgthreesigma    = tempNbkg;
+        Nbkgthreesigmaerr = tempNbkgerr;
+      }
+      cout << "S:\t" << tempNsig << "±" << tempNsigerr << endl;
+      cout << "B:\t" << tempNbkg << "±" << tempNbkgerr << endl;
       for(unsigned int i = 0; i < npkbkgs; i++)
       {
         RooAbsReal* pkgmodint = PkgMod[i]->GetPDF()->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
@@ -312,8 +336,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   pars.push_back(parameter("fgaus1","f_1"          ,SigMod));
   pars.push_back(parameter("fgaus2","f_2"          ,SigMod));
   pars.push_back(parameter("mean"  ,"\\mu"         ,SigMod));
-  pars.push_back(parameter("N"     ,"N_\\text{sig}",SigMod));
-  pars.push_back(parameter("N"     ,"N_\\text{bkg}",BkgMod));
+  parameter Nsigpar("N","N_\\text{sig}",SigMod); pars.push_back(Nsigpar);
+  parameter Nbkgpar("N","N_\\text{bkg}",BkgMod); pars.push_back(Nbkgpar);
 /******************************************************************************/
   if(resname!="")
   {
@@ -322,6 +346,10 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     {
       table.Update(resname+par.safename(),"N",par.value,par.error);
     }
+    table.Update(resname+Nsigpar.safename()+"twosigma"  ,"N",Nsigtwosigma  ,Nsigtwosigmaerr  );
+    table.Update(resname+Nsigpar.safename()+"threesigma","N",Nsigthreesigma,Nsigthreesigmaerr);
+    table.Update(resname+Nbkgpar.safename()+"twosigma"  ,"N",Nbkgtwosigma  ,Nbkgtwosigmaerr  );
+    table.Update(resname+Nbkgpar.safename()+"threesigma","N",Nbkgthreesigma,Nbkgthreesigmaerr);
     table.Save();
     cout << "Results saved to " << DBfilename << endl;
   }
