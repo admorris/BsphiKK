@@ -1,6 +1,14 @@
 #include "FourDHist.h"
 #include <stdexcept>
 #include <assert.h>
+/*
+       ,~~.
+      (  6 )-_,
+ (\___ )=='-'
+  \ .   ) )
+   \ `-' /
+~'`~'`~'`~'`~
+*/
 using namespace std;
 // Constructor
 FourDHist::FourDHist(int nbinsw, double wlo, double whi,
@@ -324,3 +332,4 @@ TH2D* FourDHist::Project(int axisindex1, int axisindex2)
   }
   return hist;
 }
+
