@@ -1,9 +1,14 @@
 #include "FourDHist_Adaptive.h"
 #include <stdexcept>
 #include <assert.h>
+#include <iostream>
 using namespace std;
-FourDHist_Adaptive::FourDHist_Adaptive(TKDTreeBinning* _b) : binner(_b) , nbins(binner->GetNBins())
+FourDHist_Adaptive::FourDHist_Adaptive(TKDTreeBinning* _b) : binner(_b)
 {
+  nbins = binner->GetNBins();
+  cout << "Adaptively-binned 4D histogram with " << nbins << " bins" << endl;
+  bincontent = new double[nbins];
+  Clear();
 }
 FourDHist_Adaptive::FourDHist_Adaptive(const FourDHist_Adaptive& orig)
 {

@@ -13,13 +13,14 @@ class FourDHist_Adaptive : public FourDHist
     FourDHist_Adaptive(TKDTreeBinning*);
     FourDHist_Adaptive(const FourDHist_Adaptive&);
     bool IsCompatible(const FourDHist_Adaptive&);
-    TH1D* Project(int); // dim
-    TH2D* Project(int,int); // dim1,dim2
   protected:
     TKDTreeBinning* binner;
-    int nbins;
   private:
     int FindBin(double,double,double,double); // w,x,y,z
 };
+FourDHist_Adaptive operator+ (FourDHist_Adaptive lhs, const FourDHist_Adaptive& rhs) { lhs += rhs; return lhs; }
+FourDHist_Adaptive operator- (FourDHist_Adaptive lhs, const FourDHist_Adaptive& rhs) { lhs -= rhs; return lhs; }
+FourDHist_Adaptive operator* (FourDHist_Adaptive lhs, const FourDHist_Adaptive& rhs) { lhs *= rhs; return lhs; }
+FourDHist_Adaptive operator/ (FourDHist_Adaptive lhs, const FourDHist_Adaptive& rhs) { lhs /= rhs; return lhs; }
 #endif
 
