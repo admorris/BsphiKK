@@ -4,9 +4,8 @@
 #include "TAxis.h"
 #include "TH1D.h"
 #include "TH2D.h"
-#include "TObject.h"
 using std::string;
-class FourDHist : public TObject
+class FourDHist
 {
   public:
     ~FourDHist();

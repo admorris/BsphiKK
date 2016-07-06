@@ -4,6 +4,7 @@
 #include "TAxis.h"
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TTree.h"
 #include "FourDHist.h"
 #include "TKDTreeBinning.h"
 using std::string;
@@ -13,6 +14,7 @@ class FourDHist_Adaptive : public FourDHist
     FourDHist_Adaptive(TKDTreeBinning*);
     FourDHist_Adaptive(const FourDHist_Adaptive&);
     bool IsCompatible(const FourDHist_Adaptive&);
+    TTree* SaveToTree();
   protected:
     TKDTreeBinning* binner;
   private:

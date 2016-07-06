@@ -34,9 +34,7 @@ void AngularAcceptance(string selfile, string genfile)
     for(int j = 0; j < 4; j++)
       data[n*j+i] = sym ? TMath::Abs(x[j]) : x[j];
   }
-//  double target_error = 0.1;
-//  int nbins = n*pow(target_error,2);
-  int nbins = 256;
+  int nbins = n/25;
   cout << "Using " << nbins << " bins." << endl;
   TKDTreeBinning magicbinningthing(n,4,data,nbins);
   double** bins = new double*[4];
@@ -57,7 +55,7 @@ void AngularAcceptance(string selfile, string genfile)
   gPad->SaveAs("GenBinDist.pdf");
   TFile output("Acceptance.root","RECREATE");
   FourDHist_Adaptive acchist = selhist / genhist;
-  acchist.Write();
+  acchist.SaveToTree()->Write();
   output.Close();
 }
 int main(int argc, char* argv[])
