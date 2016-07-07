@@ -4,19 +4,25 @@
 #include "TAxis.h"
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TFile.h"
 #include "TTree.h"
 #include "FourDHist.h"
+#include "TKDTree.h"
 #include "TKDTreeBinning.h"
 using std::string;
 class FourDHist_Adaptive : public FourDHist
 {
   public:
-    FourDHist_Adaptive(TKDTreeBinning*);
+    FourDHist_Adaptive(TKDTreeBinning*); // Pass the binning thing directly
+    FourDHist_Adaptive(TKDTreeID*);
+    FourDHist_Adaptive(TFile*); // Load the binning thing from a file
     FourDHist_Adaptive(const FourDHist_Adaptive&);
+    void Initialise();
     bool IsCompatible(const FourDHist_Adaptive&);
     TTree* SaveToTree();
+    void LoadFromTree(TTree*);
   protected:
-    TKDTreeBinning* binner;
+    TKDTreeID* binner;
   private:
     int FindBin(double,double,double,double); // w,x,y,z
 };

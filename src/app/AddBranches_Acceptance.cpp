@@ -13,6 +13,9 @@ void addBranches(string acceptancefilename = "Acceptance.root", string inputfile
 /*Load acceptance**************************************************************/
   cout << "Loading acceptance histogram from " << acceptancefilename << endl;
   TFile* accfile = TFile::Open(acceptancefilename.c_str());
+  TTree* acctree = (TTree*)accfile->Get("AccTree");
+  FourDHist_Adaptive acchist(accfile);
+  acchist.LoadFromTree(acctree);
 /*Input************************************************************************/
   cout << "Reading from " << inputfilename << endl;
   // Open the input file and create the output file
@@ -24,12 +27,20 @@ void addBranches(string acceptancefilename = "Acceptance.root", string inputfile
   TTree* outtree = intree->CloneTree(0);
   // Read the number of events in the input file
   Int_t n = intree->GetEntries();
-/*Variables for new branches***************************************************/
+/*Variables to read and write branches*****************************************/
+  double KK_M      ; intree->SetBranchAddress("KK_M"      ,&KK_M      );
+  double Phi_angle ; intree->SetBranchAddress("Phi_angle" ,&Phi_angle );
+  double cos_theta1; intree->SetBranchAddress("cos_theta1",&cos_theta1);
+  double cos_theta2; intree->SetBranchAddress("cos_theta2",&cos_theta2);
   double acceptance; outtree->Branch("acceptance",&acceptance,"acceptance/D");
 /*Event loop*******************************************************************/
   for(Int_t i = 0; i < n; i++)
   {
     intree->GetEntry(i);
+    acceptance = acchist.Eval(TMath::Abs(Phi_angle)
+                             ,TMath::Abs(cos_theta1)
+                             ,TMath::Abs(cos_theta2)
+                             ,KK_M/1000);
     outtree->Fill();
   }
 /*Write the output*************************************************************/

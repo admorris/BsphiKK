@@ -16,6 +16,7 @@ void Fill(double* x, TTree* tree, FourDHist& hist, bool sym)
   for(int i = 0; i < n; i++)
   {
     tree->GetEntry(i);
+    x[3] /= 1000; // MeV to GeV
     sym ?
       hist.Fill(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]),TMath::Abs(x[3]))
       :
