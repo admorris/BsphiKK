@@ -28,8 +28,8 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   cout << "Reading from " << inputfilename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
-  TFile* infile  = new TFile(inputfilename.c_str()),
-       * outfile = new TFile(outputfilename.c_str(),"RECREATE");
+  TFile* infile  = TFile::Open(inputfilename.c_str()),
+       * outfile = TFile::Open(outputfilename.c_str(),"RECREATE");
   // Get the input tree and create an empty output tree
   TTree* intree  = GetTree(infile);
   outfile->cd();

@@ -16,7 +16,7 @@
 
 void FitBranch(string filename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, bool drawpulls)
 {
-  TFile* file = new TFile(filename.c_str());
+  TFile* file = TFile::Open(filename.c_str());
   TTree* tree = GetTree(file,cuts);
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);

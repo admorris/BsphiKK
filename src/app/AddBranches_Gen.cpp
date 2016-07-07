@@ -21,8 +21,8 @@ void addBranches(string filename = "BsphiKK_data")
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
-  TFile* infile  = new TFile((filename+".root"   ).c_str()),
-       * outfile = new TFile((filename+"_mvaVars.root").c_str(),"RECREATE");
+  TFile* infile  = TFile::Open((filename+".root"   ).c_str()),
+       * outfile = TFile::Open((filename+"_mvaVars.root").c_str(),"RECREATE");
   // Get the input tree and create an empty output tree
   TTree* intree  = (TTree*)infile->Get("MCDecayTreeTuple/MCDecayTree"),
        * outtree = intree->CloneTree(0);

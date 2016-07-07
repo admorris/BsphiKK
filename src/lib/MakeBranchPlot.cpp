@@ -20,7 +20,7 @@ using namespace RooFit;
 RooPlot* MakeBranchPlot(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale)
 {
 
-  TFile* file = new TFile(filename.c_str()), * ofile;
+  TFile* file = TFile::Open(filename.c_str()), * ofile;
   TTree* tree = GetTree(file,cuts), * otree;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
   x->setBins(nbins);
@@ -30,7 +30,7 @@ RooPlot* MakeBranchPlot(string filename, string branchname, string xtitle, strin
   bool plotoverlay = overlay != "";
   if(plotoverlay)
   {
-    ofile = new TFile(overlay.c_str());
+    ofile = TFile::Open(overlay.c_str());
     otree = GetTree(ofile,cuts);
     file->cd();
     cout << "Importing tree" << endl;

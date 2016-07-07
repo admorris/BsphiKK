@@ -281,7 +281,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     using namespace RooStats;
     string trailer = "_Sweighted.root";
     string outputName = REfilename.substr(0, REfilename.size() - 5) + trailer;
-    TFile* outputFile = new TFile(outputName.c_str(),"RECREATE");
+    TFile* outputFile = TFile::Open(outputName.c_str(),"RECREATE");
     outputFile->cd();
     TTree* newtree = REtree->CloneTree(0);
     cout << "copied the tree" << endl;

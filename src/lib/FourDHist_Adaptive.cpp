@@ -1,14 +1,27 @@
 #include "FourDHist_Adaptive.h"
+#include "TCollection.h"
+#include "TKey.h"
 #include <stdexcept>
 #include <assert.h>
 #include <iostream>
 using namespace std;
 FourDHist_Adaptive::FourDHist_Adaptive(TKDTreeBinning* _b) : binner(_b)
 {
-  nbins = binner->GetNBins();
-  cout << "Adaptively-binned 4D histogram with " << nbins << " bins" << endl;
-  bincontent = new double[nbins];
-  Clear();
+
+}
+FourDHist_Adaptive::FourDHist_Adaptive(TFile* _f)
+{
+  TIter next = _f->GetListOfKeys();
+  TKey* key;
+  // Look for any TKDTreeBinning object in the file
+  while((key = (TKey*)next()))
+  {
+    if(strcmp(key->GetClassName(),"TKDTreeBinning")==0)
+    {
+      binner = (TKDTreeBinning*)key->ReadObj();
+      Initialise();
+    }
+  }
 }
 FourDHist_Adaptive::FourDHist_Adaptive(const FourDHist_Adaptive& orig)
 {
@@ -17,6 +30,13 @@ FourDHist_Adaptive::FourDHist_Adaptive(const FourDHist_Adaptive& orig)
   bincontent = new double[nbins];
   for(int ibin = 0; ibin < nbins; ibin++)
     bincontent[ibin] = orig.bincontent[ibin];
+}
+void FourDHist_Adaptive::Initialise()
+{
+  nbins = binner->GetNBins();
+  cout << "Adaptively-binned 4D histogram with " << nbins << " bins" << endl;
+  bincontent = new double[nbins];
+  Clear();
 }
 int FourDHist_Adaptive::FindBin(double w, double x, double y, double z)
 {
@@ -32,14 +52,14 @@ TTree* FourDHist_Adaptive::SaveToTree()
   TTree* tree = new TTree;
   const double* binedgemax,* binedgemin;
   double binhi[4], binlo[4];
-  double binwhi;  tree->Branch("binwhi" ,&binhi[0]);
-  double binwlo;  tree->Branch("binwlo" ,&binlo[0]);
-  double binxhi;  tree->Branch("binxhi" ,&binhi[1]);
-  double binxlo;  tree->Branch("binxlo" ,&binlo[1]);
-  double binyhi;  tree->Branch("binyhi" ,&binhi[2]);
-  double binylo;  tree->Branch("binylo" ,&binlo[2]);
-  double binzhi;  tree->Branch("binzhi" ,&binhi[3]);
-  double binzlo;  tree->Branch("binzlo" ,&binlo[3]);
+  tree->Branch("binwhi" ,&binhi[0]);
+  tree->Branch("binwlo" ,&binlo[0]);
+  tree->Branch("binxhi" ,&binhi[1]);
+  tree->Branch("binxlo" ,&binlo[1]);
+  tree->Branch("binyhi" ,&binhi[2]);
+  tree->Branch("binylo" ,&binlo[2]);
+  tree->Branch("binzhi" ,&binhi[3]);
+  tree->Branch("binzlo" ,&binlo[3]);
   double content; tree->Branch("content",&content );
   for(int ibin = 0; ibin < nbins; ibin++)
   {
@@ -54,4 +74,18 @@ TTree* FourDHist_Adaptive::SaveToTree()
     tree->Fill();
   }
   return tree;
+}
+void FourDHist_Adaptive::LoadFromTree(TTree* tree)
+{
+  if(tree->GetEntries() == nbins)
+  {
+    double content; tree->SetBranchAddress("content",&content);
+    for(int ibin = 0; ibin < nbins; ibin++)
+    {
+      tree->GetEntry(ibin);
+      bincontent[ibin] = content;
+    }
+  }
+  else
+    throw std::out_of_range("Tree does not contain the right number of bins");
 }

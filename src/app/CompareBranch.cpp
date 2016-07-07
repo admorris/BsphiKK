@@ -32,8 +32,8 @@ inline double integrate(RooHist* hist)
 void CompareBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
 {
   // Open the files and get the trees
-  TFile* MCfile = new TFile(MCfilename.c_str());
-  TFile* REfile = new TFile(REfilename.c_str());
+  TFile* MCfile = TFile::Open(MCfilename.c_str());
+  TFile* REfile = TFile::Open(REfilename.c_str());
   TTree* MCtree = GetTree(MCfile,cuts);
   TTree* REtree = GetTree(REfile,cuts);
   // RooFit variables

@@ -17,7 +17,7 @@
 using namespace std;
 void PlotAngAcc(string filename,string plotfilename)
 {
-  TFile* plotfile = new TFile(plotfilename.c_str() );
+  TFile* plotfile = TFile::Open(plotfilename.c_str() );
   TCanvas* can = (TCanvas*)plotfile->Get("acc_can" );
   string head = plotfilename.substr(0,plotfilename.size()-5);
   gStyle->SetOptStat(0);  
@@ -93,7 +93,7 @@ void PlotAngAcc(string filename,string plotfilename)
   }
   
   
-  TFile* file = new TFile(filename.c_str());
+  TFile* file = TFile::Open(filename.c_str());
   TTree* tree = (TTree*)file->Get("tuple");
   TCanvas* canv[6];
   string comb[6] = {"ctheta_1:ctheta_2","ctheta_1:phi","ctheta_2:phi","phi:mKK","ctheta_1:mKK","ctheta_2:mKK"};

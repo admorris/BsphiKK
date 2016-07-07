@@ -80,7 +80,7 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeNa
   // make the output
   string outputName = fileName.substr(0,fileName.size() - 5);
   outputName += "_Clone.root";
-  TFile* outFile  =new TFile(outputName.c_str(),"RECREATE");
+  TFile* outFile  =TFile::Open(outputName.c_str(),"RECREATE");
   cout << "Reading: " << treeName << " from " << fileName  << " to " << outputName << endl;
   TTree*  newtree = tree->CloneTree(-1);
   int isAlive;

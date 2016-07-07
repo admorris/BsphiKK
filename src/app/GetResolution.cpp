@@ -26,7 +26,7 @@ using std::vector;
 void GetResolution(string filename, vector<string> particlename, string branchname, string cuts, string xtitle, string unit, string plotname, double xlow, double xup, int nbins)
 {
 /*Input***********************************************************************/
-  TFile* file = new TFile(filename.c_str());
+  TFile* file = TFile::Open(filename.c_str());
   TTree* tree = GetTree(file,cuts);
 /*Construct resolution********************************************************/
   // KK_TRUEP branches are identical to B_s0_TRUEP (bug?)

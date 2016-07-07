@@ -16,7 +16,7 @@ void PlotBackground(string filename)
 {
   heatmapgradient();
   gStyle->SetOptStat(0);
-  TFile* file = new TFile(filename.c_str());
+  TFile* file = TFile::Open(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
   TCanvas* can[4];
   string bra[4] = {"cos_theta1"

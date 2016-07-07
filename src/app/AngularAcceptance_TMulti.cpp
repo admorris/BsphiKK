@@ -26,7 +26,7 @@ void AngularAcceptance(string filename)
 {
   bool imposesymmetry = true;
   // Input
-  TFile* file = new TFile(filename.c_str());
+  TFile* file = TFile::Open(filename.c_str());
   TTree* tree = (TTree*)file->Get("DecayTree");
   int n = tree->GetEntries();
   double x[3],d;
@@ -67,7 +67,7 @@ void AngularAcceptance(string filename)
   }
   bar.terminate();
   // Output
-  TFile* outfile = new TFile("AngAcc.root", "RECREATE");
+  TFile* outfile = TFile::Open("AngAcc.root", "RECREATE");
   TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre,"KV");
   // Configuration
   int maxpowers[3] = {2,2,6};

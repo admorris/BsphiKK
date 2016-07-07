@@ -8,8 +8,8 @@ void addBranches(string filename = "f1420")
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
-  TFile* infile  = new TFile((filename+".root"   ).c_str()),
-       * outfile = new TFile((filename+"_Bs0_branches.root").c_str(),"RECREATE");
+  TFile* infile  = TFile::Open((filename+".root"   ).c_str()),
+       * outfile = TFile::Open((filename+"_Bs0_branches.root").c_str(),"RECREATE");
   // Get the input tree and create an empty output tree
   TTree* intree  = (TTree*)infile->Get("tree"),
        * outtree = intree->CloneTree(0);
