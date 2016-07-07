@@ -49,7 +49,7 @@ libs : $(LIBS)
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
 	$(CC) $(LIBFLAGS) $^ $(LIBS) $(COMLIBS) -o $@
 # Build libraries
-$(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT)
+$(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS)
 	$(CC) -shared $< -o $@
 # Build objects
 $(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT)
