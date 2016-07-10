@@ -1,4 +1,5 @@
 #!/bin/bash
+table=../scripts/tables/MassFits.csv
 cd ../fits
 fitting -f background.xml --calculateBackgroundCoefficients ## Angular part only
 mv LegendreMoments.root LegendreMoments_Background.root
@@ -15,5 +16,8 @@ cd ../ntuples
                  -l 900 \
                  -u 1800 \
                  -b 20 \
-                 -O ../latex/figs/background_mKK_proj
+                 -O ../latex/figs/background_mKK_proj \
+                 --save-results CombBkgFit \
+                 --output-file ${table}
+../bin/ExportResults ${table} ../latex/results/MassFits.tex
 
