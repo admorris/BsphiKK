@@ -7,6 +7,7 @@
 // RooFit headers
 #include "RooAbsPdf.h"
 #include "RooAbsReal.h"
+#include "RooArgSet.h"
 #include "RooDataSet.h"
 #include "RooFitResult.h"
 #include "RooPlot.h"
@@ -25,6 +26,7 @@ class Component
     // Functions for interaction
     void        Rename(RooAbsReal*);
     RooAbsReal* GetThing(string);
+    RooArgSet*  GetParameters(RooAbsData* set) { return _pdf->getParameters(set); }
     void        AddThing(RooAbsReal*);
     RooAbsPdf*  GetPDF()                       { return _pdf     ; }
     void        SetPDF(RooAbsPdf* pdf)         { _pdf = pdf      ; }

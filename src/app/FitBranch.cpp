@@ -13,8 +13,9 @@
 #include "plotmaker.h"
 #include "MassFitter.h"
 #include "GetTree.h"
+#include "ResultDB.h"
 
-void FitBranch(string filename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, bool drawpulls)
+void FitBranch(string filename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, bool drawpulls, string resname, string DBfilename)
 {
   TFile* file = TFile::Open(filename.c_str());
   TTree* tree = GetTree(file,cuts);
@@ -34,7 +35,7 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
   }
   RooPlot* frame = x->frame();
   MassFitter FitModel(x);
-  FitModel.AddComponent("model",modelname);
+  Component* Model = FitModel.AddComponent("model",modelname);
   FitModel.Fit(data);
   std::cout << "Plotting" << endl;
   data->plotOn(frame,Binning(nbins));
@@ -54,6 +55,30 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
   }
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+".pdf").c_str());
+  vector<parameter> pars;
+  RooAbsArg* arg;
+  RooFIter iterator = Model->GetParameters(data)->fwdIterator();
+  while((arg = iterator.next()))
+  {
+    string name = arg->GetName();
+    size_t pos = name.find("model");
+    pars.push_back(parameter(name.substr(pos+5),arg->GetTitle(),Model));
+  }
+/******************************************************************************/
+  if(resname!="")
+  {
+    ResultDB table(DBfilename);
+    for(auto par : pars)
+    {
+      table.Update(resname+par.safename(),"N",par.value,par.error);
+    }
+    table.Save();
+    cout << "Results saved to " << DBfilename << endl;
+  }
+  for(auto par : pars)
+  {
+    cout << "$" << par.latex << "$ & $" << par.value << " \\pm " << par.error << "$ \\\\" << endl;
+  }
 }
 
 int main(int argc, char* argv[])
@@ -61,7 +86,7 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  std::string file, branch, model, cuts, xtitle, unit, plot, weight;
+  std::string file, branch, model, cuts, xtitle, unit, plot, weight, dbf, resname;
   double xlow, xup;
   int nbins;
   desc.add_options()
@@ -78,6 +103,8 @@ int main(int argc, char* argv[])
     ("upper,u" , value<double>(&xup   )->default_value(5600                                   ), "branch upper limit"                    )
     ("lower,l" , value<double>(&xlow  )->default_value(5200                                   ), "branch lower limit"                    )
     ("bins,b"  , value<int   >(&nbins )->default_value(50                                     ), "number of bins"                        )
+    ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"               ), "output file"                    )
+    ("save-results", value<string>(&resname   )->default_value(""                             ), "name to save results as"               )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -88,6 +115,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,vmap.count("pulls"));
+  FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,vmap.count("pulls"),resname,dbf);
   return 0;
 }

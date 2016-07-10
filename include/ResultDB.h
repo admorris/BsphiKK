@@ -43,6 +43,26 @@ string scinot(double value, double error, int ndp)
   error /= pow(10.,o);
   return "(" + tostring(roundDP(value,ndp), ndp) + " \\pm " + tostring(roundDP(error,ndp), ndp) + ")"+ "\\times 10^{" + tostring(o, 0) + "}";
 }
+struct parameter
+{
+  parameter(string _n, string _l, Component* _c) : name(_c->GetName()+_n), latex(_l)
+  {
+    value = _c->GetValue(_n);
+    error = _c->GetError(_n);
+  }
+  string name;
+  string latex;
+  double value;
+  double error;
+  string safename()
+  {
+    string temp = name;
+    replace(temp.begin(),temp.end(),'1','A'); // Numbers can't go in LaTeX macros
+    replace(temp.begin(),temp.end(),'2','B');
+    replace(temp.begin(),temp.end(),'3','C');
+    return temp;
+  }
+};
 struct result
 {
   result();
