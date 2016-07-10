@@ -33,6 +33,7 @@ void addBranches(string acceptancefilename = "Acceptance.root", string inputfile
   double cos_theta1; intree->SetBranchAddress("cos_theta1",&cos_theta1);
   double cos_theta2; intree->SetBranchAddress("cos_theta2",&cos_theta2);
   double acceptance; outtree->Branch("acceptance",&acceptance,"acceptance/D");
+  double inverseacc; outtree->Branch("inverseacc",&inverseacc,"inverseacc/D");
 /*Event loop*******************************************************************/
   for(Int_t i = 0; i < n; i++)
   {
@@ -41,6 +42,7 @@ void addBranches(string acceptancefilename = "Acceptance.root", string inputfile
                              ,TMath::Abs(cos_theta1)
                              ,TMath::Abs(cos_theta2)
                              ,KK_M/1000);
+    inverseacc = 1.0/acceptance;
     outtree->Fill();
   }
 /*Write the output*************************************************************/
