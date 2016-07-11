@@ -13,7 +13,7 @@ void GetCutEff(string filename, string beforecut, string aftercut, bool save, st
 {
   TTree* intree = GetTree(filename);
   new TCanvas;
-  CutResult_t result = CutEff(filename, beforecut, aftercut);
+  CutResult_t result = CutEff(intree, beforecut, aftercut);
   if(save)
   {
     ResultDB rdb(DBfilename);
