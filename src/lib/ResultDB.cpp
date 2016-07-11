@@ -139,6 +139,24 @@ void ResultDB::Export(string filename)
     output << "\\def\\" << frow.macroname <<    "sci{\\ensuremath{" << frow.scbo  << "}\\xspace}" << endl;
   }
 }
+void ResultDB::Print(string name)
+{
+  for(auto row: _table)
+  {
+    if(name == row.name)
+    {
+      cout << "rawvalue  :\t" << row.value << endl;
+      cout << "rawerror  :\t" << row.error << endl;
+      format_result frow(row);
+      cout << "value     :\t" << frow.value << endl;
+      cout << "error     :\t" << frow.error << endl;
+      cout << "result    :\t" << frow.both  << endl;
+      cout << "sci value :\t" << frow.scval << endl;
+      cout << "sci error :\t" << frow.scerr << endl;
+      cout << "sci result:\t" << frow.scbo  << endl;
+    }
+  }
+}
 format_result::format_result(const result& row)
 {
   bool perc = row.type == "percent";

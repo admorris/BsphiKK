@@ -98,6 +98,7 @@ class ResultDB
     void Update(string, string, double, double);
     result Get(string resultname){ return *find(resultname); }
     void Export(string);
+    void Print(string);
   private:
     result* find(string);
     string _filename;
