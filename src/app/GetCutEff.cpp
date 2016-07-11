@@ -27,13 +27,13 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
   desc.add_options()
-    ("help,H",                                                            "produce help message")
-    ("save"  ,                                                            "save the results"    )
-    ("output-file", value<string>(&dbf)->default_value("CutEff.csv"    ), "output file"         )
-    ("result-name", value<string>(&res)->default_value("efficiency"    ), "result name"         )
-    ("input-file" , value<string>(&filename                            ), "input file"          )
-    ("input-file" , value<string>(&beforecut)->default_value("B_s0_M>0"), "initial cut"         )
-    ("final-cut"  , value<string>(&aftercut                            ), "final cut"           )
+    ("help,H"      ,                                                       "produce help message")
+    ("save"        ,                                                       "save the results"    )
+    ("output-file" , value<string>(&dbf)->default_value("CutEff.csv"    ), "output file"         )
+    ("result-name" , value<string>(&res)->default_value("efficiency"    ), "result name"         )
+    ("input-file"  , value<string>(&filename                            ), "input file"          )
+    ("initial-cut" , value<string>(&beforecut)->default_value("B_s0_M>0"), "initial cut"         )
+    ("final-cut"   , value<string>(&aftercut                            ), "final cut"           )
   ;
   variables_map vmap;
   positional_options_description pd;
