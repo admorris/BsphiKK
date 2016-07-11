@@ -38,8 +38,7 @@ int main(int argc, char* argv[])
   variables_map vmap;
   positional_options_description pd;
   pd.add("input-file", 1);
-  pd.add("initialcut", 2);
-  pd.add("finalcut"  , 3);
+  pd.add("final-cut", 2);
   store(command_line_parser(argc, argv).options(desc).positional(pd).run(), vmap);
   notify(vmap);
   if (vmap.count("help"))
@@ -49,7 +48,7 @@ int main(int argc, char* argv[])
   }
   if(filename.empty())
   {
-    cout << "Usage: " << argv[0] << " <filename>" << endl;
+    cout << "Usage: " << argv[0] << " <filename> <cut>" << endl;
     return 1;
   }
   GetCutEff(filename,beforecut,aftercut,vmap.count("save"),res,dbf);
