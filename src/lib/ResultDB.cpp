@@ -128,76 +128,77 @@ void ResultDB::Export(string filename)
   ofstream output(filename);
   for(auto row : _table)
   {
-    bool perc = row.type == "percent";
-    double factor = perc ? 100 : 1;
-    double val = row.value*factor, err = row.error*factor;
-    string macroname = regex_replace(row.name,regex("[^A-Za-z]"),"");
-    string value, error, both;
-    string scval, scerr, scbo;
-    int ov = order(val);
-    int oe = order(err);
-    int ndp;
-    int e3sf, nvsf, nesf;
-    if(abs(err)<1e-100)
+    format_result frow(row);
+    output << "%-----------------------------------------------" << endl;
+    output << "% Ndp: " << frow.ndp << "\t Val s.f. :" << frow.nvsf << "\t Err s.f. :" << frow.nesf << endl;
+    output << "\\def\\" << frow.macroname <<    "val{\\ensuremath{" << frow.value << "}\\xspace}" << endl;
+    output << "\\def\\" << frow.macroname <<    "err{\\ensuremath{" << frow.error << "}\\xspace}" << endl;
+    output << "\\def\\" << frow.macroname <<       "{\\ensuremath{" << frow.both  << "}\\xspace}" << endl;
+    output << "\\def\\" << frow.macroname << "scival{\\ensuremath{" << frow.scval << "}\\xspace}" << endl;
+    output << "\\def\\" << frow.macroname << "scierr{\\ensuremath{" << frow.scerr << "}\\xspace}" << endl;
+    output << "\\def\\" << frow.macroname <<    "sci{\\ensuremath{" << frow.scbo  << "}\\xspace}" << endl;
+  }
+}
+format_result::format_result(const result& row)
+{
+  bool perc = row.type == "percent";
+  double factor = perc ? 100 : 1;
+  double val = row.value*factor, err = row.error*factor;
+  macroname = regex_replace(row.name,regex("[^A-Za-z]"),"");
+  int ov = order(val);
+  int oe = order(err);
+  int e3sf;
+  if(abs(err)<1e-100)
+  {
+    if(ov<2) val = roundSF(val,3); // Round to 3sf if no error and order < 2
+    else val = roundDP(val,0); // If no error and order > 2, round to nearest int
+    err = 0;
+    error = "0";
+    scerr = "0";
+    ndp = 2-ov;
+    nvsf = 3;
+    nesf = 0;
+  }
+  else
+  {
+    e3sf = floor(err*pow(10,3-ceil(log10(abs(err))))); // first 3 significant digits of the error as a 3-digit int
+    nesf = 1;
+    if(e3sf < 100)
     {
-      if(ov<2) val = roundSF(val,3); // Round to 3sf if no error and order < 2
-      else val = roundDP(val,0); // If no error and order > 2, round to nearest int
-      err = 0;
-      error = "0";
-      scerr = "0";
-      ndp = 2-ov;
-      nvsf = 3;
-      nesf = 0;
+      cerr << "Something is wrong with the rounding" << endl;
+    }
+    else if(e3sf < 355)
+    {
+      nesf = 2;
+    }
+    else if(e3sf < 950)
+    {
+      nesf = 1;
     }
     else
     {
-      e3sf = floor(err*pow(10,3-ceil(log10(abs(err))))); // first 3 significant digits of the error as a 3-digit int
-      nesf = 1;
-      if(e3sf < 100)
-      {
-        cerr << "Something is wrong with the rounding" << endl;
-      }
-      else if(e3sf < 355)
-      {
-        nesf = 2;
-      }
-      else if(e3sf < 950)
-      {
-        nesf = 1;
-      }
-      else
-      {
-        err = roundSF(err,1);
-        nesf = 2;
-        oe++;
-      }
-      ndp = oe<0 ? nesf-1-oe : 0;
-      nvsf = nesf + ov - oe;
-      val = roundSF(val,nvsf);
-      err = roundSF(err,nesf);
-      error = tostring(err,ndp);
-      scerr = scinot(err,nesf-1);
+      err = roundSF(err,1);
+      nesf = 2;
+      oe++;
     }
-    value = tostring(val,ndp);
-    scval = scinot(val,nvsf-1);
-    both = value + " \\pm " + error;
-    scbo = scinot(val,err,nvsf-1);
-    if(perc)
-    {
-      value += "\\,\\%";
-      error += "\\,\\%";
-      both = "("+both+")\\,\\%";
-      scval += "\\,\\%";
-      scerr += "\\,\\%";
-      scbo = "("+scbo+")\\,\\%";
-    }
-    output << "%-----------------------------------------------" << endl;
-    output << "% Ndp: " << ndp << "\t Val s.f. :" << nvsf << "\t Err s.f. :" << nesf << endl;
-    output << "\\def\\" << macroname <<    "val{\\ensuremath{" << value << "}\\xspace}" << endl;
-    output << "\\def\\" << macroname <<    "err{\\ensuremath{" << error << "}\\xspace}" << endl;
-    output << "\\def\\" << macroname <<       "{\\ensuremath{" << both  << "}\\xspace}" << endl;
-    output << "\\def\\" << macroname << "scival{\\ensuremath{" << scval << "}\\xspace}" << endl;
-    output << "\\def\\" << macroname << "scierr{\\ensuremath{" << scerr << "}\\xspace}" << endl;
-    output << "\\def\\" << macroname <<    "sci{\\ensuremath{" << scbo  << "}\\xspace}" << endl;
+    ndp = oe<0 ? nesf-1-oe : 0;
+    nvsf = nesf + ov - oe;
+    val = roundSF(val,nvsf);
+    err = roundSF(err,nesf);
+    error = tostring(err,ndp);
+    scerr = scinot(err,nesf-1);
+  }
+  value = tostring(val,ndp);
+  scval = scinot(val,nvsf-1);
+  both = value + " \\pm " + error;
+  scbo = scinot(val,err,nvsf-1);
+  if(perc)
+  {
+    value += "\\,\\%";
+    error += "\\,\\%";
+    both = "("+both+")\\,\\%";
+    scval += "\\,\\%";
+    scerr += "\\,\\%";
+    scbo = "("+scbo+")\\,\\%";
   }
 }

@@ -74,6 +74,18 @@ struct result
   double value;
   double error;
 };
+struct format_result
+{
+  format_result(const result&);
+  string value;
+  string error;
+  string both;
+  string scval;
+  string scerr;
+  string scbo;
+  string macroname;
+  int ndp, nvsf, nesf;
+};
 class ResultDB
 {
   public:
