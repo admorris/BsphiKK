@@ -8,11 +8,11 @@ RM         = rm -f
 # Include ROOT files as system headers as they're NOT standards complient and we do not want to waste time fixing them!
 # ROOT has some broken backwards compatability for OSX so won't claim to be a set of system headers
 ifndef ROOTSYS  # not all systems with gnuinstall=ON set ROOTSYS
-    ROOTCFLAGS = `root-config --cflags` `gsl-config --cflags`
-    ROOTLIBS   = `root-config --libs` `gsl-config --libs`
+    ROOTCFLAGS = `root-config --cflags`
+    ROOTLIBS   = `root-config --libs`
 else
-    ROOTCFLAGS = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
-    ROOTLIBS   = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --libs)
+    ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
+    ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)
 endif
 EXTRA_ROOTLIBS=-lRooFit -lRooStats -lRooFitCore
 
@@ -52,7 +52,7 @@ all : $(BINS) $(HDRS) Makefile
 libs : $(LIBS)
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
-	$(CC) $(LIBFLAGS) $^ $(LIBS) $(COMLIBS) -o $@
+	$(CC) $^ -o $@ $(LIBFLAGS) $(LIBS) $(COMLIBS) 
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT)
 	$(CC) -shared $< -o $@
