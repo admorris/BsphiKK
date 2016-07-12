@@ -5,6 +5,7 @@
 #include <cmath>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 #include "MassFitter.h"
 using namespace std;
 int order(double value)
