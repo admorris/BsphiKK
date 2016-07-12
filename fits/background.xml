@@ -1,6 +1,6 @@
 <RapidFit>
   // Appease RapidFit by providing unnecessary but mandatory XML tags
-	<ParameterSet>
+  <ParameterSet>
   </ParameterSet>
   <Minimiser>
     <MinimiserName>Minuit</MinimiserName>
@@ -10,7 +10,7 @@
   </FitFunction>
   // Define the variables and their branch names
   <CommonPhaseSpace>
-	  <PhaseSpaceBoundary>
+    <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
         <TF1>BCON_KK_M</TF1>
@@ -20,28 +20,28 @@
       </Observable>
       <Observable>
         <Name>phi</Name>
-		    <TF1>Phi_angle</TF1>
+        <TF1>Phi_angle</TF1>
         <Minimum>-3.14159</Minimum>
         <Maximum>3.14159</Maximum>
         <Unit>rad</Unit>
       </Observable>
       <Observable>
         <Name>ctheta_1</Name>
-		    <TF1>cos_theta1</TF1>
+        <TF1>cos_theta1</TF1>
         <Minimum>-1.0</Minimum>
         <Maximum>1.0</Maximum>
         <Unit>Unitless</Unit>
       </Observable>
       <Observable>
         <Name>ctheta_2</Name>
-		    <TF1>cos_theta2</TF1>
+        <TF1>cos_theta2</TF1>
         <Minimum>-1.0</Minimum>
         <Maximum>1.0</Maximum>
         <Unit>Unitless</Unit>
       </Observable>
       <Observable>
         <Name>B_s0_M_Diff</Name>
-		    <TF1>TMath::Abs(B_s0_LOKI_Mass-5366.77)</TF1>
+        <TF1>TMath::Abs(B_s0_LOKI_Mass-5366.77)</TF1>
         <Minimum>60</Minimum>
         <Maximum>1000</Maximum>
         <Unit>MeV/c^{2}</Unit>
@@ -49,20 +49,20 @@
     </PhaseSpaceBoundary>
   </CommonPhaseSpace>
   
-	<ToFit>
+  <ToFit>
     // Choose the PDF
-  	<PDF>
-		  <Name>Bs2PhiKKTotal</Name>
+    <PDF>
+      <Name>Bs2PhiKKTotal</Name>
     </PDF>
-		<PDFConfigurator>
-		</PDFConfigurator>
-		<DataSet>
-			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mvacut.root</FileName>
-			<NTuplePath>DecayTree</NTuplePath>
-			<NumberEvents>100000</NumberEvents>
-			<CommonPhaseSpace>
-			</CommonPhaseSpace>
-		</DataSet>
-	</ToFit>
+    <PDFConfigurator>
+    </PDFConfigurator>
+    <DataSet>
+      <Source>File</Source>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_mvacut.root</FileName>
+      <NTuplePath>DecayTree</NTuplePath>
+      <NumberEvents>100000</NumberEvents>
+      <CommonPhaseSpace>
+      </CommonPhaseSpace>
+    </DataSet>
+  </ToFit>
 </RapidFit>
