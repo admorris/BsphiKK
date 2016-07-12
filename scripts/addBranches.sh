@@ -5,3 +5,4 @@ for mode in $(ls *_cuts.root | sed 's/_cuts\.root//'); do
 done
 wait
 exit 0
+

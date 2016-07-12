@@ -10,3 +10,4 @@ cutapplier ${EOS_server}${EOS_nTuples_dir}BsphiKK_MC_nocut.root "DecayTreeTuple/
 rm ../ntuples/BsphiKK_MC_mKKcut.root
 ../bin/ExportResults ../scripts/tables/TrigEffs.csv ../latex/results/TrigEffs.tex
 exit 0
+

@@ -14,3 +14,6 @@ cp -v plots/*.pdf ../latex/figs/
 optcut=$(../bin/PrintResult ../scripts/tables/mvaeffs.csv MLPoptcut | grep "^value.*$" | sed -r 's/^value\s*:\s*([0-9\.]*.*$)/\1/')
 echo "#!/bin/bash" > ../scripts/mvaopticut.sh
 echo "optcut=$optcut" >> ../scripts/mvaopticut.sh
+echo "" >> mvaopticut.sh
+exit 0
+

@@ -20,4 +20,5 @@ cd ../ntuples
                  --save-results CombBkgFit \
                  --output-file ${table}
 ../bin/ExportResults ${table} ../latex/results/MassFits.tex
+exit 0
 

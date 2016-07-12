@@ -11,3 +11,5 @@
 ./doBsmassfit.sh | tee log/Bsmassfit.log
 ./angacc.sh | tee log/angacc.log
 ./bkgparam.sh | tee log/bkgparam.log
+exit 0
+

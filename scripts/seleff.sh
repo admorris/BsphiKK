@@ -7,3 +7,4 @@ do
 done
 ../bin/ExportResults ../scripts/tables/SelEffs.csv ../latex/results/SelEffs.tex
 exit 0
+

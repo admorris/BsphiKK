@@ -56,3 +56,5 @@ do
   mv -v ../${ntuple_name}_${jobno}*.root ~/${EOS_HOME}/phiKK/
 done
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
+exit 0
+

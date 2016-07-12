@@ -40,3 +40,4 @@ table=../scripts/tables/MassFits.csv
     --output-file ${table}
 ../bin/ExportResults ${table} ../latex/results/MassFits.tex
 exit 0
+
