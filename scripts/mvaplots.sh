@@ -11,13 +11,5 @@ root -l -b -q mvas.C\(\"TMVA.root\",0\)
 root -l -b -q mvas.C\(\"TMVA.root\",3\)
 #Classifier Background Rejection vs Signal Efficiency (ROC curve)
 root -l -b -q efficiencies.C\(\"TMVA.root\"\)
-#Classifier Cut Efficiencies
-sigN=$(grep "initialmassfitABSignalNthreesigma" ../scripts/tables/MassFits.csv | sed -r 's/^[a-zA-Z]*\s+[a-zA-Z]*\s+([0-9\.]+).*/\1/')
-bkgN=$(grep "initialmassfitABCombinatorialNthreesigma" ../scripts/tables/MassFits.csv | sed -r 's/^[a-zA-Z]*\s+[a-zA-Z]*\s+([0-9\.]+).*/\1/')
-root -l -b <<EOF
-.L ../lib/libResultDB.so
-.L mvaeffs.C+
-mvaeffs("TMVA.root",${sigN},${bkgN})
-.q
-EOF
-cp -v plots/*.pdf ../latex/figs/
+exit 0
+

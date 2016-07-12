@@ -1,5 +1,7 @@
 #! /bin/bash
 source eos.sh
+LbLogin.sh
+source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
 cd ~/${EOS_nTuples_dir}/
 pwd
