@@ -7,8 +7,13 @@ RM         = rm -f
 
 # Include ROOT files as system headers as they're NOT standards complient and we do not want to waste time fixing them!
 # ROOT has some broken backwards compatability for OSX so won't claim to be a set of system headers
-ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
-ROOTLIBS   = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --libs)
+ifndef ROOTSYS  # not all systems with gnuinstall=ON set ROOTSYS
+	ROOTCFLAGS = `root-config --cflags`
+	ROOTLIBS   = `root-config --libs`
+else
+	ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
+	ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)
+endif
 EXTRA_ROOTLIBS=-lRooFit -lRooStats -lRooFitCore
 
 # Extensions
@@ -41,7 +46,7 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
-LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS) 
+LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS)
 
 all : $(BINS) $(HDRS) Makefile
 libs : $(LIBS)
