@@ -29,7 +29,7 @@
       <Value>0.0187467</Value>
       <Minimum>0</Minimum>
       <Maximum>1</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -45,7 +45,7 @@
       <Value>0.633365</Value>
       <Minimum>0</Minimum>
       <Maximum>1</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     
@@ -89,7 +89,7 @@
       <Value>-1.80834</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -105,7 +105,7 @@
       <Value>2.54037</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     
@@ -149,7 +149,7 @@
     <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
-        <TF1>KK_TRUEM</TF1>
+        <TF1>KK_M</TF1>
         <Minimum>988</Minimum>
         <Maximum>1080</Maximum>
         <Unit>MeV/c^{2}</Unit>
@@ -182,14 +182,54 @@
     // Choose the PDF
       <PDF>
         <Name>Bs2PhiKKTotal</Name>
-        <ConfigurationParameter>UseAcceptance:False</ConfigurationParameter>
-        <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
+        <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
+        <ConfigurationParameter>DrawPwave:True</ConfigurationParameter>
+        <ConfigurationParameter>MassIndependent:True</ConfigurationParameter>
       </PDF>
     <DataSet>
-      <Source>Foam</Source>
+      <Source>File</Source>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_Gen_DC_mvaVars.root</FileName>
+      <NTuplePath>MCDecayTree</NTuplePath>
       <NumberEvents>100000</NumberEvents>
       <CommonPhaseSpace>
       </CommonPhaseSpace>
     </DataSet>
   </ToFit>
+  <Output>
+    <ComponentProjection>
+      <Name>mKK</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>phi</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_1</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_2</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>1000</PDFpoints>
+      <Threads>16</Threads>
+      <DrawPull>True</DrawPull>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+  </Output>
 </RapidFit>

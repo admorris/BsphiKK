@@ -2,10 +2,10 @@
 // Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
 // βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 //  0  1  0.536  2.71  0.590  0.0  0.604  2.39
-//Input:	A‖ = 0.536 × Exp(i × 2.71)	 A⊥ = 0.604 × Exp(i × 2.39)
-//Output:	A+ = 0.796 × Exp(i × 2.54)	 A− = 0.137 × Exp(i × -1.81)
-	<ParameterSet>
-	  // Magnitudes squared
+//Input:  A‖ = 0.536 × Exp(i × 2.71)   A⊥ = 0.604 × Exp(i × 2.39)
+//Output:  A+ = 0.796 × Exp(i × 2.54)   A− = 0.137 × Exp(i × -1.81)
+  <ParameterSet>
+    // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
       <Value>0.0</Value>
@@ -146,7 +146,7 @@
     <Threads>16</Threads>
   </FitFunction>
   <CommonPhaseSpace>
-	  <PhaseSpaceBoundary>
+    <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
         <TF1>KK_TRUEM</TF1>
@@ -156,21 +156,21 @@
       </Observable>
       <Observable>
         <Name>phi</Name>
-		    <TF1>Phi_angle</TF1>
+        <TF1>Phi_angle</TF1>
         <Minimum>-3.14159</Minimum>
         <Maximum>3.14159</Maximum>
         <Unit>rad</Unit>
       </Observable>
       <Observable>
         <Name>ctheta_1</Name>
-		    <TF1>cos_theta1</TF1>
+        <TF1>cos_theta1</TF1>
         <Minimum>-1.0</Minimum>
         <Maximum>1.0</Maximum>
         <Unit>Unitless</Unit>
       </Observable>
       <Observable>
         <Name>ctheta_2</Name>
-		    <TF1>cos_theta2</TF1>
+        <TF1>cos_theta2</TF1>
         <Minimum>-1.0</Minimum>
         <Maximum>1.0</Maximum>
         <Unit>Unitless</Unit>
@@ -178,33 +178,31 @@
     </PhaseSpaceBoundary>
   </CommonPhaseSpace>
   
-	<ToFit>
+  <ToFit>
     // Choose the PDF
-    	<PDF>
-		    <Name>Bs2PhiKKTotal</Name>
-		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
-		    <ConfigurationParameter>UseTimeIntegratedPwavePDF:False</ConfigurationParameter>
-		    <ConfigurationParameter>UseAcceptance:True</ConfigurationParameter>
-		    <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
-		    <ConfigurationParameter>DrawPwave:False</ConfigurationParameter>
-		    <ConfigurationParameter>DrawAcceptance:True</ConfigurationParameter>		    
-		    <ConfigurationParameter>MassIndependent:True</ConfigurationParameter>
+      <PDF>
+        <Name>Bs2PhiKKTotal</Name>
+        <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
+        <ConfigurationParameter>DrawPwave:True</ConfigurationParameter>
       </PDF>
-		<DataSet>
-			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvacut.root</FileName>
-			<NTuplePath>DecayTree</NTuplePath>
-			<NumberEvents>100000</NumberEvents>
-			<CommonPhaseSpace>
-			</CommonPhaseSpace>
-		</DataSet>
-	</ToFit>
-	<Output>
+    <DataSet>
+      <Source>File</Source>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvacut_acc.root</FileName>
+      <NTuplePath>DecayTree</NTuplePath>
+      <NumberEvents>100000</NumberEvents>
+      <CommonPhaseSpace>
+      </CommonPhaseSpace>
+    </DataSet>
+  </ToFit>
+  <Precalculator>
+      <WeightName>acceptance</WeightName>
+  </Precalculator>
+  <Output>
     <ComponentProjection>
       <Name>mKK</Name>
       <FixedIntegrationPoints>1000</FixedIntegrationPoints>
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
+      <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
     </ComponentProjection>
@@ -212,7 +210,7 @@
       <Name>phi</Name>
       <FixedIntegrationPoints>1000</FixedIntegrationPoints>
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
+      <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
@@ -221,7 +219,7 @@
       <Name>ctheta_1</Name>
       <FixedIntegrationPoints>1000</FixedIntegrationPoints>
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
+      <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
@@ -230,7 +228,7 @@
       <Name>ctheta_2</Name>
       <FixedIntegrationPoints>1000</FixedIntegrationPoints>
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
+      <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
       <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>

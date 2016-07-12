@@ -1,14 +1,9 @@
 <RapidFit>
-// Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
-// βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
-//  0  1  0.536  2.71  0.590  0.0  0.604  2.39
-//Input:  A‖ = 0.536 × Exp(i × 2.71)   A⊥ = 0.604 × Exp(i × 2.39)
-//Output:  A+ = 0.796 × Exp(i × 2.54)   A− = 0.137 × Exp(i × -1.81)
   <ParameterSet>
     // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
-      <Value>0.0</Value>
+      <Value>1.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -26,15 +21,15 @@
     
     <PhysicsParameter>
       <Name>APminus2</Name>
-      <Value>0.0187467</Value>
+      <Value>0.0</Value>
       <Minimum>0</Minimum>
       <Maximum>1</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>0.3481</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -42,10 +37,10 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APplus2</Name>
-      <Value>0.633365</Value>
+      <Value>0.0</Value>
       <Minimum>0</Minimum>
       <Maximum>1</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     
@@ -86,10 +81,10 @@
     
     <PhysicsParameter>
       <Name>deltaPminus</Name>
-      <Value>-1.80834</Value>
+      <Value>0.0</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -102,10 +97,10 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>deltaPplus</Name>
-      <Value>2.54037</Value>
+      <Value>0.0</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     
@@ -149,7 +144,7 @@
     <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
-        <TF1>KK_TRUEM</TF1>
+        <TF1>KK_M</TF1>
         <Minimum>988</Minimum>
         <Maximum>1080</Maximum>
         <Unit>MeV/c^{2}</Unit>

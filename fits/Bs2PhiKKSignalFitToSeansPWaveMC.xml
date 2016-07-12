@@ -2,10 +2,10 @@
 // Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
 // βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 //  0  1  0.536  2.71  0.590  0.0  0.604  2.39
-//Input:	A‖ = 0.536 × Exp(i × 2.71)	 A⊥ = 0.604 × Exp(i × 2.39)
-//Output:	A+ = 0.796 × Exp(i × 2.54)	 A− = 0.137 × Exp(i × -1.81)
-	<ParameterSet>
-	  // Magnitudes squared
+//Input:  A‖ = 0.536 × Exp(i × 2.71)   A⊥ = 0.604 × Exp(i × 2.39)
+//Output:  A+ = 0.796 × Exp(i × 2.54)   A− = 0.137 × Exp(i × -1.81)
+  <ParameterSet>
+    // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
       <Value>0.0</Value>
@@ -146,7 +146,7 @@
     <Threads>16</Threads>
   </FitFunction>
   <CommonPhaseSpace>
-	  <PhaseSpaceBoundary>
+    <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
         <TF1>phi_10200_M</TF1>
@@ -178,22 +178,22 @@
     </PhaseSpaceBoundary>
   </CommonPhaseSpace>
   
-	<ToFit>
+  <ToFit>
     // Choose the PDF
-    	<PDF>
-		    <Name>Bs2PhiKKTotal</Name>
-		    <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
+      <PDF>
+        <Name>Bs2PhiKKTotal</Name>
+        <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
       </PDF>
-		<DataSet>
-			<Source>File</Source>
-			<FileName>/afs/cern.ch/work/s/sbenson/public/Stripping20-21_Bsphiphi/Calibrated_MC/phiphi_MC2012_NEWTAG_calib_SigRegion_FullSel.root</FileName>
-			<NTuplePath>DecayTree/DecayTree</NTuplePath>
-			<NumberEvents>100000</NumberEvents>
-			<CommonPhaseSpace>
-			</CommonPhaseSpace>
-		</DataSet>
-	</ToFit>
-	<Output>
+    <DataSet>
+      <Source>File</Source>
+      <FileName>/afs/cern.ch/work/s/sbenson/public/Stripping20-21_Bsphiphi/Calibrated_MC/phiphi_MC2012_NEWTAG_calib_SigRegion_FullSel.root</FileName>
+      <NTuplePath>DecayTree/DecayTree</NTuplePath>
+      <NumberEvents>100000</NumberEvents>
+      <CommonPhaseSpace>
+      </CommonPhaseSpace>
+    </DataSet>
+  </ToFit>
+  <Output>
     <ComponentProjection>
       <Name>mKK</Name>
       <FixedIntegrationPoints>1000</FixedIntegrationPoints>
