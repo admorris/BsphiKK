@@ -33,18 +33,18 @@ cd ../ntuples
     -u 4100 \
     -b 61
 ../bin/AnnotateBranch \
-    -F BsphiKK_data_1050_mvaVars_vetoes_Sweighted.root \
+    -F BsphiKK_data_1800_mvaVars_vetoes_Sweighted.root \
     -B KK_M \
     -W Nsig_sw \
-    -O ../latex/figs/mKKsweight_1050 \
+    -O ../latex/figs/mKKsweight_1800 \
     -l 900 \
     -u 1800 \
     -b 18
 ../bin/PlotBranch \
-    -F BsphiKK_data_1050_mvaVars_vetoes.root \
+    -F BsphiKK_data_1800_mvaVars_vetoes.root \
     -B KK_M \
     -T "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" \
-    -O ../latex/figs/mKK_1050 \
+    -O ../latex/figs/mKK_1800 \
     -l 900 \
     -u 1800 \
     -b 18
