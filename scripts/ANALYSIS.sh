@@ -3,9 +3,10 @@
 ## Please run all scripts from within the scripts folder
 ##
 ## Get DaVinci output
-./getoutputdata | tee log/getoutputdata.log
-./merge.sh | tee log/merge.log
+#./getoutputdata | tee log/getoutputdata.log
+#./merge.sh | tee log/merge.log
 ./SELECTION.sh
+./EFFICIENCIES.sh
 ./SELECTION_PLOTS.sh
 ## Get input parameters for angular fit
 ./doBsmassfit.sh | tee log/Bsmassfit.log
