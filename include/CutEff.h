@@ -25,6 +25,9 @@ struct CutResult_t
     return sqrt((1-eff)*eff/before);
   }
 };
+// Version that opens a file
 CutResult_t CutEff(string, string, string);
+// Version that reads a TTrre.
+// Prefereable if this function is to be called many times for the same file
 CutResult_t CutEff(TTree*, string, string);
 #endif
