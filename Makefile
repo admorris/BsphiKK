@@ -5,16 +5,14 @@ CC         = g++
 SHELL      = /bin/bash
 RM         = rm -f
 
-# Include ROOT files as system headers as they're NOT standards complient and we do not want to waste time fixing them!
-# ROOT has some broken backwards compatability for OSX so won't claim to be a set of system headers
-ifndef ROOTSYS  # not all systems with gnuinstall=ON set ROOTSYS
+ifndef ROOTSYS
 	ROOTCFLAGS = `root-config --cflags`
 	ROOTLIBS   = `root-config --libs`
 else
 	ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
 	ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)
 endif
-EXTRA_ROOTLIBS=-lRooFit -lRooStats -lRooFitCore
+EXTRA_ROOTLIBS = -lRooFit -lRooStats -lRooFitCore
 
 # Extensions
 SRCEXT     = cpp
@@ -46,16 +44,17 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
-LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS)
+COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS))
+LIBFLAGS   = -Wl,--as-needed -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lboost_program_options -lgsl -lgslcblas -Wl,-rpath=$(LIBDIR)
 
 all : $(BINS) $(HDRS) Makefile
 libs : $(LIBS)
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
-	$(CC) $^ -o $@ $(LIBFLAGS) $(LIBS) $(COMLIBS)
+	$(CC) $< -o $@ $(LIBFLAGS)
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS)
-	$(CC) -shared $< -o $@
+	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 # Build objects
 $(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT)
 	$(CC) $(CXXFLAGS) -c $< -o $@
