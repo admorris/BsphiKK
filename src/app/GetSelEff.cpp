@@ -68,9 +68,9 @@ void GetSelEff(string filename, bool save, string DBfilename)
     string mode = filename.substr(mode_start,mode_end-mode_start);// filename between final '/' and '.root'
     for(unsigned int i = 0; i < n; i++)
     {
-      rdb.Update("SelEff"+mode+cuts[i].name,"percent",cuts[i].eff,0);
+      rdb.Update("SelEff"+mode+cuts[i].name,"percent",cuts[i].eff,cuts[i].efferr);
     }
-    rdb.Update("SelEff"+mode+"total","percent",totaleff,0);
+    rdb.Update("SelEff"+mode+"total","percent",totaleff,totalefferr);
     rdb.Save();
   }
 }
