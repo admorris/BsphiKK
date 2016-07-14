@@ -1,9 +1,9 @@
 #!/bin/bash
-./showvetoes.sh | tee log/showvetoes.log
+#./showvetoes.sh | tee log/showvetoes.log
 ## Efficiencies
-./vetoeff.sh | tee log/vetoeff.log
-./seleff.sh
 ./trigeff.sh
+./seleff.sh
+./vetoeff.sh | tee log/vetoeff.log
 ## Preliminary m(KK) plots
 ./plotmKK.sh
 ## MVA data-MC comparison
