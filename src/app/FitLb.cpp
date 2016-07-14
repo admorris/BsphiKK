@@ -54,7 +54,7 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   plotter->Draw()->SaveAs((plotname+"S.pdf").c_str());
   SigMod->FloatPar("mean");
 /*Fit to BsphiKK MC************************************************************/
-  Component* BkgMod = FitModel.AddComponent("Bs","Exponential",&NBs);
+  Component* BkgMod = FitModel.AddComponent("Bs","Exponential",&NBs); (void)BkgMod;
 //  BkgMod->FixShapeTo(Bdata);
 //  Bdata->plotOn(Bframe,Binning(nbins));
 //  BkgMod->GetPDF()->plotOn(Bframe);
