@@ -210,13 +210,13 @@ format_result::format_result(const result& row)
   scval = scinot(val,nvsf-1);
   both = value + " \\pm " + error;
   scbo = scinot(val,err,nvsf-1);
-  if(perc)
-  {
-    value += "\\,\\%";
-    error += "\\,\\%";
-    both = "("+both+")\\,\\%";
-    scval += "\\,\\%";
-    scerr += "\\,\\%";
-    scbo = "("+scbo+")\\,\\%";
-  }
+//  if(perc)
+//  {
+//    value += "\\,\\%";
+//    error += "\\,\\%";
+//    both = "("+both+")\\,\\%";
+//    scval += "\\,\\%";
+//    scerr += "\\,\\%";
+//    scbo = "("+scbo+")\\,\\%";
+//  }
 }
