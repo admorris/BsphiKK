@@ -47,16 +47,15 @@ CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
 COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS))
 LIBFLAGS   = -Wl,--as-needed -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lboost_program_options -lgsl -lgslcblas -Wl,-rpath=$(LIBDIR)
 
-all : $(BINS) $(HDRS) Makefile
-libs : $(LIBS)
+all : $(BINS)
 # Build binaries
-$(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
+$(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) $(COMLIBS)
 	$(CC) $< -o $@ $(LIBFLAGS)
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS)
 	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 # Build objects
-$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT)
+$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS)
 	$(CC) $(CXXFLAGS) -c $< -o $@
 # Remove all the output
 clean :
