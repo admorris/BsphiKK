@@ -11,13 +11,11 @@
 #include "TH1D.h"
 #include "TLegend.h"
 #include "TStyle.h"
-#include "progbar.h"
 #include "minOfFour.h"
 #include "safeLog.h"
 using namespace std;
 void addBranches(string filename = "BsphiKK_data")
 {
-//  gSystem->Load("libprogbar.so");
   cout << "Adding branches to " << filename << endl;
 /*Input************************************************************************/
   // Open the input file and create the output file
@@ -83,7 +81,6 @@ void addBranches(string filename = "BsphiKK_data")
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
 /*Event loop*******************************************************************/
-  progbar bar(n);
   for(Int_t i = 0; i < n; i++)
   {
     intree->GetEntry(i);
@@ -138,12 +135,7 @@ void addBranches(string filename = "BsphiKK_data")
     Phi_angle  = TMath::ACos(cos_Phi) * (sin_Phi/TMath::Abs(sin_Phi));
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
-    if(i%100 == 0)
-    {
-      bar.print(i);
-    }
   }
-  bar.terminate();
 /*Write the output*************************************************************/
   outtree->Write();
   infile->Close();

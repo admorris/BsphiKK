@@ -10,8 +10,6 @@
 #include "TAxis.h"
 #include "TMath.h"
 
-#include "progbar.h"
-
 using namespace std;
 
 //double D(TH3D* hist, double x, double y, double z) // Don't need this any more, since Interpolate() now works
@@ -52,7 +50,6 @@ void AngularAcceptance(string filename)
                                  ,nbinsz,zlow-(zrange/(nbinsz)),zup+(zrange/(nbinsz)));// cos_theta2 range
   // Fill the histogram
   cout << "Filling a 3D histogram with " << n << " events." << endl;
-  progbar bar(n);
   for(int i = 0; i < n; i++)
   {
     tree->GetEntry(i);
@@ -60,12 +57,7 @@ void AngularAcceptance(string filename)
       hist->Fill(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]))
       :
       hist->Fill(x[0],x[1],x[2]);
-    if(i%(n/100)==0)
-    {
-      bar.print(i);
-    }
   }
-  bar.terminate();
   // Output
   TFile* outfile = TFile::Open("AngAcc.root", "RECREATE");
   TMultiDimFit* fit = new TMultiDimFit(3, TMultiDimFit::kLegendre,"KV");

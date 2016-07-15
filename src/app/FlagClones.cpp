@@ -10,13 +10,11 @@
 #include <vector>
 #include <algorithm>
 #include "TMath.h"
-#include "progbar.h"
 #include "CloneInfo.h"
 #include "CloneTagger.h"
 using namespace std;
 void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeName = "DecayTreeTuple/DecayTree")
 {
-//  gSystem->Load("libprogbar.so");
   // get the input
   TChain* tree = new TChain(treeName.c_str());
   tree->Add(fileName.c_str());
@@ -38,7 +36,6 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeNa
   CloneTagger tagger(clones);
   int i = 0;
   cout << "Finding duplicate events" << endl;
-  progbar bar(num_entries);
   while (i < num_entries)
   {
     tree->GetEntry(i);
@@ -71,12 +68,7 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeNa
       }
     }
     i = j;
-    if(i%100==0)
-    {
-      bar.print(i);
-    }
   }
-  bar.terminate();
   // make the output
   string outputName = fileName.substr(0,fileName.size() - 5);
   outputName += "_Clone.root";
@@ -87,18 +79,12 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root" , string treeNa
   TBranch *branch_bestVtxChi2 = newtree->Branch("isDup",&isAlive, "isDup/I");
   num_entries = newtree->GetEntries();
   // loop again and write the branch
-  bar.reset();
   for (i=0;i<num_entries; i++)
   {
     newtree->GetEntry(i);
     isAlive = flag_clones[i];
     branch_bestVtxChi2->Fill();
-    if(i%100==0)
-    {
-      bar.print(i);
-    }
   }
-  bar.terminate();
   newtree->Write();
   outFile->Close();
   return;

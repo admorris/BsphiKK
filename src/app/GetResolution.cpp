@@ -17,7 +17,6 @@
 // Custom headers
 #include "MassFitter.h"
 #include "plotmaker.h"
-#include "progbar.h"
 #include "GetTree.h"
 using std::cout;
 using std::endl;
@@ -51,7 +50,6 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   double TRUEMASS; newtree->Branch("TRUEMASS",&TRUEMASS,"TRUEMASS/D");
   newtree->Branch("SIMMASS",&SIMMASS,"SIMMASS/D");
   cout << "Constructing resolution for " << n << "-body invariant mass" << endl;
-  progbar bar(tree->GetEntries());
   for(int i = 0; i < tree->GetEntries(); i++)
   {
     tree->GetEntry(i);
@@ -63,14 +61,9 @@ void GetResolution(string filename, vector<string> particlename, string branchna
     }
     TRUEMASS = TRUEP[n].M();
     res = TRUEMASS - SIMMASS;
-    if(i%(tree->GetEntries()/100)==0)
-    {
-      bar.print(i);
-    }
     if(res < xlow || res > xup) continue;
     newtree->Fill();
   }
-  bar.terminate();
 /*Fit the resolution**********************************************************/
   using namespace RooFit;
   RooRealVar* x = new RooRealVar("res",xtitle.c_str(),xlow,xup);
