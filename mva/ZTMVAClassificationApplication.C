@@ -30,7 +30,6 @@
 #include "TMVA/MethodCuts.h"
 #endif
 
-#include "progbar.h"
 
 using namespace TMVA;
 
@@ -39,7 +38,6 @@ void ZTMVAClassificationApplication( string filename, TString myMethodList = "" 
 #ifdef __CINT__
   gROOT->ProcessLine( ".O0" ); // turn off optimization in CINT
 #endif
-  gSystem->Load("libprogbar.so");
   //---------------------------------------------------------------
 
   // This loads the library
@@ -291,7 +289,6 @@ void ZTMVAClassificationApplication( string filename, TString myMethodList = "" 
   std::cout << "--- Processing: " << num_entries << " events" << std::endl;
   TStopwatch sw;
   sw.Start();
-  progbar bar(num_entries);
   for (Long64_t ievt=0; ievt<num_entries;ievt++) {
 
     // if (ievt%10000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
@@ -377,12 +374,7 @@ void ZTMVAClassificationApplication( string filename, TString myMethodList = "" 
        probHistFi  ->Fill( reader->GetProba ( "Fisher method" ) );
        rarityHistFi->Fill( reader->GetRarity( "Fisher method" ) );
     }
-    if(ievt%100==0)
-    {
-      bar.print(ievt);
-    }
   }
-  bar.terminate();
 
   // Get elapsed time
   sw.Stop();
