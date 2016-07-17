@@ -135,8 +135,10 @@ void plot_efficiencies( TFile* file, Int_t type = 2, TDirectory* BinDir)
       legend->SetY2( y0H + dyH);
    }
    // redraw axes
-   frame->GetXaxis()->SetRange(400,500);
-   frame->GetYaxis()->SetRange(400,500);
+   int xlast = frame->GetXaxis()->GetLast();
+   frame->GetXaxis()->SetRange(0.5*xlast,xlast);
+   int ylast = frame->GetYaxis()->GetLast();
+   frame->GetYaxis()->SetRange(0.5*ylast,ylast);
    frame->Draw("sameaxis");  
    legend->Draw("same");
 
