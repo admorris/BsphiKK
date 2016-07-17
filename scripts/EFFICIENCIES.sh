@@ -1,4 +1,4 @@
-#!/bin/bashs
+#!/bin/bash
 ## Efficiencies
 ./trigeff.sh
 ./seleff.sh
