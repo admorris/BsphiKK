@@ -65,6 +65,7 @@ void DrawGraph(string name, TGraphErrors* graph)
   _blurb->SetTextAlign(11);
   _blurb->SetTextSize(0.07);
   _blurb->Draw();
+  canvas->SaveAs((name+".pdf").c_str());
   canvas->Write();
 }
 struct TrigEffPlot
@@ -80,29 +81,25 @@ struct TrigEffPlot
   double* y;
   double* ye;
 };
-void PlotTrigEff(string filename)
+void PlotTrigEff(string filename,string plotname)
 {
   string L0[]={"B_s0_L0HadronDecision_TOS", "B_s0_L0Global_TIS"};
   string Hlt1="B_s0_Hlt1TrackAllL0Decision_TOS";
-  string Hlt2[]={"B_s0_Hlt2Topo2BodyBBDTDecision_TOS", "B_s0_Hlt2Topo3BodyBBDTDecision_TOS", "B_s0_Hlt2Topo4BodyBBDTDecision_TOS", "B_s0_Hlt2IncPhiDecision_TOS"};
+  string Hlt2[]={"B_s0_Hlt2Topo3BodyBBDTDecision_TOS", "B_s0_Hlt2Topo4BodyBBDTDecision_TOS"};
   const unsigned int nbins = 20;
   double mKKlo = 990, mKKhi = 1800, binw = (mKKhi-mKKlo)/nbins;
-  double       mKK[nbins],       mKKE[nbins];
+  double mKK[nbins], mKKE[nbins];
   TTree* intree = GetTree(filename);
   TFile outputfile("TrigEffPlots.root","RECREATE");
   vector<TrigEffPlot> Plots;
-  Plots.push_back(TrigEffPlot("HadronTOS",nbins,"",    L0[0]                                                                                 ));
-  Plots.push_back(TrigEffPlot("GlobalTIS",nbins,"",               L0[1]                                                                      ));
-  Plots.push_back(TrigEffPlot("Level0Tot",nbins,"","("+L0[0]+"||"+L0[1]+")"                                                                  ));
-  Plots.push_back(TrigEffPlot("Hlt1Total",nbins,"&& ("+L0[0]+"||"+L0[1]+")",   Hlt1                                                          ));
-  Plots.push_back(TrigEffPlot("Topo2Body",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]                                           ));
-  Plots.push_back(TrigEffPlot("Topo3Body",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",                Hlt2[1]                              ));
-  Plots.push_back(TrigEffPlot("Topo4Body",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",                             Hlt2[2]                 ));
-  Plots.push_back(TrigEffPlot("InclusPhi",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",                                          Hlt2[3]    ));
-  Plots.push_back(TrigEffPlot("Hlt2Total",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+"||"+Hlt2[3]    ));
-  Plots.push_back(TrigEffPlot("TrigTotal",nbins,"","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+"||"+Hlt2[3]+")"));
-  Plots.push_back(TrigEffPlot("TotNoIncP",nbins,"","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+"||"+Hlt2[2]+             ")"));
-  Plots.push_back(TrigEffPlot("TNInPh2BP",nbins,"","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("             +Hlt2[1]+"||"+Hlt2[2]+             ")"));
+  Plots.push_back(TrigEffPlot("HadronTOS",nbins,"",    L0[0]                                                       ));
+  Plots.push_back(TrigEffPlot("GlobalTIS",nbins,"",               L0[1]                                            ));
+  Plots.push_back(TrigEffPlot("Level0Tot",nbins,"","("+L0[0]+"||"+L0[1]+")"                                        ));
+  Plots.push_back(TrigEffPlot("Hlt1Total",nbins,"&& ("+L0[0]+"||"+L0[1]+")",   Hlt1                                ));
+  Plots.push_back(TrigEffPlot("Topo3Body",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]                 ));
+  Plots.push_back(TrigEffPlot("Topo4Body",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",                Hlt2[1]    ));
+  Plots.push_back(TrigEffPlot("Hlt2Total",nbins,"&& ("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")",   Hlt2[0]+"||"+Hlt2[1]    ));
+  Plots.push_back(TrigEffPlot("TrigTotal",nbins,"","("+L0[0]+"||"+L0[1]+")&&("+Hlt1+")&&("+Hlt2[0]+"||"+Hlt2[1]+")"));
   for(auto Plot : Plots)
   {
     for(unsigned int ibin = 0; ibin < nbins; ibin++)
@@ -115,17 +112,17 @@ void PlotTrigEff(string filename)
       Plot.y [ibin] = Result.GetEff()   *100.0;
       Plot.ye[ibin] = Result.GetEffErr()*100.0;
     }
-    DrawGraph(Plot.name,new TGraphErrors(nbins,mKK,Plot.y,mKKE,Plot.ye));
+    DrawGraph(plotname+Plot.name,new TGraphErrors(nbins,mKK,Plot.y,mKKE,Plot.ye));
   }
   outputfile.Close();
 }
 int main(int argc, char* argv[])
 {
-  if(argc!=2)
+  if(argc!=3)
   {
-    cout << "Usage: " << argv[0] << " <filename>" << endl;
+    cout << "Usage: " << argv[0] << " <filename> <plot name prefix>" << endl;
     return 1;
   }
-  PlotTrigEff(argv[1]);
+  PlotTrigEff(argv[1],argv[2]);
   return 0;
 }
