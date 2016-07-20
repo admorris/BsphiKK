@@ -10,13 +10,13 @@ for mode in ${modes[@]}
 do
   if [ "$mode" == "Bsphiphi_MC"  -o  "$mode" == "BsphiKK_MC" ]
   then
-    cutapplier ${EOS_server}${EOS_nTuples_dir}${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BKGCATcut}&&${BsMcut}" ${mode}_duplicates.root &
+    cutapplier ${nTuples_dir}${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BKGCATcut}&&${BsMcut}" ${mode}_duplicates.root &
   else
-    cutapplier ${EOS_server}${EOS_nTuples_dir}${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BsMcut}" ${mode}_duplicates.root &
+    cutapplier ${nTuples_dir}${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BsMcut}" ${mode}_duplicates.root &
   fi
 done
 wait
-cutapplier ${EOS_server}${EOS_nTuples_dir}BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&B_s0_LOKI_Mass>5500" BsphiKK_sideband_duplicates.root
+cutapplier ${nTuples_dir}BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&B_s0_LOKI_Mass>5500" BsphiKK_sideband_duplicates.root
 for mode in ${modes[@]}
 do
   ../bin/FlagClones ${mode}_duplicates.root DecayTreeTuple/DecayTree
