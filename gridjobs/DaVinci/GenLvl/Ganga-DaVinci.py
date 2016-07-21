@@ -1,7 +1,10 @@
-JobName  = 'BsPhiPhiGen'
-LFNsFile = 'PwaveLFNs.txt'
-#JobName  = 'BsPhiKKGen'
-#LFNsFile = 'PhaseSpaceLFNs.txt'
+# Works with Ganga v601r18 but later versions complain:
+# ERROR    global name 'lfn' is not defined
+
+#JobName  = 'BsPhiPhiGen'
+#LFNsFile = 'PwaveLFNs.txt'
+JobName  = 'BsPhiKKGen'
+LFNsFile = 'PhaseSpaceLFNs.txt'
 Application = DaVinci()
 Application.version = 'v37r0'
 
