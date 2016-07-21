@@ -6,11 +6,11 @@
 JobName  = 'BsPhiKKGen'
 LFNsFile = 'PhaseSpaceLFNs.txt'
 Application = DaVinci()
-Application.version = 'v37r0'
+Application.version = 'v41r0'
 
 debug = False
 
-Splitter = SplitByFiles(ignoremissing = True, bulksubmit=True)
+Splitter = SplitByFiles(ignoremissing = True, bulksubmit=False)
 Output   = [ DiracFile('DVntuple.root'), LocalFile('histo.root'), LocalFile('summary.xml') ]
 Backend  = Dirac()
 Input    = []
