@@ -3,7 +3,7 @@
 import sys
 import os
 
-GaussVersion = "v48r0"
+GaussVersion = "v49r0"
 
 GaussDir = "/afs/cern.ch/lhcb/software/releases/GAUSS/GAUSS_"+GaussVersion
 OptnsDir = GaussDir+"/Sim/Gauss/options"
@@ -22,7 +22,7 @@ j.application.optsfile = [
   , OptnsDir+"/Gauss-Job.py"
   ]
 j.name = "Default Generation"
-j.splitter = GaussSplitter(numberOfJobs=200,eventsPerJob=2500)
+j.splitter = GaussSplitter(numberOfJobs=200,eventsPerJob=25000)
 j.outputfiles = [DiracFile("*.xgen"),DiracFile("*.root"),DiracFile("*.xml")]
 j.backend = Dirac()
 j.submit()
