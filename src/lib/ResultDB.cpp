@@ -162,7 +162,9 @@ format_result::format_result(const result& row)
   bool perc = row.type == "percent";
   double factor = perc ? 100 : 1;
   double val = row.value*factor, err = row.error*factor;
-  macroname = regex_replace(row.name,regex("[^A-Za-z]"),"");
+  string str = row.name;
+  regex pat = regex("[^A-Za-z]");
+  macroname = regex_replace(str,pat,"");
   int ov = order(val);
   int oe = order(err);
   int e3sf;
