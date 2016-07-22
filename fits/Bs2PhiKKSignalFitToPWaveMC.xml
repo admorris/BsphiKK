@@ -144,6 +144,7 @@
     <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
     <FixedIntegrationPoints>10000</FixedIntegrationPoints>
     <Threads>16</Threads>
+    <WeightName>inverseacc</WeightName>
   </FitFunction>
   <CommonPhaseSpace>
     <PhaseSpaceBoundary>
@@ -194,9 +195,6 @@
       </CommonPhaseSpace>
     </DataSet>
   </ToFit>
-  <Precalculator>
-      <WeightName>acceptance</WeightName>
-  </Precalculator>
   <Output>
     <ComponentProjection>
       <Name>mKK</Name>
