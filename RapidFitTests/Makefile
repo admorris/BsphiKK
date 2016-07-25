@@ -56,21 +56,22 @@ COMLIBS   := $(shell find $(COMLIBDIR) -name '*.$(LIBEXT)')
 OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT) $(BINDIR)/*
 
 # Compiler flags
-CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(RFINCDIR) -I$(RFINCPDFDIR) -I$(RFINCUTILS) $(ROOTCFLAGS) 
+CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) -I$(RFINCDIR) -I$(RFINCPDFDIR) -I$(RFINCUTILS) $(ROOTCFLAGS) 
 LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) -L$(RFLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS) 
 
-all : dirs $(LIBS) $(BINS)
-dirs :
-	mkdir -p bin build/app build/lib lib
+all : $(LIBS) $(BINS)
 # Build binaries
-$(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
+$(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) | $(BINDIR)
 	$(CC) $(LIBFLAGS) $^ $(LIBS) $(COMLIBS) $(RFLIBS) -o $@
 # Build libraries
-$(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT)
+$(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) | $(LIBDIR)
 	$(CC) -shared $< -o $@
 # Build objects
-$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT)
+$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) | $(OBJDIR) $(OBJDIR)/$(BINSRCDIR) $(OBJDIR)/$(LIBSRCDIR)
 	$(CC) $(CXXFLAGS) -c $< -o $@
+# Make directories
+$(BINDIR) $(LIBDIR) $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR) :
+	mkdir -p $@
 # Remove all the output
 clean :
 	$(RM) $(OUTPUT)
