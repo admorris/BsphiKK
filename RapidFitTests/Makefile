@@ -8,10 +8,13 @@ CC         = g++
 SHELL      = /bin/bash
 RM         = rm -f
 
-# Include ROOT files as system headers as they're NOT standards complient and we do not want to waste time fixing them!
-# ROOT has some broken backwards compatability for OSX so won't claim to be a set of system headers
-ROOTCFLAGS = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
-ROOTLIBS   = -L$(ROOTSYS)/lib $(shell $(ROOTSYS)/bin/root-config --libs)
+ifndef ROOTSYS
+	ROOTCFLAGS = $(shell root-config --cflags)
+	ROOTLIBS   = $(shell root-config --libs)
+else
+	ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
+	ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)
+endif
 #EXTRA_ROOTLIBS=-lRooFit -lRooStats -lRooFitCore
 
 # Extensions
@@ -56,8 +59,9 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(RFINCDIR) -I$(RFINCPDFDIR) -I$(RFINCUTILS) $(ROOTCFLAGS) 
 LIBFLAGS   = -L$(LIBDIR) -L$(COMLIBDIR) -L$(RFLIBDIR) $(ROOTLIBS) -lboost_program_options $(EXTRA_ROOTLIBS) 
 
-all : $(BINS) Makefile
-libs : $(LIBS)
+all : dirs $(LIBS) $(BINS)
+dirs :
+	mkdir -p bin build/app build/lib lib
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS)
 	$(CC) $(LIBFLAGS) $^ $(LIBS) $(COMLIBS) $(RFLIBS) -o $@

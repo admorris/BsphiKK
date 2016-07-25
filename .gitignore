@@ -1,5 +1,25 @@
-latex/*
-pkgbkg/*
-build/*
-bin/*
-lib/*
+# Empty folders
+bin
+build
+latex
+lib
+ntuples
+scripts/mvaopticut.sh
+scripts/eos.sh
+scripts/log
+scripts/tables
+# Stuff to control RapidFit
+fits/RapidFitOutput*/*
+fits/scratch/*
+fits/*pdf
+fits/*root
+fits/*log
+# TMVA stuff
+mva/.__afs*
+mva/TMVA*root
+mva/plots/*
+mva/weights/*
+mva/*.d
+mva/*.so
+mva/*.pcm
+mva/AutoDict*

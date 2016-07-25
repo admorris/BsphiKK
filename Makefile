@@ -47,7 +47,9 @@ CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
 COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS))
 LIBFLAGS   = -Wl,--as-needed -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lboost_program_options -lgsl -lgslcblas -Wl,-rpath=$(LIBDIR)
 
-all : $(LIBS) $(BINS)
+all : dirs $(LIBS) $(BINS)
+dirs :
+	mkdir -p bin build/app build/lib latex/figs latex/results lib ntuples scripts/log scripts/tables
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) $(COMLIBS)
 	$(CC) $< -o $@ $(LIBFLAGS)
