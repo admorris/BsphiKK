@@ -45,8 +45,8 @@ LOGDIRS    = latex/figs latex/results ntuples scripts/log scripts/tables
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
-COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS))
-LIBFLAGS   = -Wl,--as-needed -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lboost_program_options -lgsl -lgslcblas -Wl,-rpath=$(LIBDIR)
+COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS)) -Wl,-rpath=$(COMLIBDIR)
+LIBFLAGS   = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) -Wl,-rpath=$(LIBDIR) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lgsl -lgslcblas -lboost_program_options
 
 all : $(LIBS) $(BINS) | $(LOGDIRS)
 # Build binaries
