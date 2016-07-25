@@ -164,7 +164,7 @@ format_result::format_result(const result& row)
   double val = row.value*factor, err = row.error*factor;
   string str = row.name;
   regex pat = regex("[^A-Za-z]");
-  macroname = regex_replace(str,pat,"");
+  macroname = regex_replace(str,pat,string(""));
   int ov = order(val);
   int oe = order(err);
   int e3sf;

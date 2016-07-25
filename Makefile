@@ -6,8 +6,8 @@ SHELL      = /bin/bash
 RM         = rm -f
 
 ifndef ROOTSYS
-	ROOTCFLAGS = `root-config --cflags`
-	ROOTLIBS   = `root-config --libs`
+	ROOTCFLAGS = $(shell root-config --cflags)
+	ROOTLIBS   = $(shell root-config --libs)
 else
 	ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
 	ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)

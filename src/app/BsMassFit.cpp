@@ -42,9 +42,11 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   Component* BkgMod = phiKKFitter.AddComponent("Combinatorial",BackgroundModel,Nbkg);
   BkgMod->SetColour(6);
   BkgMod->SetStyle(3);
-  int builtinstyles = 3;
-  int linecolors[builtinstyles] = {8, 28, 1};
-  int linestyles[builtinstyles] = {1, 2, 5};
+  //int builtinstyles = 3;
+  int linecolors[] = {8, 28, 1};
+  int linestyles[] = {1, 2, 5};
+  //int builtinstyles = sizeof(linecolors)/sizeof(int);
+  assert(sizeof(linecolors)==sizeof(linestyles));
   unsigned int npkbkgs = backgrounds.size();
   vector<Component*> PkgMod;
 /*Peaking background fit*******************************************************/

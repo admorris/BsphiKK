@@ -24,9 +24,10 @@ do
 done
 ###########################################################
 # Move intermediate files to EOS
-LbLogin.sh
-source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
-/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select cp *duplicates*root ${EOS_nTuples_dir}
+#LbLogin.sh
+#source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
+#/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select cp *duplicates*root ${EOS_nTuples_dir}
+# Delete intermediate files
 rm -v *duplicates*root
 ###########################################################
 exit 0
