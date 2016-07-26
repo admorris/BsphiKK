@@ -10,25 +10,10 @@
 #include "TTree.h"
 #include "TH1.h"
 #include "TMath.h"
-// RooFit headers
-#include "RooDataSet.h"
-#include "RooHist.h"
-#include "RooPlot.h"
-#include "RooRealVar.h"
 // Custom headers
 #include "plotmaker.h"
 #include "GetTree.h"
 
-// Just sum bin contents for a RooHist 
-inline double integrate(RooHist* hist)
-{
-  double integral = 0;
-  for(int i = 0; i < hist->GetN(); i++)
-  {
-    integral+=hist->GetY()[i];
-  }
-  return integral;
-}
 void CompareBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
 {
   // Open the files and get the trees
@@ -36,73 +21,25 @@ void CompareBranch(string MCfilename, string REfilename, string branchname, stri
   TFile* REfile = TFile::Open(REfilename.c_str());
   TTree* MCtree = GetTree(MCfile,cuts);
   TTree* REtree = GetTree(REfile,cuts);
-  // RooFit variables
-  using namespace RooFit;
-  RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
-  RooRealVar* MCw,* REw;
-  RooDataSet* MCdata,* REdata;
-  // Store the values of each bin because the GetMaximum() method isn't implemented properly in RooHist
-  vector<double> bincontent;
-  // Get the data out of the file and optionally weight it
-  std::cout << "Importing first tree" << endl;
-  if(MCweight!="")
-  {
-    MCw = new RooRealVar(MCweight.c_str(),"",-0.5,1.5);
-    MCdata = new RooDataSet("MCdata","",RooArgSet(*x,*MCw),WeightVar(*MCw),Import(*MCtree));
-  }
-  else
-  {
-    MCdata = new RooDataSet("MCdata","",RooArgSet(*x),Import(*MCtree));
-  }
-  std::cout << "Importing second tree" << endl;
-  if(REweight!="")
-  {
-    REw = new RooRealVar(REweight.c_str(),"",-0.5,1.5);
-    REdata = new RooDataSet("REdata","",RooArgSet(*x,*REw),WeightVar(*REw),Import(*REtree));
-  }
-  else
-  {
-    REdata = new RooDataSet("REdata","",RooArgSet(*x),Import(*REtree));
-  }
-  // Create a RooPlot and add the data points
-  RooPlot* frame = x->frame();
-  std::cout << "Plotting" << endl;
-  MCdata->plotOn(frame,Binning(nbins),DrawOption("B1"),FillColor(kOrange));
-  REdata->plotOn(frame,Binning(nbins));
-  // Get the histograms out of the RooPlot
-  RooHist* h_MCdata = frame->getHist("h_MCdata");
-  RooHist* h_REdata = frame->getHist("h_REdata");
-  // Integrate the histograms
-  double MCint = integrate(h_MCdata);
-  double REint = integrate(h_REdata);
-  double ratio = MCint/REint;
-  cout << "First integral \t" << MCint << endl;
-  cout << "Second integral\t" << REint << endl;
-  cout << "Scale factor   \t" << ratio << endl;
-  // Get rid of MC datapoint error bars and normalise to unity
-  for(int i = 0; i < h_MCdata->GetN(); i++)
-  {
-    h_MCdata->SetPointError(i,0,0,0,0);
-    h_MCdata->GetY()[i] /= MCint;
-    bincontent.push_back(h_MCdata->GetY()[i]);
-  }
-  // Normalise to unity
-  for(int i = 0; i < h_REdata->GetN(); i++)
-  {
-    h_REdata->GetY(     )[i] /= REint;
-    h_REdata->GetEYhigh()[i] /= REint;
-    h_REdata->GetEYlow( )[i] /= REint;
-    bincontent.push_back(h_REdata->GetY()[i]);
-  }
-  // Set a sensible maximum so the blurb doesn't sit on top of data points
-  double max = *max_element(bincontent.begin(),bincontent.end());
-  cout << "The maximum is\t" << max << endl;
-  frame->SetMaximum(max*1.3);
-  frame->SetMinimum(0);
+  TH1D*  MChist = new TH1D("MChist","",nbins,xlow,xup);
+  TH1D*  REhist = new TH1D("REhist","",nbins,xlow,xup);
+  MCtree->Draw((branchname+">>MChist").c_str(),MCweight.c_str());
+  REtree->Draw((branchname+">>REhist").c_str(),REweight.c_str());
+  MChist->Scale(1./MChist->Integral());
+  REhist->Scale(1./REhist->Integral());
+  MChist->SetDrawOption("B");
+  MChist->SetFillColor(kOrange);
+  MChist->SetLineColor(kOrange);
+  REhist->SetLineColor(kBlack);
+  REhist->SetMarkerStyle(20);
+  MChist->SetMaximum(MChist->GetMaximum()*1.3);
+  MChist->SetMinimum(0);
   // Draw everything
-  plotmaker plotter(frame);
+  plotmaker plotter(MChist);
   plotter.SetTitle(xtitle, unit);
-  plotter.Draw()->SaveAs((plotname+".pdf").c_str());
+  TCanvas* plot = plotter.Draw();
+  REhist->Draw("sameE1");
+  plot->SaveAs((plotname+".pdf").c_str());
 }
 
 int main(int argc, char* argv[])
