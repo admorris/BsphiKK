@@ -5,18 +5,21 @@ cd ../ntuples/
 #Sum of all cuts
 totalcut="${trigcut}&&${ghstcut}&&${trackisMuoncut}&&${phiMcut}&&${KpTcut}&&${phiIPCHI2cut}&&${KKIPCHI2cut}&&${BsFDCHI2cut}&&${BsIPCHI2cut}&&${KpiPIDcut}&&${KpPIDcut}"
 ###########################################################
-modes=(BsphiKK_data Bsphiphi_MC BsphiKK_MC BdphiKst_MC Bsphipipi_MC LbphiKp_MC)
+modes=(BsphiKK_data BsphiKK_sideband Bsphiphi_MC BsphiKK_MC BdphiKst_MC Bsphipipi_MC LbphiKp_MC)
 for mode in ${modes[@]}
 do
   if [ "$mode" == "Bsphiphi_MC"  -o  "$mode" == "BsphiKK_MC" ]
   then
-    cutapplier ${nTuples_dir}${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BKGCATcut}&&${BsMcut}" ${mode}_duplicates.root &
+    applied_cut="${totalcut}&&${BKGCATcut}&&${BsMcut}"
+  elif [ "$mode" == "BsphiKK_sideband" ]
+  then
+    applied_cut="${totalcut}"
   else
-    cutapplier ${nTuples_dir}${mode}_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&${BsMcut}" ${mode}_duplicates.root &
+    applied_cut="${totalcut}&&${BsMcut}"
   fi
+  cutapplier ${nTuples_dir}${mode}_loosePID.root DecayTreeTuple/DecayTree ${applied_cut} ${mode}_duplicates.root &
 done
 wait
-cutapplier ${nTuples_dir}BsphiKK_data_nocut.root DecayTreeTuple/DecayTree "${totalcut}&&B_s0_LOKI_Mass>5500" BsphiKK_sideband_duplicates.root
 for mode in ${modes[@]}
 do
   ../bin/FlagClones ${mode}_duplicates.root DecayTreeTuple/DecayTree

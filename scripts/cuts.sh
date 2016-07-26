@@ -31,6 +31,7 @@ phiIPCHI2cut="phi_1020_IPCHI2_OWNPV>16"
 KKIPCHI2cut="KK_IPCHI2_OWNPV>16"
 #Bs mass window cut
 BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
+sidebandcut="B_s0_LOKI_Mass>5500"
 #Bs flight distance chi-squared cut
 BsFDCHI2cut="B_s0_FDCHI2_OWNPV>250"
 BsIPCHI2cut="B_s0_IPCHI2_OWNPV<20"
