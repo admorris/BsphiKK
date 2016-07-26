@@ -7,9 +7,6 @@
 #include "TCanvas.h"
 #include "TLine.h"
 #include "TLatex.h"
-// RooFit headers
-#include "RooPlot.h"
-#include "RooHist.h"
 // Custom headers
 #include "plotmaker.h"
 #include "annotation.h"
@@ -22,8 +19,7 @@ using std::endl;
 void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale)
 {
   using namespace std;
-  RooPlot* frame = MakeBranchPlot(filename, branchname, xtitle, unit, plotname, cuts, weight, xlow, xup, nbins, overlay, scale);
-  RooHist* hist = frame->getHist();
+  TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
   
   unsigned int n;
   annotation** particles;
@@ -117,18 +113,11 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   frame->SetMaximum(frame->GetMaximum()*1.1);
   TLatex* label;
   TLine* line;
-  // Get number of bins in hist
-  int N = hist->GetN();
-  // Arrays to store Y-values and upper errors
-  double* height;
-  double* errorbar;
   double range = xup-xlow;
   // Which bin to get the height of
   int bin;
   if(go)
   {
-    height = hist->GetY();
-    errorbar = hist->GetEYhigh();
     // Loop through the particles
     for(unsigned int i = 0; i < n; i++)
     {
@@ -137,21 +126,20 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
       cout << "Labelling particle at " << line->GetX1() << " MeV" << endl;
       // Find the right bin for the line
       bin=0;
-      for(int j = 0; j < N-1 && hist->GetX()[j]+hist->GetErrorXhigh(j) < line->GetX1(); j++)
+      for(int j = 1; j < nbins && frame->GetBinLowEdge(j+1) < line->GetX1(); j++)
       {
         bin = j+1;
       }
       // Check if the particle is in the range of the plot, and the line would be big enough
-      if(line->GetX1()>xlow && line->GetX1()<xup && height[bin]/frame->GetMaximum() > 0.05)
+      if(line->GetX1()>xlow && line->GetX1()<xup && frame->GetBinContent(bin)/frame->GetMaximum() > 0.05)
       {
-        cout << "Bin " << bin << endl;        
+        cout << "Bin " << bin << endl;
         // Scale up the line
-        line->SetY2(line->GetY2()*height[bin]);
+        line->SetY2(line->GetY2()*frame->GetBinContent(bin));
         line->Draw();
         // Put the label above surrounding error bars
         label->SetX(label->GetX()-2*range/100);
-//        label->SetY(label->GetY()*maxOfFive(height[bin-2],height[bin-1],height[bin],height[bin+1],height[bin+2])+0.05*frame->GetMaximum()+errorbar[bin]);
-        label->SetY(label->GetY()*maxOfThree(height[TMath::Abs(bin-1)],height[bin],height[bin+1])+0.05*frame->GetMaximum()+errorbar[bin]);
+        label->SetY(label->GetY()*maxOfThree(frame->GetBinContent(TMath::Abs(bin-1)),frame->GetBinContent(bin),frame->GetBinContent(bin+1))+0.05*frame->GetMaximum()+frame->GetBinErrorUp(bin));
         label->Draw();
       }
       else

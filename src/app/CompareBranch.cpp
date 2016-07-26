@@ -11,20 +11,15 @@
 #include "TH1.h"
 #include "TMath.h"
 // Custom headers
+#include "MakeBranchPlot.h"
 #include "plotmaker.h"
 #include "GetTree.h"
 
 void CompareBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
 {
   // Open the files and get the trees
-  TFile* MCfile = TFile::Open(MCfilename.c_str());
-  TFile* REfile = TFile::Open(REfilename.c_str());
-  TTree* MCtree = GetTree(MCfile,cuts);
-  TTree* REtree = GetTree(REfile,cuts);
-  TH1D*  MChist = new TH1D("MChist","",nbins,xlow,xup);
-  TH1D*  REhist = new TH1D("REhist","",nbins,xlow,xup);
-  MCtree->Draw((branchname+">>MChist").c_str(),MCweight.c_str());
-  REtree->Draw((branchname+">>REhist").c_str(),REweight.c_str());
+  TH1D*  MChist = MakeBranchPlot(MCfilename,branchname,cuts,MCweight,xlow,xup,nbins);
+  TH1D*  REhist = MakeBranchPlot(REfilename,branchname,cuts,REweight,xlow,xup,nbins);
   MChist->Scale(1./MChist->Integral());
   REhist->Scale(1./REhist->Integral());
   MChist->SetDrawOption("B");

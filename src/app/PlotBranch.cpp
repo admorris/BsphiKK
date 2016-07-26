@@ -3,21 +3,34 @@
 #include <iostream>
 // BOOST headers
 #include "boost/program_options.hpp"
-// RooFit headers
-#include "RooPlot.h"
+// ROOT headers
+#include "TH1.h"
 // Custom headers
 #include "plotmaker.h"
 #include "MakeBranchPlot.h"
 using std::string;
 using std::cout;
 using std::endl;
-void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale)
+void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale)
 {
-  RooPlot* frame = MakeBranchPlot(filename, branchname, xtitle, unit, plotname, cuts, weight, xlow, xup, nbins, overlay, scale);
+  TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
+  frame->SetDrawOption("E1");
+  frame->SetLineColor(kBlack);
+  frame->SetMarkerStyle(20);
   frame->SetMaximum(frame->GetMaximum()*1.3);
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
-  plotter.Draw()->SaveAs((plotname+".pdf").c_str());
+  TCanvas* plot = plotter.Draw();
+  if(overlayfilename!="")
+  {
+    TH1D* overlay = MakeBranchPlot(overlayfilename, branchname, cuts, weight, xlow, xup, nbins);
+    overlay->Scale(scale);
+    overlay->SetDrawOption("B");
+    overlay->SetFillColor(kOrange);
+    overlay->SetLineColor(kOrange);
+    overlay->Draw("same");
+  }
+  plot->SaveAs((plotname+".pdf").c_str());
 }
 
 int main(int argc, char* argv[])

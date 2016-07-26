@@ -1,7 +1,7 @@
 #ifndef __MakeBranchPlot_h__
 #define __MakeBranchPlot_h__
 #include <string>
-#include "RooPlot.h"
+#include "TH1.h"
 using std::string;
-RooPlot* MakeBranchPlot(string, string, string, string, string, string, string, double, double, int, string, double);
+TH1D* MakeBranchPlot(string, string, string, string, double, double, int);
 #endif
