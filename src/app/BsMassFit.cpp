@@ -140,7 +140,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
         RooHist* pullhist = PBframe->pullHist();
         RooPlot* pullframe = PBmass->frame(Title("Pull"));
         pullframe->addPlotable(pullhist,"B");
-        PBplotter = new plotmaker(PBframe,pullframe);
+        PBplotter = new plotmaker(PBframe);
+        PBplotter->SetPullPlot(pullframe);
       }
       else
       {
@@ -172,7 +173,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     RooHist* pullhist = MCframe->pullHist();
     RooPlot* pullframe = mass.frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    MCplotter = new plotmaker(MCframe,pullframe);
+    MCplotter = new plotmaker(MCframe);
+    MCplotter->SetPullPlot(pullframe);
   }
   else
   {
@@ -209,7 +211,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     RooHist* pullhist = REframe->pullHist();
     RooPlot* pullframe = mass.frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    REplotter = new plotmaker(REframe,pullframe);
+    REplotter = new plotmaker(REframe);
+    REplotter->SetPullPlot(pullframe);
   }
   else
   {

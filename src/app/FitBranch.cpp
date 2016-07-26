@@ -47,7 +47,8 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
     RooHist* pullhist = frame->pullHist();
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    plotter = new plotmaker(frame,pullframe);
+    plotter = new plotmaker(frame);
+    plotter->SetPullPlot(pullframe);
   }
   else
   {

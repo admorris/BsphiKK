@@ -44,7 +44,8 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   {
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(Sframe->pullHist(),"B");
-    plotter = new plotmaker(Sframe,pullframe);
+    plotter = new plotmaker(Sframe);
+    plotter->SetPullPlot(pullframe);
   }
   else
   {
@@ -62,7 +63,8 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
 //  {
 //    RooPlot* pullframe = x->frame(Title("Pull"));
 //    pullframe->addPlotable(Bframe->pullHist(),"B");
-//    plotter = new plotmaker(Bframe,pullframe);
+//    plotter = new plotmaker(Bframe);
+//    plotter->SetPullPlot(pullframe);
 //  }
 //  else
 //  {
@@ -79,7 +81,8 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   {
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(Cframe->pullHist(),"B");
-    plotter = new plotmaker(Cframe,pullframe);
+    plotter = new plotmaker(Cframe);
+    plotter->SetPullPlot(pullframe);
   }
   else
   {
