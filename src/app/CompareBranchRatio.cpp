@@ -16,10 +16,11 @@
 using std::string;
 void CompareBranchRatio(string Dfilename, string Nfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string Dweight, string Nweight, double xlow, double xup, int nbins)
 {
-  // Open the files and get the trees
   TH1D*  Dhist = MakeBranchPlot(Dfilename,branchname,cuts,Dweight,xlow,xup,nbins);
   TH1D*  Nhist = MakeBranchPlot(Nfilename,branchname,cuts,Nweight,xlow,xup,nbins);
   Nhist->Divide(Dhist);
+  Nhist->SetMaximum(Nhist->GetMaximum()*1.5);
+  Nhist->SetMinimum(0);
   // Draw everything
   plotmaker plotter(Nhist);
   plotter.SetTitle(xtitle, unit);
