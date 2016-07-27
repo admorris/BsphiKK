@@ -14,13 +14,10 @@ using std::endl;
 void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale)
 {
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
-  frame->SetDrawOption("E1");
-  frame->SetLineColor(kBlack);
-  frame->SetMarkerStyle(20);
   frame->SetMaximum(frame->GetMaximum()*1.3);
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
-  TCanvas* plot = plotter.Draw();
+  TCanvas* plot = plotter.Draw("E1");
   if(overlayfilename!="")
   {
     TH1D* overlay = MakeBranchPlot(overlayfilename, branchname, cuts, weight, xlow, xup, nbins);

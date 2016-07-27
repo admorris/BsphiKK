@@ -10,8 +10,6 @@
 // Custom headers
 #include "plotmaker.h"
 #include "annotation.h"
-#include "maxOfFive.h"
-#include "maxOfThree.h"
 #include "MakeBranchPlot.h"
 using std::string;
 using std::cout;
@@ -108,9 +106,10 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     go=false;
   }
   plotmaker plotter(frame);
+//  frame->SetDrawOption("E1");
   plotter.SetTitle(xtitle,unit);
-  TCanvas* canv = plotter.Draw();
-  frame->SetMaximum(frame->GetMaximum()*1.1);
+  TCanvas* canv = plotter.Draw("E1");
+  frame->SetMaximum(frame->GetMaximum()*1.3);
   TLatex* label;
   TLine* line;
   double range = xup-xlow;
@@ -139,7 +138,8 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
         line->Draw();
         // Put the label above surrounding error bars
         label->SetX(label->GetX()-2*range/100);
-        label->SetY(label->GetY()*maxOfThree(frame->GetBinContent(TMath::Abs(bin-1)),frame->GetBinContent(bin),frame->GetBinContent(bin+1))+0.05*frame->GetMaximum()+frame->GetBinErrorUp(bin));
+        double ys[] = {frame->GetBinContent(TMath::Abs(bin-1)),frame->GetBinContent(bin),frame->GetBinContent(bin+1)};
+        label->SetY(label->GetY()*(*max_element(ys,ys+3))+0.05*frame->GetMaximum()+frame->GetBinErrorUp(bin));
         label->Draw();
       }
       else

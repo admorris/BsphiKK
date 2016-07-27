@@ -25,8 +25,6 @@ void CompareBranch(string MCfilename, string REfilename, string branchname, stri
   MChist->SetDrawOption("B");
   MChist->SetFillColor(kOrange);
   MChist->SetLineColor(kOrange);
-  REhist->SetLineColor(kBlack);
-  REhist->SetMarkerStyle(20);
   MChist->SetMaximum(MChist->GetMaximum()*1.3);
   MChist->SetMinimum(0);
   // Draw everything
