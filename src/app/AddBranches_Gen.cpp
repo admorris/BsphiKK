@@ -11,7 +11,6 @@
 #include "TH1D.h"
 #include "TLegend.h"
 #include "TStyle.h"
-#include "minOfFour.h"
 #include "safeLog.h"
 using namespace std;
 void addBranches(string filename = "BsphiKK_data")

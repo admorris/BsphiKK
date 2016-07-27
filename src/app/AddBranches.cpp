@@ -1,6 +1,7 @@
 // Std headers
 #include <string.h>
 #include <iostream>
+#include <algorithm>
 // ROOT headers
 #include "TSystem.h"
 #include "TCanvas.h"
@@ -15,7 +16,6 @@
 #include "TLegend.h"
 #include "TStyle.h"
 // Custom headers
-#include "minOfFour.h"
 #include "safeLog.h"
 #include "GetTree.h"
 using namespace std;
@@ -202,9 +202,9 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     B_s0_ln_EVCHI2  = safeLog(B_s0_ENDVERTEX_CHI2/5.0); // 5 degrees of freedom
     B_s0_PT_fiveGeV = B_s0_PT/5000; // Change units for sensible range of numbers
     B_s0_Eta        = TMath::ACosH(B_s0_P/B_s0_PT);
-    minK_ln_IPCHI2  = safeLog(minOfFour(h_IPCHI2_OWNPV[0],h_IPCHI2_OWNPV[1],h_IPCHI2_OWNPV[2],h_IPCHI2_OWNPV[3]));
+    minK_ln_IPCHI2  = safeLog(*min_element(h_IPCHI2_OWNPV,h_IPCHI2_OWNPV+4));
     for(int j = 0; j < 4; j++) h_LOKI_PT[j] = TMath::Sqrt(TMath::Power(h_LOKI_PX[j],2)+TMath::Power(h_LOKI_PY[j],2));
-    minK_PT_GeV     = minOfFour(h_LOKI_PT[0],h_LOKI_PT[1],h_LOKI_PT[2],h_LOKI_PT[3])/1000;
+    minK_PT_GeV     = (*min_element(h_LOKI_PT,h_LOKI_PT+4))/1000;
 /*Mass branches****************************************************************/
     // MC truth mass
     if(isMC)
