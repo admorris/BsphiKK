@@ -25,9 +25,9 @@ void AngularAcceptance(string selfile, string genfile)
   // Begin adaptive binning stuff
   const int n = gentree->GetEntries();
   cout << "Attempting to make an array with " << n*4 << " elements" << endl;
-  vector<double> data; // To use a vector rather than a double, you need ROOT v6.07
+  vector<double> data; // To use the TKDTreeBinning constructor with a vector rather than a double, you need ROOT v6.07 ........ but that version isn't linked against GSL properly because why should anything work propely at this multi-billion-pound facility?
   for(int i = 0; i < n*4; i++)
-    data.push_back(0);
+    data.push_back(0); //lol
   gentree->SetBranchAddress("Phi_angle" ,&x[0]);
   gentree->SetBranchAddress("cos_theta1",&x[1]);
   gentree->SetBranchAddress("cos_theta2",&x[2]);
@@ -42,7 +42,7 @@ void AngularAcceptance(string selfile, string genfile)
   }
   int nbins = 232;
   cout << "Using " << nbins << " bins." << endl;
-  TKDTreeBinning binner(n,4,data,nbins);
+  TKDTreeBinning binner(n,4,&data[0],nbins);
   // End adaptive binning stuff
   FourDHist_Adaptive selhist(&binner);
   Fill(x, seltree, selhist, sym);
@@ -57,7 +57,6 @@ void AngularAcceptance(string selfile, string genfile)
   FourDHist_Adaptive acchist = selhist / genhist;
   acchist.SaveToTree()->Write();
   binner.GetTree()->Write();
-  cout << "Did we crash yet?" << endl;
   output.Close();
 }
 int main(int argc, char* argv[])

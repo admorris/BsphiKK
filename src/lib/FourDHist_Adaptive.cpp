@@ -56,7 +56,6 @@ bool FourDHist_Adaptive::IsCompatible(const FourDHist_Adaptive& other)
 }
 TTree* FourDHist_Adaptive::SaveToTree()
 {
-  cout << "Making a tree" << endl;
   TTree* tree = new TTree("AccTree","");
   double content; tree->Branch("content",&content );
   for(int ibin = 0; ibin < nbins; ibin++)
