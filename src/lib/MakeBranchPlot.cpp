@@ -7,5 +7,7 @@ TH1D* MakeBranchPlot(string filename, string branchname, string cuts, string wei
   TTree* tree = GetTree(filename,cuts);
   TH1D* hist = new TH1D((branchname+"hist").c_str(),"",nbins,xlow,xup);
   tree->Draw((branchname+">>"+hist->GetName()).c_str(),weight.c_str());
+  hist->SetLineColor(kBlack);
+  hist->SetMarkerStyle(20);
   return hist;
 }
