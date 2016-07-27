@@ -1,7 +1,7 @@
 #!/bin/bash
 ./showvetoes.sh | tee log/showvetoes.log
 ## Preliminary m(KK) plots
-./plotmKK.sh
+./plotmKK.sh | tee log/plotmKK.log
 ## MVA data-MC comparison
 ./mvadataMCsWcomp.sh | tee log/mvadataMCsWcomp.log
 ./mvadataMCsWcompOutput.sh | tee log/mvadataMCsWcompOutput.log
