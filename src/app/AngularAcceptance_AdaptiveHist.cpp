@@ -19,12 +19,15 @@ using namespace std;
 void AngularAcceptance(string selfile, string genfile)
 {
   bool sym = true;
-  TTree* gentree = GetTree(genfile,"KK_M<1800");
+  TTree* gentree = GetTree(genfile/*,"KK_M<1800"*/);
   TTree* seltree = GetTree(selfile,"KK_M<1800");
   double x[4];
   // Begin adaptive binning stuff
   const int n = gentree->GetEntries();
-  double data[n*4];
+  cout << "Attempting to make an array with " << n*4 << " elements" << endl;
+  vector<double> data; // To use a vector rather than a double, you need ROOT v6.07
+  for(int i = 0; i < n*4; i++)
+    data.push_back(0);
   gentree->SetBranchAddress("Phi_angle" ,&x[0]);
   gentree->SetBranchAddress("cos_theta1",&x[1]);
   gentree->SetBranchAddress("cos_theta2",&x[2]);
@@ -33,6 +36,7 @@ void AngularAcceptance(string selfile, string genfile)
   {
     gentree->GetEntry(i);
     x[3]/=1000; // MeV to GeV
+//    if(i%10000==0) cout << i << endl;
     for(int j = 0; j < 4; j++)
       data[n*j+i] = sym ? TMath::Abs(x[j]) : x[j];
   }
@@ -53,6 +57,7 @@ void AngularAcceptance(string selfile, string genfile)
   FourDHist_Adaptive acchist = selhist / genhist;
   acchist.SaveToTree()->Write();
   binner.GetTree()->Write();
+  cout << "Did we crash yet?" << endl;
   output.Close();
 }
 int main(int argc, char* argv[])

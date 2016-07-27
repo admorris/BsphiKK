@@ -10,7 +10,7 @@ void FourDHist::Initialise()
 // Destructor
 FourDHist::~FourDHist()
 {
-  delete[] bincontent;
+  delete[] bincontent; // All this does is segfault
 }
 int FourDHist::FindBin(double w, double x, double y, double z)
 {
