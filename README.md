@@ -4,7 +4,7 @@ Please see the TWiki page:
 https://twiki.cern.ch/twiki/bin/viewauth/LHCbPhysics/Bs2PhiKK
 
 ## Dependencies
-- ROOT 6.04.14  
+- ROOT 6.06.02  
 - My 'common' libraries: https://github.com/abmorris/common  
 - My fork of RapidFit: https://github.com/abmorris/RapidFit
 
@@ -21,3 +21,4 @@ The scripts `angacc.sh` and `bkgparam.sh` should produce .root files in the `fit
 
 ## Angular fit
 From the `fits/` folder run `fitting -f Bs2PhiKKTotalFitToData.xml`
+
