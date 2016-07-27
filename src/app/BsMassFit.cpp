@@ -219,7 +219,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     REplotter = new plotmaker(REframe);
   }
   REplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
-  TCanvas* canv = REplotter->Draw(logy);
+  REplotter->SetLogy(logy);
+  TCanvas* canv = REplotter->Draw();
 /*Output S and B for MC optimisation*******************************************/
   double mean = SigMod->GetValue("mean");
   cout << "The mass (μ) from data is: " << mean << " MeV/c^2" << endl;
