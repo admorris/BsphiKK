@@ -4,14 +4,14 @@
 #include "FourDHist.h"
 #include "TTree.h"
 using namespace std;
-void Fill(double* x, TTree* tree, FourDHist& hist, bool sym)
+void Fill(double* x, TTree* tree, FourDHist& hist, char* mKKbranch = "KK_M", bool sym)
 {
   int n = tree->GetEntries();
   cout << "Tree contains " << n << " entries" << endl;
   tree->SetBranchAddress("Phi_angle" ,&x[0]);
   tree->SetBranchAddress("cos_theta1",&x[1]);
   tree->SetBranchAddress("cos_theta2",&x[2]);
-  tree->SetBranchAddress("KK_M"      ,&x[3]);
+  tree->SetBranchAddress(mKKbranch   ,&x[3]); // option to use BCON branch
   cout << "Entering event loop" << endl;
   for(int i = 0; i < n; i++)
   {

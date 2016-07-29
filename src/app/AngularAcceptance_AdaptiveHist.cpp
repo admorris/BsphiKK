@@ -45,12 +45,12 @@ void AngularAcceptance(string selfile, string genfile)
   TKDTreeBinning binner(n,4,&data[0],nbins);
   // End adaptive binning stuff
   FourDHist_Adaptive selhist(&binner);
-  Fill(x, seltree, selhist, sym);
+  Fill(x, seltree, selhist, "BCON_KK_M", sym);
   selhist.BinContentHist()->Draw();
   gPad->SaveAs("SelBinDist.pdf");
   FourDHist_Adaptive genhist = selhist;
   genhist.Clear();
-  Fill(x, gentree, genhist, sym);
+  Fill(x, gentree, genhist, "KK_M", sym);
   genhist.BinContentHist()->Draw();
   gPad->SaveAs("GenBinDist.pdf");
   TFile output("Acceptance.root","RECREATE");
