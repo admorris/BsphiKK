@@ -14,10 +14,10 @@
 #include "MakeBranchPlot.h"
 #include "plotmaker.h"
 using std::string;
-void CompareBranchRatio(string Dfilename, string Nfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string Dweight, string Nweight, double xlow, double xup, int nbins)
+void CompareBranchRatio(string Dfilename, string Nfilename, string branchname, string xtitle, string unit, string plotname, string Dcuts, string Ncuts, string Dweight, string Nweight, double xlow, double xup, int nbins)
 {
-  TH1D*  Dhist = MakeBranchPlot(Dfilename,branchname,cuts,Dweight,xlow,xup,nbins);
-  TH1D*  Nhist = MakeBranchPlot(Nfilename,branchname,cuts,Nweight,xlow,xup,nbins);
+  TH1D*  Dhist = MakeBranchPlot(Dfilename,branchname,Dcuts,Dweight,xlow,xup,nbins);
+  TH1D*  Nhist = MakeBranchPlot(Nfilename,branchname,Ncuts,Nweight,xlow,xup,nbins);
   Nhist->Divide(Dhist);
   Nhist->SetMaximum(Nhist->GetMaximum()*1.5);
   Nhist->SetMinimum(0);
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",(unsigned)120);
-  std::string Dfile, Nfile, branch, cuts, xtitle, unit, plot, Dweight, Nweight;
+  std::string Dfile, Nfile, branch, Dcuts, Ncuts, xtitle, unit, plot, Dweight, Nweight;
   double xlow, xup;
   int nbins;
   desc.add_options()
@@ -42,7 +42,8 @@ int main(int argc, char* argv[])
     ("branch,B" , value<string>(&branch )->default_value("KK_M"                            ), "branch to plot"                )
     ("Dweight,w", value<string>(&Dweight)->default_value(""                                ), "denominator weighting variable")
     ("Nweight,W", value<string>(&Nweight)->default_value(""                                ), "numerator weighting variable"  )
-    ("cuts,C"   , value<string>(&cuts   )->default_value(""                                ), "optional cuts"                 )
+    ("Dcuts,c"  , value<string>(&Dcuts  )->default_value(""                                ), "denominator cuts"              )
+    ("Ncuts,C"  , value<string>(&Ncuts  )->default_value(""                                ), "numerator cuts"                )
     ("title,T"  , value<string>(&xtitle )->default_value("#it{m}(#it{K^{#plus}K^{#minus}})"), "x-axis title"                  )
     ("unit,U"   , value<string>(&unit   )->default_value("MeV/#it{c}^{2}"                  ), "unit"                          )
     ("plot,O"   , value<string>(&plot   )->default_value("comparison"                      ), "output plot filename"          )
@@ -59,6 +60,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  CompareBranchRatio(Dfile,Nfile,branch,xtitle,unit,plot,cuts,Dweight,Nweight,xlow,xup,nbins);
+  CompareBranchRatio(Dfile,Nfile,branch,xtitle,unit,plot,Dcuts,Ncuts,Dweight,Nweight,xlow,xup,nbins);
   return 0;
 }
