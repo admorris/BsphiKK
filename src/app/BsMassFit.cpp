@@ -38,13 +38,13 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   RooRealVar* Nbkg  = new RooRealVar("N","Number of background events",1830,0,20000);
   Component* SigMod = phiKKFitter.AddComponent("Signal",SignalModel,Nsig);
   SigMod->SetColour(4);
-  SigMod->SetStyle(9);
+  SigMod->SetStyle (9);
   Component* BkgMod = phiKKFitter.AddComponent("Combinatorial",BackgroundModel,Nbkg);
   BkgMod->SetColour(6);
-  BkgMod->SetStyle(3);
+  BkgMod->SetStyle (3);
   //int builtinstyles = 3;
   int linecolors[] = {8, 28, 1};
-  int linestyles[] = {1, 2, 5};
+  int linestyles[] = {1,  2, 5};
   //int builtinstyles = sizeof(linecolors)/sizeof(int);
   assert(sizeof(linecolors)==sizeof(linestyles));
   unsigned int npkbkgs = backgrounds.size();
@@ -82,7 +82,6 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       }
       string shapename = "Crystal Ball + 1 Gaussian";
       Component* comp;
-      
       if(cbnpos != string::npos)
       {
         // Different branch name and range
@@ -157,7 +156,7 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
       }
       delete PBplotter;
       comp->SetColour(linecolors[i]);
-      comp->SetStyle(linestyles[i]);
+      comp->SetStyle (linestyles[i]);
     }
   }
 /*Monte Carlo fit**************************************************************/
@@ -234,36 +233,36 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
        ;
   for(int window = 2; window <= 3; window++)
   {
-      cout << "Integrating fitted data PDF over μ±" << window << "σ" << endl;
-      mass.setRange((itoa(window)+"sigma").c_str(),mean-window*resolution,mean+window*resolution);
-      RooAbsReal* sigmodint = sigmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
-      RooAbsReal* bkgmodint = bkgmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
-      double tempNsig    = sigmodint->getVal()*Nsig->getVal()
-           , tempNsigerr = sigmodint->getVal()*Nsig->getError()
-           , tempNbkg    = bkgmodint->getVal()*Nbkg->getVal()
-           , tempNbkgerr = bkgmodint->getVal()*Nbkg->getError()
-           ;
-      if(window == 2)
-      {
-        Nsigtwosigma    = tempNsig;
-        Nsigtwosigmaerr = tempNsigerr;
-        Nbkgtwosigma    = tempNbkg;
-        Nbkgtwosigmaerr = tempNbkgerr;
-      }
-      else if(window == 3)
-      {
-        Nsigthreesigma    = tempNsig;
-        Nsigthreesigmaerr = tempNsigerr;
-        Nbkgthreesigma    = tempNbkg;
-        Nbkgthreesigmaerr = tempNbkgerr;
-      }
-      cout << "S:\t" << tempNsig << "±" << tempNsigerr << endl;
-      cout << "B:\t" << tempNbkg << "±" << tempNbkgerr << endl;
-      for(unsigned int i = 0; i < npkbkgs; i++)
-      {
-        RooAbsReal* pkgmodint = PkgMod[i]->GetPDF()->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
-        cout << "B" << i << ":\t" << pkgmodint->getVal()*PkgMod[i]->GetValue("N") << endl;
-      }
+    cout << "Integrating fitted data PDF over μ±" << window << "σ" << endl;
+    mass.setRange((itoa(window)+"sigma").c_str(),mean-window*resolution,mean+window*resolution);
+    RooAbsReal* sigmodint = sigmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
+    RooAbsReal* bkgmodint = bkgmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
+    double tempNsig    = sigmodint->getVal()*Nsig->getVal()
+         , tempNsigerr = sigmodint->getVal()*Nsig->getError()
+         , tempNbkg    = bkgmodint->getVal()*Nbkg->getVal()
+         , tempNbkgerr = bkgmodint->getVal()*Nbkg->getError()
+         ;
+    if(window == 2)
+    {
+      Nsigtwosigma    = tempNsig;
+      Nsigtwosigmaerr = tempNsigerr;
+      Nbkgtwosigma    = tempNbkg;
+      Nbkgtwosigmaerr = tempNbkgerr;
+    }
+    else if(window == 3)
+    {
+      Nsigthreesigma    = tempNsig;
+      Nsigthreesigmaerr = tempNsigerr;
+      Nbkgthreesigma    = tempNbkg;
+      Nbkgthreesigmaerr = tempNbkgerr;
+    }
+    cout << "S:\t" << tempNsig << "±" << tempNsigerr << endl;
+    cout << "B:\t" << tempNbkg << "±" << tempNbkgerr << endl;
+    for(unsigned int i = 0; i < npkbkgs; i++)
+    {
+      RooAbsReal* pkgmodint = PkgMod[i]->GetPDF()->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
+      cout << "B" << i << ":\t" << pkgmodint->getVal()*PkgMod[i]->GetValue("N") << endl;
+    }
   }
   if(drawregion!=0)
   {
@@ -314,14 +313,14 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     cout << "Written to " << outputFile->GetName() << endl;
   }
   vector<parameter> pars;
-  pars.push_back(parameter("alpha" ,"\\alpha"      ,SigMod));
-  pars.push_back(parameter("n"     ,"n"            ,SigMod));
-  pars.push_back(parameter("sigma1","\\sigma_1"    ,SigMod));
-  pars.push_back(parameter("sigma2","\\sigma_2"    ,SigMod));
-  pars.push_back(parameter("sigma3","\\sigma_3"    ,SigMod));
-  pars.push_back(parameter("fgaus1","f_1"          ,SigMod));
-  pars.push_back(parameter("fgaus2","f_2"          ,SigMod));
-  pars.push_back(parameter("mean"  ,"\\mu"         ,SigMod));
+  pars.push_back(parameter("alpha" ,"\\alpha"  ,SigMod));
+  pars.push_back(parameter("n"     ,"n"        ,SigMod));
+  pars.push_back(parameter("sigma1","\\sigma_1",SigMod));
+  pars.push_back(parameter("sigma2","\\sigma_2",SigMod));
+  pars.push_back(parameter("sigma3","\\sigma_3",SigMod));
+  pars.push_back(parameter("fgaus1","f_1"      ,SigMod));
+  pars.push_back(parameter("fgaus2","f_2"      ,SigMod));
+  pars.push_back(parameter("mean"  ,"\\mu"     ,SigMod));
   parameter Nsigpar("N","N_\\text{sig}",SigMod); pars.push_back(Nsigpar);
   parameter Nbkgpar("N","N_\\text{bkg}",BkgMod); pars.push_back(Nbkgpar);
 /******************************************************************************/
@@ -358,8 +357,9 @@ int main(int argc, char* argv[])
   desc.add_options()
     ("help,H"      ,                                                                             "produce help message"           )
     ("sweight,W"   ,                                                                             "apply sweights to data"         )
-    ("draw-region" , value<int>(&drawregion   )->default_value(0                              ), "draw lines at ±Nσ"              )
     ("pulls,P"     ,                                                                             "plot with pulls"                )
+    ("logy"        ,                                                                             "log y scale"                    )
+    ("draw-region" , value<int>(&drawregion   )->default_value(0                              ), "draw lines at ±Nσ"              )
     ("MCfile,M"    , value<string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "Monte Carlo file"               )
     ("REfile,R"    , value<string>(&REfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"            )
     ("sigPDF,S"    , value<string>(&sigPDF    )->default_value("Crystal Ball + 2 Gaussians"   ), "signal PDF to fit to data"      )
@@ -369,8 +369,7 @@ int main(int argc, char* argv[])
     ("cuts,C"      , value<string>(&cuts      )->default_value(""                             ), "optional cuts"                  )
     ("backgrounds" , value<vector<string>>(&pkbkgs)->multitoken(                              ), "peaking background MC files"    )
     ("yields"      , value<vector<double>>(&yields)->multitoken(                              ), "background yields"              )
-    ("yopts"       , value<vector<string>>(&yopts)->multitoken(                               ), "BG yield options: abs, rel, flo")
-    ("logy"        ,                                                                             "log y scale"                    )
+    ("yopts"       , value<vector<string>>(&yopts )->multitoken(                              ), "BG yield options: abs, rel, flo")
     ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"               ), "output file"                    )
     ("save-results", value<string>(&resname   )->default_value(""                             ), "name to save results as"        )
   ;
