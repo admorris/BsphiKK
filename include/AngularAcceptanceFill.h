@@ -4,7 +4,7 @@
 #include "FourDHist.h"
 #include "TTree.h"
 using namespace std;
-void Fill(double* x, TTree* tree, FourDHist& hist, char* mKKbranch = "KK_M", bool sym)
+void Fill(double* x, TTree* tree, FourDHist& hist, const char* mKKbranch = "KK_M", bool sym = false)
 {
   int n = tree->GetEntries();
   cout << "Tree contains " << n << " entries" << endl;
