@@ -28,11 +28,6 @@ void CompareBranchRatio(string Dfilename, string Nfilename, string Dbranchname, 
   plot->SaveAs((plotname+".pdf").c_str());
 }
 
-
-
-
-
-
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
@@ -44,7 +39,7 @@ int main(int argc, char* argv[])
     ("help"   ,                                                                          "produce help message"          )
     ("Dfile"  , value<string>(&Dfile  )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "denominator file"              )
     ("Nfile"  , value<string>(&Nfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "numerator file"                )
-    ("Dbranch", value<string>(&Nbranch)->default_value("KK_M"                         ), "denominator branch to plot"    )
+    ("Dbranch", value<string>(&Dbranch)->default_value("KK_M"                         ), "denominator branch to plot"    )
     ("Nbranch", value<string>(&Nbranch)->default_value("KK_M"                         ), "numerator branch to plot"      )
     ("Dweight", value<string>(&Dweight)->default_value(""                             ), "denominator weighting variable")
     ("Nweight", value<string>(&Nweight)->default_value(""                             ), "numerator weighting variable"  )
