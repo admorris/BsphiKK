@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 
-
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1D.h"
@@ -14,18 +13,19 @@
 #include "GetTree.h"
 #include "FourDHist_Adaptive.h"
 #include "AngularAcceptanceFill.h"
+#include "ResultDB.h"
 
 using namespace std;
 void AngularAcceptance(string selfile, string genfile)
 {
   bool sym = true;
-  TTree* gentree = GetTree(genfile/*,"KK_M<1800"*/);
-  TTree* seltree = GetTree(selfile,"KK_M<1800");
+  TTree* gentree = GetTree(genfile,"KK_M<1800");
+  TTree* seltree = GetTree(selfile,"BCON_KK_M<1800&&abs(KK_TRUEID)>500");
   double x[4];
   // Begin adaptive binning stuff
   const int n = gentree->GetEntries();
   cout << "Attempting to make an array with " << n*4 << " elements" << endl;
-  vector<double> data; // To use the TKDTreeBinning constructor with a vector rather than a double, you need ROOT v6.07 ........ but that version isn't linked against GSL properly because why should anything work propely at this multi-billion-pound facility?
+  vector<double> data;
   for(int i = 0; i < n*4; i++)
     data.push_back(0); //lol
   gentree->SetBranchAddress("Phi_angle" ,&x[0]);
@@ -40,24 +40,29 @@ void AngularAcceptance(string selfile, string genfile)
     for(int j = 0; j < 4; j++)
       data[n*j+i] = sym ? TMath::Abs(x[j]) : x[j];
   }
-  int nbins = 232;
-  cout << "Using " << nbins << " bins." << endl;
+  int nbins = 100;
+//  cout << "Using " << nbins << " bins." << endl;
   TKDTreeBinning binner(n,4,&data[0],nbins);
   // End adaptive binning stuff
-  FourDHist_Adaptive selhist(&binner);
-  Fill(x, seltree, selhist, "BCON_KK_M", sym);
-  selhist.BinContentHist()->Draw();
-  gPad->SaveAs("SelBinDist.pdf");
-  FourDHist_Adaptive genhist = selhist;
-  genhist.Clear();
+  TFile output("Acceptance.root","RECREATE");
+  FourDHist_Adaptive genhist(&binner);
   Fill(x, gentree, genhist, "KK_M", sym);
   genhist.BinContentHist()->Draw();
   gPad->SaveAs("GenBinDist.pdf");
-  TFile output("Acceptance.root","RECREATE");
+  FourDHist_Adaptive selhist = genhist;
+  selhist.Clear();
+  Fill(x, seltree, selhist, "BCON_KK_M", sym);
+  selhist.BinContentHist()->Draw();
+  gPad->SaveAs("SelBinDist.pdf");
   FourDHist_Adaptive acchist = selhist / genhist;
   acchist.SaveToTree()->Write();
   binner.GetTree()->Write();
   output.Close();
+  ResultDB table("Acceptance.csv");
+  table.Update("accNgen","N",gentree->GetEntries(),0);
+  table.Update("accNsel","N",seltree->GetEntries(),0);
+  table.Update("accNbins","N",binner.GetNBins(),0);
+  table.Save();
 }
 int main(int argc, char* argv[])
 {
