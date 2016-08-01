@@ -14,13 +14,12 @@
 #include "MakeBranchPlot.h"
 #include "plotmaker.h"
 using std::string;
-void CompareBranch(string MCfilename, string REfilename, string branchname, string xtitle, string unit, string plotname, string cuts, string MCweight, string REweight, double xlow, double xup, int nbins)
+void CompareBranch(string MCfilename, string CDfilename, string MCbranchname, string CDbranchname, string xtitle, string unit, string plotname, string MCcuts, string CDcuts, string MCweight, string CDweight, double xlow, double xup, int nbins)
 {
-  // Open the files and get the trees
-  TH1D*  MChist = MakeBranchPlot(MCfilename,branchname,cuts,MCweight,xlow,xup,nbins);
-  TH1D*  REhist = MakeBranchPlot(REfilename,branchname,cuts,REweight,xlow,xup,nbins);
+  TH1D*  MChist = MakeBranchPlot(MCfilename,MCbranchname,MCcuts,MCweight,xlow,xup,nbins);
+  TH1D*  CDhist = MakeBranchPlot(CDfilename,CDbranchname,CDcuts,CDweight,xlow,xup,nbins);
   MChist->Scale(1./MChist->Integral());
-  REhist->Scale(1./REhist->Integral());
+  CDhist->Scale(1./CDhist->Integral());
   MChist->SetDrawOption("B");
   MChist->SetFillColor(kOrange);
   MChist->SetLineColor(kOrange);
@@ -30,7 +29,7 @@ void CompareBranch(string MCfilename, string REfilename, string branchname, stri
   plotmaker plotter(MChist);
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw();
-  REhist->Draw("sameE1");
+  CDhist->Draw("sameE1");
   plot->SaveAs((plotname+".pdf").c_str());
 }
 
@@ -38,23 +37,25 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",(unsigned)120);
-  std::string MCfile, REfile, branch, cuts, xtitle, unit, plot, MCweight, REweight;
+  std::string MCfile, CDfile, MCbranch, CDbranch, MCcuts, CDcuts, xtitle, unit, plot, MCweight, CDweight;
   double xlow, xup;
   int nbins;
   desc.add_options()
-    ("help,H"    ,                                                                                   "produce help message"             )
-    ("MCfile,M"  , value<string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"          ), "Monte Carlo file"                 )
-    ("REfile,R"  , value<string>(&REfile  )->default_value("ntuples/BsphiKK_data_mva.root"        ), "collision data file"              )
-    ("branch,B"  , value<string>(&branch  )->default_value("B_s0_LOKI_Mass"                       ), "branch to plot"                   )
-    ("MCweight,w", value<string>(&MCweight)->default_value(""                                     ), "Monte Carlo weighting variable"   )
-    ("REweight,W", value<string>(&REweight)->default_value(""                                     ), "collision data weighting variable")
-    ("cuts,C"    , value<string>(&cuts    )->default_value(""                                     ), "optional cuts"                    )
-    ("title,T"   , value<string>(&xtitle  )->default_value("#it{m}(#it{#phi K^{#plus}K^{#minus}})"), "x-axis title"                     )
-    ("unit,U"    , value<string>(&unit    )->default_value("MeV/#it{c}^{2}"                       ), "unit"                             )
-    ("plot,O"    , value<string>(&plot    )->default_value("comparison"                           ), "output plot filename"             )
-    ("upper,u"   , value<double>(&xup     )->default_value(5600                                   ), "branch upper limit"               )
-    ("lower,l"   , value<double>(&xlow    )->default_value(5200                                   ), "branch lower limit"               )
-    ("bins,b"    , value<int   >(&nbins   )->default_value(20                                     ), "number of bins"                   )
+    ("help"    ,                                                                           "produce help message"             )
+    ("MCfile"  , value<string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "Monte Carlo file"                 )
+    ("CDfile"  , value<string>(&CDfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"              )
+    ("MCbranch", value<string>(&MCbranch)->default_value("B_s0_LOKI_Mass"               ), "Monte Carlo branch to plot"       )
+    ("CDbranch", value<string>(&CDbranch)->default_value("B_s0_LOKI_Mass"               ), "collision data branch to plot"    )
+    ("MCweight", value<string>(&MCweight)->default_value(""                             ), "Monte Carlo weighting variable"   )
+    ("CDweight", value<string>(&CDweight)->default_value(""                             ), "collision data weighting variable")
+    ("MCcuts"  , value<string>(&MCcuts  )->default_value(""                             ), "Monte Carlo cuts"                 )
+    ("CDcuts"  , value<string>(&CDcuts  )->default_value(""                             ), "collision data cuts"              )
+    ("title"   , value<string>(&xtitle  )->default_value("#it{m}(#it{#phi K^{+}K^{-}})" ), "x-axis title"                     )
+    ("unit"    , value<string>(&unit    )->default_value("MeV/#it{c}^{2}"               ), "unit"                             )
+    ("plot"    , value<string>(&plot    )->default_value("comparison"                   ), "output plot filename"             )
+    ("upper"   , value<double>(&xup     )->default_value(5600                           ), "branch upper limit"               )
+    ("lower"   , value<double>(&xlow    )->default_value(5200                           ), "branch lower limit"               )
+    ("bins"    , value<int   >(&nbins   )->default_value(20                             ), "number of bins"                   )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -65,6 +66,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  CompareBranch(MCfile,REfile,branch,xtitle,unit,plot,cuts,MCweight,REweight,xlow,xup,nbins);
+  CompareBranch(MCfile,CDfile,MCbranch,CDbranch,xtitle,unit,plot,MCcuts,CDcuts,MCweight,CDweight,xlow,xup,nbins);
   return 0;
 }

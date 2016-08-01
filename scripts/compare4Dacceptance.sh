@@ -3,17 +3,28 @@ cd ../ntuples
 branches=(KK_M Phi_angle cos_theta1 cos_theta2)
 units=("MeV/#it{c}^{2}" none none none)
 titles=("#it{m}(#it{K^{#plus}K^{#minus}})" "#it{#Phi}" "cos#it{#theta}_{1}" "cos#it{#theta}_{2}")
-ranges=("-l 980 -u 1800" "-l -3.141 -u 3.141" "-l -1 -u 1" "-l -1 -u 1")
+ranges=("--lower 900 --upper 1800" "--lower -3.141 --upper 3.141" "--lower -1 --upper 1" "--lower -1 --upper 1")
 for i in `seq 0 3`
 do
-  plotname="../latex/figs/compare_acc_4D_${branches[i]}"
+  ../bin/CompareBranch \
+    --plot "../latex/figs/compare_acc_4D_${branches[i]}" \
+    --CDfile BsphiKK_MC_mvacut_acc_weights.root \
+    --MCfile BsphiKK_Gen_5M_1800_mvaVars.root \
+    --CDweight inverseacc \
+    --CDcuts "KK_M<1800&&abs(KK_TRUEID)>500" \
+    --CDbranch ${branches[i]} \
+    --MCbranch ${branches[i]} \
+    --unit ${units[i]} \
+    --title ${titles[i]} \
+    ${ranges[i]}
   ../bin/CompareBranchRatio \
-    --plot $plotname \
+    --plot "../latex/figs/compare_acc_ratio_4D_${branches[i]}" \
     --Nfile BsphiKK_MC_mvacut_acc_weights.root \
     --Dfile BsphiKK_Gen_5M_1800_mvaVars.root \
     --Nweight inverseacc \
-    --cuts "KK_M<1800" \
-    --branch ${branches[i]} \
+    --Ncuts "KK_M<1800&&abs(KK_TRUEID)>500" \
+    --Nbranch ${branches[i]} \
+    --Dbranch ${branches[i]} \
     --unit ${units[i]} \
     --title ${titles[i]} \
     ${ranges[i]}
