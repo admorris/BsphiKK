@@ -24,7 +24,7 @@
 #include "itoa.h"
 #include "GetData.h"
 #include "ResultDB.h"
-void BsMassFit(string MCfilename, string REfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename)
+void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename)
 {
   using namespace std;
 /*Input************************************************************************/
@@ -183,10 +183,10 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   TCanvas* MCcanv = MCplotter->Draw();
   MCcanv->SaveAs((plotfilename+"_MC.pdf").c_str());
 /*Collision data fit***********************************************************/
-  TTree* REtree = GetTree(REfilename,cuts);
-  RooDataSet REdata("REdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*REtree));
-  RooPlot* REframe = mass.frame();
-  REdata.plotOn(REframe,Binning(50));
+  TTree* CDtree = GetTree(CDfilename,cuts);
+  RooDataSet CDdata("CDdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*CDtree));
+  RooPlot* CDframe = mass.frame();
+  CDdata.plotOn(CDframe,Binning(50));
   double resolution = 0, f1, f2, s1, s2, s3;
   f1 = SigMod->GetValue("fgaus1");
   f2 = SigMod->GetValue("fgaus2");
@@ -201,25 +201,25 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   SigMod->SetValue("mean",5366.77);
   SigMod->FloatPar("mean");
   // Do the fit and plot the result
-  phiKKFitter.Fit(&REdata);
+  phiKKFitter.Fit(&CDdata);
   resolution *= SigMod->GetValue("scalef");
-  phiKKFitter.Plot(REframe);
-  plotmaker* REplotter;
+  phiKKFitter.Plot(CDframe);
+  plotmaker* CDplotter;
   if(drawpulls)
   {
-    RooHist* pullhist = REframe->pullHist();
+    RooHist* pullhist = CDframe->pullHist();
     RooPlot* pullframe = mass.frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    REplotter = new plotmaker(REframe);
-    REplotter->SetPullPlot(pullframe);
+    CDplotter = new plotmaker(CDframe);
+    CDplotter->SetPullPlot(pullframe);
   }
   else
   {
-    REplotter = new plotmaker(REframe);
+    CDplotter = new plotmaker(CDframe);
   }
-  REplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
-  REplotter->SetLogy(logy);
-  TCanvas* canv = REplotter->Draw();
+  CDplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
+  CDplotter->SetLogy(logy);
+  TCanvas* canv = CDplotter->Draw();
 /*Output S and B for MC optimisation*******************************************/
   double mean = SigMod->GetValue("mean");
   cout << "The mass (μ) from data is: " << mean << " MeV/c^2" << endl;
@@ -268,8 +268,8 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   {
     cout << "Drawing lines" << endl;
 //    canv->cd(0);
-    TLine* hiline = new TLine(mean+drawregion*resolution,0,mean+drawregion*resolution,REframe->GetMaximum());
-    TLine* loline = new TLine(mean-drawregion*resolution,0,mean-drawregion*resolution,REframe->GetMaximum());
+    TLine* hiline = new TLine(mean+drawregion*resolution,0,mean+drawregion*resolution,CDframe->GetMaximum());
+    TLine* loline = new TLine(mean-drawregion*resolution,0,mean-drawregion*resolution,CDframe->GetMaximum());
 //    hiline->SetLineColor(2);
 //    loline->SetLineColor(2);
     hiline->SetLineStyle(2);
@@ -285,10 +285,10 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
   {
     using namespace RooStats;
     string trailer = "_Sweighted.root";
-    string outputName = REfilename.substr(0, REfilename.size() - 5) + trailer;
+    string outputName = CDfilename.substr(0, CDfilename.size() - 5) + trailer;
     TFile* outputFile = TFile::Open(outputName.c_str(),"RECREATE");
     outputFile->cd();
-    TTree* newtree = REtree->CloneTree(0);
+    TTree* newtree = CDtree->CloneTree(0);
     cout << "copied the tree" << endl;
     RooStats::SPlot* sData = phiKKFitter.GetsPlot(Nsig,Nbkg);
     sData->GetName(); // Just to prevent compiler warning
@@ -296,16 +296,16 @@ void BsMassFit(string MCfilename, string REfilename, string SignalModel, string 
     float Nbkg_sw; newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
     float L_Nsig;  newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
     float L_Nbkg;  newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
-    for (int i = 0; i < REdata.numEntries(); i++)
+    for (int i = 0; i < CDdata.numEntries(); i++)
     {
-      REtree->GetEntry(i);
-      const RooArgSet* row = REdata.get(i);
+      CDtree->GetEntry(i);
+      const RooArgSet* row = CDdata.get(i);
       Nsig_sw =  row->getRealValue("SignalN_sw");
       L_Nsig  =  row->getRealValue("L_SignalN" );
       Nbkg_sw =  row->getRealValue("CombinatorialN_sw");
       L_Nbkg  =  row->getRealValue("L_CombinatorialN" );
       newtree->Fill();
-      if((i%1000)==0) cout << i << "/" << REdata.numEntries() << endl;
+      if((i%1000)==0) cout << i << "/" << CDdata.numEntries() << endl;
     }
     cout << "Done" << endl;
     newtree->Write();
@@ -350,7 +350,7 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  string MCfile, REfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf;
+  string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf;
   vector<string> pkbkgs, yopts;
   vector<double> yields;
   int drawregion;
@@ -361,7 +361,7 @@ int main(int argc, char* argv[])
     ("logy"        ,                                                                             "log y scale"                    )
     ("draw-region" , value<int>(&drawregion   )->default_value(0                              ), "draw lines at ±Nσ"              )
     ("MCfile,M"    , value<string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "Monte Carlo file"               )
-    ("REfile,R"    , value<string>(&REfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"            )
+    ("CDfile,R"    , value<string>(&CDfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"            )
     ("sigPDF,S"    , value<string>(&sigPDF    )->default_value("Crystal Ball + 2 Gaussians"   ), "signal PDF to fit to data"      )
     ("bkgPDF,B"    , value<string>(&bkgPDF    )->default_value("Exponential"                  ), "background PDF to fit to data"  )
     ("plotname,O"  , value<string>(&plotname  )->default_value("BsphiKK_data"                 ), "fit plot filename"              )
@@ -381,7 +381,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, REfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf);
+  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf);
   return 0;
 }
 
