@@ -188,7 +188,7 @@
       </PDF>
     <DataSet>
       <Source>File</Source>
-      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvacut_acc.root</FileName>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvacut_acc_weights.root</FileName>
       <NTuplePath>DecayTree</NTuplePath>
       <NumberEvents>100000</NumberEvents>
       <CommonPhaseSpace>
