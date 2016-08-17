@@ -92,6 +92,7 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   double h_TRUEPX[4];
   double h_TRUEPY[4];
   double h_TRUEPZ[4];
+  int phi_1020_TRUEID, KK_TRUEID;
   if(isMC)
   {
 /*TRUEPX Branches**************************************************************/
@@ -109,6 +110,9 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     intree->SetBranchAddress("Kplus_TRUEP_Z",  &h_TRUEPZ[1]);
     intree->SetBranchAddress("Kminus0_TRUEP_Z",&h_TRUEPZ[2]);
     intree->SetBranchAddress("Kplus0_TRUEP_Z", &h_TRUEPZ[3]);
+/*TRUEID Branches**************************************************************/
+    intree->SetBranchAddress("phi_1020_TRUEID", &phi_1020_TRUEID);
+    intree->SetBranchAddress("KK_TRUEID",       &KK_TRUEID      );
   }
 /*ProbNNp Branches*************************************************************/
   double h_ProbNNp[4];
@@ -196,6 +200,7 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   for(int i = 0; i < n; i++)
   {
     intree->GetEntry(i);
+    bool doswap = isMC && KK_TRUEID == 333 && phi_1020_TRUEID != 333;
 /*BDT variables****************************************************************/
     B_s0_ln_FDCHI2  = safeLog(B_s0_FDCHI2_OWNPV);
     B_s0_ln_IPCHI2  = safeLog(B_s0_IPCHI2_OWNPV);
@@ -210,12 +215,12 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     if(isMC)
     {
       for(int j = 0; j < 4; j++) h_TRUEP[j].SetXYZM(h_TRUEPX[j],h_TRUEPY[j],h_TRUEPZ[j],Kmass);
-      KK_TRUEP = h_TRUEP[2] + h_TRUEP[3];
+      KK_TRUEP = doswap? h_TRUEP[0] + h_TRUEP[1] : h_TRUEP[2] + h_TRUEP[3];
       KK_TRUEM = KK_TRUEP.M();
     }
     // Track 4-momenta with constrained Bs mass
     for(int j = 0; j < 4; j++) h_BCONP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
-    BCON_KK_P = h_BCONP[2] + h_BCONP[3];
+    BCON_KK_P = doswap? h_BCONP[0] + h_BCONP[1] : h_BCONP[2] + h_BCONP[3];
     BCON_KK_M = BCON_KK_P.M();
     // Initial 4K hypothesis
     for(int j = 0; j < 4; j++) hP[j].SetXYZM(h_LOKI_PX[j],h_LOKI_PY[j],h_LOKI_PZ[j],Kmass);
@@ -324,6 +329,11 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
       if(BCON==1)
       {
         BP    = h_BCONP[0] + h_BCONP[1] + h_BCONP[2] + h_BCONP[3];
+        if(doswap)
+        {
+          swap(h_BCONP[0],h_BCONP[2]);
+          swap(h_BCONP[1],h_BCONP[3]);
+        }
         dP[0] = h_BCONP[0] + h_BCONP[1];
         dP[1] = h_BCONP[2] + h_BCONP[3];
       }
