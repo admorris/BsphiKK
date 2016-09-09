@@ -1,0 +1,33 @@
+# EventType: 13104026
+#
+# Descriptor: [B_s0 -> (phi(1020) -> K+ K-) (f_0(980) -> K+ K-)]cc
+#
+# NickName: Bs_phif0,KK
+#
+# Documentation: B_s0 -> phi f0(980) P->VS decay
+# EndDocumentation
+#
+# PhysicsWG: BnoC
+# Tested: No
+# CPUTime:
+# Responsible: Adam Morris
+# Email: adam.morris@cern.ch
+# Date: 20160907
+#
+ChargeConj phi   phi
+#
+Decay B_s0sig
+  1.0000       phi  f_0   SVS;
+Enddecay 
+CDecay anti-B_s0sig
+#
+Decay phi
+  1.000        K+  K-     VSS;
+Enddecay
+#
+Decay f_0
+  1.000        K+  K-     PHSP;
+Enddecay
+#
+End
+

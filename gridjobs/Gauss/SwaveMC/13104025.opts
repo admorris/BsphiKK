@@ -1,0 +1,11 @@
+// file  13104025.opts generated: Thu, 08 Sep 2016 19:57:40
+//
+// Event Type:13104025
+//
+// ASCII decay Descriptor: [B_s0 -> (phi(1020) -> K+ K-) (a_0(980)0 -> K+ K-)]cc
+//
+Generation.EventType = 13104025;
+Generation.SampleGenerationTool = "SignalRepeatedHadronization";
+Generation.SignalRepeatedHadronization.ProductionTool = "PythiaProduction";
+ToolSvc.EvtGenDecay.UserDecayFile = "Bs_phia00,KK.dec";
+Generation.SignalRepeatedHadronization.SignalPIDList = {531,-531};
