@@ -28,8 +28,8 @@
       <Name>APminus2</Name>
       <Value>0.0187467</Value>
       <Minimum>0</Minimum>
-      <Maximum>1</Maximum>
-      <Type>Fixed</Type>
+      <Maximum>10</Maximum>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -44,8 +44,8 @@
       <Name>APplus2</Name>
       <Value>0.633365</Value>
       <Minimum>0</Minimum>
-      <Maximum>1</Maximum>
-      <Type>Fixed</Type>
+      <Maximum>10</Maximum>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     
@@ -105,7 +105,7 @@
       <Value>2.54037</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Fixed</Type>
+      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     
@@ -144,13 +144,12 @@
     <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
     <FixedIntegrationPoints>10000</FixedIntegrationPoints>
     <Threads>16</Threads>
-    <WeightName>inverseacc</WeightName>
   </FitFunction>
   <CommonPhaseSpace>
     <PhaseSpaceBoundary>
       <Observable>
         <Name>mKK</Name>
-        <TF1>KK_TRUEM</TF1>
+        <TF1>KK_M</TF1>
         <Minimum>988</Minimum>
         <Maximum>1080</Maximum>
         <Unit>MeV/c^{2}</Unit>
@@ -183,13 +182,14 @@
     // Choose the PDF
       <PDF>
         <Name>Bs2PhiKKTotal</Name>
+        <ConfigurationParameter>UseTimeIntegratedPwavePDF:True</ConfigurationParameter>
         <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
         <ConfigurationParameter>DrawPwave:True</ConfigurationParameter>
       </PDF>
     <DataSet>
       <Source>File</Source>
-      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_MC_mvacut_acc_weights.root</FileName>
-      <NTuplePath>DecayTree</NTuplePath>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_Gen_DC_mvaVars.root</FileName>
+      <NTuplePath>MCDecayTree</NTuplePath>
       <NumberEvents>100000</NumberEvents>
       <CommonPhaseSpace>
       </CommonPhaseSpace>
@@ -202,7 +202,6 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>False</DrawPull>
     </ComponentProjection>
     <ComponentProjection>
       <Name>phi</Name>
@@ -210,7 +209,6 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
     </ComponentProjection>
     <ComponentProjection>
@@ -219,7 +217,6 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
     </ComponentProjection>
     <ComponentProjection>
@@ -228,7 +225,6 @@
       <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
       <PDFpoints>100</PDFpoints>
       <Threads>16</Threads>
-      <DrawPull>False</DrawPull>
       <Ymin>0</Ymin>
     </ComponentProjection>
   </Output>

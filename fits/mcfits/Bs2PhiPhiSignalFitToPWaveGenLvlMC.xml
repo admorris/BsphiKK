@@ -1,0 +1,156 @@
+<RapidFit>
+// Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
+// βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
+//  0  1  0.536  2.71  0.590  0.0  0.604  2.39
+//Input:  A‖ = 0.536 × Exp(i × 2.71)   A⊥ = 0.604 × Exp(i × 2.39)
+//Output:  A+ = 0.796 × Exp(i × 2.54)   A− = 0.137 × Exp(i × -1.81)
+  <ParameterSet>
+    // Magnitudes squared
+    
+    <PhysicsParameter>
+      <Name>APperp2</Name>
+      <Value>0.365</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.6</Maximum>
+      <Type>Float</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>APzero2</Name>
+      <Value>0.348</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.6</Maximum>
+      <Type>Float</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>APpara2</Name>
+      <Value>0.287</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.5</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    
+    // Phases
+    <PhysicsParameter>
+      <Name>deltaPperp</Name>
+      <Value>2.39</Value>
+      <Minimum>-3.14159</Minimum>
+      <Maximum>3.14159</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>deltaPzero</Name>
+      <Value>0.0</Value>
+      <Minimum>-3.1415927</Minimum>
+      <Maximum>3.1415927</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>deltaPpara</Name>
+      <Value>2.71</Value>
+      <Minimum>0</Minimum>
+      <Maximum>6.29</Maximum>
+      <Type>Float</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+  </ParameterSet>
+  // Choose the minimiser
+  <Minimiser>
+    <MinimiserName>Minuit</MinimiserName>
+  </Minimiser>
+  // Choose the fit function
+  <FitFunction>
+    <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
+    <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+    <FixedIntegrationPoints>10000</FixedIntegrationPoints>
+    <Threads>16</Threads>
+  </FitFunction>
+  <CommonPhaseSpace>
+    <PhaseSpaceBoundary>
+      <Observable>
+        <Name>mKK</Name>
+        <TF1>KK_M</TF1>
+        <Minimum>988</Minimum>
+        <Maximum>1080</Maximum>
+        <Unit>MeV/c^{2}</Unit>
+      </Observable>
+      <Observable>
+        <Name>phi</Name>
+        <TF1>Phi_angle</TF1>
+        <Minimum>-3.14159</Minimum>
+        <Maximum>3.14159</Maximum>
+        <Unit>rad</Unit>
+      </Observable>
+      <Observable>
+        <Name>ctheta_1</Name>
+        <TF1>cos_theta1</TF1>
+        <Minimum>-1.0</Minimum>
+        <Maximum>1.0</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+      <Observable>
+        <Name>ctheta_2</Name>
+        <TF1>cos_theta2</TF1>
+        <Minimum>-1.0</Minimum>
+        <Maximum>1.0</Maximum>
+        <Unit>Unitless</Unit>
+      </Observable>
+    </PhaseSpaceBoundary>
+  </CommonPhaseSpace>
+  
+  <ToFit>
+    // Choose the PDF
+      <PDF>
+        <Name>Bs2PhiPhi_Adam</Name>
+        <ConfigurationParameter>UseTimeIntegratedPwavePDF:False</ConfigurationParameter>
+        <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
+        <ConfigurationParameter>DrawPwave:True</ConfigurationParameter>
+        <ConfigurationParameter>EnforceUnity:True</ConfigurationParameter>
+      </PDF>
+    <DataSet>
+      <Source>File</Source>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/Bsphiphi_Gen_DC_mvaVars.root</FileName>
+      <NTuplePath>MCDecayTree</NTuplePath>
+      <NumberEvents>100000</NumberEvents>
+      <CommonPhaseSpace>
+      </CommonPhaseSpace>
+    </DataSet>
+  </ToFit>
+  <Output>
+    <ComponentProjection>
+      <Name>mKK</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>100</PDFpoints>
+      <Threads>16</Threads>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>phi</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>100</PDFpoints>
+      <Threads>16</Threads>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_1</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>100</PDFpoints>
+      <Threads>16</Threads>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+    <ComponentProjection>
+      <Name>ctheta_2</Name>
+      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
+      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+      <PDFpoints>100</PDFpoints>
+      <Threads>16</Threads>
+      <Ymin>0</Ymin>
+    </ComponentProjection>
+  </Output>
+</RapidFit>

@@ -1,30 +1,5 @@
 <RapidFit>
   <ParameterSet>
-    <PhysicsParameter>
-      <Name>SignalFraction</Name>
-      <Value>0.84052</Value>
-      <Type>Fixed</Type>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>A</Name>
-      <Value>1.97009</Value>
-      <Type>Fixed</Type>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>B</Name>
-      <Value>-3.50295</Value>
-      <Type>Fixed</Type>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>C</Name>
-      <Value>10.3624</Value>
-      <Type>Fixed</Type>
-    </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>M</Name>
-      <Value>986.115</Value>
-      <Type>Fixed</Type>
-    </PhysicsParameter>
     // Magnitudes squared
     <PhysicsParameter>
       <Name>ANonRes2</Name>
@@ -44,7 +19,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APminus2</Name>
-      <Value>0.3175</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -52,7 +27,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>0.365</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -60,7 +35,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APplus2</Name>
-      <Value>0.3175</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -68,7 +43,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADminus2</Name>
-      <Value>0.09</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -76,7 +51,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>0.09</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -84,7 +59,7 @@
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADplus2</Name>
-      <Value>0.09</Value>
+      <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
@@ -194,21 +169,15 @@
   
   <ToFit>
     // Choose the PDF
-    <SumPDF>
       <PDF>
         <Name>Bs2PhiKKTotal</Name>
-        <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
+        <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
+        <ConfigurationParameter>DrawNonRes:True</ConfigurationParameter>
       </PDF>
-      <PDF>
-        <Name>Bs2PhiKKBackground</Name>
-        <ConfigurationParameter>CoefficientsFile:LegendreMoments_Background.root</ConfigurationParameter>
-      </PDF>
-      <FractionName>SignalFraction</FractionName>
-    </SumPDF>
     <DataSet>
       <Source>File</Source>
-      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_1800_mvacut.root</FileName>
-      <CutString>mlp>0.62&&B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass</CutString>
+      <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_MC_1800_mvacut.root</FileName>
+      <CutString>B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass</CutString>
       <NTuplePath>DecayTree</NTuplePath>
       <NumberEvents>10000</NumberEvents>
       <CommonPhaseSpace>
