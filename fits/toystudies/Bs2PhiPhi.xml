@@ -54,7 +54,7 @@
     // Choose the dataset
     <DataSet>
       <Source>Foam</Source>
-      <NumberEvents>100000</NumberEvents>
+      <NumberEvents>10000</NumberEvents>
       <PhaseSpaceBoundary>
         <Observable>
           <Name>phi</Name>

@@ -1,56 +1,49 @@
 <RapidFit>
-// Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
-// βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
-//  0  1  0.536  2.71  0.590  0.0  0.604  2.39
-//Input:  A‖ = 0.536 × Exp(i × 2.71)   A⊥ = 0.604 × Exp(i × 2.39)
-//Output:  A+ = 0.796 × Exp(i × 2.54)   A− = 0.137 × Exp(i × -1.81)
   <ParameterSet>
+    // Scale factors for each component
+    <PhysicsParameter>
+      <Name>SwaveFrac</Name>
+      <Value>0.00</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>PwaveFrac</Name>
+      <Value>1.0</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    <PhysicsParameter>
+      <Name>DwaveFrac</Name>
+      <Value>0.0</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
     // Magnitudes squared
     <PhysicsParameter>
-      <Name>ANonRes2</Name>
-      <Value>0.0</Value>
+      <Name>APperp2</Name>
+      <Value>0.365</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    
-    <PhysicsParameter>
-      <Name>ASzero2</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    
-    <PhysicsParameter>
-      <Name>APminus2</Name>
-      <Value>0.0187467</Value>
-      <Minimum>0</Minimum>
-      <Maximum>1</Maximum>
-      <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>0.3481</Value>
+      <Value>0.348</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>APplus2</Name>
-      <Value>0.633365</Value>
-      <Minimum>0</Minimum>
-      <Maximum>1</Maximum>
-      <Type>Float</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    
-    <PhysicsParameter>
-      <Name>ADminus2</Name>
+      <Name>ADperp2</Name>
       <Value>0.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
@@ -65,31 +58,21 @@
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>ADplus2</Name>
-      <Value>0.0</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1.0</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    
     // Phases
     <PhysicsParameter>
       <Name>deltaSzero</Name>
-      <Value>0.0</Value>
-      <Minimum>-3.1415927</Minimum>
-      <Maximum>3.1415927</Maximum>
+      <Value>0</Value>
+      <Minimum>-3.14159</Minimum>
+      <Maximum>3.14159</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-    
     <PhysicsParameter>
-      <Name>deltaPminus</Name>
-      <Value>-1.80834</Value>
+      <Name>deltaPperp</Name>
+      <Value>2.39</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
@@ -101,19 +84,18 @@
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>deltaPplus</Name>
-      <Value>2.54037</Value>
-      <Minimum>-3.14159</Minimum>
-      <Maximum>3.14159</Maximum>
-      <Type>Float</Type>
+      <Name>deltaPpara</Name>
+      <Value>2.71</Value>
+      <Minimum>0</Minimum>
+      <Maximum>6.5</Maximum>
+      <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-    
     <PhysicsParameter>
-      <Name>deltaDminus</Name>
+      <Name>deltaDperp</Name>
       <Value>0.0</Value>
-      <Minimum>-3.1415927</Minimum>
-      <Maximum>3.1415927</Maximum>
+      <Minimum>-3.14159</Minimum>
+      <Maximum>3.14159</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
@@ -126,7 +108,7 @@
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>deltaDplus</Name>
+      <Name>deltaDpara</Name>
       <Value>0.0</Value>
       <Minimum>-3.1415927</Minimum>
       <Maximum>3.1415927</Maximum>
@@ -134,62 +116,43 @@
       <Unit>Unitless</Unit>
     </PhysicsParameter>
   </ParameterSet>
-  // Choose the minimiser
-  <Minimiser>
-    <MinimiserName>Minuit</MinimiserName>
-  </Minimiser>
-  // Choose the fit function
-  <FitFunction>
-    <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
-    <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-    <FixedIntegrationPoints>10000</FixedIntegrationPoints>
-    <Threads>16</Threads>
-  </FitFunction>
-  <CommonPhaseSpace>
-    <PhaseSpaceBoundary>
-      <Observable>
-        <Name>mKK</Name>
-        <TF1>KK_TRUEM</TF1>
-        <Minimum>988</Minimum>
-        <Maximum>1080</Maximum>
-        <Unit>MeV/c^{2}</Unit>
-      </Observable>
-      <Observable>
-        <Name>phi</Name>
-        <TF1>Phi_angle</TF1>
-        <Minimum>-3.14159</Minimum>
-        <Maximum>3.14159</Maximum>
-        <Unit>rad</Unit>
-      </Observable>
-      <Observable>
-        <Name>ctheta_1</Name>
-        <TF1>cos_theta1</TF1>
-        <Minimum>-1.0</Minimum>
-        <Maximum>1.0</Maximum>
-        <Unit>Unitless</Unit>
-      </Observable>
-      <Observable>
-        <Name>ctheta_2</Name>
-        <TF1>cos_theta2</TF1>
-        <Minimum>-1.0</Minimum>
-        <Maximum>1.0</Maximum>
-        <Unit>Unitless</Unit>
-      </Observable>
-    </PhaseSpaceBoundary>
-  </CommonPhaseSpace>
-  
   <ToFit>
     // Choose the PDF
       <PDF>
-        <Name>Bs2PhiKKTotal</Name>
-        <ConfigurationParameter>UseAcceptance:False</ConfigurationParameter>
-        <ConfigurationParameter>CoefficientsFile:LegendreMoments_Acceptance.root</ConfigurationParameter>
+        <Name>Bs2PhiKKSignal</Name>
+        <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
+        <ConfigurationParameter>DrawPwave:True</ConfigurationParameter>
       </PDF>
+    // Choose the dataset
     <DataSet>
       <Source>Foam</Source>
-      <NumberEvents>100000</NumberEvents>
-      <CommonPhaseSpace>
-      </CommonPhaseSpace>
+      <NumberEvents>1000000</NumberEvents>
+      <PhaseSpaceBoundary>
+        <Observable>
+          <Name>mKK</Name>
+          <Minimum>1000</Minimum>
+          <Maximum>1040</Maximum>
+          <Unit>MeV/c^2</Unit>
+        </Observable>
+        <Observable>
+          <Name>phi</Name>
+          <Minimum>-3.14159</Minimum>
+          <Maximum>3.14159</Maximum>
+          <Unit>rad</Unit>
+        </Observable>
+        <Observable>
+          <Name>ctheta_1</Name>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+        <Observable>
+          <Name>ctheta_2</Name>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+      </PhaseSpaceBoundary>
     </DataSet>
   </ToFit>
 </RapidFit>
