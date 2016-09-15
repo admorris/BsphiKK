@@ -2,8 +2,10 @@
   <ParameterSet>
     <PhysicsParameter>
       <Name>SignalFraction</Name>
-      <Value>1.0</Value>
-      <Type>Fixed</Type>
+      <Value>0.7</Value>
+      <Minimum>0.6</Minimum>
+      <Maximum>0.9</Maximum>
+      <Type>Fload</Type>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>A</Name>
@@ -25,86 +27,76 @@
       <Value>986.115</Value>
       <Type>Fixed</Type>
     </PhysicsParameter>
-    // Magnitudes squared
+    # Scale factors for each component
     <PhysicsParameter>
-      <Name>ANonRes2</Name>
-      <Value>0.01</Value>
+      <Name>SwaveFrac</Name>
+      <Value>0.2</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1.0</Maximum>
+      <Maximum>0.4</Maximum>
       <Type>Float</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>ASzero2</Name>
-      <Value>0.1</Value>
+      <Name>PwaveFrac</Name>
+      <Value>1.0</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-
     <PhysicsParameter>
-      <Name>APminus2</Name>
-      <Value>0.0187467</Value>
-      <Minimum>0</Minimum>
-      <Maximum>10</Maximum>
+      <Name>DwaveFrac</Name>
+      <Value>1.5</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Type>Fixed</Type>
+      <Unit>Unitless</Unit>
+    </PhysicsParameter>
+    # Magnitudes squared
+    <PhysicsParameter>
+      <Name>APperp2</Name>
+      <Value>0.365</Value>
+      <Minimum>0.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>APzero2</Name>
-      <Value>0.3481</Value>
+      <Value>0.348</Value>
       <Minimum>0.0</Minimum>
       <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>APplus2</Name>
-      <Value>0.633365</Value>
-      <Minimum>0</Minimum>
-      <Maximum>10</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-
-    <PhysicsParameter>
-      <Name>ADminus2</Name>
-      <Value>0.2</Value>
+      <Name>ADperp2</Name>
+      <Value>0.333</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1.5</Maximum>
+      <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
       <Name>ADzero2</Name>
-      <Value>0.2</Value>
+      <Value>0.333</Value>
       <Minimum>0.0</Minimum>
-      <Maximum>1.5</Maximum>
+      <Maximum>1.0</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-    <PhysicsParameter>
-      <Name>ADplus2</Name>
-      <Value>0.2</Value>
-      <Minimum>0.0</Minimum>
-      <Maximum>1.5</Maximum>
-      <Type>Fixed</Type>
-      <Unit>Unitless</Unit>
-    </PhysicsParameter>
-    // Phases
+    # Phases
     <PhysicsParameter>
       <Name>deltaSzero</Name>
-      <Value>0.0</Value>
-      <Minimum>-3.1415927</Minimum>
-      <Maximum>3.1415927</Maximum>
+      <Value>1.15</Value> # Jpsi KK value
+      <Minimum>-3.14159</Minimum>
+      <Maximum>3.14159</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-    
     <PhysicsParameter>
-      <Name>deltaPminus</Name>
-      <Value>-1.80834</Value>
+      <Name>deltaPperp</Name>
+      <Value>2.39</Value>
       <Minimum>-3.14159</Minimum>
       <Maximum>3.14159</Maximum>
       <Type>Fixed</Type>
@@ -119,19 +111,18 @@
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>deltaPplus</Name>
-      <Value>2.54037</Value>
-      <Minimum>-3.14159</Minimum>
-      <Maximum>3.14159</Maximum>
+      <Name>deltaPpara</Name>
+      <Value>2.71</Value>
+      <Minimum>-3.1415927</Minimum>
+      <Maximum>3.1415927</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
-    
     <PhysicsParameter>
-      <Name>deltaDminus</Name>
+      <Name>deltaDperp</Name>
       <Value>0.0</Value>
-      <Minimum>-3.1415927</Minimum>
-      <Maximum>3.1415927</Maximum>
+      <Minimum>-3.14159</Minimum>
+      <Maximum>3.14159</Maximum>
       <Type>Fixed</Type>
       <Unit>Unitless</Unit>
     </PhysicsParameter>
@@ -144,7 +135,7 @@
       <Unit>Unitless</Unit>
     </PhysicsParameter>
     <PhysicsParameter>
-      <Name>deltaDplus</Name>
+      <Name>deltaDpara</Name>
       <Value>0.0</Value>
       <Minimum>-3.1415927</Minimum>
       <Maximum>3.1415927</Maximum>
@@ -152,116 +143,61 @@
       <Unit>Unitless</Unit>
     </PhysicsParameter>
   </ParameterSet>
-  // Choose the minimiser
-  <Minimiser>
-    <MinimiserName>Minuit</MinimiserName>
-  </Minimiser>
-  // Choose the fit function
-  <FitFunction>
-    <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
-    <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-    <FixedIntegrationPoints>10000</FixedIntegrationPoints>
-    <Threads>16</Threads>
-  </FitFunction>
-  <CommonPhaseSpace>
-    <PhaseSpaceBoundary>
-      <Observable>
-        <Name>mKK</Name>
-        <TF1>BCON_KK_M</TF1>
-        <Minimum>988</Minimum>
-        <Maximum>1800</Maximum>
-        <Unit>MeV/c^{2}</Unit>
-      </Observable>
-      <Observable>
-        <Name>phi</Name>
-        <TF1>BCON_Phi_angle</TF1>
-        <Minimum>-3.14159</Minimum>
-        <Maximum>3.14159</Maximum>
-        <Unit>rad</Unit>
-      </Observable>
-      <Observable>
-        <Name>ctheta_1</Name>
-        <TF1>BCON_cos_theta1</TF1>
-        <Minimum>-1.0</Minimum>
-        <Maximum>1.0</Maximum>
-        <Unit>Unitless</Unit>
-      </Observable>
-      <Observable>
-        <Name>ctheta_2</Name>
-        <TF1>BCON_cos_theta2</TF1>
-        <Minimum>-1.0</Minimum>
-        <Maximum>1.0</Maximum>
-        <Unit>Unitless</Unit>
-      </Observable>
-    </PhaseSpaceBoundary>
-  </CommonPhaseSpace>
   
   <ToFit>
-    // Choose the PDF
+    # Choose the PDF
     <SumPDF>
       <PDF>
-        <Name>Bs2PhiKKTotal</Name>
-        <ConfigurationParameter>UseAcceptance:True</ConfigurationParameter>
-        <ConfigurationParameter>HistogramFile:/afs/cern.ch/work/a/admorris/BsphiKK/Acceptance.root</ConfigurationParameter>
+        <Name>Bs2PhiKKSignal</Name>
         <ConfigurationParameter>DrawComponents:True</ConfigurationParameter>
-        <ConfigurationParameter>DrawNonRes:True</ConfigurationParameter>
         <ConfigurationParameter>DrawSwave:True</ConfigurationParameter>
-        <ConfigurationParameter>DrawPwave:True</ConfigurationParameter>
-        <ConfigurationParameter>DrawDwave:True</ConfigurationParameter>
+        <ConfigurationParameter>DrawPwave:False</ConfigurationParameter>
+        <ConfigurationParameter>DrawDwave:False</ConfigurationParameter>
+        <ConfigurationParameter>DrawInterference:True</ConfigurationParameter>
       </PDF>
       <PDF>
         <Name>Bs2PhiKKBackground</Name>
-        <ConfigurationParameter>CoefficientsFile:LegendreMoments_Background.root</ConfigurationParameter>
+        <ConfigurationParameter>CoefficientsFile:~/work/BsphiKK/fits/LegendreMoments_Background.root</ConfigurationParameter>
       </PDF>
       <FractionName>SignalFraction</FractionName>
     </SumPDF>
     <DataSet>
       <Source>File</Source>
       <FileName>/afs/cern.ch/work/a/admorris/BsphiKK/ntuples/BsphiKK_data_1800_mvacut.root</FileName>
-      <CutString>mlp>0.62&&B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass</CutString>
+      <CutString>B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass</CutString>
       <NTuplePath>DecayTree</NTuplePath>
       <NumberEvents>10000</NumberEvents>
-      <CommonPhaseSpace>
-      </CommonPhaseSpace>
+      <PhaseSpaceBoundary>
+        <Observable>
+          <Name>mKK</Name>
+          <TF1>BCON_KK_M</TF1>
+          <Minimum>980</Minimum>
+          <Maximum>1800</Maximum>
+          <Unit>MeV/c^{2}</Unit>
+        </Observable>
+        <Observable>
+          <Name>phi</Name>
+          <TF1>BCON_Phi_angle</TF1>
+          <Minimum>-3.14159</Minimum>
+          <Maximum>3.14159</Maximum>
+          <Unit>rad</Unit>
+        </Observable>
+        <Observable>
+          <Name>ctheta_1</Name>
+          <TF1>BCON_cos_theta1</TF1>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+        <Observable>
+          <Name>ctheta_2</Name>
+          <TF1>BCON_cos_theta2</TF1>
+          <Minimum>-1.0</Minimum>
+          <Maximum>1.0</Maximum>
+          <Unit>Unitless</Unit>
+        </Observable>
+      </PhaseSpaceBoundary>
     </DataSet>
   </ToFit>
-  <Output>
-    <ComponentProjection>
-      <Name>mKK</Name>
-      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
-      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
-      <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
-      <Ymax>100</Ymax>
-      <Ymin>-10</Ymin>
-    </ComponentProjection>
-    <ComponentProjection>
-      <Name>phi</Name>
-      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
-      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
-      <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
-      <Ymin>0</Ymin>
-    </ComponentProjection>
-    <ComponentProjection>
-      <Name>ctheta_1</Name>
-      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
-      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
-      <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
-      <Ymin>0</Ymin>
-    </ComponentProjection>
-    <ComponentProjection>
-      <Name>ctheta_2</Name>
-      <FixedIntegrationPoints>1000</FixedIntegrationPoints>
-      <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-      <PDFpoints>1000</PDFpoints>
-      <Threads>16</Threads>
-      <DrawPull>True</DrawPull>
-      <Ymin>0</Ymin>
-    </ComponentProjection>
-  </Output>
+  
 </RapidFit>
