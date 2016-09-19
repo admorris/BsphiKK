@@ -83,6 +83,7 @@ class MassFitter
     RooFitResult*       Fit(RooDataSet*);
     void                Plot(RooPlot*);
     SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
+    SPlot*              GetsPlot(RooArgList);
   private:
     vector<Component*>  _components;
     RooAbsPdf*          _pdf;

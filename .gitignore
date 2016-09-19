@@ -1,15 +1,16 @@
 # Empty folders
-bin
-build
-latex
-lib
-ntuples
+bin/
+build/
+latex/
+lib/
+!src/lib/
+ntuples/
 scripts/mvaopticut.sh
 scripts/eos.sh
 scripts/log
 scripts/tables
 # Stuff to control RapidFit
-fits/RapidFitOutput*/*
+fits/*/RapidFitOutput*/*
 fits/scratch/*
 fits/*pdf
 fits/*root

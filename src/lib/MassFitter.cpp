@@ -331,7 +331,11 @@ void MassFitter::Plot(RooPlot* frame)
 /******************************************************************************/
 SPlot* MassFitter::GetsPlot(RooRealVar* Nsig, RooRealVar* Nbkg)
 {
-  return new SPlot("sData","An SPlot", *_data, _pdf, RooArgList(*Nsig,*Nbkg));
+  return GetsPlot(RooArgList(*Nsig,*Nbkg));
+}
+SPlot* MassFitter::GetsPlot(RooArgList list)
+{
+  return new SPlot("sData","An SPlot", *_data, _pdf, list);
 }
 /******************************************************************************/
 Component* MassFitter::BifurcatedGaussian(string name)
