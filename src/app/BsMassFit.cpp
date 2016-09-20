@@ -31,11 +31,13 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   // Open the input file and get the tree
   using namespace RooFit;
   cout << "Fitting to the branch " << branchtofit << endl;
-  RooRealVar mass(branchtofit.c_str(),"m(K+K−K+K−) MeV",5200,5600);
+  RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5200,5600);
 /*Set up the fitter************************************************************/
   MassFitter phiKKFitter(&mass);
   RooRealVar* Nsig  = new RooRealVar("N","Number of signal events",4500,0,120000);
   RooRealVar* Nbkg  = new RooRealVar("N","Number of background events",1830,0,20000);
+  RooArgList yieldlist(*Nsig,*Nbkg);
+  bool sWarning = false; // Because printing a warning during the peaking background loop just gets buried.
   Component* SigMod = phiKKFitter.AddComponent("Signal",SignalModel,Nsig);
   SigMod->SetColour(4);
   SigMod->SetStyle (9);
@@ -80,6 +82,8 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       {
         yield = new RooRealVar("N","",N);
       }
+      yieldlist.add(*yield);
+      if(doSweight && yopt != "flo") sWarning = true;
       string shapename = "Crystal Ball + 1 Gaussian";
       Component* comp;
       if(cbnpos != string::npos)
@@ -96,7 +100,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         }
         else
         {
-          PBmass = new RooRealVar(PBbranch.c_str(),"m(K+K−K+K−) MeV",5000,5600);
+          PBmass = new RooRealVar(PBbranch.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5000,5600);
           PBdata = GetData(name,PBfilename,cuts,PBmass);
           PBFitter = new MassFitter(PBmass);
           Component* PBMod = PBFitter->AddComponent(("temp"+name).c_str(),shapename);
@@ -161,7 +165,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   }
 /*Monte Carlo fit**************************************************************/
   TTree* MCtree = GetTree(MCfilename,cuts);
-  RooDataSet MCdata("MCdata","\\phi \\phi \\text{ mass data}",mass,RooFit::Import(*MCtree));
+  RooDataSet MCdata("MCdata","",mass,RooFit::Import(*MCtree));
   SigMod->FixShapeTo(&MCdata);
   RooPlot* MCframe = mass.frame();
   MCdata.plotOn(MCframe,Binning(50));
@@ -184,7 +188,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   MCcanv->SaveAs((plotfilename+"_MC.pdf").c_str());
 /*Collision data fit***********************************************************/
   TTree* CDtree = GetTree(CDfilename,cuts);
-  RooDataSet CDdata("CDdata","\\phi \\phi \\text{ mass data}",RooArgSet(mass),RooFit::Import(*CDtree));
+  RooDataSet CDdata("CDdata","",RooArgSet(mass),RooFit::Import(*CDtree));
   RooPlot* CDframe = mass.frame();
   CDdata.plotOn(CDframe,Binning(50));
   double resolution = 0, f1, f2, s1, s2, s3;
@@ -290,7 +294,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     outputFile->cd();
     TTree* newtree = CDtree->CloneTree(0);
     cout << "copied the tree" << endl;
-    RooStats::SPlot* sData = phiKKFitter.GetsPlot(Nsig,Nbkg);
+    RooStats::SPlot* sData = phiKKFitter.GetsPlot(yieldlist);
     sData->GetName(); // Just to prevent compiler warning
     float Nsig_sw; newtree->Branch("Nsig_sw", &Nsig_sw,"Nsig_sw/F");
     float Nbkg_sw; newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
@@ -311,6 +315,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     newtree->Write();
     outputFile->Close();
     cout << "Written to " << outputFile->GetName() << endl;
+    if(sWarning) cout << "WARNING: sWeights will not be calculated properly because a peaking background yield is not floated." << endl;
   }
   vector<parameter> pars;
   pars.push_back(parameter("alpha" ,"\\alpha"  ,SigMod));
