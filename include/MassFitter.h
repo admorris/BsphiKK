@@ -12,6 +12,7 @@
 #include "RooFitResult.h"
 #include "RooPlot.h"
 #include "RooRealVar.h"
+#include "RooThreeBodyPhaseSpace.h"
 // RooStats headers
 #include "RooStats/SPlot.h"
 using namespace std;
@@ -84,15 +85,18 @@ class MassFitter
     void                Plot(RooPlot*);
     SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
     SPlot*              GetsPlot(RooArgList);
+    void                UsePhaseSpace(double,double,double,double);
   private:
     vector<Component*>  _components;
     RooAbsPdf*          _pdf;
+    Component*          _weightfunction;
     RooDataSet*         _data;
     RooRealVar*         _mass;
     void                init();
     void                assemble();
     // Flags
     bool                _haspdf;
+    bool                _hasweightfunction;
     bool                _hasdata;
     bool                _useyieldvars;
     // Signal models

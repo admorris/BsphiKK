@@ -4,6 +4,11 @@
 #include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
+#include "RooConstVar.h"
+#include "RooFormulaVar.h"
+#include "RooProdPdf.h"
+#include "RooRealVar.h"
+// RooFit PDFs
 #include "RooArgusBG.h"
 #include "RooBifurGauss.h"
 #include "RooBreitWigner.h"
@@ -11,10 +16,8 @@
 #include "RooDstD0BG.h"
 #include "RooExponential.h"
 #include "RooFFTConvPdf.h"
-#include "RooFormulaVar.h"
 #include "RooGaussian.h"
 #include "RooPolynomial.h"
-#include "RooRealVar.h"
 #include "RooUniform.h"
 #include "RooVoigtian.h"
 // Custom headers
@@ -170,6 +173,8 @@ MassFitter::~MassFitter()
     delete _pdf;
   for(auto component : _components)
     delete component;
+  if(_hasweightfunction)
+    delete _weightfunction;
 }
 /******************************************************************************/
 void MassFitter::init()
@@ -177,6 +182,7 @@ void MassFitter::init()
   _haspdf  = false;
   _hasdata = false;
   _useyieldvars = false;
+  _hasweightfunction = false;
   cout << "MassFitter instance initialised" << endl;
 }
 /******************************************************************************/
@@ -232,10 +238,6 @@ Component* MassFitter::AddComponent(string name, string type)
   {
     newpdf = BreitWigner(name);
   }
-//  else if(type=="Breit-Wigner * Gaussian" || type=="Breit Wigner * Gaussian")
-//  {
-//    newpdf = convolve(BreitWigner(),singleGaussian());
-//  }
   else if(type=="Voigtian" || type=="Voigt")
   {
     newpdf = Voigtian(name);
@@ -268,13 +270,14 @@ void MassFitter::assemble()
 {
   RooArgList pdflist;
   RooArgList coeflist;
+  RooAbsPdf* tmp_pdf;
   switch(_components.size())
   {
     case 0:
       throw runtime_error("Trying to assemble a PDF with no components.");
       break;
     case 1:
-      _pdf = _components[0]->GetPDF();
+      tmp_pdf = _components[0]->GetPDF();
       break;
     default:
       for(auto pdf : _components)
@@ -283,9 +286,13 @@ void MassFitter::assemble()
         if(_useyieldvars)
           coeflist.add(*(pdf->GetYieldVar()));
       }
-      _pdf = _useyieldvars ? new RooAddPdf("model","Total PDF",pdflist,coeflist) : new RooAddPdf("model","Total PDF",pdflist) ;
+      tmp_pdf = _useyieldvars ? new RooAddPdf("model","Total PDF",pdflist,coeflist) : new RooAddPdf("model","Total PDF",pdflist) ;
       break;
   }
+  if(_hasweightfunction)
+    _pdf = new RooProdPdf("wmodel",("Total PDF weighted by " + _weightfunction->GetName()).c_str(),*tmp_pdf,*(_weightfunction->GetPDF()));
+  else
+    _pdf = tmp_pdf;
   _haspdf = true;
 }
 /******************************************************************************/
@@ -336,6 +343,29 @@ SPlot* MassFitter::GetsPlot(RooRealVar* Nsig, RooRealVar* Nbkg)
 SPlot* MassFitter::GetsPlot(RooArgList list)
 {
   return new SPlot("sData","An SPlot", *_data, _pdf, list);
+}
+/******************************************************************************/
+void MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
+{
+  string name = "phase space";
+  if(!_hasweightfunction)
+    _hasweightfunction = true;
+  else
+  {
+    cout << "Overwriting existing weight function: " << _weightfunction->GetName() << endl;
+    delete _weightfunction;
+  }
+  cout << "Creating new weight function: " << name << endl;
+  RooConstVar* M  = new RooConstVar("M","Parent mass",_M);
+  RooConstVar* m1 = new RooConstVar("m1","Body 1 mass",_m1);
+  RooConstVar* m2 = new RooConstVar("m2","Body 2 mass",_m2);
+  RooConstVar* m3 = new RooConstVar("m3","Body 3 mass",_m3);
+  RooThreeBodyPhaseSpace* thepdf = new RooThreeBodyPhaseSpace("shape","Three-body phase space function",*_mass,*M,*m1,*m2,*m3);
+  _weightfunction = new Component(name,thepdf);
+  _weightfunction->AddThing(M);
+  _weightfunction->AddThing(m1);
+  _weightfunction->AddThing(m2);
+  _weightfunction->AddThing(m3);
 }
 /******************************************************************************/
 Component* MassFitter::BifurcatedGaussian(string name)
