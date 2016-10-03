@@ -96,7 +96,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   newtree->Draw("res:TRUEMASS");
   can.SaveAs((plotname+"_2Dscatter.pdf").c_str());
 /*Do convolved fit************************************************************/
-  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),493*2,1800);
+  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),493*2,1080);
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
   MassFitter* PhiFit = new MassFitter(m);
