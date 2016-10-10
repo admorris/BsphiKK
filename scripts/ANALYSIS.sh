@@ -6,7 +6,7 @@
 #./getoutputdata | tee log/getoutputdata.log
 #./merge.sh | tee log/merge.log
 #./sideband.sh | tee log/sideband.log
-./SELECTION.sh
+#./SELECTION.sh
 ./EFFICIENCIES.sh
 ./SELECTION_PLOTS.sh
 ## Get input parameters for angular fit
