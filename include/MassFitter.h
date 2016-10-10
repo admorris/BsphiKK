@@ -85,6 +85,7 @@ class MassFitter
     void                Plot(RooPlot*);
     SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
     SPlot*              GetsPlot(RooArgList);
+    void                SetWeighted();
     void                UsePhaseSpace(double,double,double,double);
   private:
     vector<Component*>  _components;
@@ -99,6 +100,7 @@ class MassFitter
     bool                _hasweightfunction;
     bool                _hasdata;
     bool                _useyieldvars;
+    bool                _weighted;
     // Signal models
     Component*          BifurcatedGaussian(string);
     Component*          singleGaussian(string);
@@ -108,7 +110,10 @@ class MassFitter
     Component*          CrystalBall1Gauss(string);
     Component*          CrystalBall2Gauss(string);
     Component*          BreitWigner(string);
+    Component*          RelBreitWigner(string);
     Component*          Voigtian(string);
+    Component*          BWxGauss(string);
+    Component*          RBWxGauss(string);
     Component*          ThresholdShape(string);
     // Background models
     Component*          Argus(string);

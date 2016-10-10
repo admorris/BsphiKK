@@ -100,11 +100,11 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
   MassFitter* PhiFit = new MassFitter(m);
-  Component* PhiMod = PhiFit->AddComponent("phi","Voigtian");
+//  Component* PhiMod = PhiFit->AddComponent("phi","Voigtian");
+//  Component* PhiMod = PhiFit->AddComponent("phi","BW(X)Gauss");
+  Component* PhiMod = PhiFit->AddComponent("phi","RBW(X)Gauss");
   PhiMod->FixValue("mean",1019.461);
   PhiMod->FixValue("width",4.266);
-//  PhiMod->SetRange("mean",-1,1);
-//  PhiMod->FixValue("mean",0);
   PhiMod->SetRange("sigma1",0,10);
   double s1 = ResMod->GetValue("sigma1");
   double s2 = ResMod->GetValue("sigma2");

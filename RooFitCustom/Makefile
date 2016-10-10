@@ -1,18 +1,18 @@
 # Compiler and shell
-CC         = g++
+CC         = g++ -std=c++11 -O2 -Wall -fPIC -Xlinker -zmuldefs -Wno-unused-local-typedefs -pthread -Wno-deprecated-declarations -m64
 SHELL      = /bin/bash
 RM         = rm -f
 
 ifndef ROOTSYS
-	ROOTCFLAGS = $(shell root-config --cflags)
-	ROOTLIBS   = $(shell root-config --libs)
-	ROOTCLING  = rootcling
+	ROOTINCLUDE = -I$(shell root-config --incdir)
+	ROOTLIBS    = $(shell root-config --libs)
+	ROOTCLING   = rootcling
 else
-	ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
-	ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)
-	ROOTCLING  = $(ROOTSYS)/bin/rootcling
+	ROOTINCLUDE = -I$(shell $(ROOTSYS)/bin/root-config --incdir)
+	ROOTLIBS    = $(shell $(ROOTSYS)/bin/root-config --libs)
+	ROOTCLING   = $(ROOTSYS)/bin/rootcling
 endif
-EXTRA_ROOTLIBS=-lRooFit -lRooStats -lRooFitCore
+EXTRA_ROOTLIBS=-lRooFit -lRooFitCore
 
 # Extensions
 SRCEXT     = cpp
@@ -28,25 +28,24 @@ LIBDIR     = lib
 # Get files and make list of objects and libraries
 SRCS      := $(shell find $(SRCDIR) -name '*.$(SRCEXT)')
 HDRS      := $(shell find $(HDRDIR) -name '*.$(HDREXT)')
-DLHD      := $(patsubst $(SRCDIR)/%.$(SRCEXT), %.$(HDREXT), $(SRCS))
+DLHD      := $(patsubst $(SRCDIR)/%.$(SRCEXT), -p %.$(HDREXT), $(SRCS))
 OBJS      := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(OBJDIR)/%.$(OBJEXT), $(SRCS))
 
 # Where the output is
 OUTPUT     = $(LIBDIR)/libRooFitCustom.$(LIBEXT)
 
 # Compiler flags
-CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) $(ROOTCFLAGS)
-LIBFLAGS   = -Wl,--as-needed $(ROOTLIBS) $(EXTRA_ROOTLIBS)
+CXXFLAGS   = -I$(HDRDIR) $(ROOTINCLUDE) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 
 all : $(OUTPUT)
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJS) dict/Dict.o | $(LIBDIR)
-	$(CC) -shared $^ -o $@ $(LIBFLAGS)
+	$(CC) $(CXXFLAGS) -shared $^ -o $@
 # Build objects
 $(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) | $(OBJDIR)
 	$(CC) $(CXXFLAGS) -c $< -o $@
 dict/Dict.cxx : | dict
-	$(ROOTCLING) -f $@ -c -I$(HDRDIR) -p $(DLHD) LinkDef.h
+	$(ROOTCLING) -f $@ -c -I$(HDRDIR) $(DLHD) LinkDef.h
 dict/Dict.o : dict/Dict.cxx
 	$(CC) $(CXXFLAGS) -c $< -o $@
 # Make directories

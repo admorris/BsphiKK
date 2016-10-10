@@ -4,7 +4,7 @@
 #include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
-#include "RooConstVar.h"
+#include "RooRealVar.h"
 #include "RooFormulaVar.h"
 #include "RooProdPdf.h"
 #include "RooRealVar.h"
@@ -18,6 +18,7 @@
 #include "RooFFTConvPdf.h"
 #include "RooGaussian.h"
 #include "RooPolynomial.h"
+#include "RooRelBreitWigner.h"
 #include "RooUniform.h"
 #include "RooVoigtian.h"
 // Custom headers
@@ -183,6 +184,7 @@ void MassFitter::init()
   _hasdata = false;
   _useyieldvars = false;
   _hasweightfunction = false;
+  _weighted = false;
   cout << "MassFitter instance initialised" << endl;
 }
 /******************************************************************************/
@@ -238,9 +240,21 @@ Component* MassFitter::AddComponent(string name, string type)
   {
     newpdf = BreitWigner(name);
   }
+  else if(type=="Rel Breit-Wigner" || type=="Rel Breit Wigner")
+  {
+    newpdf = RelBreitWigner(name);
+  }
   else if(type=="Voigtian" || type=="Voigt")
   {
     newpdf = Voigtian(name);
+  }
+  else if(type=="BWxGauss" || type=="BW(X)Gauss")
+  {
+    newpdf = BWxGauss(name);
+  }
+  else if(type=="RBWxGauss" || type=="RBW(X)Gauss")
+  {
+    newpdf = BWxGauss(name);
   }
   else if(type=="RooDstD0BG" || type=="Threshold" || type=="ThresholdShape")
   {
@@ -304,6 +318,11 @@ Component* MassFitter::GetComponent(string name)
   throw invalid_argument(("No such component: "+name+".").c_str());
 }
 /******************************************************************************/
+void MassFitter::SetWeighted()
+{
+  _weighted = true;
+}
+/******************************************************************************/
 void MassFitter::SetData(RooDataSet* data)
 {
   _hasdata = true;
@@ -315,7 +334,7 @@ RooFitResult* MassFitter::Fit()
   if(!_haspdf)
     assemble();
   if(_hasdata)
-    return _pdf->fitTo(*_data);
+    return _weighted ? _pdf->fitTo(*_data,SumW2Error(kTRUE)) : _pdf->fitTo(*_data);
   else
     throw runtime_error("Attempting to fit without a DataSet.");
 }
@@ -330,7 +349,7 @@ RooFitResult* MassFitter::Fit(RooDataSet* data)
 /******************************************************************************/
 void MassFitter::Plot(RooPlot* frame)
 {
-  if(_components.size()>1)
+  if(_components.size()>1 && !_hasweightfunction)
     for(auto comp : _components)
       _pdf->plotOn(frame,Components((comp->GetName()+"shape").c_str()),LineStyle(comp->GetStyle()),LineColor(comp->GetColour()));
   _pdf->plotOn(frame,LineStyle(kSolid),LineColor(kRed));
@@ -356,10 +375,10 @@ void MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
     delete _weightfunction;
   }
   cout << "Creating new weight function: " << name << endl;
-  RooConstVar* M  = new RooConstVar("M","Parent mass",_M);
-  RooConstVar* m1 = new RooConstVar("m1","Body 1 mass",_m1);
-  RooConstVar* m2 = new RooConstVar("m2","Body 2 mass",_m2);
-  RooConstVar* m3 = new RooConstVar("m3","Body 3 mass",_m3);
+  RooRealVar* M  = new RooRealVar("M","Parent mass",_M);
+  RooRealVar* m1 = new RooRealVar("m1","Body 1 mass",_m1);
+  RooRealVar* m2 = new RooRealVar("m2","Body 2 mass",_m2);
+  RooRealVar* m3 = new RooRealVar("m3","Body 3 mass",_m3);
   RooThreeBodyPhaseSpace* thepdf = new RooThreeBodyPhaseSpace("shape","Three-body phase space function",*_mass,*M,*m1,*m2,*m3);
   _weightfunction = new Component(name,thepdf);
   _weightfunction->AddThing(M);
@@ -370,7 +389,7 @@ void MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
 /******************************************************************************/
 Component* MassFitter::BifurcatedGaussian(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
   RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
   RooBifurGauss* thepdf    = new RooBifurGauss("shape","Bifurcated Gaussian",*_mass,*mean,*sigma1,*sigma2);
@@ -383,7 +402,7 @@ Component* MassFitter::BifurcatedGaussian(string name)
 /******************************************************************************/
 Component* MassFitter::singleGaussian(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
   RooRealVar*    scalef    = new RooRealVar("scalef","Scale factor",1);
   RooFormulaVar* scsig1    = new RooFormulaVar("scsig1","@0*@1",RooArgList(*scalef,*sigma1));
@@ -398,7 +417,7 @@ Component* MassFitter::singleGaussian(string name)
 /******************************************************************************/
 Component* MassFitter::doubleGaussian(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
   RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
   RooRealVar*    scalef    = new RooRealVar("scalef","Scale factor",1);
@@ -425,7 +444,7 @@ Component* MassFitter::doubleGaussian(string name)
 /******************************************************************************/
 Component* MassFitter::tripleGaussian(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
   RooRealVar*    sigma2    = new RooRealVar("sigma2","Width of second gaussian",3.27034e+01,18,50);
   RooRealVar*    sigma3    = new RooRealVar("sigma3","Width of third gaussian",50,40,120);
@@ -464,7 +483,7 @@ Component* MassFitter::tripleGaussian(string name)
 /******************************************************************************/
 Component* MassFitter::CrystalBall(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,-10,10);
 	RooRealVar*    n         = new RooRealVar("n","n",1.0);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,24);
@@ -483,7 +502,7 @@ Component* MassFitter::CrystalBall(string name)
 /******************************************************************************/
 Component* MassFitter::CrystalBall1Gauss(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,-10,10);
 	RooRealVar*    n         = new RooRealVar("n","n",1.0);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
@@ -514,7 +533,7 @@ Component* MassFitter::CrystalBall1Gauss(string name)
 /******************************************************************************/
 Component* MassFitter::CrystalBall2Gauss(string name)
 {
-  RooRealVar*    mean      = new RooRealVar("mean","Mean \\phi \\phi mass",5.36815e+03,5360,5380);
+  RooRealVar*    mean      = new RooRealVar("mean","Mean mass",5.36815e+03,5360,5380);
   RooRealVar*    alpha     = new RooRealVar("alpha","alpha",3,-10,10);
 	RooRealVar*    n         = new RooRealVar("n","n",1.0);
   RooRealVar*    sigma1    = new RooRealVar("sigma1","Width of first gaussian",1.29312e+01,10,18);
@@ -557,8 +576,8 @@ Component* MassFitter::CrystalBall2Gauss(string name)
 /******************************************************************************/
 Component* MassFitter::BreitWigner(string name)
 {
-  RooRealVar*     mean   = new RooRealVar("mass","Mean \\phi mass",1019.461,1018,1021);
-  RooRealVar*     width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
+  RooRealVar*     mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
+  RooRealVar*     width  = new RooRealVar("width","Natural width",4.266,3.5,5);
   RooBreitWigner* thepdf = new RooBreitWigner("shape","Breit Wigner",*_mass,*mean,*width);
   Component* pdf = new Component(name,thepdf);
   pdf->AddThing(mean);
@@ -566,10 +585,81 @@ Component* MassFitter::BreitWigner(string name)
   return pdf;
 }
 /******************************************************************************/
+Component* MassFitter::RelBreitWigner(string name)
+{
+  RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
+  RooRealVar*        width  = new RooRealVar("width","Natural width",4.266,3.5,5);
+  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",1.5,1.0,5.0);
+  RooRealVar*        mK     = new RooRealVar("mK","kaon mass",493.677);
+  RooRealVar*        spin   = new RooRealVar("spin","spin",1,0,2);
+  RooRelBreitWigner* thepdf = new RooRelBreitWigner("shape","Relativistic Breit Wigner",*_mass,*mean,*width,*radius,*mK,*mK,*spin);
+  Component* pdf = new Component(name,thepdf);
+  radius->setConstant();
+  spin->setConstant();
+  pdf->AddThing(mean);
+  pdf->AddThing(width);
+  pdf->AddThing(radius);
+  pdf->AddThing(mK);
+  pdf->AddThing(spin);
+  return pdf;
+}
+/******************************************************************************/
+Component* MassFitter::BWxGauss(string name)
+{
+  RooRealVar*     mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
+  RooRealVar*     width  = new RooRealVar("width","Natural width",4.266,3.5,5);
+  RooRealVar*     zero   = new RooRealVar("zero","Gaussian mean",0);
+  RooRealVar*     sigma1 = new RooRealVar("sigma1","Detector resolution",1,0,10);
+  RooBreitWigner* bw     = new RooBreitWigner("bw","Breit Wigner",*_mass,*mean,*width);
+  RooGaussian*    gauss  = new RooGaussian("gauss","Gaussian",*_mass,*zero,*sigma1);
+  _mass->setBins(10000,"cache");
+  RooFFTConvPdf*  thepdf = new RooFFTConvPdf("shape","Breit Wigner (X) Gaussian",*_mass,*bw,*gauss);
+  thepdf->setBufferStrategy(RooFFTConvPdf::Flat);
+  thepdf->setBufferFraction(0.2);
+  Component* pdf = new Component(name,thepdf);
+  pdf->AddThing(mean);
+  pdf->AddThing(width);
+  pdf->AddThing(zero);
+  pdf->AddThing(sigma1);
+  pdf->AddThing(bw);
+  pdf->AddThing(gauss);
+  return pdf;
+}
+/******************************************************************************/
+Component* MassFitter::RBWxGauss(string name)
+{
+  RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
+  RooRealVar*        width  = new RooRealVar("width","Natural width",4.266,3.5,5);
+  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",1.5,1.0,5.0);
+  RooRealVar*        mK     = new RooRealVar("mK","kaon mass",493.677);
+  RooRealVar*        spin   = new RooRealVar("spin","spin",1,0,2);
+  RooRealVar*        zero   = new RooRealVar("zero","Gaussian mean",0);
+  RooRealVar*        sigma1 = new RooRealVar("sigma1","Detector resolution",1,0,10);
+  RooRelBreitWigner* rbw    = new RooRelBreitWigner("rbw","Relativistic Breit Wigner",*_mass,*mean,*width,*radius,*mK,*mK,*spin);
+  RooGaussian*       gauss  = new RooGaussian("gauss","Gaussian",*_mass,*zero,*sigma1);
+  _mass->setBins(10000,"cache");
+  RooFFTConvPdf*  thepdf = new RooFFTConvPdf("shape","Breit Wigner (X) Gaussian",*_mass,*rbw,*gauss);
+  thepdf->setBufferStrategy(RooFFTConvPdf::Flat);
+  thepdf->setBufferFraction(0.2);
+  Component*         pdf = new Component(name,thepdf);
+  radius->setConstant();
+  spin->setConstant();
+  pdf->AddThing(mean);
+  pdf->AddThing(width);
+  pdf->AddThing(radius);
+  pdf->AddThing(mK);
+  pdf->AddThing(spin);
+  pdf->AddThing(zero);
+  pdf->AddThing(sigma1);
+  pdf->AddThing(rbw);
+  pdf->AddThing(gauss);
+  return pdf;
+}
+/******************************************************************************/
 Component* MassFitter::Voigtian(string name)
 {
-  RooRealVar*  mean   = new RooRealVar("mean","Mean \\phi mass", 1019.461,1018,1021);
-  RooRealVar*  width  = new RooRealVar("width","Natural \\phi width",4.266,3.5,5);
+  RooRealVar*  mean   = new RooRealVar("mean","Mean mass", 1019.461,1018,1021);
+  RooRealVar*  width  = new RooRealVar("width","Natural width",4.266,3.5,5);
   RooRealVar*  sigma1 = new RooRealVar("sigma1","Detector resolution",1,0,10);
   RooVoigtian* thepdf = new RooVoigtian("shape","Voigtian",*_mass,*mean,*width,*sigma1);
   Component* pdf = new Component(name,thepdf);
