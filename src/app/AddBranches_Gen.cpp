@@ -75,10 +75,14 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t Phi_angle; outtree->Branch("Phi_angle", &Phi_angle, "Phi_angle/D" );
   Double_t sin_Phi; outtree->Branch("sin_Phi", &sin_Phi, "sin_Phi/D" );
   Double_t cos_Phi; outtree->Branch("cos_Phi", &cos_Phi, "cos_Phi/D" );
+  Double_t phi_1020_M; outtree->Branch("phi_1020_M", &phi_1020_M, "phi_1020_M/D" );
   Double_t KK_M; outtree->Branch("KK_M", &KK_M, "KK_M/D" );
   Double_t cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
+/*New mass branches************************************************************/
+  TLorentzVector phiKplusP;   double phiKplusM;         outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
+  TLorentzVector phiKminusP;  double phiKminusM;        outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
 /*Event loop*******************************************************************/
   for(Int_t i = 0; i < n; i++)
   {
@@ -91,7 +95,13 @@ void addBranches(string filename = "BsphiKK_data")
     BP    = hP[0] + hP[1] + hP[2] + hP[3];
     dP[0] = hP[0] + hP[1];
     dP[1] = hP[2] + hP[3];
+    phi_1020_M = dP[0].M();
     KK_M = dP[1].M();
+    // Both phiK+− branches
+    phiKminusP = hP[0] + hP[1] + hP[2];
+    phiKminusM = phiKminusP.M();
+    phiKplusP = hP[0] + hP[1] + hP[3];
+    phiKplusM = phiKplusP.M();
 /*Pseudorapidity and polar angle***********************************************/
     B_s0_Eta = BP.Eta();
     Phi_Eta  = dP[0].Eta();
