@@ -19,7 +19,7 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve)
+void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool nophasespace)
 {
 /*Input***********************************************************************/
   TFile* file = TFile::Open(filename.c_str());
@@ -56,7 +56,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
 //  phi = massfitter->AddComponent("phi","Breit-Wigner",Nphi);
   phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
   }
-  phi->FixValue("mean",1019.461);
+//  phi->FixValue("mean",1019.461);
   phi->FixValue("width",4.266);
 //  phi->FixValue("sigma1",1.0);
 //  phi->FixValue("spin",1);
@@ -68,7 +68,8 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   ftwop->SetRange("width",80,88);
   ftwop->FixValue("width",84);
   //ftwop->FixValue("spin",2);*/
-  massfitter->UsePhaseSpace(5366.77, 493.677, 493.677, 1019.461);
+  Component* phsp;
+  if(!nophasespace) phsp = massfitter->UsePhaseSpace(5366.77, 493.677, 493.677, 1019.461);
   massfitter->Fit(data);
   RooPlot* frame = m->frame();
   cout << "Plotting" << endl;
@@ -80,12 +81,13 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   pullframe->addPlotable(pullhist,"B");
   plotter2.SetPullPlot(pullframe);
   plotter2.SetTitle((xtitle), unit);
+  if(!nophasespace) phsp->GetThing("shape")->plotOn(frame);
   if(yup>0)
     frame->SetMaximum(yup);
   frame->SetMinimum(0);
   TCanvas* can = plotter2.Draw();
-	stringstream ytitle;
-	ytitle << "#font[132]{}Candidates / (" << (xup-xlow)/nbins << " " << unit << ")";
+  stringstream ytitle;
+  ytitle << "#font[132]{}Candidates / (" << (xup-xlow)/nbins << " " << unit << ")";
   frame->GetYaxis()->SetTitle(ytitle.str().c_str());
   can->SaveAs((plotname+".pdf").c_str());
 }
@@ -101,6 +103,7 @@ int main(int argc, char* argv[])
   desc.add_options()
     ("help,H"    ,                                                                                        "produce help message")
     ("conv"      ,                                                                                        "do convolution"      )
+    ("nophsp"    ,                                                                                        "raw breit-wigner"    )
     ("file,F"    , value<string>(&file  )->default_value("ntuples/BsphiKK_data_1800_mvacut.root"       ), "data ntuple"         )
     ("branch,B"  , value<string>(&branch)->default_value("KK_M"                                        ), "mass branch"         )
     ("cuts,C"    , value<string>(&cuts  )->default_value(""                                            ), "cuts"                )
@@ -122,6 +125,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"));
+  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("nophsp"));
   return 0;
 }
