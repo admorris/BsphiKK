@@ -86,7 +86,7 @@ class MassFitter
     SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
     SPlot*              GetsPlot(RooArgList);
     void                SetWeighted();
-    void                UsePhaseSpace(double,double,double,double);
+    Component*          UsePhaseSpace(double,double,double,double);
   private:
     vector<Component*>  _components;
     RooAbsPdf*          _pdf;

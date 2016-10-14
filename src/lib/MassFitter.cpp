@@ -364,7 +364,7 @@ SPlot* MassFitter::GetsPlot(RooArgList list)
   return new SPlot("sData","An SPlot", *_data, _pdf, list);
 }
 /******************************************************************************/
-void MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
+Component* MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
 {
   string name = "phase space";
   if(!_hasweightfunction)
@@ -385,6 +385,7 @@ void MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
   _weightfunction->AddThing(m1);
   _weightfunction->AddThing(m2);
   _weightfunction->AddThing(m3);
+  return _weightfunction;
 }
 /******************************************************************************/
 Component* MassFitter::BifurcatedGaussian(string name)
@@ -589,7 +590,7 @@ Component* MassFitter::RelBreitWigner(string name)
 {
   RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
   RooRealVar*        width  = new RooRealVar("width","Natural width",4.266,3.5,5);
-  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",1.5,1.0,5.0);
+  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",1.5e3,1.0e3,5.0e3);
   RooRealVar*        mK     = new RooRealVar("mK","kaon mass",493.677);
   RooRealVar*        spin   = new RooRealVar("spin","spin",1,0,2);
   RooRelBreitWigner* thepdf = new RooRelBreitWigner("shape","Relativistic Breit Wigner",*_mass,*mean,*width,*radius,*mK,*mK,*spin);
