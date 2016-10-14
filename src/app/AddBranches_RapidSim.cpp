@@ -19,7 +19,7 @@ int count(string str, string substr)
 }
 void addBranches(string filename = "Bsphiphi")
 {
-  double m_K = 493.677;
+  double m_K = 0.493677;
   int nphi = count(filename, "phi");
   int nBs = count(filename, "Bs");
   cout << "Adding branches to " << filename << endl;
@@ -80,11 +80,14 @@ void addBranches(string filename = "Bsphiphi")
     intree->GetEntry(i);
     if(nBs == 1)
     {
-      M_B = m_b*1e3;
+//      M_B = m_b*1e3;
       Kp_0_P.SetXYZM(Kp_0_PX,Kp_0_PY,Kp_0_PZ,m_K);
       Km_0_P.SetXYZM(Km_0_PX,Km_0_PY,Km_0_PZ,m_K);
       Kp_1_P.SetXYZM(Kp_1_PX,Kp_1_PY,Kp_1_PZ,m_K);
       Km_1_P.SetXYZM(Km_1_PX,Km_1_PY,Km_1_PZ,m_K);
+      M_B = (Kp_0_P+Km_0_P+Kp_1_P+Km_1_P).M()*1e3;
+      M_phiKp = (Kp_0_P+Km_0_P+Kp_1_P).M()*1e3;
+      M_phiKm = (Kp_0_P+Km_0_P+Km_1_P).M()*1e3;
       switch(nphi)
       {
         case 0:
@@ -99,8 +102,6 @@ void addBranches(string filename = "Bsphiphi")
           M_PHI = m_phi*1e3;
           M_KK = m_kk*1e3;
       }
-      M_phiKp = (Kp_0_P+Km_0_P+Kp_1_P).M()*1e3;
-      M_phiKm = (Kp_0_P+Km_0_P+Km_1_P).M()*1e3;
     }
     else
     {
