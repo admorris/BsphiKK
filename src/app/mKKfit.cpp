@@ -56,7 +56,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
 //  phi = massfitter->AddComponent("phi","Breit-Wigner",Nphi);
   phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
   }
-//  phi->FixValue("mean",1019.461);
+  phi->FixValue("mean",1019.461);
   phi->FixValue("width",4.266);
 //  phi->FixValue("sigma1",1.0);
 //  phi->FixValue("spin",1);
