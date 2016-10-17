@@ -590,7 +590,7 @@ Component* MassFitter::RelBreitWigner(string name)
 {
   RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
   RooRealVar*        width  = new RooRealVar("width","Natural width",4.266,3.5,5);
-  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",1.5e3,1.0e3,5.0e3);
+  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",3.0e-3,1.0e-3,5.0e-3); // 3 GeV^-1 = 0.003 MeV^-1
   RooRealVar*        mK     = new RooRealVar("mK","kaon mass",493.677);
   RooRealVar*        spin   = new RooRealVar("spin","spin",1,0,2);
   RooRelBreitWigner* thepdf = new RooRelBreitWigner("shape","Relativistic Breit Wigner",*_mass,*mean,*width,*radius,*mK,*mK,*spin);
@@ -631,7 +631,7 @@ Component* MassFitter::RBWxGauss(string name)
 {
   RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
   RooRealVar*        width  = new RooRealVar("width","Natural width",4.266,3.5,5);
-  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",1.5,1.0,5.0);
+  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",3.0e-3,1.0e-3,5.0e-3); // 3 GeV^-1 = 0.003 MeV^-1
   RooRealVar*        mK     = new RooRealVar("mK","kaon mass",493.677);
   RooRealVar*        spin   = new RooRealVar("spin","spin",1,0,2);
   RooRealVar*        zero   = new RooRealVar("zero","Gaussian mean",0);
