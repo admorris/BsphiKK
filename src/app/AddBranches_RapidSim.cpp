@@ -38,21 +38,21 @@ void addBranches(string filename = "Bsphiphi")
   double Kp_0_PX, Km_0_PX, Kp_1_PX, Km_1_PX;
   double Kp_0_PY, Km_0_PY, Kp_1_PY, Km_1_PY;
   double Kp_0_PZ, Km_0_PZ, Kp_1_PZ, Km_1_PZ;
-  intree->SetBranchAddress("Kp_0_PX",&Kp_0_PX);
-  intree->SetBranchAddress("Kp_0_PY",&Kp_0_PY);
-  intree->SetBranchAddress("Kp_0_PZ",&Kp_0_PZ);
-  intree->SetBranchAddress("Km_0_PX",&Km_0_PX);
-  intree->SetBranchAddress("Km_0_PY",&Km_0_PY);
-  intree->SetBranchAddress("Km_0_PZ",&Km_0_PZ);
+  intree->SetBranchAddress("Kp_0_PX_TRUE",&Kp_0_PX);
+  intree->SetBranchAddress("Kp_0_PY_TRUE",&Kp_0_PY);
+  intree->SetBranchAddress("Kp_0_PZ_TRUE",&Kp_0_PZ);
+  intree->SetBranchAddress("Km_0_PX_TRUE",&Km_0_PX);
+  intree->SetBranchAddress("Km_0_PY_TRUE",&Km_0_PY);
+  intree->SetBranchAddress("Km_0_PZ_TRUE",&Km_0_PZ);
   if(nBs == 1)
   {
-    intree->SetBranchAddress("Bs0_0_M",&m_b);
-    intree->SetBranchAddress("Kp_1_PX",&Kp_1_PX);
-    intree->SetBranchAddress("Kp_1_PY",&Kp_1_PY);
-    intree->SetBranchAddress("Kp_1_PZ",&Kp_1_PZ);
-    intree->SetBranchAddress("Km_1_PX",&Km_1_PX);
-    intree->SetBranchAddress("Km_1_PY",&Km_1_PY);
-    intree->SetBranchAddress("Km_1_PZ",&Km_1_PZ);
+    intree->SetBranchAddress("Bs0_0_M_TRUE",&m_b);
+    intree->SetBranchAddress("Kp_1_PX_TRUE",&Kp_1_PX);
+    intree->SetBranchAddress("Kp_1_PY_TRUE",&Kp_1_PY);
+    intree->SetBranchAddress("Kp_1_PZ_TRUE",&Kp_1_PZ);
+    intree->SetBranchAddress("Km_1_PX_TRUE",&Km_1_PX);
+    intree->SetBranchAddress("Km_1_PY_TRUE",&Km_1_PY);
+    intree->SetBranchAddress("Km_1_PZ_TRUE",&Km_1_PZ);
     outtree->Branch("B_s0_M",&M_B);
     outtree->Branch("KK_M",&M_KK);
     outtree->Branch("phiKplusM",&M_phiKm);
@@ -66,12 +66,12 @@ void addBranches(string filename = "Bsphiphi")
   cout << "Creating branch phi_1020_M" << endl;
   if(nphi>0)
   {
-    intree->SetBranchAddress("phi_0_M",&m_phi);
+    intree->SetBranchAddress("phi_0_M_TRUE",&m_phi);
     cout << "Can just read the branch phi_0_M" << endl;
   }
   if(nphi==2)
   {
-    intree->SetBranchAddress("phi_1_M",&m_kk);
+    intree->SetBranchAddress("phi_1_M_TRUE",&m_kk);
     cout << "Can just read the branch phi_1_M" << endl;
   }
 /*Event loop*******************************************************************/
