@@ -76,7 +76,9 @@ void addBranches(string filename = "BsphiKK_data")
   Double_t sin_Phi; outtree->Branch("sin_Phi", &sin_Phi, "sin_Phi/D" );
   Double_t cos_Phi; outtree->Branch("cos_Phi", &cos_Phi, "cos_Phi/D" );
   Double_t phi_1020_M; outtree->Branch("phi_1020_M", &phi_1020_M, "phi_1020_M/D" );
+  Double_t phi_1020_M_GeV; outtree->Branch("phi_1020_M_GeV", &phi_1020_M_GeV, "phi_1020_M_GeV/D" );
   Double_t KK_M; outtree->Branch("KK_M", &KK_M, "KK_M/D" );
+  Double_t KK_M_GeV; outtree->Branch("KK_M_GeV", &KK_M_GeV, "KK_M_GeV/D" );
   Double_t cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
@@ -96,7 +98,9 @@ void addBranches(string filename = "BsphiKK_data")
     dP[0] = hP[0] + hP[1];
     dP[1] = hP[2] + hP[3];
     phi_1020_M = dP[0].M();
+    phi_1020_M_GeV = phi_1020_M*1e3;
     KK_M = dP[1].M();
+    KK_M_GeV = KK_M*1e3;
     // Both phiK+− branches
     phiKminusP = hP[0] + hP[1] + hP[2];
     phiKminusM = phiKminusP.M();

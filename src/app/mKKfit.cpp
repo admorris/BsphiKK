@@ -56,11 +56,22 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
 //  phi = massfitter->AddComponent("phi","Breit-Wigner",Nphi);
   phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
   }
-  phi->FixValue("mean",1019.461);
-  phi->FixValue("width",4.266);
-//  phi->FixValue("sigma1",1.0);
-//  phi->FixValue("spin",1);
-//  phi->FixValue("radius",1.5);
+  if(unit.find("GeV")!=string::npos)
+  {
+    phi->SetRange("mean",1.018,1.020);
+    phi->FixValue("mean",1.019461);
+    phi->SetRange("width",0.004,0.0045);
+    phi->FixValue("width",0.004266);
+    phi->SetRange("radius",0.0015,0.005);
+    phi->FixValue("radius",0.003);
+    phi->SetRange("mK",0.493,0.494);
+    phi->FixValue("mK",0.493677);
+    if(convolve)
+    {
+      phi->SetRange("sigma1",0.001,0.01);
+      phi->SetValue("sigma1",0.001);
+    }
+  }
 /*  Component* ftwop = massfitter->AddComponent("ftwop","Breit-Wigner",Nftwop);
 //  Component* ftwop = massfitter->AddComponent("ftwop","Rel Breit-Wigner",Nftwop);
   ftwop->SetRange("mean",1520,1530);
