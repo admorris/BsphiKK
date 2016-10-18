@@ -32,7 +32,7 @@
 //#include "RooComplex.h"
 #include <complex>
 
-ClassImp(RooRelBreitWigner)
+//ClassImp(RooRelBreitWigner)
 
 //------------------------------------------------------------------
 RooRelBreitWigner::RooRelBreitWigner(const char *name, const char *title,

@@ -33,10 +33,6 @@ COMMONDIR  = $(PWD)/../common
 COMHDRDIR  = $(COMMONDIR)/include
 COMLIBDIR  = $(COMMONDIR)/lib
 
-RFCDIR     = $(PWD)/RooFitCustom
-RFCHDRDIR  = $(RFCDIR)/include
-RFCLIBDIR  = $(RFCDIR)/lib
-
 # Get files and make list of objects and libraries
 BINSRCS   := $(shell find $(SRCDIR)/$(BINSRCDIR) -name '*.$(SRCEXT)')
 LIBSRCS   := $(shell find $(SRCDIR)/$(LIBSRCDIR) -name '*.$(SRCEXT)')
@@ -50,20 +46,17 @@ OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT)
 LOGDIRS    = latex/figs latex/results ntuples scripts/log scripts/tables
 
 # Compiler flags
-CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -IRooFitCustom/include -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
+CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS) -std=c++11
 COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS)) -Wl,-rpath=$(COMLIBDIR)
-RFCLIBFLAGS = -L$(RFCLIBDIR) -lRooFitCustom -Wl,-rpath=$(RFCLIBDIR)
-LIBFLAGS   = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) -Wl,-rpath=$(LIBDIR) $(COMLIBFLAGS) $(RFCLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lgsl -lgslcblas -lboost_program_options
+LIBFLAGS   = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) -Wl,-rpath=$(LIBDIR) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lgsl -lgslcblas -lboost_program_options
 
-all : $(RFCLIBDIR)/libRooFitCustom.$(LIBEXT) $(LIBS) $(BINS) | $(LOGDIRS)
+all : $(LIBS) $(BINS) | $(LOGDIRS)
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) $(COMLIBS) | $(BINDIR)
 	$(CC) $< -o $@ $(LIBFLAGS)
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS) | $(LIBDIR)
-	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) $(RFCLIBFLAGS)
-$(RFCLIBDIR)/libRooFitCustom.$(LIBEXT) :
-	@make -C $(RFCDIR)
+	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 # Build objects
 $(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS) | $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR)
 	$(CC) $(CXXFLAGS) -c $< -o $@
@@ -73,5 +66,3 @@ $(LOGDIRS) $(BINDIR) $(LIBDIR) $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINS
 # Remove all the output
 clean :
 	$(RM) $(OUTPUT)
-	@make -C $(RFCDIR) clean
-

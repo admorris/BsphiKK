@@ -23,7 +23,7 @@ class RooThreeBodyPhaseSpace : public RooAbsPdf
     Double_t evaluate() const ;
   private:
     Double_t p(Double_t,Double_t,Double_t) const ;
-    ClassDef(RooThreeBodyPhaseSpace,0)
+//    ClassDef(RooThreeBodyPhaseSpace,0)
 };
 
 #endif

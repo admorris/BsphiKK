@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-ClassImp(RooThreeBodyPhaseSpace)
+//ClassImp(RooThreeBodyPhaseSpace)
 
 RooThreeBodyPhaseSpace::RooThreeBodyPhaseSpace(const char* name, const char* title, RooAbsReal& _m12, RooAbsReal& _M, RooAbsReal& _m1, RooAbsReal& _m2, RooAbsReal& _m3) :
   RooAbsPdf(name, title),

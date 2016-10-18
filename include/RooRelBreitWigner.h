@@ -46,7 +46,7 @@ private:
   Double_t getFF(Double_t q) const;
   Double_t getQ(Double_t mass) const;
 
-  ClassDef(RooRelBreitWigner,0) // Relativistic Breit Wigner PDF
+//  ClassDef(RooRelBreitWigner,0) // Relativistic Breit Wigner PDF
 };
 
 #endif
