@@ -178,6 +178,11 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   double proton_ProbNNk;  outtree->Branch("proton_ProbNNk", &proton_ProbNNk, "proton_ProbNNk/D" );
   double proton_ProbNNpi; outtree->Branch("proton_ProbNNpi",&proton_ProbNNpi,"proton_ProbNNpi/D");
   double proton_ProbNNp;  outtree->Branch("proton_ProbNNp", &proton_ProbNNp, "proton_ProbNNp/D" );
+  // GeV branches
+  Double_t phi_1020_LOKI_M_GeV;   outtree->Branch("phi_1020_LOKI_M_GeV", &phi_1020_LOKI_M_GeV, "phi_1020_LOKI_M_GeV/D");
+  Double_t KK_LOKI_M_GeV;         outtree->Branch("KK_LOKI_M_GeV"      , &KK_LOKI_M_GeV      , "KK_LOKI_M_GeV/D"      );
+  Double_t KK_TRUEM_GeV; if(isMC) outtree->Branch("KK_TRUEM_GeV"       , &KK_TRUEM_GeV       , "KK_TRUEM_GeV/D"       );
+  Double_t BCON_KK_M_GeV;         outtree->Branch("BCON_KK_M_GeV"      , &BCON_KK_M_GeV      , "BCON_KK_M_GeV/D"      );
 /*Helicity angle branches******************************************************/
   // Track 4-momentum in B frame and daughter frames
   TLorentzVector Bframe_h_P[4], /*Bframe_d_P[4],*/ dframe_h_P[4], dframe_other_h_P[4];
@@ -217,17 +222,21 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
       for(int j = 0; j < 4; j++) h_TRUEP[j].SetXYZM(h_TRUEPX[j],h_TRUEPY[j],h_TRUEPZ[j],Kmass);
       KK_TRUEP = doswap? h_TRUEP[0] + h_TRUEP[1] : h_TRUEP[2] + h_TRUEP[3];
       KK_TRUEM = KK_TRUEP.M();
+      KK_TRUEM_GeV = KK_TRUEM*1e-3;
     }
     // Track 4-momenta with constrained Bs mass
     for(int j = 0; j < 4; j++) h_BCONP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
     BCON_KK_P = doswap? h_BCONP[0] + h_BCONP[1] : h_BCONP[2] + h_BCONP[3];
     BCON_KK_M = BCON_KK_P.M();
+    BCON_KK_M_GeV = BCON_KK_M*1e-3;
     // Initial 4K hypothesis
     for(int j = 0; j < 4; j++) hP[j].SetXYZM(h_LOKI_PX[j],h_LOKI_PY[j],h_LOKI_PZ[j],Kmass);
     // Reconstruct B and daughter 4-momentum
     BP    = hP[0] + hP[1] + hP[2] + hP[3];
     dP[0] = hP[0] + hP[1];
     dP[1] = hP[2] + hP[3];
+    phi_1020_LOKI_M_GeV = dP[0].M()*1e-3;
+    KK_LOKI_M_GeV = dP[1].M()*1e-3;
     // Both phiK+− branches
     phiKminusP = hP[0] + hP[1] + hP[2];
     phiKminusM = phiKminusP.M();

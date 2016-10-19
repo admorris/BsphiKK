@@ -12,6 +12,7 @@
 #include "TLegend.h"
 #include "TStyle.h"
 #include "safeLog.h"
+#include "GetTree.h"
 using namespace std;
 void addBranches(string filename = "BsphiKK_data")
 {
@@ -21,7 +22,7 @@ void addBranches(string filename = "BsphiKK_data")
   TFile* infile  = TFile::Open((filename+".root"   ).c_str()),
        * outfile = TFile::Open((filename+"_mvaVars.root").c_str(),"RECREATE");
   // Get the input tree and create an empty output tree
-  TTree* intree  = (TTree*)infile->Get("MCDecayTreeTuple/MCDecayTree"),
+  TTree* intree  = GetTree(infile),
        * outtree = intree->CloneTree(0);
   // Read the number of events in the input file
   Int_t n = intree->GetEntries();
@@ -98,9 +99,9 @@ void addBranches(string filename = "BsphiKK_data")
     dP[0] = hP[0] + hP[1];
     dP[1] = hP[2] + hP[3];
     phi_1020_M = dP[0].M();
-    phi_1020_M_GeV = phi_1020_M*1e3;
+    phi_1020_M_GeV = phi_1020_M*1e-3;
     KK_M = dP[1].M();
-    KK_M_GeV = KK_M*1e3;
+    KK_M_GeV = KK_M*1e-3;
     // Both phiK+− branches
     phiKminusP = hP[0] + hP[1] + hP[2];
     phiKminusM = phiKminusP.M();
