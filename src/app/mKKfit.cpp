@@ -19,7 +19,7 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool nophasespace)
+void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool swave, bool dwave)
 {
 /*Input***********************************************************************/
   TFile* file = TFile::Open(filename.c_str());
@@ -39,22 +39,23 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     data = new RooDataSet("data","",RooArgSet(*m,*w),Import(*tree),WeightVar(*w));
     massfitter->SetWeighted();
   }
-//  RooRealVar* Nnonres  = new RooRealVar("N","Number of non-resonant candidates",1,0,2);
+  RooRealVar* Nnonres  = new RooRealVar("N","Number of non-resonant candidates",1,0,2000);
   RooRealVar* Nphi     = new RooRealVar("N","Number of phi candidates",3000,0,10000);
-//  RooRealVar* Nftwop   = new RooRealVar("N","Number of f2'(1525) candidates",10,0,100);
+  RooRealVar* Nftwop   = new RooRealVar("N","Number of f2'(1525) candidates",10,0,10000);
   
-//  Component* nonres = massfitter->AddComponent("nonres","Flat",Nnonres);
+  Component* nonres;
+  if(swave)
+  {
+    nonres = massfitter->AddComponent("nonres","Three Body Phase Space",Nnonres);
+  }
   Component* phi;
   if(convolve)
   {
-//  phi = massfitter->AddComponent("phi","Voigtian",Nphi);
-//  phi = massfitter->AddComponent("phi","BW(X)Gauss",Nphi);
-  phi = massfitter->AddComponent("phi","RBW(X)Gauss",Nphi);
+    phi = massfitter->AddComponent("phi","RBW(X)Gauss",Nphi);
   }
   else
   {
-//  phi = massfitter->AddComponent("phi","Breit-Wigner",Nphi);
-  phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
+    phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
   }
   if(unit.find("GeV")!=string::npos)
   {
@@ -62,25 +63,44 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     phi->FixValue("mean",1.019461);
     phi->SetRange("width",0.004,0.0045);
     phi->FixValue("width",0.004266);
-    phi->SetRange("radius",0.0015,0.005);
-    phi->FixValue("radius",0.003);
+    phi->SetRange("radius",1.5,5.0);
+    phi->FixValue("radius",3);
     phi->SetRange("mK",0.493,0.494);
     phi->FixValue("mK",0.493677);
     if(convolve)
     {
-      phi->SetRange("sigma1",0.001,0.01);
-      phi->SetValue("sigma1",0.001);
+      phi->SetRange("sigma1",0.0001,0.001);
+      phi->SetValue("sigma1",0.0001);
     }
   }
-/*  Component* ftwop = massfitter->AddComponent("ftwop","Breit-Wigner",Nftwop);
-//  Component* ftwop = massfitter->AddComponent("ftwop","Rel Breit-Wigner",Nftwop);
-  ftwop->SetRange("mean",1520,1530);
-  ftwop->FixValue("mean",1522.2);
-  ftwop->SetRange("width",80,88);
-  ftwop->FixValue("width",84);
-  //ftwop->FixValue("spin",2);*/
-  Component* phsp;
-  if(!nophasespace) phsp = massfitter->UsePhaseSpace(5366.77, 493.677, 493.677, 1019.461);
+  else
+  {
+    phi->SetRange("mean",1018,1020);
+    phi->FixValue("mean",1019.461);
+    phi->SetRange("width",4,4.5);
+    phi->FixValue("width",4.266);
+    phi->SetRange("radius",0.0015,0.005);
+    phi->FixValue("radius",0.003);
+    phi->SetRange("mK",493,494);
+    phi->FixValue("mK",493.677);
+    if(convolve)
+    {
+      phi->SetRange("sigma1",0.1,1.0);
+      phi->SetValue("sigma1",0.1);
+    }
+  }
+  Component* ftwop;
+  if(dwave)
+  {
+    ftwop = massfitter->AddComponent("ftwop","Rel Breit-Wigner",Nftwop);
+    ftwop->SetRange("mean",1520,1530);
+    ftwop->FixValue("mean",1522.2);
+    ftwop->SetRange("width",80,88);
+    ftwop->FixValue("width",84);
+    ftwop->SetRange("radius",1.5,5.0);
+    ftwop->FixValue("radius",3);
+    ftwop->FixValue("spin",2);
+  }
   massfitter->Fit(data);
   RooPlot* frame = m->frame();
   cout << "Plotting" << endl;
@@ -92,7 +112,6 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   pullframe->addPlotable(pullhist,"B");
   plotter2.SetPullPlot(pullframe);
   plotter2.SetTitle((xtitle), unit);
-  if(!nophasespace) phsp->GetThing("shape")->plotOn(frame);
   if(yup>0)
     frame->SetMaximum(yup);
   frame->SetMinimum(0);
@@ -112,20 +131,21 @@ int main(int argc, char* argv[])
   double xlow, xup, yup;
   int nbins;
   desc.add_options()
-    ("help,H"    ,                                                                                        "produce help message")
-    ("conv"      ,                                                                                        "do convolution"      )
-    ("nophsp"    ,                                                                                        "raw breit-wigner"    )
-    ("file,F"    , value<string>(&file  )->default_value("ntuples/BsphiKK_data_1800_mvacut.root"       ), "data ntuple"         )
-    ("branch,B"  , value<string>(&branch)->default_value("KK_M"                                        ), "mass branch"         )
-    ("cuts,C"    , value<string>(&cuts  )->default_value(""                                            ), "cuts"                )
-    ("weight,W"  , value<string>(&weight)->default_value(""                                            ), "weight"              )
-    ("title,T"   , value<string>(&xtitle)->default_value("#it{m}(#it{K^{#plus}K^{#minus}})"            ), "x-axis title"        )
-    ("unit,U"    , value<string>(&unit  )->default_value("MeV/#it{c}^{2}"                              ), "x-axis unit"         )
-    ("plot,O"    , value<string>(&plot  )->default_value("KKmassfit"                                   ), "output plot filename")
-    ("upper,u"   , value<double>(&xup   )->default_value(1800                                          ), "x-axis upper limit"  )
-    ("lower,l"   , value<double>(&xlow  )->default_value(980                                           ), "x-axis lower limit"  )
-    ("ymax"      , value<double>(&yup   )->default_value(-1                                            ), "y-axis upper limit"  )
-    ("bins,b"    , value<int   >(&nbins )->default_value(41                                            ), "number of bins"      )
+    ("help,H"    ,                                                                                 "produce help message")
+    ("conv"      ,                                                                                 "do convolution"      )
+    ("swave"     ,                                                                                 "use s-wave component")
+    ("dwave"     ,                                                                                 "use d-wave component")
+    ("file,F"    , value<string>(&file  )->default_value("ntuples/BsphiKK_data_1800_mvacut.root"), "data ntuple"         )
+    ("branch,B"  , value<string>(&branch)->default_value("KK_M"                                 ), "mass branch"         )
+    ("cuts,C"    , value<string>(&cuts  )->default_value(""                                     ), "cuts"                )
+    ("weight,W"  , value<string>(&weight)->default_value(""                                     ), "weight"              )
+    ("title,T"   , value<string>(&xtitle)->default_value("#it{m}(#it{K^{#plus}K^{#minus}})"     ), "x-axis title"        )
+    ("unit,U"    , value<string>(&unit  )->default_value("MeV/#it{c}^{2}"                       ), "x-axis unit"         )
+    ("plot,O"    , value<string>(&plot  )->default_value("KKmassfit"                            ), "output plot filename")
+    ("upper,u"   , value<double>(&xup   )->default_value(1800                                   ), "x-axis upper limit"  )
+    ("lower,l"   , value<double>(&xlow  )->default_value(980                                    ), "x-axis lower limit"  )
+    ("ymax"      , value<double>(&yup   )->default_value(-1                                     ), "y-axis upper limit"  )
+    ("bins,b"    , value<int   >(&nbins )->default_value(41                                     ), "number of bins"      )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -136,6 +156,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("nophsp"));
+  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("swave"),vmap.count("dwave"));
   return 0;
 }

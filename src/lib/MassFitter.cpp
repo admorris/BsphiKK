@@ -212,72 +212,81 @@ Component* MassFitter::AddComponent(string name, string type)
 {
   Component* newpdf;
   cout << "Will attempt to construct PDF with name " << type << endl;
+  newpdf = makeshape(name, type);
+  _components.push_back(newpdf);
+  return newpdf;
+}
+/******************************************************************************/
+Component* MassFitter::makeshape(string name, string type)
+{
   if(type=="Single Gaussian" || type == "Gaussian")
   {
-    newpdf = singleGaussian(name);
+    return singleGaussian(name);
   }
   else if(type=="Double Gaussian")
   {
-    newpdf = doubleGaussian(name);
+    return doubleGaussian(name);
   }
   else if(type=="Triple Gaussian")
   {
-    newpdf = tripleGaussian(name);
+    return tripleGaussian(name);
   }
   else if(type=="Crystal Ball")
   {
-    newpdf = CrystalBall(name);
+    return CrystalBall(name);
   }
   else if(type=="Crystal Ball + 1 Gaussian" || type=="Crystal Ball + Gaussian")
   {
-    newpdf = CrystalBall1Gauss(name);
+    return CrystalBall1Gauss(name);
   }
   else if(type=="Crystal Ball + 2 Gaussians")
   {
-    newpdf = CrystalBall2Gauss(name);
+    return CrystalBall2Gauss(name);
   }
   else if(type=="Breit-Wigner" || type=="Breit Wigner")
   {
-    newpdf = BreitWigner(name);
+    return BreitWigner(name);
   }
   else if(type=="Rel Breit-Wigner" || type=="Rel Breit Wigner")
   {
-    newpdf = RelBreitWigner(name);
+    return RelBreitWigner(name);
   }
   else if(type=="Voigtian" || type=="Voigt")
   {
-    newpdf = Voigtian(name);
+    return Voigtian(name);
   }
   else if(type=="BWxGauss" || type=="BW(X)Gauss")
   {
-    newpdf = BWxGauss(name);
+    return BWxGauss(name);
   }
   else if(type=="RBWxGauss" || type=="RBW(X)Gauss")
   {
-    newpdf = BWxGauss(name);
+    return RBWxGauss(name);
   }
   else if(type=="RooDstD0BG" || type=="Threshold" || type=="ThresholdShape")
   {
-    newpdf = ThresholdShape(name);
+    return ThresholdShape(name);
   }
   else if(type=="Flat")
   {
-    newpdf = flatfunction(name);
+    return flatfunction(name);
   }
   else if(type=="Exponential")
   {
-    newpdf = exponential(name);
+    return exponential(name);
   }
   else if(type=="Argus")
   {
-    newpdf = Argus(name);
+    return Argus(name);
+  }
+  else if(type=="ThreeBodyPhaseSpace" || type=="Three Body Phase Space")
+  {
+    return ThreeBodyPhaseSpace(name);
   }
   else
   {
     throw invalid_argument(("No such PDF " + type).c_str());
   }
-  _components.push_back(newpdf);
-  return newpdf;
 }
 /******************************************************************************/
 void MassFitter::assemble()
@@ -334,7 +343,7 @@ RooFitResult* MassFitter::Fit()
   if(!_haspdf)
     assemble();
   if(_hasdata)
-    return _weighted ? _pdf->fitTo(*_data,SumW2Error(kTRUE)) : _pdf->fitTo(*_data);
+    return _weighted ? _pdf->fitTo(*_data,SumW2Error(kTRUE)) : _pdf->fitTo(*_data,Minimizer("Minuit2","migrad"),Optimize(false));
   else
     throw runtime_error("Attempting to fit without a DataSet.");
 }
@@ -364,7 +373,7 @@ SPlot* MassFitter::GetsPlot(RooArgList list)
   return new SPlot("sData","An SPlot", *_data, _pdf, list);
 }
 /******************************************************************************/
-Component* MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _m3)
+Component* MassFitter::SetWeightFunction(string type)
 {
   string name = "phase space";
   if(!_hasweightfunction)
@@ -375,16 +384,7 @@ Component* MassFitter::UsePhaseSpace(double _M, double _m1, double _m2, double _
     delete _weightfunction;
   }
   cout << "Creating new weight function: " << name << endl;
-  RooRealVar* M  = new RooRealVar("M","Parent mass",_M);
-  RooRealVar* m1 = new RooRealVar("m1","Body 1 mass",_m1);
-  RooRealVar* m2 = new RooRealVar("m2","Body 2 mass",_m2);
-  RooRealVar* m3 = new RooRealVar("m3","Body 3 mass",_m3);
-  RooThreeBodyPhaseSpace* thepdf = new RooThreeBodyPhaseSpace("shape","Three-body phase space function",*_mass,*M,*m1,*m2,*m3);
-  _weightfunction = new Component(name,thepdf);
-  _weightfunction->AddThing(M);
-  _weightfunction->AddThing(m1);
-  _weightfunction->AddThing(m2);
-  _weightfunction->AddThing(m3);
+  _weightfunction = makeshape(type,type);
   return _weightfunction;
 }
 /******************************************************************************/
@@ -720,5 +720,19 @@ Component* MassFitter::straightline(string name)
   RooPolynomial* thepdf = new RooPolynomial("shape","Straight line background",*_mass,*slope);
   Component* pdf = new Component(name,thepdf);
   pdf->AddThing(slope);
+  return pdf;
+}
+Component* MassFitter::ThreeBodyPhaseSpace(string name)
+{
+  RooRealVar* M  = new RooRealVar("M","Parent mass",5366.77);
+  RooRealVar* m1 = new RooRealVar("m1","Body 1 mass",493.677);
+  RooRealVar* m2 = new RooRealVar("m2","Body 2 mass",493.677);
+  RooRealVar* m3 = new RooRealVar("m3","Body 3 mass",1019.461);
+  RooThreeBodyPhaseSpace* thepdf = new RooThreeBodyPhaseSpace("shape","Three-body phase space function",*_mass,*M,*m1,*m2,*m3);
+  Component* pdf = new Component(name,thepdf);
+  pdf->AddThing(M);
+  pdf->AddThing(m1);
+  pdf->AddThing(m2);
+  pdf->AddThing(m3);
   return pdf;
 }

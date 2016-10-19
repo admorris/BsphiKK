@@ -110,7 +110,6 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   double s2 = ResMod->GetValue("sigma2");
   double f1 = ResMod->GetValue("fgaus1");
   PhiMod->SetValue("sigma1",f1*s1+(1-f1)*s2);
-  PhiFit->UsePhaseSpace(5366.77, 493.677, 493.677, 1019.461);
   PhiFit->Fit(data);
   frame = m->frame();
   cout << "Plotting" << endl;
