@@ -264,6 +264,10 @@ Component* MassFitter::makeshape(string name, string type)
   {
     return RBWxGauss(name);
   }
+  else if(type=="Flatte")
+  {
+    return Flatte(name);
+  }
   else if(type=="RooDstD0BG" || type=="Threshold" || type=="ThresholdShape")
   {
     return ThresholdShape(name);
