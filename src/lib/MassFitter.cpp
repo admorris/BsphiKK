@@ -15,6 +15,7 @@
 #include "RooCBShape.h"
 #include "RooDstD0BG.h"
 #include "RooExponential.h"
+#include "RooFlatte.h"
 #include "RooFFTConvPdf.h"
 #include "RooGaussian.h"
 #include "RooPolynomial.h"
@@ -667,6 +668,24 @@ Component* MassFitter::Voigtian(string name)
   pdf->AddThing(mean);
   pdf->AddThing(width);
   pdf->AddThing(sigma1);
+  return pdf;
+}
+/******************************************************************************/
+Component* MassFitter::Flatte(string name)
+{
+  // I assume that the couplings are to KK and ππ
+  RooRealVar* mean   = new RooRealVar("mean","mean",939.9,930,1000); // PDG average is 990, 939.9 comes from J/ψππ and was used in J/ψKK
+  RooRealVar* gpipi  = new RooRealVar("gpipi","gpipi",199);
+  RooRealVar* gKK    = new RooRealVar("gKK","gKK",199*3);
+  RooRealVar* mpi    = new RooRealVar("mpi","mpi",139.57018);
+  RooRealVar* mK     = new RooRealVar("mK","mK",493.677);
+  RooFlatte*  thepdf = new RooFlatte("shape","Flatte",*_mass,*mean,*gpipi,*mpi,*mpi,*gKK,*mK,*mK);
+  Component* pdf = new Component(name,thepdf);
+  pdf->AddThing(mean);
+  pdf->AddThing(gpipi);
+  pdf->AddThing(mpi);
+  pdf->AddThing(gKK);
+  pdf->AddThing(mK);
   return pdf;
 }
 /******************************************************************************/

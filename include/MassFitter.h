@@ -115,6 +115,7 @@ class MassFitter
     Component*          Voigtian(string);
     Component*          BWxGauss(string);
     Component*          RBWxGauss(string);
+    Component*          Flatte(string);
     Component*          ThresholdShape(string);
     // Background models
     Component*          Argus(string);
