@@ -19,8 +19,23 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool swave, bool dwave)
+void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool fitnonres, bool fitfzero, bool fitftwop)
 {
+/*Physics parameters**********************************************************/
+  // Define in MeV
+  double mBs = 5366.77; // TODO: turn this into a map (or one map per dimension: energy, inverse energy and unitless) and do the MeV to GeV conversion at the top
+  double mfzero = 990;//939.9;
+  double gpipi = 199;
+  double gKK = gpipi*3;
+  double mftwop = 1522.2;
+  double Gftwop = 84;
+  double mphi = 1019.461;
+  double Gphi = 4.266;
+  double mpi = 139.57018;
+  double mK = 493.677;
+  double BWBFradius = 0.0031;
+  double mKKresolution_lo = 0.1;
+  double mKKresolution_hi = 1.0;
 /*Input***********************************************************************/
   TFile* file = TFile::Open(filename.c_str());
   TTree* tree = GetTree(file,cuts);
@@ -40,14 +55,71 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     massfitter->SetWeighted();
   }
   RooRealVar* Nnonres  = new RooRealVar("N","Number of non-resonant candidates",1,0,2000);
+  RooRealVar* Nfzero   = new RooRealVar("N","Number of f0(980) candidates",1,0,2000);
   RooRealVar* Nphi     = new RooRealVar("N","Number of phi candidates",3000,0,10000);
   RooRealVar* Nftwop   = new RooRealVar("N","Number of f2'(1525) candidates",10,0,10000);
-  
+/*Non-resonant kaon pairs*****************************************************/
   Component* nonres;
-  if(swave)
+  if(fitnonres)
   {
     nonres = massfitter->AddComponent("nonres","Three Body Phase Space",Nnonres);
+    if(unit.find("GeV")!=string::npos)
+    {
+      nonres->SetRange("M",mBs*1e-3,mBs*1e-3);
+      nonres->FixValue("M",mBs*1e-3);
+      nonres->SetRange("m1",mK*1e-3,mK*1e-3);
+      nonres->FixValue("m1",mK*1e-3);
+      nonres->SetRange("m2",mK*1e-3,mK*1e-3);
+      nonres->FixValue("m2",mK*1e-3);
+      nonres->SetRange("m3",mphi*1e-3,mphi*1e-3);
+      nonres->FixValue("m3",mphi*1e-3);
+    }
+    else
+    {
+      nonres->SetRange("M",mBs,mBs);
+      nonres->FixValue("M",mBs);
+      nonres->SetRange("m1",mK,mK);
+      nonres->FixValue("m1",mK);
+      nonres->SetRange("m2",mK,mK);
+      nonres->FixValue("m2",mK);
+      nonres->SetRange("m3",mphi,mphi);
+      nonres->FixValue("m3",mphi);
+    }
   }
+/*f0(980)*********************************************************************/
+  Component* fzero;
+  if(fitfzero)
+  {
+    fzero = massfitter->AddComponent("fzero","Flatte",Nfzero);
+//    fzero->FixValue("spin",0);
+    if(unit.find("GeV")!=string::npos)
+    {
+      fzero->SetRange("mean",mfzero*1e-3,mfzero*1e-3);
+      fzero->FixValue("mean",mfzero*1e-3);
+      fzero->SetRange("gpipi",gpipi*1e-3,gpipi*1e-3);
+      fzero->FixValue("gpipi",gpipi*1e-3);
+      fzero->SetRange("mpi",mpi*1e-3,mpi*1e-3);
+      fzero->FixValue("mpi",mpi*1e-3);
+      fzero->SetRange("gKK",gKK*1e-3,gKK*1e-3);
+      fzero->FixValue("gKK",gKK*1e-3);
+      fzero->SetRange("mK",mK*1e-3,mK*1e-3);
+      fzero->FixValue("mK",mK*1e-3);
+    }
+    else
+    {
+      fzero->SetRange("mean",mfzero,mfzero);
+      fzero->FixValue("mean",mfzero);
+      fzero->SetRange("gpipi",gpipi,gpipi);
+      fzero->FixValue("gpipi",gpipi);
+      fzero->SetRange("mpi",mpi,mpi);
+      fzero->FixValue("mpi",mpi);
+      fzero->SetRange("gKK",gKK,gKK);
+      fzero->FixValue("gKK",gKK);
+      fzero->SetRange("mK",mK,mK);
+      fzero->FixValue("mK",mK);
+    }
+  }
+/*phi(1020)*******************************************************************/
   Component* phi;
   if(convolve)
   {
@@ -57,69 +129,137 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   {
     phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
   }
+  phi->FixValue("spin",1);
   if(unit.find("GeV")!=string::npos)
   {
-    phi->SetRange("mean",1.018,1.020);
-    phi->FixValue("mean",1.019461);
-    phi->SetRange("width",0.004,0.0045);
-    phi->FixValue("width",0.004266);
-    phi->SetRange("radius",1.5,5.0);
-    phi->FixValue("radius",3);
-    phi->SetRange("mK",0.493,0.494);
-    phi->FixValue("mK",0.493677);
+    phi->SetRange("mean",mphi*1e-3,mphi*1e-3);
+    phi->FixValue("mean",mphi*1e-3);
+    phi->SetRange("width",Gphi*1e-3,Gphi*1e-3);
+    phi->FixValue("width",Gphi*1e-3);
+    phi->SetRange("radius",BWBFradius*1e3,BWBFradius*1e3);
+    phi->FixValue("radius",BWBFradius*1e3);
+    phi->SetRange("mK",mK*1e-3,mK*1e-3);
+    phi->FixValue("mK",mK*1e-3);
     if(convolve)
     {
-      phi->SetRange("sigma1",0.0001,0.001);
-      phi->SetValue("sigma1",0.0001);
+      phi->SetRange("sigma1",mKKresolution_lo*1e-3,mKKresolution_hi*1e-3);
+      phi->SetValue("sigma1",mKKresolution_lo*1e-3);
     }
   }
   else
   {
-    phi->SetRange("mean",1018,1020);
-    phi->FixValue("mean",1019.461);
-    phi->SetRange("width",4,4.5);
-    phi->FixValue("width",4.266);
-    phi->SetRange("radius",0.0015,0.005);
-    phi->FixValue("radius",0.003);
-    phi->SetRange("mK",493,494);
-    phi->FixValue("mK",493.677);
+    phi->SetRange("mean",mphi,mphi);
+    phi->FixValue("mean",mphi);
+    phi->SetRange("width",Gphi,Gphi);
+    phi->FixValue("width",Gphi);
+    phi->SetRange("radius",BWBFradius,BWBFradius);
+    phi->FixValue("radius",BWBFradius);
+    phi->SetRange("mK",mK,mK);
+    phi->FixValue("mK",mK);
     if(convolve)
     {
-      phi->SetRange("sigma1",0.1,1.0);
-      phi->SetValue("sigma1",0.1);
+      phi->SetRange("sigma1",mKKresolution_lo,mKKresolution_hi);
+      phi->SetValue("sigma1",mKKresolution_lo);
     }
   }
+/*f2'(1525)*******************************************************************/
   Component* ftwop;
-  if(dwave)
+  if(fitftwop)
   {
     ftwop = massfitter->AddComponent("ftwop","Rel Breit-Wigner",Nftwop);
-    ftwop->SetRange("mean",1520,1530);
-    ftwop->FixValue("mean",1522.2);
-    ftwop->SetRange("width",80,88);
-    ftwop->FixValue("width",84);
-    ftwop->SetRange("radius",1.5,5.0);
-    ftwop->FixValue("radius",3);
     ftwop->FixValue("spin",2);
+    if(unit.find("GeV")!=string::npos)
+    {
+      ftwop->SetRange("mean",mftwop*1e-3,mftwop*1e-3);
+      ftwop->FixValue("mean",mftwop*1e-3);
+      ftwop->SetRange("width",Gftwop*1e-3,Gftwop*1e-3);
+      ftwop->FixValue("width",Gftwop*1e-3);
+      ftwop->SetRange("radius",BWBFradius*1e3,BWBFradius*1e3);
+      ftwop->FixValue("radius",BWBFradius*1e3);
+      ftwop->SetRange("mK",mK*1e-3,mK*1e-3);
+      ftwop->FixValue("mK",mK*1e-3);
+    }
+    else
+    {
+      ftwop->SetRange("mean",mftwop,mftwop);
+      ftwop->FixValue("mean",mftwop);
+      ftwop->SetRange("width",Gftwop,Gftwop);
+      ftwop->FixValue("width",Gftwop);
+      ftwop->SetRange("radius",BWBFradius,BWBFradius);
+      ftwop->FixValue("radius",BWBFradius);
+      ftwop->SetRange("mK",mK,mK);
+      ftwop->FixValue("mK",mK);
+    }
   }
+/*Do the fit******************************************************************/
   massfitter->Fit(data);
   RooPlot* frame = m->frame();
   cout << "Plotting" << endl;
   data->plotOn(frame,(Binning(nbins)));
   massfitter->Plot(frame);
-  plotmaker plotter2(frame);
+  plotmaker fullplot(frame);
   RooHist* pullhist = frame->pullHist();
   RooPlot* pullframe = m->frame(Title("Pull"));
   pullframe->addPlotable(pullhist,"B");
-  plotter2.SetPullPlot(pullframe);
-  plotter2.SetTitle((xtitle), unit);
+  fullplot.SetPullPlot(pullframe);
+  fullplot.SetTitle(xtitle, unit);
   if(yup>0)
     frame->SetMaximum(yup);
   frame->SetMinimum(0);
-  TCanvas* can = plotter2.Draw();
+  TCanvas* can = fullplot.Draw();
   stringstream ytitle;
   ytitle << "#font[132]{}Candidates / (" << (xup-xlow)/nbins << " " << unit << ")";
   frame->GetYaxis()->SetTitle(ytitle.str().c_str());
   can->SaveAs((plotname+".pdf").c_str());
+  double xsplit = 1060;
+  double lowbinwidth = 1;
+  if(unit.find("GeV")!=string::npos)
+  {
+    xsplit*=1e-3;
+    lowbinwidth*=1e-3;
+  }
+  if((xup-xlow) > 2*(xsplit-xlow))
+  {
+    // Make low range bins a certain width
+    int nbins_lo = (xsplit-xlow)/lowbinwidth;
+    // Get the same bin width for the high range
+    int nbins_hi = nbins * (xup-xsplit)/(xup-xlow);
+    // Make the frames
+    RooPlot* frame_lo = m->frame(Range(xlow,xsplit),Bins(nbins_lo));
+    RooPlot* frame_hi = m->frame(Range(xsplit,xup),Bins(nbins_hi));
+    // Plot the data
+    data->plotOn(frame_lo);
+    data->plotOn(frame_hi);
+    // Plot the PDFs
+    massfitter->Plot(frame_lo);
+    massfitter->Plot(frame_hi);
+    // Set the y-axis ranges
+    frame_lo->SetMinimum(0);
+    frame_hi->SetMinimum(0);
+    // Make the pull plots
+    RooHist* pullhist_lo = frame_lo->pullHist();
+    RooHist* pullhist_hi = frame_hi->pullHist();
+    RooPlot* pullframe_lo = m->frame(Title("Pull"),Range(xlow,xsplit));
+    RooPlot* pullframe_hi = m->frame(Title("Pull"),Range(xsplit,xup));
+    pullframe_lo->addPlotable(pullhist_lo,"B");
+    pullframe_hi->addPlotable(pullhist_hi,"B");
+    // Draw the low-mass plot
+    plotmaker lowplot(frame_lo);
+    lowplot.SetPullPlot(pullframe_lo);
+    lowplot.SetTitle(xtitle, unit);
+    can = lowplot.Draw();
+    stringstream ytitle_lo;
+    ytitle_lo << "#font[132]{}Candidates / (" << lowbinwidth << " " << unit << ")";
+    frame_lo->GetYaxis()->SetTitle(ytitle_lo.str().c_str());
+    can->SaveAs((plotname+"_low_range.pdf").c_str());
+    // Draw the high-mass plot
+    plotmaker highplot(frame_hi);
+    highplot.SetPullPlot(pullframe_hi);
+    highplot.SetTitle(xtitle, unit);
+    can = highplot.Draw();
+    frame_hi->GetYaxis()->SetTitle(ytitle.str().c_str());
+    can->SaveAs((plotname+"_high_range.pdf").c_str());
+  }
 }
 /*Main function***************************************************************/
 int main(int argc, char* argv[])
@@ -133,8 +273,9 @@ int main(int argc, char* argv[])
   desc.add_options()
     ("help,H"    ,                                                                                 "produce help message")
     ("conv"      ,                                                                                 "do convolution"      )
-    ("swave"     ,                                                                                 "use s-wave component")
-    ("dwave"     ,                                                                                 "use d-wave component")
+    ("fitnonres" ,                                                                                 "use nonres component")
+    ("fitfzero"  ,                                                                                 "use f0 component"    )
+    ("fitftwop"  ,                                                                                 "use f2' component"   )
     ("file,F"    , value<string>(&file  )->default_value("ntuples/BsphiKK_data_1800_mvacut.root"), "data ntuple"         )
     ("branch,B"  , value<string>(&branch)->default_value("KK_M"                                 ), "mass branch"         )
     ("cuts,C"    , value<string>(&cuts  )->default_value(""                                     ), "cuts"                )
@@ -156,6 +297,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("swave"),vmap.count("dwave"));
+  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"));
   return 0;
 }
