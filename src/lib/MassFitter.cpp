@@ -305,21 +305,28 @@ void MassFitter::assemble()
       throw runtime_error("Trying to assemble a PDF with no components.");
       break;
     case 1:
-      tmp_pdf = _components[0]->GetPDF();
+      if(_hasweightfunction)
+        tmp_pdf = new RooProdPdf((_components[0]->GetName()+"_w").c_str(),(_components[0]->GetName()+"_w").c_str(),*(_components[0]->GetPDF()),*(_weightfunction->GetPDF()));
+      else
+        tmp_pdf = _components[0]->GetPDF();
       break;
     default:
       for(auto pdf : _components)
       {
-        pdflist.add(*(pdf->GetPDF()));
+        if(_hasweightfunction)
+          pdflist.add(*(new RooProdPdf((pdf->GetName()+"_w").c_str(),(pdf->GetName()+"_w").c_str(),*(pdf->GetPDF()),*(_weightfunction->GetPDF()))));
+        else
+          pdflist.add(*(pdf->GetPDF()));
         if(_useyieldvars)
           coeflist.add(*(pdf->GetYieldVar()));
       }
       tmp_pdf = _useyieldvars ? new RooAddPdf("model","Total PDF",pdflist,coeflist) : new RooAddPdf("model","Total PDF",pdflist) ;
       break;
   }
+/*
   if(_hasweightfunction)
     _pdf = new RooProdPdf("wmodel",("Total PDF weighted by " + _weightfunction->GetName()).c_str(),*tmp_pdf,*(_weightfunction->GetPDF()));
-  else
+  else*/
     _pdf = tmp_pdf;
   _haspdf = true;
 }
@@ -348,7 +355,7 @@ RooFitResult* MassFitter::Fit()
   if(!_haspdf)
     assemble();
   if(_hasdata)
-    return _weighted ? _pdf->fitTo(*_data,SumW2Error(kTRUE)) : _pdf->fitTo(*_data,Minimizer("Minuit2","migrad"),Optimize(false));
+    return _weighted ? _pdf->fitTo(*_data,SumW2Error(kTRUE),Extended()) : _pdf->fitTo(*_data,Extended());
   else
     throw runtime_error("Attempting to fit without a DataSet.");
 }
@@ -363,9 +370,10 @@ RooFitResult* MassFitter::Fit(RooDataSet* data)
 /******************************************************************************/
 void MassFitter::Plot(RooPlot* frame)
 {
-  if(_components.size()>1 && !_hasweightfunction)
+  string trailer = _hasweightfunction ? "_w" : "shape";
+  if(_components.size()>1)
     for(auto comp : _components)
-      _pdf->plotOn(frame,Components((comp->GetName()+"shape").c_str()),LineStyle(comp->GetStyle()),LineColor(comp->GetColour()));
+      _pdf->plotOn(frame,Components((comp->GetName()+trailer).c_str()),LineStyle(comp->GetStyle()),LineColor(comp->GetColour()));
   _pdf->plotOn(frame,LineStyle(kSolid),LineColor(kRed));
 }
 /******************************************************************************/
