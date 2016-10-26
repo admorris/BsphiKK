@@ -5,8 +5,8 @@
 ## Get DaVinci output
 #./getoutputdata | tee log/getoutputdata.log
 #./merge.sh | tee log/merge.log
-#./sideband.sh | tee log/sideband.log
-#./SELECTION.sh
+./sideband.sh | tee log/sideband.log
+./SELECTION.sh
 ./EFFICIENCIES.sh
 ./SELECTION_PLOTS.sh
 ## Get input parameters for angular fit
