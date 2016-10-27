@@ -113,8 +113,8 @@ void ZTMVAClassification( TString myMethodList = "" )
   factory->AddVariable("minK_ln_IPCHI2","minK_ln_IPCHI2","",'F');
   
   
-  TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_1050_1800_mvaVars_vetoes.root");
-  TFile * input_Background = new TFile("../ntuples/BsphiKK_sideband_1050_1800_mvaVars_vetoes.root");
+  TFile * input_Signal = new TFile("../ntuples/BsphiKK_MC_mvaVars_vetoes.root");
+  TFile * input_Background = new TFile("../ntuples/BsphiKK_sideband_mvaVars_vetoes.root");
   std::cout << "--- TMVAClassification       : Using input file for signal    : " << input_Signal->GetName() << std::endl;
   std::cout << "--- TMVAClassification       : Using input file for backgound : " << input_Background->GetName() << std::endl;
   
@@ -131,7 +131,7 @@ void ZTMVAClassification( TString myMethodList = "" )
   factory->AddSignalTree    ( signal,     signalWeight     );
   factory->AddBackgroundTree( background, backgroundWeight );
   // Apply additional cuts on the signal and background samples (can be different)
-  TCut mycuts = "";
+  TCut mycuts = "BCON_KK_M>1050&&BCON_KK_M<1800";
   
   factory->PrepareTrainingAndTestTree( mycuts,
   "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );

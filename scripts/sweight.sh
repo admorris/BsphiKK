@@ -1,11 +1,11 @@
 #!/bin/bash
 table=../scripts/tables/mKKcutResults.csv
 cd ../ntuples/
-modes=(BsphiKK_data BsphiKK_MC BsphiKK_sideband)
+modes=(BsphiKK_data BsphiKK_MC)
 for mode in ${modes[@]}; do
-  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "KK_M>1050" ${mode}_1050_mvaVars_vetoes.root | tee log_${mode}_1050.tmp &
-  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "KK_M<1800" ${mode}_1800_mvaVars_vetoes.root | tee log_${mode}_1800.tmp &
-  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "KK_M>1050&&KK_M<1800" ${mode}_1050_1800_mvaVars_vetoes.root | tee log_${mode}_1050_1800.tmp &
+  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050" ${mode}_1050_mvaVars_vetoes.root | tee log_${mode}_1050.tmp &
+  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M<1800" ${mode}_1800_mvaVars_vetoes.root | tee log_${mode}_1800.tmp &
+  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050&&BCON_KK_M<1800" ${mode}_1050_1800_mvaVars_vetoes.root | tee log_${mode}_1050_1800.tmp &
 done
 wait
 for mode in ${modes[@]}; do
@@ -56,7 +56,11 @@ table=../scripts/tables/MassFits.csv
     --pulls \
     --save-results initialmassfitAB \
     --output-file ${table}
-    
 ../bin/ExportResults ${table} ../latex/results/MassFits.tex
+for mode in ${modes[@]}; do
+  for label in 1050 1800 1050_1800; do
+    rm -v ${mode}_${label}_mvaVars_vetoes.root
+  done
+done
 exit 0
 
