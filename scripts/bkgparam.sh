@@ -9,7 +9,7 @@ cd ../ntuples
 ## Fit for the mass-dependent part
 ../bin/FitBranch -F BsphiKK_data_mvacut.root \
                  -M Threshold \
-                 -B KK_M \
+                 -B BCON_KK_M \
                  -T "#it{m}(#it{K^{#plus}K^{#minus}})" \
                  -U "MeV/#it{c}^{2}" \
                  -C "TMath::Abs(B_s0_LOKI_Mass-5366.77)>50" \

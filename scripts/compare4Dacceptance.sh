@@ -10,9 +10,9 @@ do
   ../bin/CompareBranch \
     --plot "../latex/figs/compare_acc_4D_${Dbranches[i]}" \
     --CDfile BsphiKK_MC_mvacut_acc_weights.root \
-    --MCfile BsphiKK_Gen_5M_1800_mvaVars.root \
+    --MCfile BsphiKK_Gen_5M_mvaVars.root \
     --CDweight inverseacc \
-    --CDcuts "KK_M<1800&&abs(KK_TRUEID)>500" \
+    --CDcuts "abs(KK_TRUEID)>500" \
     --CDbranch ${Nbranches[i]} \
     --MCbranch ${Dbranches[i]} \
     --unit ${units[i]} \
@@ -21,9 +21,9 @@ do
   ../bin/CompareBranchRatio \
     --plot "../latex/figs/compare_acc_ratio_4D_${Dbranches[i]}" \
     --Nfile BsphiKK_MC_mvacut_acc_weights.root \
-    --Dfile BsphiKK_Gen_5M_1800_mvaVars.root \
+    --Dfile BsphiKK_Gen_5M_mvaVars.root \
     --Nweight inverseacc \
-    --Ncuts "KK_M<1800&&abs(KK_TRUEID)>500" \
+    --Ncuts "abs(KK_TRUEID)>500" \
     --Nbranch ${Nbranches[i]} \
     --Dbranch ${Dbranches[i]} \
     --unit ${units[i]} \

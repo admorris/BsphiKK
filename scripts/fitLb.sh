@@ -5,7 +5,7 @@ cd ../ntuples
              --model "Crystal Ball + 2 Gaussians" \
              --upper 5700 \
              --lower 6000 \
-             --cuts "KK_M<1800" \
+             --cuts "BCON_KK_M<1800" \
              --plot ../latex/figs/LbphiKp_fit_for_yield \
              --pulls
 
@@ -14,7 +14,7 @@ cd ../ntuples
              --model "Crystal Ball + 2 Gaussians" \
              --upper 5700 \
              --lower 5550 \
-             --cuts "KK_M<1800" \
+             --cuts "BCON_KK_M<1800" \
              --plot ../latex/figs/LbphiKp_fit_for_yield_vetoes \
              --pulls
 exit 0
