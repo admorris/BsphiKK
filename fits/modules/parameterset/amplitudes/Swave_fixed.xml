@@ -1,0 +1,6 @@
+<PhysicsParameter>
+	<Name>deltaSzero</Name>
+	<Value>0.0</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

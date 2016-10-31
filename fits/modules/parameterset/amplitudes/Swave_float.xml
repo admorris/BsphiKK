@@ -1,0 +1,8 @@
+<PhysicsParameter>
+	<Name>deltaSzero</Name>
+	<Value>0.0</Value>
+	<Minimum>-6.3</Minimum>
+	<Maximum>6.3</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

@@ -1,0 +1,39 @@
+<PhysicsParameter>
+	<Name>APperp2</Name>
+	<Value>0.305</Value> # 0.305 Sean
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>APzero2</Name>
+	<Value>0.364</Value> # 0.364 Sean
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>deltaPperp</Name>
+	<Value>2.67</Value> # 2.67 Sean
+	<Minimum>-6.3</Minimum>
+	<Maximum>6.3</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>deltaPzero</Name>
+	<Value>0.0</Value> # Fix 0
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>deltaPpara</Name>
+	<Value>2.54</Value> # 2.54 Sean
+	<Minimum>-6.3</Minimum>
+	<Maximum>6.3</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+

@@ -1,0 +1,7 @@
+<Observable>
+	<Name>sWeight</Name>
+	<TF1>Nsig_sw</TF1>
+	<Minimum>-1.0</Minimum>
+	<Maximum>1.2</Maximum>
+	<Unit>Unitless</Unit>
+</Observable>

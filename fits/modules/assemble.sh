@@ -1,4 +1,12 @@
 #!/bin/bash
+function error
+{
+	echo -e "\033[31mERROR:\e[0m $1" 1>&2
+}
+function warning
+{
+	echo -e "\033[33mWARNING:\e[0m $1" 1>&2
+}
 function parsefile # <file> <indentation depth>
 {
 	while IFS= read line
@@ -16,46 +24,78 @@ function parsefile # <file> <indentation depth>
 # empty arrays for required tags, values are paths to XML files containing the tags
 # <PDF> contains a <Name> tag and several <ConfigurationParameter> tagss
 declare -a pdf
-# <DataSet> is singular-valued
-declare dataset
+# <DataSet> with optional cuts
+declare -a dataset
 # <Output> can contain several <ComponentProjection> tags
 declare -a output
 # <PhaseSpaceBoundary> contains several <Observable> tags
 declare -a phasespaceboundary
 # <ParameterSet> contains several <PhysicsParameter> tags
 declare -a parameterset
-# <Minimiser> just do the default Minuit
+# <Minimiser> i.e. just <MinimiserName>Minuit</MinimiserName>
 declare minimiser
-# <FitFunction> is either sweighted or not
-declare fitfunction
+# <FitFunction> with optional weight variable
+declare -a fitfunction
 # read the arguments into arrays
 for arg in "$@"
 do
-	if [[ $arg == "pdf/"* ]]
+	if [ -e "$arg" ]
 	then
-		pdf+=("$arg")
-	elif [[ $arg == "dataset/"* ]]
-	then
-		dataset="$arg"
-	elif [[ $arg == "output/"* ]]
-	then
-		output+=("$arg")
-	elif [[ $arg == "phasespaceboundary/"* ]]
-	then
-		phasespaceboundary+=("$arg")
-	elif [[ $arg == "parameterset/"* ]]
-	then
-		parameterset+=("$arg")
-	elif [[ $arg == "minimiser/"* ]]
-	then
-		minimiser="$arg"
-	elif [[ $arg == "fitfunction/"* ]]
-	then
-		fitfunction="$arg"
+		if [[ $arg == *"pdf/"* ]]
+		then
+			pdf+=("$arg")
+		elif [[ $arg == *"dataset/"* ]]
+		then
+			dataset+=("$arg")
+		elif [[ $arg == *"output/"* ]]
+		then
+			output+=("$arg")
+		elif [[ $arg == *"phasespaceboundary/"* ]]
+		then
+			phasespaceboundary+=("$arg")
+		elif [[ $arg == *"parameterset/"* ]]
+		then
+			parameterset+=("$arg")
+		elif [[ $arg == *"minimiser/"* ]]
+		then
+			minimiser="$arg"
+		elif [[ $arg == *"fitfunction/"* ]]
+		then
+			fitfunction+=("$arg")
+		else
+			warning "No rule for $arg (File will be ignored)"
+		fi
 	else
-		echo "I don't know what to do with $arg"
+		error "Cannot find $arg"
+		exit 1
 	fi
 done
+# test that the required files have been given
+if [ -z "$minimiser" ]
+then
+	warning "No minimiser given. Using default: Minuit"
+	minimiser="minimiser/minuit.xml"
+fi
+if [ ${#pdf[@]} -eq 0 ]; then
+	warning "No PDF given. Using default: Bs2PhiKKSignal"
+	pdf+="pdf/default.xml"
+fi
+if [ ${#dataset[@]} -eq 0 ]; then
+	error "You must provide a DataSet"
+	exit 1
+fi
+if [ ${#phasespaceboundary[@]} -eq 0 ]; then
+	error "You must provide a PhaseSpaceBoundary"
+	exit 1
+fi
+if [ ${#parameterset[@]} -eq 0 ]; then
+	error "You must provide a ParameterSet"
+	exit 1
+fi
+if [ ${#fitfunction[@]} -eq 0 ]; then
+	warning "No FitFunction given. Using default: NegativeLogLikelihoodNumerical"
+	fitfunction+=("fitfunction/default.xml")
+fi
 # write the XML file
 echo "<RapidFit>"
 echo "	<ParameterSet>"
@@ -64,17 +104,27 @@ do
 	parsefile $file 2
 done
 echo "	</ParameterSet>"
-parsefile $minimiser 1
-parsefile $fitfunction 1
+echo "	<Minimiser>"
+parsefile $minimiser 2
+echo "	</Minimiser>"
+echo "	<FitFunction>"
+for file in "${fitfunction[@]}"
+do
+	parsefile $file 2
+done
+echo "	</FitFunction>"
 echo "	<ToFit>"
 echo "		<PDF>"
 for file in "${pdf[@]}"
 do
-	parsefile $file 2
+	parsefile $file 3
 done
 echo "		</PDF>"
 echo "		<DataSet>"
-parsefile $dataset 3
+for file in "${dataset[@]}"
+do
+	parsefile $file 3
+done
 echo "			<PhaseSpaceBoundary>"
 for file in "${phasespaceboundary[@]}"
 do

@@ -1,0 +1,6 @@
+<PhysicsParameter>
+	<Name>PwaveFrac</Name>
+	<Value>1.0</Value> 
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

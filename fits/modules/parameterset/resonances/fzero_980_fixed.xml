@@ -1,0 +1,18 @@
+<PhysicsParameter>
+	<Name>fzeroMass</Name>
+	<Value>0.9399</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzerogpipi</Name>
+	<Value>0.1990</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzeroRg</Name>
+	<Value>3.0</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
