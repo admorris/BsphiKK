@@ -59,7 +59,7 @@ table=../scripts/tables/MassFits.csv
 ../bin/ExportResults ${table} ../latex/results/MassFits.tex
 for mode in ${modes[@]}; do
   for label in 1050 1800 1050_1800; do
-    rm -v ${mode}_${label}_mvaVars_vetoes.root
+    rm -v ../ntuples/${mode}_${label}_mvaVars_vetoes.root
   done
 done
 exit 0
