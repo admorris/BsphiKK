@@ -113,6 +113,14 @@ do
 	parsefile $file 2
 done
 echo "	</FitFunction>"
+echo "	<CommonPhaseSpace>"
+echo "		<PhaseSpaceBoundary>"
+for file in "${phasespaceboundary[@]}"
+do
+	parsefile $file 3
+done
+echo "		</PhaseSpaceBoundary>"
+echo "	</CommonPhaseSpace>"
 echo "	<ToFit>"
 echo "		<PDF>"
 for file in "${pdf[@]}"
@@ -125,12 +133,8 @@ for file in "${dataset[@]}"
 do
 	parsefile $file 3
 done
-echo "			<PhaseSpaceBoundary>"
-for file in "${phasespaceboundary[@]}"
-do
-	parsefile $file 4
-done
-echo "			</PhaseSpaceBoundary>"
+echo "			<CommonPhaseSpace>"
+echo "			</CommonPhaseSpace>"
 echo "		</DataSet>"
 echo "	</ToFit>"
 echo "	<Output>"

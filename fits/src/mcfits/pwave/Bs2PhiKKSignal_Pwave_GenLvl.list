@@ -4,8 +4,7 @@ pdf/floatrespars.xml
 pdf/drawpwave.xml
 minimiser/minuit.xml
 fitfunction/default.xml
-fitfunction/sweighted.xml
-dataset/data_sweight.xml
+dataset/pwave_gen.xml
 parameterset/resonances/fzero_980_fixed.xml
 parameterset/resonances/phi_1020_float_mass.xml
 parameterset/resonances/ftwop_1525_fixed.xml
@@ -16,8 +15,7 @@ parameterset/fractions/NonRes_zero.xml
 parameterset/fractions/Swave_zero.xml
 parameterset/fractions/Pwave_fixed.xml
 parameterset/fractions/Dwave_zero.xml
-phasespaceboundary/mKK_BCON_phi.xml
-phasespaceboundary/angles_BCON.xml
-phasespaceboundary/sweight.xml
+phasespaceboundary/mKK_phi.xml
+phasespaceboundary/angles.xml
 output/phirange.xml
 output/angles.xml

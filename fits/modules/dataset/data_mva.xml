@@ -1,3 +1,4 @@
 <Source>File</Source>
 <FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/BsphiKK_data_mvacut.root</FileName>
 <NTuplePath>DecayTree</NTuplePath>
+<NumberEvents>100000</NumberEvents>
