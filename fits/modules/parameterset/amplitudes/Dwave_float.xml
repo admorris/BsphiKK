@@ -17,24 +17,24 @@
 <PhysicsParameter>
 	<Name>deltaDperp</Name>
 	<Value>0.0</Value>
-	<Minimum>-6.3</Minimum>
-	<Maximum>6.3</Maximum>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>deltaDzero</Name>
 	<Value>0.0</Value>
-	<Minimum>-6.3</Minimum>
-	<Maximum>6.3</Maximum>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>deltaDpara</Name>
 	<Value>0.0</Value>
-	<Minimum>-6.3</Minimum>
-	<Maximum>6.3</Maximum>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

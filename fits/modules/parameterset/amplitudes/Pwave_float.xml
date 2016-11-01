@@ -17,9 +17,9 @@
 <PhysicsParameter>
 	<Name>deltaPperp</Name>
 	<Value>2.67</Value> # 2.67 Sean
-	<Minimum>-6.3</Minimum>
-	<Maximum>6.3</Maximum>
-	<Type>Float</Type>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -31,8 +31,8 @@
 <PhysicsParameter>
 	<Name>deltaPpara</Name>
 	<Value>2.54</Value> # 2.54 Sean
-	<Minimum>-6.3</Minimum>
-	<Maximum>6.3</Maximum>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
