@@ -1,7 +1,7 @@
 pdf/default.xml
 pdf/evtgenbarrierfactors.xml
 pdf/floatrespars.xml
-pdf/drawpwave.xml
+pdf/drawpwavecomponents.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 fitfunction/sweighted.xml
