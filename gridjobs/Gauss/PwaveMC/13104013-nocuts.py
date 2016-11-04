@@ -5,7 +5,7 @@
 # ASCII decay Descriptor: [B_s0 -> (phi(1020) -> K+ K-) (phi(1020) -> K+ K-)]cc
 #
 from Gaudi.Configuration import *
-importOptions( "$DECFILESROOT/options/B2PhiPhi.py" )
+#importOptions( "$DECFILESROOT/options/B2PhiPhi.py" )
 from Configurables import Generation
 Generation().EventType = 13104013
 Generation().SampleGenerationTool = "SignalRepeatedHadronization"
@@ -16,7 +16,7 @@ from Configurables import ToolSvc
 from Configurables import EvtGenDecay
 ToolSvc().addTool( EvtGenDecay )
 ToolSvc().EvtGenDecay.UserDecayFile = "$DECFILESROOT/dkfiles/Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec"
-Generation().SignalRepeatedHadronization.CutTool = "DaughtersInLHCbAndWithDaughAndBCuts"
+#Generation().SignalRepeatedHadronization.CutTool = "DaughtersInLHCbAndWithDaughAndBCuts"
 Generation().SignalRepeatedHadronization.SignalPIDList = [ 531,-531 ]
 
 # Ad-hoc particle gun code

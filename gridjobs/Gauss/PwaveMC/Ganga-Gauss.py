@@ -3,7 +3,7 @@
 import sys
 import os
 
-GaussVersion = "v48r0"
+GaussVersion = "v50r0"
 
 GaussDir = "/afs/cern.ch/lhcb/software/releases/GAUSS/GAUSS_"+GaussVersion
 OptnsDir = GaussDir+"/Sim/Gauss/options"
