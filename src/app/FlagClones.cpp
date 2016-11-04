@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 #include "TMath.h"
+#include "TRandom.h"
 #include "CloneInfo.h"
 #include "CloneTagger.h"
 #include "GetTree.h"
@@ -20,7 +21,8 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root")
   {
     flag_clones[i] = 1;
   }
-  double dvchi2; tree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&dvchi2);
+  double sort_var;
+  //tree->SetBranchAddress("B_s0_ENDVERTEX_CHI2",&sort_var);
   UInt_t run;tree->SetBranchAddress("runNumber",&run);
   ULong64_t event; tree->SetBranchAddress("eventNumber",&event);
   int key1; tree->SetBranchAddress("Kminus_TRACK_Key",&key1);
@@ -28,19 +30,22 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root")
   int key3; tree->SetBranchAddress("Kplus_TRACK_Key",&key3);
   int key4; tree->SetBranchAddress("Kplus0_TRACK_Key",&key4);
   int i = 0;
+  TRandom generator(9875);
   cout << "Finding duplicate candidates in a sample containing " << num_entries << " events" << endl;
   while(i < num_entries)
   {
     tree->GetEntry(i);
+    sort_var = generator.Rndm();
     int run_i = run;
     int event_i = event;
     vector<CloneInfo> clones;
     CloneTagger tagger(clones);
-    tagger.addToClones({key1,key2,key3,key4},i,dvchi2);
+    tagger.addToClones({key1,key2,key3,key4},i,sort_var);
     int j = i+1;
     for (j=i+1;j<num_entries; j++)
     {
       tree->GetEntry(j);
+      sort_var = generator.Rndm();
       int run_j = run;
       int event_j = event;
       if(run_j!=run_i || event_j!=event_i)
@@ -49,7 +54,7 @@ void FlagClones(string fileName = "BsphiKK_data_duplicates.root")
       }
       else
       {
-        tagger.addToClones({key1,key2,key3,key4},j,dvchi2);
+        tagger.addToClones({key1,key2,key3,key4},j,sort_var);
       }
     }
     tagger.sortClones();
