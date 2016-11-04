@@ -50,7 +50,7 @@ void HelicityAngleCalculator::calculate()
     int minus = 2*j;   // 0 and 2
     int plus  = 2*j+1; // 1 and 3
     int othminus = 2*((j+1)%2);
-    int othplus = 2*((j+1)%2)+1;s
+    int othplus = 2*((j+1)%2)+1;
     dframe_e[j] = -1.0 * ((hP_other_dframe[othminus].Vect() + hP_other_dframe[othplus].Vect()) * (1.0/(hP_other_dframe[othminus].Vect() + hP_other_dframe[othplus].Vect()).Mag()));
     costheta[j] = (hP_dframe[plus].Vect() * (1.0/hP_dframe[plus].Vect().Mag())).Dot(dframe_e[j]);
     dframe_n[j] = (hP_Bframe[plus].Vect().Cross(hP_Bframe[minus].Vect())) * (1.0/(hP_Bframe[plus].Vect().Cross(hP_Bframe[minus].Vect())).Mag());
