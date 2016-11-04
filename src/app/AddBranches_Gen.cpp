@@ -13,6 +13,7 @@
 #include "TStyle.h"
 #include "safeLog.h"
 #include "GetTree.h"
+#include "HelicityAngleCalculator.h"
 using namespace std;
 void addBranches(string filename = "BsphiKK_data")
 {
@@ -70,22 +71,17 @@ void addBranches(string filename = "BsphiKK_data")
   outtree->Branch("Kminus0_Theta", &K_Theta[2], "Kminus0_Theta/D");
   outtree->Branch("Kplus0_Theta",  &K_Theta[3], "Kplus0_Theta/D" );
 /*Helicity angle branches******************************************************/
-  // Track 4-momentum in B frame and daughter frames
-  TLorentzVector Bframe_h_P[4], dframe_h_P[4], dframe_other_h_P[4];
-  TVector3 Bframe_e, dframe_e[2], dframe_n[2];
   Double_t Phi_angle; outtree->Branch("Phi_angle", &Phi_angle, "Phi_angle/D" );
-  Double_t sin_Phi; outtree->Branch("sin_Phi", &sin_Phi, "sin_Phi/D" );
-  Double_t cos_Phi; outtree->Branch("cos_Phi", &cos_Phi, "cos_Phi/D" );
-  Double_t phi_1020_M; outtree->Branch("phi_1020_M", &phi_1020_M, "phi_1020_M/D" );
-  Double_t phi_1020_M_GeV; outtree->Branch("phi_1020_M_GeV", &phi_1020_M_GeV, "phi_1020_M_GeV/D" );
-  Double_t KK_M; outtree->Branch("KK_M", &KK_M, "KK_M/D" );
-  Double_t KK_M_GeV; outtree->Branch("KK_M_GeV", &KK_M_GeV, "KK_M_GeV/D" );
   Double_t cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
 /*New mass branches************************************************************/
   TLorentzVector phiKplusP;   double phiKplusM;         outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
   TLorentzVector phiKminusP;  double phiKminusM;        outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
+  Double_t phi_1020_M; outtree->Branch("phi_1020_M", &phi_1020_M, "phi_1020_M/D" );
+  Double_t phi_1020_M_GeV; outtree->Branch("phi_1020_M_GeV", &phi_1020_M_GeV, "phi_1020_M_GeV/D" );
+  Double_t KK_M; outtree->Branch("KK_M", &KK_M, "KK_M/D" );
+  Double_t KK_M_GeV; outtree->Branch("KK_M_GeV", &KK_M_GeV, "KK_M_GeV/D" );
 /*Event loop*******************************************************************/
   for(Int_t i = 0; i < n; i++)
   {
@@ -117,36 +113,10 @@ void addBranches(string filename = "BsphiKK_data")
       K_Theta[j] = hP[j].Theta();
     }
 /*Helicity angles**************************************************************/
-/*******************************************************************************
-    See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
-*******************************************************************************/
-    // Loop over Kaons
-    for(Int_t j = 0; j < 4; j++)
-    {
-      // Boost into B frame
-      Bframe_h_P[j] = hP[j];
-      Bframe_h_P[j].Boost(-BP.BoostVector());
-      // Boost into daughter frames
-      dframe_h_P[j] = hP[j];
-      dframe_h_P[j].Boost(-dP[j/2].BoostVector());
-      // Boost into "wrong" daughter frames
-      // Thanks Dianne!
-      dframe_other_h_P[j] = hP[j];
-      dframe_other_h_P[j].Boost(-dP[(j-3)/-2].BoostVector());
-    }
-    // Loop over daughters
-    for(Int_t j = 0; j < 2; j++)
-    {
-      Int_t minus = 2*j;   // 0 and 2
-      Int_t plus  = 2*j+1; // 1 and 3
-      dframe_e[j] = -1.0 * ((dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()) * (1.0/(dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()).Mag()));
-      cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);
-      dframe_n[j] = (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())) * (1.0/(Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag());
-    }
-    Bframe_e = (Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()) * (1.0/(Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()).Mag());
-    cos_Phi = dframe_n[1].Dot(dframe_n[0]);
-    sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
-    Phi_angle  = TMath::ACos(cos_Phi) * (sin_Phi/TMath::Abs(sin_Phi));
+    HelicityAngleCalculator angles(hP[0],hP[1],hP[2],hP[3]);
+    Phi_angle = angles.Phi();
+    cos_theta[0] = angles.CosTheta1();
+    cos_theta[1] = angles.CosTheta2();
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
   }

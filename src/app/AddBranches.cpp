@@ -18,6 +18,7 @@
 // Custom headers
 #include "safeLog.h"
 #include "GetTree.h"
+#include "HelicityAngleCalculator.h"
 using namespace std;
 // Normal track indices go in alphabetical order (minus before plus)
 // Note that LOKI uses a different order (plus before minus)
@@ -184,20 +185,12 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   Double_t KK_TRUEM_GeV; if(isMC) outtree->Branch("KK_TRUEM_GeV"       , &KK_TRUEM_GeV       , "KK_TRUEM_GeV/D"       );
   Double_t BCON_KK_M_GeV;         outtree->Branch("BCON_KK_M_GeV"      , &BCON_KK_M_GeV      , "BCON_KK_M_GeV/D"      );
 /*Helicity angle branches******************************************************/
-  // Track 4-momentum in B frame and daughter frames
-  TLorentzVector Bframe_h_P[4], /*Bframe_d_P[4],*/ dframe_h_P[4], dframe_other_h_P[4];
-  TVector3 Bframe_e, dframe_e[2], dframe_n[2];
-//  TVector3 CrossProduct[2];
   double Phi_angle; outtree->Branch("Phi_angle", &Phi_angle, "Phi_angle/D" );
-  double cos_Phi  ; outtree->Branch("cos_Phi"  , &cos_Phi  , "cos_Phi/D"   );
-  double sin_Phi  ; outtree->Branch("sin_Phi"  , &sin_Phi  , "sin_Phi/D"   );
   double cos_theta[2];
   outtree->Branch("cos_theta1",&cos_theta[0],"cos_theta1/D");
   outtree->Branch("cos_theta2",&cos_theta[1],"cos_theta2/D");
   // Same branches, but with constrained B mass.
   double BCON_Phi_angle; outtree->Branch("BCON_Phi_angle", &BCON_Phi_angle, "BCON_Phi_angle/D" );
-  double BCON_cos_Phi  ; outtree->Branch("BCON_cos_Phi"  , &BCON_cos_Phi  , "BCON_cos_Phi/D"   );
-  double BCON_sin_Phi  ; outtree->Branch("BCON_sin_Phi"  , &BCON_sin_Phi  , "BCON_sin_Phi/D"   );
   double BCON_cos_theta[2];
   outtree->Branch("BCON_cos_theta1",&BCON_cos_theta[0],"BCON_cos_theta1/D");
   outtree->Branch("BCON_cos_theta2",&BCON_cos_theta[1],"BCON_cos_theta2/D");
@@ -330,66 +323,14 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     phipipbarP = hP[0] + hP[1] + protonP + pionP;
     phipipbarM = phipipbarP.M();
 /*Helicity angles**************************************************************/
-/*******************************************************************************
-    See page 12 of LHCb-ANA-2012-067. Replace muons with the resonant kaons.
-*******************************************************************************/
-    for(int BCON = 0; BCON < 2; BCON++)
-    {
-      if(BCON==1)
-      {
-        BP    = h_BCONP[0] + h_BCONP[1] + h_BCONP[2] + h_BCONP[3];
-        if(doswap)
-        {
-          swap(h_BCONP[0],h_BCONP[2]);
-          swap(h_BCONP[1],h_BCONP[3]);
-        }
-        dP[0] = h_BCONP[0] + h_BCONP[1];
-        dP[1] = h_BCONP[2] + h_BCONP[3];
-      }
-      // Loop over Kaons
-      for(int j = 0; j < 4; j++)
-      {
-        // Boost into B frame
-        Bframe_h_P[j] = BCON==1 ? h_BCONP[j] : hP[j];
-        Bframe_h_P[j].Boost(-BP.BoostVector());
-        // Boost into daughter frames
-        dframe_h_P[j] = BCON==1 ? h_BCONP[j] : hP[j];
-        dframe_h_P[j].Boost(-dP[j/2].BoostVector());
-        // Boost into "wrong" daughter frames
-        // Thanks Dianne!
-        dframe_other_h_P[j] = BCON==1 ? h_BCONP[j] : hP[j];
-        dframe_other_h_P[j].Boost(-dP[(j-3)/-2].BoostVector());
-      }
-      // Loop over daughters
-      for(int j = 0; j < 2; j++)
-      {
-        int minus = 2*j;   // 0 and 2
-        int plus  = 2*j+1; // 1 and 3
-        dframe_e[j] = -1.0 * ((dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()) * (1.0/(dframe_other_h_P[minus].Vect() + dframe_other_h_P[plus].Vect()).Mag()));
-        if(BCON == 0)
-        {
-          cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);
-        }
-        else
-        {
-          BCON_cos_theta[j] = (dframe_h_P[plus].Vect() * (1.0/dframe_h_P[plus].Vect().Mag())).Dot(dframe_e[j]);  
-        }    
-        dframe_n[j] = (Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())) * (1.0/(Bframe_h_P[plus].Vect().Cross(Bframe_h_P[minus].Vect())).Mag());
-      }
-      Bframe_e = (Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()) * (1.0/(Bframe_h_P[0].Vect() + Bframe_h_P[1].Vect()).Mag());
-      if(BCON == 0)
-      {
-        cos_Phi = dframe_n[1].Dot(dframe_n[0]);
-        sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
-        Phi_angle  = TMath::ACos(cos_Phi) * (sin_Phi/TMath::Abs(sin_Phi));
-      }
-      else
-      {
-        BCON_cos_Phi = dframe_n[1].Dot(dframe_n[0]);
-        BCON_sin_Phi = (dframe_n[1].Cross(dframe_n[0])).Dot(Bframe_e);
-        BCON_Phi_angle  = TMath::ACos(BCON_cos_Phi) * (BCON_sin_Phi/TMath::Abs(BCON_sin_Phi));
-      }
-    }
+    HelicityAngleCalculator angles(hP[0],hP[1],hP[2],hP[3]);
+    Phi_angle = angles.Phi();
+    cos_theta[0] = angles.CosTheta1();
+    cos_theta[1] = angles.CosTheta2();
+    HelicityAngleCalculator BCON_angles(h_BCONP[0],h_BCONP[1],h_BCONP[2],h_BCONP[3]);
+    BCON_Phi_angle = BCON_angles.Phi();
+    BCON_cos_theta[0] = BCON_angles.CosTheta1();
+    BCON_cos_theta[1] = BCON_angles.CosTheta2();
     outtree->Fill();
   }
 /*Write the output*************************************************************/
