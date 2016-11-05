@@ -44,10 +44,8 @@ VariablesCalculator::PHI(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3
   TVector3 n34 = p3.Vect().Cross( p4.Vect() ).Unit();
   TVector3 z = (p1+p2).Vect().Unit();
   double cosPhi = n12.Dot(n34);
-  //double sinPhi = n12.Cross(n34).Dot(z);
-  //double phi = atan2(sinPhi,cosPhi); //defined in [-pi,pi]
-  //phi defined in range [0,pi] --> CT sign select phi sign and to do comparison between CT>0, CT<0, every phi>0.
-  double phi = acos(cosPhi); //defined in [0,pi]
+  double sinPhi = n12.Cross(n34).Dot(z);
+  double phi = atan2(sinPhi,cosPhi); //defined in [-pi,pi]
   return phi;
 }
 
@@ -60,5 +58,5 @@ VariablesCalculator::HelicityAngle(TLorentzVector p1, TLorentzVector p2)
   TLorentzVector pcm1= MoveToFrame(p1, p12);
   double cosHel = ( pcm1.Vect() ).Dot( p12.Vect() )/
     ( pcm1.Vect().Mag() * p12.Vect().Mag() );
-  return acos(cosHel);
+  return cosHel;
 }

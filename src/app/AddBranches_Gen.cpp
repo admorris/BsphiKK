@@ -14,6 +14,7 @@
 #include "safeLog.h"
 #include "GetTree.h"
 #include "HelicityAngleCalculator.h"
+#include "VariablesCalculator.h"
 using namespace std;
 void addBranches(string filename = "BsphiKK_data")
 {
@@ -113,10 +114,15 @@ void addBranches(string filename = "BsphiKK_data")
       K_Theta[j] = hP[j].Theta();
     }
 /*Helicity angles**************************************************************/
-    HelicityAngleCalculator angles(hP[0],hP[1],hP[2],hP[3]);
-    Phi_angle = angles.Phi();
-    cos_theta[0] = angles.CosTheta1();
-    cos_theta[1] = angles.CosTheta2();
+//    HelicityAngleCalculator angles(hP[0],hP[1],hP[2],hP[3]);
+//    Phi_angle = angles.Phi();
+//    cos_theta[0] = angles.CosTheta1();
+//    cos_theta[1] = angles.CosTheta2();
+    VariablesCalculator angles;
+    for(Int_t j = 0; j < 4; j++) hP[j] = angles.MoveToFrame(hP[j], BP);
+    Phi_angle = angles.PHI(hP[0], hP[1], hP[2], hP[3]);
+    cos_theta[0] = angles.HelicityAngle(hP[1], hP[0]);
+    cos_theta[1] = angles.HelicityAngle(hP[3], hP[2]);
 /*Fill tree and show progress**************************************************/
     outtree->Fill();
   }
