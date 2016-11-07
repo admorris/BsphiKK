@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>SwaveFrac</Name>
-	<Value>0.0</Value>
+	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
