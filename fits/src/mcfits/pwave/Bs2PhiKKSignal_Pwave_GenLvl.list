@@ -9,7 +9,7 @@ parameterset/resonances/fzero_980_fixed.xml
 parameterset/resonances/phi_1020_float_mass.xml
 parameterset/resonances/ftwop_1525_fixed.xml
 parameterset/amplitudes/Swave_fixed.xml
-parameterset/amplitudes/Pwave_float.xml
+parameterset/amplitudes/Pwave_fixed_CDFAmp.xml
 parameterset/amplitudes/Dwave_fixed.xml
 parameterset/fractions/NonRes_zero.xml
 parameterset/fractions/Swave_zero.xml
