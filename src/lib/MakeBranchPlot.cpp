@@ -1,7 +1,6 @@
 // Custom headers
 #include "GetTree.h"
 #include "MakeBranchPlot.h"
-#include "TCanvas.h"
 using std::string;
 TH1D* MakeBranchPlot(string filename, string branchname, string cuts, string weight, double xlow, double xup, int nbins)
 {
