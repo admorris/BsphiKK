@@ -1,3 +1,3 @@
 #!/bin/bash
-optcut=0.836
+optcut=0.858
 

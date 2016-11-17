@@ -2,7 +2,7 @@
 source cuts.sh
 cd ../ntuples
 ################################################################################
-modes=($(ls *data*_mvaVars.root *MC*_mvaVars.root | sed 's/_mvaVars\.root//'))
+modes=($(ls *data*_mvaVars.root *sideband*_mvaVars.root *MC*_mvaVars.root | sed 's/_mvaVars\.root//'))
 for mode in ${modes[@]}; do
   cutapplier ${mode}_mvaVars.root DecayTree "${phikstveto}&&${LbphiKpveto}&&${Lcphipveto}&&${DtoKaonsveto}&&${Dtophipiveto}" ${mode}_mvaVars_vetoes.root | tee log_${mode}.tmp &
 done
