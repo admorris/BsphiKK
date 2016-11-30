@@ -18,6 +18,7 @@ parameterset/fractions/NonRes_zero.xml
 parameterset/fractions/Swave_float.xml
 parameterset/fractions/Pwave_fixed.xml
 parameterset/fractions/Dwave_zero.xml
+parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_BCON_phi.xml
 phasespaceboundary/angles_BCON.xml
 phasespaceboundary/sweight.xml

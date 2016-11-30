@@ -1,10 +1,6 @@
 #!/bin/bash
 source cuts.sh
 source eos.sh
-LbLogin.sh
-source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
-mkdir -p ~/eos
-source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
 cd ../ntuples/
 #Sum of all cuts
 totalcut="${trigcut}&&${ghstcut}&&${trackisMuoncut}&&${phiMcut}&&${KpTcut}&&${phiIPCHI2cut}&&${KKIPCHI2cut}&&${BsFDCHI2cut}&&${BsIPCHI2cut}&&${KpiPIDcut}&&${KpPIDcut}"
@@ -21,9 +17,8 @@ do
   else
     applied_cut="${totalcut}&&${BsMcut}"
   fi
-  cutapplier ~/${EOS_nTuples_dir}${mode}_loosePID.root DecayTreeTuple/DecayTree ${applied_cut} ${mode}_cuts.root &
+  cutapplier ${nTuples_dir}${mode}_loosePID.root DecayTreeTuple/DecayTree ${applied_cut} ${mode}_cuts.root &
 done
 wait
-source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
 exit 0
 

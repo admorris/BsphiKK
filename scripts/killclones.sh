@@ -8,7 +8,12 @@ function killclones()
 }
 for file in $(ls *mvacut.root | sed 's/\.root//g')
 do
-  killclones ${file} | tee log/killclones_$file.log &
+  killclones ${file} > killclones_$file.log &
 done
 wait
+for file in $(ls killclones_*.log)
+{
+  cat $file
+  rm $file
+}
 exit 0

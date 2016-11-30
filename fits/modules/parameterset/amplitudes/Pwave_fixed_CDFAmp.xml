@@ -1,13 +1,6 @@
 // Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
 // βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 //  0  1  0.536  2.71  0.590  0.0  0.604  2.39
-// ΔΓs/Γs = 0.1 from DECAY.DEC
-<PhysicsParameter>
-	<Name>dGsGs</Name>
-	<Value>0.10</Value>
-	<Type>Fixed</Type>
-	<Unit>Unitless</Unit>
-</PhysicsParameter>
 <PhysicsParameter>
 	<Name>APperp2</Name>
 	<Value>0.364</Value>

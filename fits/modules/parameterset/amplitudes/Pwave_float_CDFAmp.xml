@@ -2,26 +2,18 @@
 // βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 //  0  1  0.536  2.71  0.590  0.0  0.604  2.39
 <PhysicsParameter>
-	<Name>dGsGs</Name>
-	<Value>0.1</Value>
-	<Type>Float</Type>
-	<Minimum>0.05</Minimum>
-	<Maximum>0.15</Maximum>
-	<Unit>Unitless</Unit>
-</PhysicsParameter>
-<PhysicsParameter>
 	<Name>APperp2</Name>
 	<Value>0.364</Value>
-	<Minimum>0.344</Minimum>
-	<Maximum>0.384</Maximum>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>APzero2</Name>
 	<Value>0.348</Value>
-	<Minimum>0.328</Minimum>
-	<Maximum>0.368</Maximum>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
@@ -40,8 +32,8 @@
 <PhysicsParameter>
 	<Name>deltaPpara</Name>
 	<Value>2.71</Value>
-	<Minimum>2.41</Minimum>
-	<Maximum>3.01</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>3.2</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
