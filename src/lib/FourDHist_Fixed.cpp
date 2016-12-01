@@ -30,7 +30,8 @@ void FourDHist_Fixed::Initialise(int nbinsw, int nbinsx, int nbinsy, int nbinsz)
   if(!nbinsw || !nbinsx || !nbinsy || !nbinsz)
     throw std::out_of_range ("Can't have 0 bins in any dimension");
   nbins = nbinsw*nbinsx*nbinsy*nbinsz;
-  bincontent = new double[nbins];
+  for(int ibin = nbins; ibin-->0;)
+    bincontent.push_back(0);
   Clear();
   waxis.SetNameTitle("w","w");
   xaxis.SetNameTitle("x","x");
@@ -45,15 +46,13 @@ FourDHist_Fixed::FourDHist_Fixed(const FourDHist_Fixed& orig)
   yaxis = orig.yaxis;
   zaxis = orig.zaxis;
   nbins = orig.nbins;
-  bincontent = new double[nbins];
-  for(int ibin = 0; ibin < nbins; ibin++)
-    bincontent[ibin] = orig.bincontent[ibin];
+  bincontent = orig.bincontent;
 }
 // Names
 void FourDHist_Fixed::SetAxisNames(string wname
-                            ,string xname
-                            ,string yname
-                            ,string zname)
+                                  ,string xname
+                                  ,string yname
+                                  ,string zname)
 {
   waxis.SetName(wname.c_str());
   xaxis.SetName(xname.c_str());
@@ -62,9 +61,9 @@ void FourDHist_Fixed::SetAxisNames(string wname
 }
 // Titles
 void FourDHist_Fixed::SetAxisTitles(string wtitle
-                             ,string xtitle
-                             ,string ytitle
-                             ,string ztitle)
+                                   ,string xtitle
+                                   ,string ytitle
+                                   ,string ztitle)
 {
   waxis.SetTitle(wtitle.c_str());
   xaxis.SetTitle(xtitle.c_str());

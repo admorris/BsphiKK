@@ -34,15 +34,14 @@ FourDHist_Adaptive::FourDHist_Adaptive(const FourDHist_Adaptive& orig)
 {
   binner = orig.binner;
   nbins = orig.nbins;
-  bincontent = new double[nbins];
-  for(int ibin = 0; ibin < nbins; ibin++)
-    bincontent[ibin] = orig.bincontent[ibin];
+  bincontent = orig.bincontent;
 }
 void FourDHist_Adaptive::Initialise()
 {
   nbins = binner->GetNNodes()+1;
   cout << "Adaptively-binned 4D histogram with " << nbins << " bins" << endl;
-  bincontent = new double[nbins];
+  for(int ibin = nbins; ibin-->0;)
+    bincontent.push_back(0);
   Clear();
 }
 int FourDHist_Adaptive::FindBin(double w, double x, double y, double z)
@@ -57,10 +56,10 @@ bool FourDHist_Adaptive::IsCompatible(const FourDHist_Adaptive& other)
 TTree* FourDHist_Adaptive::SaveToTree()
 {
   TTree* tree = new TTree("AccTree","");
-  double content; tree->Branch("content",&content );
-  for(int ibin = 0; ibin < nbins; ibin++)
+  double content; tree->Branch("content",&content);
+  for(auto binc : bincontent)
   {
-    content = bincontent[ibin];
+    content = binc;
     tree->Fill();
   }
   return tree;

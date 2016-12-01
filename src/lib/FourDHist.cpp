@@ -5,12 +5,12 @@
 using namespace std;
 void FourDHist::Initialise()
 {
-  bincontent = new double[nbins];
+  for(int ibin = nbins; ibin-->0;)
+    bincontent.push_back(0);
 }
 // Destructor
 FourDHist::~FourDHist()
 {
-  delete[] bincontent; // All this does is segfault
 }
 int FourDHist::FindBin(double w, double x, double y, double z)
 {
@@ -32,32 +32,32 @@ double FourDHist::Eval(double w, double x, double y, double z)
 }
 void FourDHist::Clear()
 {
-  for(int ibin = 0; ibin < nbins; ibin++)
-    bincontent[ibin] = 0;
+  for(auto &binc: bincontent)
+    binc = 0;
   under = 0;
   over = 0;
 }
 double FourDHist::MaxBinContent()
 {
   double maxbincontent = bincontent[0];
-  for(int ibin = 1; ibin < nbins; ibin++)
-    if(bincontent[ibin] > maxbincontent)
-      maxbincontent = bincontent[ibin];
+  for(auto binc: bincontent)
+    if(binc > maxbincontent)
+      maxbincontent = binc;
   return maxbincontent;
 }
 double FourDHist::MinBinContent()
 {
   double minbincontent = bincontent[0];
-  for(int ibin = 1; ibin < nbins; ibin++)
-    if(bincontent[ibin] < minbincontent)
-      minbincontent = bincontent[ibin];
+  for(auto binc: bincontent)
+    if(binc < minbincontent)
+      minbincontent = binc;
   return minbincontent;
 }
 TH1D* FourDHist::BinContentHist()
 {
   TH1D* hist = new TH1D("BinContentHist","",100,MinBinContent(),MaxBinContent());
-  for(int ibin = 0; ibin < nbins; ibin++)
-    hist->Fill(bincontent[ibin]);
+  for(auto binc: bincontent)
+    hist->Fill(binc);
   return hist;
 }
 
@@ -89,45 +89,46 @@ bool FourDHist::Arithmetic(const FourDHist& other,int op)
     throw runtime_error("FourDHist ERROR: Histograms must have the same ranges and binning schemes to do arithmetic.");
     return false;
   }
-  for(int ibin = 0; ibin < nbins; ibin++)
+  switch(op)
   {
-    switch(op)
-    {
-      case 0:
+    case 0:
+      for(int ibin = 0; ibin < nbins; ibin++)
         bincontent[ibin] += other.bincontent[ibin];
-        under += other.under;
-        over += other.over;
-        break;
-      case 1:
+      under += other.under;
+      over += other.over;
+      break;
+    case 1:
+      for(int ibin = 0; ibin < nbins; ibin++)
         bincontent[ibin] -= other.bincontent[ibin];
-        under -= other.under;
-        over -= other.over;
-        break;
-      case 2:
+      under -= other.under;
+      over -= other.over;
+      break;
+    case 2:
+      for(int ibin = 0; ibin < nbins; ibin++)
         bincontent[ibin] *= other.bincontent[ibin];
-        under *= other.under;
-        over *= other.over;
-        break;
-      case 3:
+      under *= other.under;
+      over *= other.over;
+      break;
+    case 3:
+      for(int ibin = 0; ibin < nbins; ibin++)
         bincontent[ibin] /= other.bincontent[ibin];
-        under /= other.under;
-        over /= other.over;
-        break;
-      default:
-        return false;
-    }
+      under /= other.under;
+      over /= other.over;
+      break;
+    default:
+      return false;
   }
   return true;
 }
 void FourDHist::Print()
 {
-  for(int ibin = 0; ibin < nbins; ibin++)
-    printf("%f\n",bincontent[ibin]);
+  for(auto binc: bincontent)
+    printf("%f\n",binc);
 }
 double FourDHist::Integral()
 {
   double sum = 0;
-  for(int ibin = 0; ibin < nbins; ibin++)
-    sum+=bincontent[ibin];
+  for(auto binc: bincontent)
+    sum+=binc;
   return sum;
 }

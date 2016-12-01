@@ -1,10 +1,12 @@
 #ifndef __FourDHist_h__
 #define __FourDHist_h__
 #include <string>
+#include <vector>
 #include "TAxis.h"
 #include "TH1D.h"
 #include "TH2D.h"
 using std::string;
+using std::vector;
 class FourDHist
 {
   public:
@@ -15,6 +17,7 @@ class FourDHist
     double Eval(double,double,double,double);
     double MaxBinContent();
     double MinBinContent();
+    double GetBinContent(int ibin) { return bincontent[ibin]; }
     double UnderFlow() { return under; }
     double OverFlow() { return over; }
     double Integral();
@@ -34,7 +37,7 @@ class FourDHist
     int nbins;
     double under;
     double over;
-    double* bincontent;
+    vector<double> bincontent;
   private:
     bool Arithmetic(const FourDHist&,int);// 0-3
     virtual int FindBin(double,double,double,double); // w,x,y,z
