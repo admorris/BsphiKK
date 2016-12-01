@@ -90,7 +90,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     particles = charmantibaryons;
     n = sizeof(charmantibaryons)/sizeof(annotation*);    
   }
-  else if(branchname == "phiKpiM" || branchname == "phipipiM")
+  else if(branchname == "phiKpiM" || branchname == "phipipiM" || branchname == "phiphimass" || branchname == "phikstmass")
   {
     particles = beautymesons;
     n = sizeof(beautymesons)/sizeof(annotation*);    
