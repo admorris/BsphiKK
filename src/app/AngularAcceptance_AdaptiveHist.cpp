@@ -3,6 +3,7 @@
 
 #include "TFile.h"
 #include "TTree.h"
+#include "TGraph.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TMath.h"
@@ -23,7 +24,8 @@ void AngularAcceptance(string selfile, string genfile)
   TTree* seltree = GetTree(selfile,"BCON_KK_M<1800&&abs(KK_TRUEID)>500");
   double x[4];
   // Begin adaptive binning stuff
-  const int n = gentree->GetEntries();
+  int nbins = 50;
+  const int n = gentree->GetEntries() - gentree->GetEntries()%nbins;
   cout << "Attempting to make an array with " << n*4 << " elements" << endl;
   vector<double> data;
   for(int i = 0; i < n*4; i++)
@@ -40,24 +42,58 @@ void AngularAcceptance(string selfile, string genfile)
     for(int j = 0; j < 4; j++)
       data[n*j+i] = sym ? TMath::Abs(x[j]) : x[j];
   }
-  int nbins = 100;
 //  cout << "Using " << nbins << " bins." << endl;
   TKDTreeBinning binner(n,4,&data[0],nbins);
   // End adaptive binning stuff
   TFile output("Acceptance.root","RECREATE");
   FourDHist_Adaptive genhist(&binner);
   Fill(x, gentree, genhist, "KK_M", sym);
+  new TCanvas;
   genhist.BinContentHist()->Draw();
   gPad->SaveAs("GenBinDist.pdf");
   FourDHist_Adaptive selhist = genhist;
   selhist.Clear();
   Fill(x, seltree, selhist, "BCON_KK_M", sym);
+  new TCanvas;
   selhist.BinContentHist()->Draw();
   gPad->SaveAs("SelBinDist.pdf");
   FourDHist_Adaptive acchist = selhist / genhist;
   acchist.SaveToTree()->Write();
   binner.GetTree()->Write();
   output.Close();
+  
+  
+  // Plot the distributions of bin edges
+  vector<TGraph*> graphs;
+  for(int idim = 4; idim-->0;)
+    graphs.push_back(new TGraph(nbins*2));
+  cout << "Initialised graphs for bin edges" << endl;
+  for(int ibin = 0; ibin < nbins; ibin++)
+  {
+    for(int idim = 0; idim < 4; idim++)
+    {
+      graphs[idim]->SetPoint(ibin*2  ,binner.GetBinMinEdges(ibin)[idim],acchist.GetBinContent(ibin));
+      graphs[idim]->SetPoint(ibin*2+1,binner.GetBinMaxEdges(ibin)[idim],acchist.GetBinContent(ibin));
+    }
+  }
+  cout << "Drawing graphs" << endl;
+  TCanvas can;
+  can.Divide(2,2);
+  vector<string> axis_title = {"#Phi"
+                              ,"cos(#theta_{1})"
+                              ,"cos(#theta_{1})"
+                              ,"m(KK) [MeV]"};
+  for(int idim = 0; idim < 4; idim++)
+  {
+    can.cd(idim+1);
+    graphs[idim]->SetTitle("");
+    graphs[idim]->Draw("A*");
+    graphs[idim]->GetXaxis()->SetTitle(axis_title[idim].c_str());
+    graphs[idim]->SetMinimum(0.0);
+  }
+  can.SaveAs("BinEdgeDist.pdf");
+  
+  
   ResultDB table("Acceptance.csv");
   table.Update("accNgen","N",gentree->GetEntries(),0);
   table.Update("accNsel","N",seltree->GetEntries(),0);
