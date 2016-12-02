@@ -1,10 +1,10 @@
 #ifndef __AngularAcceptanceFill_h__
 #define __AngularAcceptanceFill_h__
 #include <iostream>
-#include "FourDHist.h"
+#include "NDHist.h"
 #include "TTree.h"
 using namespace std;
-void Fill(double* x, TTree* tree, FourDHist& hist, const char* mKKbranch = "KK_M", bool sym = false)
+void Fill(double* x, TTree* tree, NDHist& hist, const char* mKKbranch = "KK_M", bool sym = false)
 {
   int n = tree->GetEntries();
   cout << "Tree contains " << n << " entries" << endl;
@@ -18,9 +18,9 @@ void Fill(double* x, TTree* tree, FourDHist& hist, const char* mKKbranch = "KK_M
     tree->GetEntry(i);
     x[3] /= 1000; // MeV to GeV
     sym ?
-      hist.Fill(TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]),TMath::Abs(x[3]))
+      hist.Fill({TMath::Abs(x[0]),TMath::Abs(x[1]),TMath::Abs(x[2]),TMath::Abs(x[3])})
       :
-      hist.Fill(x[0],x[1],x[2],x[3]);
+      hist.Fill({x[0],x[1],x[2],x[3]});
   }
   cout << "The fullest bin contains " << hist.MaxBinContent() << " events." << endl;
   cout << "The emptiest bin contains " << hist.MinBinContent() << " events." << endl;
