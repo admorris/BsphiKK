@@ -5,7 +5,7 @@
 #include "TFile.h"
 #include "TTree.h"
 // Custom headers
-#include "FourDHist_Adaptive.h"
+#include "NDHist_Adaptive.h"
 #include "GetTree.h"
 using namespace std;
 void addBranches(string acceptancefilename = "Acceptance.root", string inputfilename = "BsphiKK_data_mvacut.root", string outputfilename = "BsphiKK_data_mvacut_acceptance.root")
@@ -14,7 +14,7 @@ void addBranches(string acceptancefilename = "Acceptance.root", string inputfile
   cout << "Loading acceptance histogram from " << acceptancefilename << endl;
   TFile* accfile = TFile::Open(acceptancefilename.c_str());
   TTree* acctree = (TTree*)accfile->Get("AccTree");
-  FourDHist_Adaptive acchist(accfile);
+  NDHist_Adaptive acchist(accfile);
   acchist.LoadFromTree(acctree);
 /*Input************************************************************************/
   cout << "Reading from " << inputfilename << endl;
@@ -38,10 +38,10 @@ void addBranches(string acceptancefilename = "Acceptance.root", string inputfile
   for(Int_t i = 0; i < n; i++)
   {
     intree->GetEntry(i);
-    acceptance = acchist.Eval(TMath::Abs(Phi_angle)
-                             ,TMath::Abs(cos_theta1)
-                             ,TMath::Abs(cos_theta2)
-                             ,KK_M/1000);
+    acceptance = acchist.Eval({TMath::Abs(Phi_angle)
+                             , TMath::Abs(cos_theta1)
+                             , TMath::Abs(cos_theta2)
+                             , KK_M/1000});
     inverseacc = 1.0/acceptance;
     outtree->Fill();
   }

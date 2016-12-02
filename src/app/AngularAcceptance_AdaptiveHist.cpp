@@ -12,7 +12,7 @@
 #include "TKDTreeBinning.h"
 
 #include "GetTree.h"
-#include "FourDHist_Adaptive.h"
+#include "NDHist_Adaptive.h"
 #include "AngularAcceptanceFill.h"
 #include "ResultDB.h"
 
@@ -46,18 +46,18 @@ void AngularAcceptance(string selfile, string genfile)
   TKDTreeBinning binner(n,4,&data[0],nbins);
   // End adaptive binning stuff
   TFile output("Acceptance.root","RECREATE");
-  FourDHist_Adaptive genhist(&binner);
+  NDHist_Adaptive genhist(&binner);
   Fill(x, gentree, genhist, "KK_M", sym);
   new TCanvas;
   genhist.BinContentHist()->Draw();
   gPad->SaveAs("GenBinDist.pdf");
-  FourDHist_Adaptive selhist = genhist;
+  NDHist_Adaptive selhist = genhist;
   selhist.Clear();
   Fill(x, seltree, selhist, "BCON_KK_M", sym);
   new TCanvas;
   selhist.BinContentHist()->Draw();
   gPad->SaveAs("SelBinDist.pdf");
-  FourDHist_Adaptive acchist = selhist / genhist;
+  NDHist_Adaptive acchist = selhist / genhist;
   acchist.SaveToTree()->Write();
   binner.GetTree()->Write();
   output.Close();
