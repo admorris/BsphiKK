@@ -38,11 +38,9 @@ void AngularAcceptance(string selfile, string genfile)
   {
     gentree->GetEntry(i);
     x[3]/=1000; // MeV to GeV
-//    if(i%10000==0) cout << i << endl;
     for(int j = 0; j < 4; j++)
       data[n*j+i] = sym ? TMath::Abs(x[j]) : x[j];
   }
-//  cout << "Using " << nbins << " bins." << endl;
   TKDTreeBinning binner(n,4,&data[0],nbins);
   // End adaptive binning stuff
   TFile output("Acceptance.root","RECREATE");
@@ -81,8 +79,8 @@ void AngularAcceptance(string selfile, string genfile)
   can.Divide(2,2);
   vector<string> axis_title = {"#Phi"
                               ,"cos(#theta_{1})"
-                              ,"cos(#theta_{1})"
-                              ,"m(KK) [MeV]"};
+                              ,"cos(#theta_{2})"
+                              ,"m(KK) [GeV]"};
   for(int idim = 0; idim < 4; idim++)
   {
     can.cd(idim+1);
