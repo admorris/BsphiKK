@@ -19,7 +19,6 @@ void AngularAcceptance(string selfile, string genfile)
 {
   bool sym = true;
   TTree* tree = GetTree(genfile,"KK_M<1800");
-  double x[4];
   NDHist_Fixed genhist
   ({
      std::tuple<int,double,double>(4,sym? 0 : -TMath::Pi(), TMath::Pi())
@@ -29,11 +28,17 @@ void AngularAcceptance(string selfile, string genfile)
   });
   genhist.SetAxisNames({"phi","ctheta_1","ctheta_2","mKK"});
   genhist.SetAxisTitles({"#Phi","cos(#theta_{1})","cos(#theta_{2})","m(K^{#plus}K^{#minus})"});
-  Fill(x, tree, genhist, "KK_M", sym);
+  
+  vector<string> branches = { "KK_M"
+                            , "cos_theta1"
+                            , "cos_theta2"
+                            , "Phi_angle"
+                            };
+  Fill(branches, tree, genhist, sym);
   tree = GetTree(selfile,"BCON_KK_M<1800&&abs(KK_TRUEID)>500");
   NDHist_Fixed selhist = genhist;
   selhist.Clear();
-  Fill(x, tree, selhist, "KK_M", sym);
+  Fill(branches, tree, selhist, sym);
   genhist.BinContentHist()->Draw();
   gPad->SaveAs("GenBinDist.pdf");
   selhist.BinContentHist()->Draw();
