@@ -18,32 +18,42 @@ using namespace std;
 void AngularAcceptance(string selfile, string genfile)
 {
   bool sym = true;
-  TTree* tree = GetTree(genfile,"KK_M<1800");
+  // Set up the denominator histogram
+  vector<double> massedges = {980,1050,1400,1800};
+  vector<double> costhetaedges = {0,0.5,0.75,1};
+  vector<double> phiedges = {0, TMath::Pi()/2, TMath::Pi()};
   NDHist_Fixed genhist
   ({
-     std::tuple<int,double,double>(4,sym? 0 : -TMath::Pi(), TMath::Pi())
-    ,std::tuple<int,double,double>(4,sym? 0 : -1, 1)
-    ,std::tuple<int,double,double>(4,sym? 0 : -1, 1)
-    ,std::tuple<int,double,double>(4,493*2,1800)
+     std::tuple<int,double*>(massedges.size()-1,&massedges[0])
+    ,std::tuple<int,double*>(costhetaedges.size()-1,&costhetaedges[0])
+    ,std::tuple<int,double*>(costhetaedges.size()-1,&costhetaedges[0])
+    ,std::tuple<int,double*>(phiedges.size()-1,&phiedges[0])
   });
-  genhist.SetAxisNames({"phi","ctheta_1","ctheta_2","mKK"});
-  genhist.SetAxisTitles({"#Phi","cos(#theta_{1})","cos(#theta_{2})","m(K^{#plus}K^{#minus})"});
-  
+  genhist.SetAxisNames({"mKK","ctheta_1","ctheta_2","phi"});
+  genhist.SetAxisTitles({"m(K^{#plus}K^{#minus})","cos(#theta_{1})","cos(#theta_{2})","#Phi"});
+  NDHist_Fixed selhist = genhist;
   vector<string> branches = { "KK_M"
                             , "cos_theta1"
                             , "cos_theta2"
                             , "Phi_angle"
                             };
-  Fill(branches, tree, genhist, sym);
-  tree = GetTree(selfile,"BCON_KK_M<1800&&abs(KK_TRUEID)>500");
-  NDHist_Fixed selhist = genhist;
-  selhist.Clear();
-  Fill(branches, tree, selhist, sym);
+  // Fill the denominator histogram
+//  TTree* gentree = GetTree(genfile,"KK_M<1800");
+  TTree* gentree = GetTree(genfile);
+  Fill(branches, gentree, genhist, sym);
+  for(auto& branch : branches) branch = "BCON_"+branch;
+//  TTree* seltree = GetTree(selfile,"BCON_KK_M<1800&&abs(KK_TRUEID)>500");
+  TTree* seltree = GetTree(selfile);
+  Fill(branches, seltree, selhist, sym);
+  // Write some output
+  TFile output("Acceptance.root","RECREATE");
   genhist.BinContentHist()->Draw();
   gPad->SaveAs("GenBinDist.pdf");
   selhist.BinContentHist()->Draw();
   gPad->SaveAs("SelBinDist.pdf");
   NDHist_Fixed acchist = selhist / genhist;
+//  acchist.Write();
+  output.Close();
   /*
   TFile output("AcceptanceProjections.root","RECREATE");
   TH1* h;
