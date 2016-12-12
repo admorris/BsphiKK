@@ -1,0 +1,16 @@
+pdf/default.xml
+minimiser/minuit.xml
+fitfunction/default.xml
+dataset/phasespace_gen.xml
+parameterset/amplitudes/Swave_fixed.xml
+parameterset/amplitudes/Pwave_fixed_CDFAmp.xml
+parameterset/amplitudes/Dwave_fixed.xml
+parameterset/fractions/NonRes_float.xml
+parameterset/fractions/Swave_zero.xml
+parameterset/fractions/Pwave_zero.xml
+parameterset/fractions/Dwave_zero.xml
+parameterset/deltaGammas_float.xml
+phasespaceboundary/mKK_1800.xml
+phasespaceboundary/angles.xml
+output/fullrange.xml
+output/angles.xml
