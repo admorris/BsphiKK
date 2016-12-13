@@ -1,4 +1,4 @@
 <Source>File</Source>
 <FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/BsphiKK_Gen_mvaVars.root</FileName>
 <NTuplePath>MCDecayTree</NTuplePath>
-<NumberEvents>100000</NumberEvents>
+<NumberEvents>10000000000000000</NumberEvents>

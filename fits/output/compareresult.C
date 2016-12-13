@@ -11,7 +11,7 @@ void compareresult(std::pair<double,double> newAp, std::pair<double,double> newA
 {
   std::vector<phiphiresult> results;
   results.push_back(phiphiresult("This fit",newAp,newAz,newdp));
-  results.push_back(phiphiresult("LHCb Run 1",{0.305,0.013},{0.364,0.013},{2.54,0.33}));
+  results.push_back(phiphiresult("LHCb Run 1",{0.305,0.013},{0.364,0.013},{2.54,0.07}));
   results.push_back(phiphiresult("LHCb 2011", {0.291,0.024},{0.365,0.024},{2.58,0.12}));
   results.push_back(phiphiresult("CDF and MC",{0.365,0.041},{0.348,0.043},{2.71,0.26}));
   TGraphErrors Ap_graph;
