@@ -64,11 +64,10 @@ do
 			then
 				particle=$(echo $arg | sed -r 's/.*resonances\/([a-zA-Z0-9]*)_.*/\1/g')
 				if [[ $particle == *"phi"* ]]
-                                then
-                                        phiname=$particle
-                                fi
-			fi
-			if [[ $arg == *"fractions/"* ]]
+				then
+					phiname=$particle
+				fi
+			elif [[ $arg == *"fractions/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
 				particle=$(echo $arg | sed -r 's/.*fractions\/([a-zA-Z0-9]*)_.*/\1/g')

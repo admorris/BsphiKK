@@ -3,13 +3,8 @@ pdf/histogram_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 dataset/phasespace_MC_truth.xml
-parameterset/amplitudes/fzero980_fixed.xml
-parameterset/amplitudes/phi1020_fixed_CDFAmp.xml
-parameterset/amplitudes/ftwop1525_fixed.xml
+parameterset/resonances/phi1020_fixed.xml
 parameterset/fractions/nonres_fixed.xml
-parameterset/fractions/fzero980_zero.xml
-parameterset/fractions/phi1020_zero.xml
-parameterset/fractions/ftwop1525_zero.xml
 parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
