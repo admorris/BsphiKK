@@ -2,7 +2,6 @@ pdf/default.xml
 pdf/evtgenbarrierfactors.xml
 pdf/floatrespars.xml
 pdf/drawnonres.xml
-pdf/drawswave.xml
 pdf/drawpwavecomponents.xml
 pdf/drawdwavecomponents.xml
 pdf/histogram_acceptance.xml
@@ -13,11 +12,11 @@ dataset/data_sweight.xml
 parameterset/resonances/fzero_980_fixed.xml
 parameterset/resonances/phi_1020_float_mass.xml
 parameterset/resonances/ftwop_1525_fixed.xml
-parameterset/amplitudes/Swave_float.xml
+parameterset/amplitudes/Swave_fixed.xml
 parameterset/amplitudes/Pwave_float.xml
 parameterset/amplitudes/Dwave_float.xml
 parameterset/fractions/NonRes_float.xml
-parameterset/fractions/Swave_float.xml
+parameterset/fractions/Swave_zero.xml
 parameterset/fractions/Pwave_fixed.xml
 parameterset/fractions/Dwave_float.xml
 parameterset/deltaGammas_fixed.xml

@@ -5,7 +5,7 @@
 	<PDFpoints>100</PDFpoints>
 	<Threads>16</Threads>
 	<DrawPull>True</DrawPull>
-	<DataBins>50</DataBins>
+	<DataBins>15</DataBins>
 	<UseSpline>False</UseSpline>
 	<NoLegend>True</NoLegend>
 	<Ymin>-10</Ymin>
@@ -17,7 +17,7 @@
 	<PDFpoints>100</PDFpoints>
 	<Threads>16</Threads>
 	<DrawPull>True</DrawPull>
-	<DataBins>50</DataBins>
+	<DataBins>15</DataBins>
 	<UseSpline>False</UseSpline>
 	<NoLegend>True</NoLegend>
 	<Ymin>-10</Ymin>
@@ -29,7 +29,7 @@
 	<PDFpoints>100</PDFpoints>
 	<Threads>16</Threads>
 	<DrawPull>True</DrawPull>
-	<DataBins>50</DataBins>
+	<DataBins>15</DataBins>
 	<UseSpline>False</UseSpline>
 	<NoLegend>True</NoLegend>
 	<Ymin>-10</Ymin>

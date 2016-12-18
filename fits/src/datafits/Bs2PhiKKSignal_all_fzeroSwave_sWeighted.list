@@ -1,7 +1,6 @@
 pdf/default.xml
 pdf/evtgenbarrierfactors.xml
 pdf/floatrespars.xml
-pdf/drawnonres.xml
 pdf/drawswave.xml
 pdf/drawpwavecomponents.xml
 pdf/drawdwavecomponents.xml
@@ -16,7 +15,7 @@ parameterset/resonances/ftwop_1525_fixed.xml
 parameterset/amplitudes/Swave_float.xml
 parameterset/amplitudes/Pwave_float.xml
 parameterset/amplitudes/Dwave_float.xml
-parameterset/fractions/NonRes_float.xml
+parameterset/fractions/NonRes_zero.xml
 parameterset/fractions/Swave_float.xml
 parameterset/fractions/Pwave_fixed.xml
 parameterset/fractions/Dwave_float.xml
