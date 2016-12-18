@@ -1,4 +1,5 @@
-<PhysicsParameter>
+# spin-0 NR
+PhysicsParameter>
 	<Name>nonres_fraction</Name>
 	<Value>0.1</Value>
 	<Minimum>0.0</Minimum>
