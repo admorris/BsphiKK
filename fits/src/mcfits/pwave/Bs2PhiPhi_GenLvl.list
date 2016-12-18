@@ -1,9 +1,8 @@
 pdf/BsPhiPhi.xml
-pdf/drawpwavecomponents.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 dataset/pwave_gen.xml
-parameterset/amplitudes/Pwave_float_CDFAmp.xml
+parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/deltaGammas_float.xml
 phasespaceboundary/angles.xml
 output/angles.xml
