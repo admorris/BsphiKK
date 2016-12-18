@@ -1,11 +1,11 @@
 <PhysicsParameter>
-	<Name>ftwop1525_Aperp2</Name>
+	<Name>ftwop1525_Aperpsq</Name>
 	<Value>0.333</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_Azero2</Name>
+	<Name>ftwop1525_Azerosq</Name>
 	<Value>0.333</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>

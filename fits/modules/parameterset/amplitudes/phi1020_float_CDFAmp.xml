@@ -2,7 +2,7 @@
 // βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 //  0  1  0.536  2.71  0.590  0.0  0.604  2.39
 <PhysicsParameter>
-	<Name>phi1020_Aperp2</Name>
+	<Name>phi1020_Aperpsq</Name>
 	<Value>0.364</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -10,7 +10,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_Azero2</Name>
+	<Name>phi1020_Azerosq</Name>
 	<Value>0.348</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>

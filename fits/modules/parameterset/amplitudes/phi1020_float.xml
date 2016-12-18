@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>phi1020_Aperp2</Name>
+	<Name>phi1020_Aperpsq</Name>
 	<Value>0.305</Value> # 0.305+-0.013 Sean
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -7,7 +7,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_Azero2</Name>
+	<Name>phi1020_Azerosq</Name>
 	<Value>0.364</Value> # 0.364+-0.012 Sean
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>

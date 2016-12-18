@@ -1,11 +1,11 @@
 <PhysicsParameter>
-	<Name>phi1020_Aperp2</Name>
+	<Name>phi1020_Aperpsq</Name>
 	<Value>0.305</Value> # 0.305 Sean
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_Azero2</Name>
+	<Name>phi1020_Azerosq</Name>
 	<Value>0.364</Value> # 0.364 Sean
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
