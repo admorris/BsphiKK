@@ -1,6 +1,6 @@
 <PhysicsParameter>
-	<Name>SwaveFrac</Name>
-	<Value>0.0</Value>
+	<Name>phi1020_fraction</Name>
+	<Value>1.0</Value> 
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

@@ -127,6 +127,7 @@ for file in "${pdf[@]}"
 do
 	parsefile $file 3
 done
+echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
 echo "		</PDF>"
 echo "		<DataSet>"
 for file in "${dataset[@]}"

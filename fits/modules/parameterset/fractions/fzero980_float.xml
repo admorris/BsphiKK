@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>SwaveFrac</Name>
+	<Name>fzero980_fraction</Name>
 	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>

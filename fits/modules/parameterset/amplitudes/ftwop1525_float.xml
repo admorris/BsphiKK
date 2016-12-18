@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>ADperp2</Name>
+	<Name>ftwop1525_Aperp2</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -7,7 +7,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ADzero2</Name>
+	<Name>ftwop1525_Azero2</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -15,7 +15,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>deltaDperp</Name>
+	<Name>ftwop1525_deltaperp</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
@@ -23,7 +23,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>deltaDzero</Name>
+	<Name>ftwop1525_deltazero</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
@@ -31,7 +31,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>deltaDpara</Name>
+	<Name>ftwop1525_deltapara</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
