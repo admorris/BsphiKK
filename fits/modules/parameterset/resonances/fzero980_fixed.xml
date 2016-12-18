@@ -1,17 +1,17 @@
 <PhysicsParameter>
-	<Name>fzeroMass</Name>
+	<Name>fzero980_mass</Name>
 	<Value>0.9399</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>fzerogpipi</Name>
+	<Name>fzero980_gpipi</Name>
 	<Value>0.1990</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>fzeroRg</Name>
+	<Name>fzero980_Rg</Name>
 	<Value>3.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>

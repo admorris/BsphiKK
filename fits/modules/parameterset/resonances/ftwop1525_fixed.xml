@@ -1,11 +1,11 @@
 <PhysicsParameter>
-	<Name>ftwoMass</Name>
+	<Name>ftwop1525_mass</Name>
 	<Value>1.5222</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwoWidth</Name>
+	<Name>ftwop1525_width</Name>
 	<Value>0.084</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
