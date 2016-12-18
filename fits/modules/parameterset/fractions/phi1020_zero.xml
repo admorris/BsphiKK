@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>PwaveFrac</Name>
+	<Name>phi1020_fraction</Name>
 	<Value>0.0</Value> 
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
