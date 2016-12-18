@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>NonResFrac</Name>
+	<Name>nonres_fraction</Name>
 	<Value>1.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
