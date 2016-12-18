@@ -21,6 +21,10 @@ function parsefile # <file> <indentation depth>
 		echo "$indent$line"
 	done < $1 # feed in the file
 }
+# List of resonances to eventually go in a ConfigurationParameter
+declare reslist
+# Name of the phi parameters, needed for p1*p3 etc.
+declare phiname
 # empty arrays for required tags, values are paths to XML files containing the tags
 # <PDF> contains a <Name> tag and several <ConfigurationParameter> tagss
 declare -a pdf
@@ -56,6 +60,16 @@ do
 		elif [[ $arg == *"parameterset/"* ]]
 		then
 			parameterset+=("$arg")
+			if [[ $arg == *"resonances/"* ]]
+			then
+				# The first line should contain the spin and resonance shape
+				particle=$(echo $arg | sed -r 's/.*resonances\/([a-zA-Z0-9]*)_.*/\1/g')
+				reslist="${reslist}${particle}$(head -n 1 $arg | sed -r 's/#\s*spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2) /g')"
+				if [[ $particle == *"phi"* ]]
+				then
+					phiname=$particle
+				fi
+			fi
 		elif [[ $arg == *"minimiser/"* ]]
 		then
 			minimiser="$arg"
@@ -128,6 +142,7 @@ do
 	parsefile $file 3
 done
 echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
+echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
 echo "		</PDF>"
 echo "		<DataSet>"
 for file in "${dataset[@]}"
