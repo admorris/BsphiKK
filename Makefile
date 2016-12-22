@@ -4,13 +4,9 @@ CC         = g++
 SHELL      = /bin/bash
 RM         = rm -f
 
-ifndef ROOTSYS
-	ROOTCFLAGS = $(shell root-config --cflags)
-	ROOTLIBS   = $(shell root-config --libs)
-else
-	ROOTCFLAGS = $(shell $(ROOTSYS)/bin/root-config --cflags | awk -F "-I" '{print $$1" -isystem"$$2}' )
-	ROOTLIBS   = $(shell $(ROOTSYS)/bin/root-config --libs)
-endif
+ROOTCFLAGS = $(shell root-config --cflags)
+ROOTLIBS   = $(shell root-config --libs)
+ROOTLIBDIR = $(shell root-config --libdir)
 EXTRA_ROOTLIBS = -lRooFit -lRooStats -lRooFitCore
 
 # Extensions
@@ -47,8 +43,8 @@ LOGDIRS    = latex/figs latex/results ntuples scripts/log scripts/tables
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS)
-COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS)) -Wl,-rpath=$(COMLIBDIR)
-LIBFLAGS   = -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) -Wl,-rpath=$(LIBDIR) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lgsl -lgslcblas -lboost_program_options
+COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS))
+LIBFLAGS   = -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lgsl -lgslcblas -lboost_program_options -Wl,-rpath,$(LIBDIR):$(COMLIBDIR):$(ROOTLIBDIR)
 
 all : $(LIBS) $(BINS) | $(LOGDIRS)
 # Build binaries
