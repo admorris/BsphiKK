@@ -141,17 +141,17 @@ then
 	do
 		widthlist="${widthlist}${item}:"
 	done
-	widthlist="${widthlist}2"
+	widthlist="2:${widthlist}2"
 	for item in "${styles[@]}"
 	do
 		stylelist="${stylelist}${item}:"
 	done
-	stylelist="${stylelist}5"
+	stylelist="1:${stylelist}5"
 	for item in "${colours[@]}"
 	do
 		colourlist="${colourlist}${item}:"
 	done
-	colourlist="${colourlist}1"
+	colourlist="1:${colourlist}1"
 fi
 # write the XML file
 echo "<RapidFit>"
