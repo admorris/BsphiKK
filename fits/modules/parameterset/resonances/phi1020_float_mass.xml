@@ -1,0 +1,14 @@
+<PhysicsParameter>
+	<Name>phi1020_mass</Name>
+	<Value>1.019461</Value>
+	<Minimum>1.0185</Minimum>
+	<Maximum>1.0215</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>phi1020_width</Name>
+	<Value>0.004266</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

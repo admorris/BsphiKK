@@ -1,14 +1,12 @@
 <PhysicsParameter>
-	<Name>phiMass</Name>
-	<Value>1.019461</Value>
-	<Minimum>1.0185</Minimum>
-	<Maximum>1.0215</Maximum>
+	<Name>ftwop1525_mass</Name>
+	<Value>1.5222</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phiWidth</Name>
-	<Value>0.004266</Value>
+	<Name>ftwop1525_width</Name>
+	<Value>0.084</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

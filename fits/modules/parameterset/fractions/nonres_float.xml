@@ -1,5 +1,9 @@
+# shape: spin-0 NR
+# style: 7
+# width: 2
+# colour: 30
 <PhysicsParameter>
-	<Name>NonResFrac</Name>
+	<Name>nonres_fraction</Name>
 	<Value>0.1</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>

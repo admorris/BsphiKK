@@ -2,38 +2,32 @@
 // βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 //  0  1  0.536  2.71  0.590  0.0  0.604  2.39
 <PhysicsParameter>
-	<Name>APperp2</Name>
+	<Name>phi1020_Aperpsq</Name>
 	<Value>0.364</Value>
-	<Minimum>0.0</Minimum>
-	<Maximum>1.0</Maximum>
-	<Type>Float</Type>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>APzero2</Name>
+	<Name>phi1020_Azerosq</Name>
 	<Value>0.348</Value>
-	<Minimum>0.0</Minimum>
-	<Maximum>1.0</Maximum>
-	<Type>Float</Type>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>deltaPperp</Name>
+	<Name>phi1020_deltaperp</Name>
 	<Value>2.39</Value>
-	<Type>Fixed</Type>  # Can't fit this with an untagged analysis
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>deltaPzero</Name>
+	<Name>phi1020_deltazero</Name>
 	<Value>0.0</Value> # Fix 0
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>deltaPpara</Name>
+	<Name>phi1020_deltapara</Name>
 	<Value>2.71</Value>
-	<Minimum>0</Minimum>
-	<Maximum>3.2</Maximum>
-	<Type>Float</Type>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

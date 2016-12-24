@@ -1,6 +1,7 @@
+# shape: spin-0 NR
 <PhysicsParameter>
-	<Name>SwaveFrac</Name>
-	<Value>0.0</Value>
+	<Name>nonres_fraction</Name>
+	<Value>1.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

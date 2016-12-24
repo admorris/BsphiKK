@@ -1,12 +1,12 @@
 <PhysicsParameter>
-	<Name>ftwoMass</Name>
-	<Value>1.5222</Value>
+	<Name>phi1020_mass</Name>
+	<Value>1.019461</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwoWidth</Name>
-	<Value>0.084</Value>
+	<Name>phi1020_width</Name>
+	<Value>0.004266</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

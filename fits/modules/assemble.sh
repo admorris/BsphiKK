@@ -7,6 +7,22 @@ function warning
 {
 	echo -e "\033[33mWARNING:\e[0m $1" 1>&2
 }
+# List of resonances to eventually go in a ConfigurationParameter
+declare -a resonances
+declare -a widths
+declare -a styles
+declare -a colours
+function getoption # <file> <option>
+{
+	while IFS= read line
+	do
+		if [[ "$line" == "#"*"$2:"*  ]]
+		then
+			echo $line | sed -r "s/\#\s*$2:\s?(.*)$/\1/"
+			return
+		fi
+	done < $1 # feed in the file
+}
 function parsefile # <file> <indentation depth>
 {
 	while IFS= read line
@@ -21,6 +37,8 @@ function parsefile # <file> <indentation depth>
 		echo "$indent$line"
 	done < $1 # feed in the file
 }
+# Name of the phi parameters, needed for p1*p3 etc.
+declare phiname
 # empty arrays for required tags, values are paths to XML files containing the tags
 # <PDF> contains a <Name> tag and several <ConfigurationParameter> tagss
 declare -a pdf
@@ -56,6 +74,22 @@ do
 		elif [[ $arg == *"parameterset/"* ]]
 		then
 			parameterset+=("$arg")
+			if [[ $arg == *"resonances/"* ]]
+			then
+				particle=$(echo $arg | sed -r 's/.*resonances\/([a-zA-Z0-9]*)_.*/\1/g')
+				if [[ $particle == *"phi"*"1020"* ]] # There are other phis, so the mass must be specified
+				then
+					phiname=$particle
+				fi
+			elif [[ $arg == *"fractions/"* ]]
+			then
+				# The first line should contain the spin and resonance shape
+				particle=$(echo $arg | sed -r 's/.*fractions\/([a-zA-Z0-9]*)_.*/\1/g')
+				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
+				widths+=("$(getoption $arg width)")
+				styles+=("$(getoption $arg style)")
+				colours+=("$(getoption $arg colour)")
+			fi
 		elif [[ $arg == *"minimiser/"* ]]
 		then
 			minimiser="$arg"
@@ -96,6 +130,29 @@ if [ ${#fitfunction[@]} -eq 0 ]; then
 	warning "No FitFunction given. Using default: NegativeLogLikelihoodNumerical"
 	fitfunction+=("fitfunction/default.xml")
 fi
+# Get the resonance options
+for item in "${resonances[@]}"
+do
+	reslist="${reslist}${item} "
+done
+if [ ${#resonances[@]} -gt 1 ]
+then
+	for item in "${widths[@]}"
+	do
+		widthlist="${widthlist}${item}:"
+	done
+	widthlist="2:${widthlist}2"
+	for item in "${styles[@]}"
+	do
+		stylelist="${stylelist}${item}:"
+	done
+	stylelist="1:${stylelist}5"
+	for item in "${colours[@]}"
+	do
+		colourlist="${colourlist}${item}:"
+	done
+	colourlist="1:${colourlist}1"
+fi
 # write the XML file
 echo "<RapidFit>"
 echo "	<ParameterSet>"
@@ -127,6 +184,8 @@ for file in "${pdf[@]}"
 do
 	parsefile $file 3
 done
+echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
+echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
 echo "		</PDF>"
 echo "		<DataSet>"
 for file in "${dataset[@]}"
@@ -140,7 +199,26 @@ echo "	</ToFit>"
 echo "	<Output>"
 for file in "${output[@]}"
 do
-	parsefile $file 2
+	echo "		<ComponentProjection>"
+	parsefile $file 3
+	if [ ${#resonances[@]} -gt 1 ]
+	then
+		if [ ${#widths[@]} -eq ${#resonances[@]} ]
+		then
+			echo "			<WidthKey>${widthlist}</WidthKey>"
+		else
+			warning "Only ${#widths[@]} width keys"
+		fi
+		if [ ${#styles[@]} -eq ${#resonances[@]} ]
+		then
+			echo "			<StyleKey>${stylelist}</StyleKey>"
+		fi
+		if [ ${#colours[@]} -eq ${#resonances[@]} ]
+		then
+			echo "			<ColorKey>${colourlist}</ColorKey>"
+		fi
+	fi
+	echo "		</ComponentProjection>"
 done
 echo "	</Output>"
 echo "</RapidFit>"
