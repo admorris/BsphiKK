@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>atwo1700_mass</Name>
+	<Value>1.732</Value> # PDG: 1.732±0.016
+	<Minimum>1.716</Minimum>
+	<Maximum>1.748</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>atwo1700_width</Name> # PDG: 0.194±0.040
+	<Value>0.194</Value>
+	<Minimum>.154</Minimum>
+	<Maximum>.234</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>azero1450_mass</Name>
+	<Value>1.474</Value> # PDG: 1.474±0.019
+	<Minimum>1.455</Minimum>
+	<Maximum>1.493</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>azero1450_width</Name> # PDG: 0.265±0.013
+	<Value>0.265</Value>
+	<Minimum>.252</Minimum>
+	<Maximum>.278</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

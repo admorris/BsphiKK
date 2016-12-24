@@ -1,0 +1,40 @@
+<PhysicsParameter>
+	<Name>ftwo1270_Aperpsq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1270_Azerosq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1270_deltaperp</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1270_deltazero</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1270_deltapara</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

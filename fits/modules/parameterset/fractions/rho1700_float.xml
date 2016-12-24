@@ -1,0 +1,12 @@
+# shape: spin-1 BW
+# style: 1
+# width: 1
+# colour: 1
+<PhysicsParameter>
+	<Name>rho1700_fraction</Name>
+	<Value>1.0</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>10.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

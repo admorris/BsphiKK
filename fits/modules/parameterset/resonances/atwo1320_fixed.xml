@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>atwo1320_mass</Name>
+	<Value>1.3181</Value> # PDG: 1.3181±0.0007
+	<Minimum>1.3174</Minimum>
+	<Maximum>1.3188</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>atwo1320_width</Name> # PDG: 0.107±0.005
+	<Value>0.107</Value>
+	<Minimum>.102</Minimum>
+	<Maximum>.112</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

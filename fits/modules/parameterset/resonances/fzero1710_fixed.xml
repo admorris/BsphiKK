@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>fzero1710_mass</Name>
+	<Value>1.723</Value> # PDG: 1.723+0.006−0.005
+	<Minimum>1.718</Minimum>
+	<Maximum>1.729</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero1710_width</Name> # PDG: 0.139±0.008
+	<Value>0.139</Value>
+	<Minimum>.131</Minimum>
+	<Maximum>.147</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

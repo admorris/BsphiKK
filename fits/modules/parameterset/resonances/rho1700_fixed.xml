@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>rho1700_mass</Name>
+	<Value>1.720</Value> # PDG: 1.720±0.020
+	<Minimum>1.700</Minimum>
+	<Maximum>1.740</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rho1700_width</Name> # PDG: 0.250±0.100
+	<Value>0.250</Value>
+	<Minimum>.150</Minimum>
+	<Maximum>.350</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

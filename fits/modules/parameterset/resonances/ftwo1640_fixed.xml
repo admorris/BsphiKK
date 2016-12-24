@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>ftwo1640_mass</Name>
+	<Value>1.639</Value> # PDG: 1.639±0.006
+	<Minimum>1.633</Minimum>
+	<Maximum>1.645</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1640_width</Name> # PDG: 0.099+0.060−0.040
+	<Value>0.099</Value>
+	<Minimum>.059</Minimum>
+	<Maximum>.159</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
