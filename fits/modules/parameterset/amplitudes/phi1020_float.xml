@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>phi1020_Aperpsq</Name>
-	<Value>0.305</Value> # 0.305+-0.013 Sean
+	<Value>0.305</Value> # 0.305+-0.013
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
@@ -8,7 +8,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_Azerosq</Name>
-	<Value>0.364</Value> # 0.364+-0.012 Sean
+	<Value>0.364</Value> # 0.364+-0.012
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
@@ -16,8 +16,10 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltaperp</Name>
-	<Value>2.67</Value> # Fix to 2.67+-0.23 from Sean
-	<Type>Fixed</Type> # Can't fit this with an untagged analysis
+	<Value>2.67</Value> # 2.67+-0.23
+	<Minimum>1.87</Minimum>
+	<Maximum>3.47</Maximum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -28,7 +30,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltapara</Name>
-	<Value>2.54</Value> # 2.54+-0.23 Sean
+	<Value>2.54</Value> # 2.54+-0.07
 	<Minimum>1.74</Minimum>
 	<Maximum>3.34</Maximum>
 	<Type>Float</Type>
