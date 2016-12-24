@@ -9,4 +9,6 @@ parameterset/deltaGammas_float.xml
 phasespaceboundary/mKK_1800.xml
 phasespaceboundary/angles.xml
 output/fullrange.xml
-output/angles.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml

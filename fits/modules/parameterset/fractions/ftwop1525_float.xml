@@ -1,4 +1,7 @@
-# spin-2 BW
+# shape: spin-2 BW
+# style: 9
+# width: 2
+# colour: 28
 <PhysicsParameter>
 	<Name>ftwop1525_fraction</Name>
 	<Value>2.0</Value>

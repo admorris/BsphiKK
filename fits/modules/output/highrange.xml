@@ -1,15 +1,13 @@
-<ComponentProjection>
-	<Name>mKK</Name>
-	<FixedIntegrationPoints>1000</FixedIntegrationPoints>
-	<UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-	<PDFpoints>500</PDFpoints>
-	<Threads>16</Threads>
-	<DrawPull>True</DrawPull>
-	<DataBins>36</DataBins> # 1080-1800 20 MeV/bin
-	<UseSpline>False</UseSpline>
-	<NoLegend>True</NoLegend>
-	<Xmax>1.800</Xmax>
-	<Xmin>1.080</Xmin>
-	<Ymax>120</Ymax>
-	<Ymin>-10</Ymin>
-</ComponentProjection>
+<Name>mKK</Name>
+<FixedIntegrationPoints>1000</FixedIntegrationPoints>
+<UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+<PDFpoints>500</PDFpoints>
+<Threads>16</Threads>
+<DrawPull>True</DrawPull>
+<DataBins>36</DataBins> # 1080-1800 20 MeV/bin
+<UseSpline>False</UseSpline>
+<NoLegend>True</NoLegend>
+<Xmax>1.800</Xmax>
+<Xmin>1.080</Xmin>
+<Ymax>120</Ymax>
+<Ymin>-10</Ymin>

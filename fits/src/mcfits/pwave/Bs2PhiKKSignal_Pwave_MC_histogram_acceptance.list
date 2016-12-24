@@ -11,4 +11,6 @@ parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_BCON_phi.xml
 phasespaceboundary/angles_BCON.xml
 output/phirange.xml
-output/angles.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml

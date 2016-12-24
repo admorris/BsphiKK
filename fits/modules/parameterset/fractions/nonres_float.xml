@@ -1,4 +1,7 @@
-# spin-0 NR
+# shape: spin-0 NR
+# style: 7
+# width: 2
+# colour: 30
 <PhysicsParameter>
 	<Name>nonres_fraction</Name>
 	<Value>0.1</Value>

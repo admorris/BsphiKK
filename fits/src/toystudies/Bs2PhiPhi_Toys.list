@@ -5,4 +5,6 @@ dataset/toys.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/deltaGammas_float.xml
 phasespaceboundary/angles.xml
-output/angles.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml

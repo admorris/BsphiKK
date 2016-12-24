@@ -1,4 +1,7 @@
-# spin-0 FT
+# shape: spin-0 FT
+# style: 9
+# width: 2
+# colour: 3
 <PhysicsParameter>
 	<Name>fzero980_fraction</Name>
 	<Value>0.01</Value>

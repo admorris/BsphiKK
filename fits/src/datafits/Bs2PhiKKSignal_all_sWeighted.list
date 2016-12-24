@@ -21,4 +21,6 @@ phasespaceboundary/angles_BCON.xml
 phasespaceboundary/sweight.xml
 output/lowrange.xml
 output/highrange.xml
-output/angles.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml

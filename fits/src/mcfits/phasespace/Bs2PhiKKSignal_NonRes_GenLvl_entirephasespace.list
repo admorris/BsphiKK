@@ -8,4 +8,6 @@ parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_full_phasespace.xml
 phasespaceboundary/angles.xml
 output/entirephasespace.xml
-output/angles.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml

@@ -1,12 +1,10 @@
-<Name>mKK</Name>
-<FixedIntegrationPoints>1000</FixedIntegrationPoints>
+<Name>phi</Name>
+<FixedIntegrationPoints>5000</FixedIntegrationPoints>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-<PDFpoints>500</PDFpoints>
+<PDFpoints>100</PDFpoints>
 <Threads>16</Threads>
 <DrawPull>True</DrawPull>
-<DataBins>46</DataBins> # 988-1080 2 MeV/bin
+<DataBins>15</DataBins>
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
-<Xmax>1.080</Xmax>
-<Ymax>120</Ymax>
 <Ymin>-10</Ymin>
