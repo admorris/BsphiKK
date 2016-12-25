@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>ftwp1565_mass</Name>
+	<Name>ftwo1565_mass</Name>
 	<Value>1.562</Value> # PDG: 1.562±0.013
 	<Minimum>1.549</Minimum>
 	<Maximum>1.575</Maximum>
@@ -7,7 +7,7 @@
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwp1565_width</Name> # PDG: 0.134±0.008
+	<Name>ftwo1565_width</Name> # PDG: 0.134±0.008
 	<Value>0.134</Value>
 	<Minimum>.126</Minimum>
 	<Maximum>.142</Maximum>
