@@ -5,7 +5,7 @@ minimiser/minuit.xml
 fitfunction/default.xml
 fitfunction/sweighted.xml
 dataset/data_sweight.xml
-parameterset/resonances/phi1020_float_mass.xml
+parameterset/resonances/phi1020_fixed.xml
 parameterset/resonances/ftwop1525_fixed.xml
 parameterset/amplitudes/phi1020_float.xml
 parameterset/amplitudes/ftwop1525_float.xml

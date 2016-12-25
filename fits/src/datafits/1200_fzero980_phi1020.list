@@ -6,7 +6,7 @@ fitfunction/default.xml
 fitfunction/sweighted.xml
 dataset/data_sweight.xml
 parameterset/resonances/fzero980_fixed.xml
-parameterset/resonances/phi1020_float_mass.xml
+parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/fzero980_float.xml
 parameterset/amplitudes/phi1020_float.xml
 parameterset/fractions/fzero980_float.xml
