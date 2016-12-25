@@ -1,7 +1,9 @@
 <PhysicsParameter>
 	<Name>ftwop1525_mass</Name>
 	<Value>1.5222</Value>
-	<Type>Fixed</Type>
+	<Minimum>1.515</Minimum>
+	<Maximum>1.530</Maximum>
+	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>

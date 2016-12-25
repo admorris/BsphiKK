@@ -3,7 +3,7 @@
 	<Value>1.019461</Value>
 	<Minimum>1.0185</Minimum>
 	<Maximum>1.0215</Maximum>
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
