@@ -10,7 +10,7 @@ parameterset/resonances/phi1020_float_mass.xml
 parameterset/resonances/ftwop1525_fixed.xml
 parameterset/resonances/phi1680_fixed.xml
 parameterset/amplitudes/fzero980_float.xml
-parameterset/amplitudes/phi1020_float.xml
+parameterset/amplitudes/phi1020_fixed.xml
 parameterset/amplitudes/ftwop1525_float.xml
 parameterset/amplitudes/phi1680_float.xml
 parameterset/fractions/nonres_float.xml
