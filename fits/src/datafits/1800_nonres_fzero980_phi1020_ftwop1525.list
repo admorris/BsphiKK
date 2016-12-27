@@ -1,6 +1,6 @@
 pdf/default.xml
 pdf/evtgenbarrierfactors.xml
-pdf/histogram_acceptance.xml
+pdf/moments_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 fitfunction/sweighted.xml

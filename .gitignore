@@ -16,6 +16,7 @@ fits/*/*/RapidFitOutput*/*
 fits/datafits/*
 fits/mcfits/*
 fits/toystudies/*
+fits/*.xml
 # TMVA stuff
 mva/.__afs*
 mva/TMVA*root
