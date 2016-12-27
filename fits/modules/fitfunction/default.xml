@@ -1,4 +1,3 @@
 <FunctionName>NegativeLogLikelihoodNumerical</FunctionName>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <FixedIntegrationPoints>10000</FixedIntegrationPoints>
-<Threads>8</Threads>

@@ -169,6 +169,7 @@ for file in "${fitfunction[@]}"
 do
 	parsefile $file 2
 done
+echo "		<Threads>$(nproc)</Threads>"
 echo "	</FitFunction>"
 echo "	<CommonPhaseSpace>"
 echo "		<PhaseSpaceBoundary>"
