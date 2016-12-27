@@ -1,0 +1,14 @@
+pdf/default.xml
+pdf/moments_acceptance.xml
+minimiser/minuit.xml
+fitfunction/default.xml
+dataset/phasespace_MC_truth.xml
+parameterset/resonances/phi1020_fixed.xml
+parameterset/fractions/nonres_fixed.xml
+parameterset/deltaGammas_fixed.xml
+phasespaceboundary/mKK_BCON_1800.xml
+phasespaceboundary/angles_BCON.xml
+output/fullrange.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml
