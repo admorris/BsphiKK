@@ -20,7 +20,7 @@ void PlotAngAcc(string filename,string plotfilename)
   TFile* plotfile = TFile::Open(plotfilename.c_str() );
   TCanvas* can = (TCanvas*)plotfile->Get("acc_can" );
   string head = plotfilename.substr(0,plotfilename.size()-5);
-  gStyle->SetOptStat(0);  
+  gStyle->SetOptStat(0);
   TPad* pad;
   TCanvas* canv1d;
   TH1D* AccData;
