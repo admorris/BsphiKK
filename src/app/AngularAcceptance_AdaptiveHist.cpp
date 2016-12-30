@@ -17,7 +17,7 @@
 #include "ResultDB.h"
 
 using namespace std;
-void AngularAcceptance(string selfile, string genfile)
+void AngularAcceptance(string selfile, string genfile, int nbins = 50)
 {
   bool sym = true;
 //  TTree* gentree = GetTree(genfile,"KK_M<1800");
@@ -46,7 +46,6 @@ void AngularAcceptance(string selfile, string genfile)
   for(auto& branch : branches)
     gentree->SetBranchAddress(branch.c_str(), &x[&branch - &branches[0]]);
   // Begin adaptive binning stuff
-  int nbins = 50;
   const int n = gentree->GetEntries() - gentree->GetEntries()%nbins;
   vector<double> data;
   for(int i = n*ndims; i-->0;)
@@ -110,7 +109,15 @@ void AngularAcceptance(string selfile, string genfile)
 }
 int main(int argc, char* argv[])
 {
-  AngularAcceptance(argv[1], argv[2]);
+  if(argc==3)
+    AngularAcceptance(argv[1], argv[2]);
+  else if(argc==4)
+    AngularAcceptance(argv[1], argv[2], atoi(argv[3]));
+  else
+  {
+    cerr << "Usage: " << argv[0] << " <selected file> <generator file> [<num bins>]" << endl;
+    return 1;
+  }
   return 0;
 }
 
