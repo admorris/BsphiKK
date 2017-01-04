@@ -13,6 +13,7 @@ function newKK
 	./newresonance.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > resonances/${name}_fixed.xml
 	./newamplitude.sh ${name} ${spin} > amplitudes/${name}_float.xml
 	./newfraction.sh ${name} ${spin} > fractions/${name}_float.xml
+	./newconstraint.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > ../constraintfunction/${name}_constraint.xml
 }
 #       Name            J       mass    +       −       width   +       −
 newKK   ftwo1270        2       1.2755  0.0008  0.0008  0.1867  0.0022  0.0025

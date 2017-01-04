@@ -1,5 +1,5 @@
 <Name>ctheta_2</Name>
-<FixedIntegrationPoints>5000</FixedIntegrationPoints>
+<FixedIntegrationPoints>10000</FixedIntegrationPoints>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>100</PDFpoints>
 <Threads>16</Threads>
@@ -7,4 +7,4 @@
 <DataBins>15</DataBins>
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
-<Ymin>-10</Ymin>
+<Ymin>-50</Ymin>

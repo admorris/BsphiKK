@@ -1,0 +1,10 @@
+<ExternalConstraint>
+	<Name>phi1680_mass</Name>
+	<Value>1.680</Value>
+	<Minimum>0.020</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>phi1680_width</Name>
+	<Value>0.159</Value>
+	<Error>0.050</Error>
+</ExternalConstraint>

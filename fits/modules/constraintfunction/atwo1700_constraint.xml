@@ -1,0 +1,10 @@
+<ExternalConstraint>
+	<Name>atwo1700_mass</Name>
+	<Value>1.732</Value>
+	<Minimum>0.016</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>atwo1700_width</Name>
+	<Value>0.194</Value>
+	<Error>0.040</Error>
+</ExternalConstraint>

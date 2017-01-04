@@ -1,0 +1,10 @@
+<ExternalConstraint>
+	<Name>fzero1370_mass</Name>
+	<Value>1.350</Value>
+	<Minimum>0.150</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>fzero1370_width</Name>
+	<Value>0.350</Value>
+	<Error>0.150</Error>
+</ExternalConstraint>

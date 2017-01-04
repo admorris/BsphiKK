@@ -1,0 +1,10 @@
+<ExternalConstraint>
+	<Name>ftwo1565_mass</Name>
+	<Value>1.562</Value>
+	<Minimum>0.013</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>ftwo1565_width</Name>
+	<Value>0.134</Value>
+	<Error>0.008</Error>
+</ExternalConstraint>

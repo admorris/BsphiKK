@@ -1,0 +1,10 @@
+<ExternalConstraint>
+	<Name>rhothree1690_mass</Name>
+	<Value>1.696</Value>
+	<Minimum>0.004</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>rhothree1690_width</Name>
+	<Value>0.161</Value>
+	<Error>0.010</Error>
+</ExternalConstraint>

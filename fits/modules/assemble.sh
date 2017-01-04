@@ -50,6 +50,8 @@ declare -a output
 declare -a phasespaceboundary
 # <ParameterSet> contains several <PhysicsParameter> tags
 declare -a parameterset
+# <ConstraintFunction> contains several <ExternalConstraint> tags
+declare -a constraintfunction
 # <Minimiser> i.e. just <MinimiserName>Minuit</MinimiserName>
 declare minimiser
 # <FitFunction> with optional weight variable
@@ -90,6 +92,9 @@ do
 				styles+=("$(getoption $arg style)")
 				colours+=("$(getoption $arg colour)")
 			fi
+		elif [[ $arg == *"constraintfunction/"* ]]
+		then
+			constraintfunction+=("$arg")
 		elif [[ $arg == *"minimiser/"* ]]
 		then
 			minimiser="$arg"
@@ -110,23 +115,28 @@ then
 	warning "No minimiser given. Using default: Minuit"
 	minimiser="minimiser/minuit.xml"
 fi
-if [ ${#pdf[@]} -eq 0 ]; then
+if [ ${#pdf[@]} -eq 0 ]
+then
 	warning "No PDF given. Using default: Bs2PhiKKSignal"
 	pdf+="pdf/default.xml"
 fi
-if [ ${#dataset[@]} -eq 0 ]; then
+if [ ${#dataset[@]} -eq 0 ]
+then
 	error "You must provide a DataSet"
 	exit 1
 fi
-if [ ${#phasespaceboundary[@]} -eq 0 ]; then
+if [ ${#phasespaceboundary[@]} -eq 0 ]
+then
 	error "You must provide a PhaseSpaceBoundary"
 	exit 1
 fi
-if [ ${#parameterset[@]} -eq 0 ]; then
+if [ ${#parameterset[@]} -eq 0 ]
+then
 	error "You must provide a ParameterSet"
 	exit 1
 fi
-if [ ${#fitfunction[@]} -eq 0 ]; then
+if [ ${#fitfunction[@]} -eq 0 ]
+then
 	warning "No FitFunction given. Using default: NegativeLogLikelihoodNumerical"
 	fitfunction+=("fitfunction/default.xml")
 fi
@@ -196,6 +206,15 @@ done
 echo "			<CommonPhaseSpace>"
 echo "			</CommonPhaseSpace>"
 echo "		</DataSet>"
+if [ ! ${#constraintfunction[@]} -eq 0 ]
+then
+	echo "		<ConstraintFunction>"
+	for file in "${constraintfunction[@]}"
+	do
+		parsefile $file 3
+	done
+	echo "		</ConstraintFunction>"
+fi
 echo "	</ToFit>"
 echo "	<Output>"
 for file in "${output[@]}"

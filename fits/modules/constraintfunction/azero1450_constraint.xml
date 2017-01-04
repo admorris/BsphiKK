@@ -1,0 +1,10 @@
+<ExternalConstraint>
+	<Name>azero1450_mass</Name>
+	<Value>1.474</Value>
+	<Minimum>0.019</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>azero1450_width</Name>
+	<Value>0.265</Value>
+	<Error>0.013</Error>
+</ExternalConstraint>

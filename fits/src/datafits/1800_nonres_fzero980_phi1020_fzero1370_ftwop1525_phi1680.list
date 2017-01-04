@@ -22,6 +22,8 @@ parameterset/fractions/fzero1370_float.xml
 parameterset/fractions/ftwop1525_float.xml
 parameterset/fractions/phi1680_float.xml
 parameterset/deltaGammas_fixed.xml
+constraintfunction/fzero1370_constraint.xml
+constraintfunction/phi1680_constraint.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 phasespaceboundary/sweight.xml
