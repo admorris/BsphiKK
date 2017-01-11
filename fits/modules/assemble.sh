@@ -221,6 +221,7 @@ for file in "${output[@]}"
 do
 	echo "		<ComponentProjection>"
 	parsefile $file 3
+	echo "		  <Threads>$(nproc)</Threads>"
 	if [ ${#resonances[@]} -gt 1 ]
 	then
 		if [ ${#widths[@]} -eq ${#resonances[@]} ]

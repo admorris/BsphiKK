@@ -1,13 +1,13 @@
 <PhysicsParameter>
 	<Name>fzero1370_mass</Name>
-	<Value>1.350</Value> # PDG: 1.350±0.150
+	<Value>1.350</Value> # 1.350±0.150
 	<Minimum>1.200</Minimum>
 	<Maximum>1.500</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>fzero1370_width</Name> # PDG: 0.350±0.150
+	<Name>fzero1370_width</Name> # 0.350±0.150
 	<Value>0.350</Value>
 	<Minimum>.200</Minimum>
 	<Maximum>.500</Maximum>

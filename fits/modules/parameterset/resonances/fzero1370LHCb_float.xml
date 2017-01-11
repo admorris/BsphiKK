@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>fzero1370LHCb_mass</Name>
+	<Value>1.475</Value> # 1.475±0.006
+	<Minimum>1.469</Minimum>
+	<Maximum>1.481</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero1370LHCb_width</Name> # 0.113±0.011
+	<Value>0.113</Value>
+	<Minimum>.102</Minimum>
+	<Maximum>.124</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

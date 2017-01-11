@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>ftwop1525LHCb_mass</Name>
+	<Value>1.522</Value> # 1.522+0.006−0.003
+	<Minimum>1.519</Minimum>
+	<Maximum>1.528</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwop1525LHCb_width</Name> # 0.084+0.012−0.008
+	<Value>0.084</Value>
+	<Minimum>.076</Minimum>
+	<Maximum>.096</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

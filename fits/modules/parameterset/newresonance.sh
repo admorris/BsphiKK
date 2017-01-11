@@ -23,22 +23,22 @@ fi
 # Generate the XML
 echo "<PhysicsParameter>"
 echo "	<Name>${name}_mass</Name>"
-echo "	<Value>${mass}</Value> # PDG: ${mass}${merr}"
+echo "	<Value>${mass}</Value> # ${mass}${merr}"
 mmin=$(echo "${mass}-${mloerr}" | bc -l)
 mmax=$(echo "${mass}+${muperr}" | bc -l)
 echo "	<Minimum>${mmin}</Minimum>"
 echo "	<Maximum>${mmax}</Maximum>"
-echo "	<Type>Fixed</Type>"
+echo "	<Type>Float</Type>"
 echo "	<Unit>GeV</Unit>"
 echo "</PhysicsParameter>"
 echo "<PhysicsParameter>"
-echo "	<Name>${name}_width</Name> # PDG: ${width}${werr}"
+echo "	<Name>${name}_width</Name> # ${width}${werr}"
 echo "	<Value>${width}</Value>"
 wmin=$(echo "${width}-${wloerr}" | bc -l)
 wmax=$(echo "${width}+${wuperr}" | bc -l)
 echo "	<Minimum>${wmin}</Minimum>"
 echo "	<Maximum>${wmax}</Maximum>"
-echo "	<Type>Fixed</Type>"
+echo "	<Type>Float</Type>"
 echo "	<Unit>GeV</Unit>"
 echo "</PhysicsParameter>"
 exit 0

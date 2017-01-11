@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>ftwop1525_Aperpsq</Name>
-	<Value>0.04</Value>
+	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
@@ -8,7 +8,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525_Azerosq</Name>
-	<Value>0.79</Value> # Start near the theory prediction
+	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
@@ -16,7 +16,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525_deltaperp</Name>
-	<Value>1.82</Value>
+	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
 	<Type>Float</Type>
@@ -24,7 +24,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525_deltazero</Name>
-	<Value>0.52</Value>
+	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
 	<Type>Float</Type>
@@ -32,7 +32,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525_deltapara</Name>
-	<Value>-1.61</Value>
+	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
 	<Type>Float</Type>

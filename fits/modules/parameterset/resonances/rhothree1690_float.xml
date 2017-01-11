@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>rhothree1690_mass</Name>
+	<Value>1.696</Value> # 1.696±0.004
+	<Minimum>1.692</Minimum>
+	<Maximum>1.700</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rhothree1690_width</Name> # 0.161±0.010
+	<Value>0.161</Value>
+	<Minimum>.151</Minimum>
+	<Maximum>.171</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

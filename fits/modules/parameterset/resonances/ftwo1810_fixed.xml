@@ -1,13 +1,13 @@
 <PhysicsParameter>
 	<Name>ftwo1810_mass</Name>
-	<Value>1.815</Value> # PDG: 1.815±0.012
+	<Value>1.815</Value> # 1.815±0.012
 	<Minimum>1.803</Minimum>
 	<Maximum>1.827</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1810_width</Name> # PDG: 0.197±0.022
+	<Name>ftwo1810_width</Name> # 0.197±0.022
 	<Value>0.197</Value>
 	<Minimum>.175</Minimum>
 	<Maximum>.219</Maximum>

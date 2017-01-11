@@ -1,13 +1,13 @@
 <PhysicsParameter>
 	<Name>fzero1500_mass</Name>
-	<Value>1.504</Value> # PDG: 1.504±0.006
+	<Value>1.504</Value> # 1.504±0.006
 	<Minimum>1.498</Minimum>
 	<Maximum>1.510</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>fzero1500_width</Name> # PDG: 0.109±0.007
+	<Name>fzero1500_width</Name> # 0.109±0.007
 	<Value>0.109</Value>
 	<Minimum>.102</Minimum>
 	<Maximum>.116</Maximum>

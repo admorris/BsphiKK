@@ -1,12 +1,16 @@
 <PhysicsParameter>
 	<Name>ftwop1525_mass</Name>
-	<Value>1.5222</Value>
+	<Value>1.525</Value> # 1.525±0.005
+	<Minimum>1.520</Minimum>
+	<Maximum>1.530</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_width</Name>
-	<Value>0.084</Value>
+	<Name>ftwop1525_width</Name> # 0.073+0.006−0.005
+	<Value>0.073</Value>
+	<Minimum>.068</Minimum>
+	<Maximum>.079</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

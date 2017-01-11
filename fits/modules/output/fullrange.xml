@@ -2,7 +2,6 @@
 <FixedIntegrationPoints>1000</FixedIntegrationPoints>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>500</PDFpoints>
-<Threads>16</Threads>
 <DrawPull>True</DrawPull>
 <DataBins>41</DataBins> # 980-1800 20 MeV/bin
 <UseSpline>False</UseSpline>

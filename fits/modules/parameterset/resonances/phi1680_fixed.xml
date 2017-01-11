@@ -1,13 +1,13 @@
 <PhysicsParameter>
 	<Name>phi1680_mass</Name>
-	<Value>1.680</Value> # PDG: 1.680±0.020
+	<Value>1.680</Value> # 1.680±0.020
 	<Minimum>1.660</Minimum>
 	<Maximum>1.700</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1680_width</Name> # PDG: 0.159±0.050
+	<Name>phi1680_width</Name> # 0.159±0.050
 	<Value>0.159</Value>
 	<Minimum>.109</Minimum>
 	<Maximum>.209</Maximum>

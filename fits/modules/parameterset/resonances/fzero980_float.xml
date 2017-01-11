@@ -1,0 +1,18 @@
+<PhysicsParameter>
+	<Name>fzero980_mass</Name>
+	<Value>0.9399</Value> # LHCb 0.939±0.0063 GeV
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero980_gpipi</Name>
+	<Value>0.1990</Value> # LHCb 0.199±0.030 GeV
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero980_Rg</Name>
+	<Value>3.0</Value> # 3.0±0.3
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
