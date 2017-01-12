@@ -1,0 +1,40 @@
+<PhysicsParameter>
+	<Name>phi1680_Aperpsq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>phi1680_Azerosq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>phi1680_deltaperp</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>phi1680_deltazero</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>phi1680_deltapara</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
