@@ -5,7 +5,7 @@ rapidfit=/scratch/adam/RapidFit/bin/fitting
 fitfolders=(toystudies mcfits/phasespace mcfits/pwave datafits)
 for folder in ${fitfolders[@]}
 do
-	cd /scratch/adam/$folder
+	cd $currentdir/$folder
 	for file in $(ls *.xml)
 		do $rapidfit -f $file
 		/scratch/adam/BsphiKK/fits/output/mergeprojections.sh

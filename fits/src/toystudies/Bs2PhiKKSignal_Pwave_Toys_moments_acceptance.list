@@ -10,7 +10,7 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/deltaGammas_float.xml
 phasespaceboundary/mKK_phi.xml
 phasespaceboundary/angles.xml
-output/fullrange.xml
+output/phirange.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
