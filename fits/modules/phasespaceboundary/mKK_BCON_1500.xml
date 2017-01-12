@@ -1,0 +1,7 @@
+<Observable>
+	<Name>mKK</Name>
+	<TF1>BCON_KK_M_GeV</TF1>
+	<Minimum>0.988</Minimum>
+	<Maximum>1.500</Maximum>
+	<Unit>GeV</Unit>
+</Observable>

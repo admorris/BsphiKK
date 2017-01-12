@@ -3,9 +3,10 @@
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>200</PDFpoints>
 <DrawPull>True</DrawPull>
-<DataBins>46</DataBins> # 988-1080 2 MeV/bin
+<DataBins>21</DataBins> # 1080-1500 20 MeV/bin
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
-<Xmax>1.080</Xmax>
+<Xmax>1.500</Xmax>
+<Xmin>1.080</Xmin>
 <Ymax>120</Ymax>
 <Ymin>-20</Ymin>
