@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>fzero1500_mass</Name>
-	<Value>1.504</Value> # 1.504±0.006
-	<Minimum>1.498</Minimum>
-	<Maximum>1.510</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.504</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>fzero1500_width</Name> # 0.109±0.007
+	<Name>fzero1500_width</Name>
 	<Value>0.109</Value>
-	<Minimum>.102</Minimum>
-	<Maximum>.116</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.1635</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

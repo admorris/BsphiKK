@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>ftwo1640_mass</Name>
-	<Value>1.639</Value> # 1.639±0.006
-	<Minimum>1.633</Minimum>
-	<Maximum>1.645</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.639</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1640_width</Name> # 0.099+0.060−0.040
+	<Name>ftwo1640_width</Name>
 	<Value>0.099</Value>
-	<Minimum>.059</Minimum>
-	<Maximum>.159</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.1485</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

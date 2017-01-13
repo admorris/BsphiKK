@@ -10,7 +10,7 @@ function newKK()
 	width=$6
 	wuperr=$7
 	wloerr=$8
-	./newresonance.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > resonances/${name}_float.xml
+	./newresonance.sh ${name} ${mass} ${width} > resonances/${name}_float.xml
 	cp resonances/${name}_float.xml resonances/${name}_fixed.xml
 	sed -i 's/Float/Fixed/' resonances/${name}_fixed.xml
 	./newamplitude.sh ${name} ${spin} > amplitudes/${name}_float.xml
@@ -38,5 +38,13 @@ newKK   rho1700         1       1.720   0.020   0.020   0.250   0.100   0.100
 newKK   atwo1700        2       1.732   0.016   0.016   0.194   0.040   0.040
 newKK   fzero1710       0       1.723   0.006   0.005   0.139   0.008   0.008
 newKK   ftwo1810        2       1.815   0.012   0.012   0.197   0.022   0.022
+# Custom styles for the phi and f2'
+for file in $(ls fractions/phi1020* fractions/ftwop1525*)
+do
+	sed -i 's/style: 1/style: 9/' $file
+	sed -i 's/width: 1/width 2/' $file
+	sed -i 's/colour: 1/colour: 28/' $file
+done
+sed -i 's/colour: [0-9]*/colour: 6/' fractions/phi1020*
 exit 0
 

@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>atwo1320_mass</Name>
-	<Value>1.3181</Value> # 1.3181±0.0007
-	<Minimum>1.3174</Minimum>
-	<Maximum>1.3188</Maximum>
-	<Type>Float</Type>
+	<Value>1.3181</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1320_width</Name> # 0.107±0.005
+	<Name>atwo1320_width</Name>
 	<Value>0.107</Value>
-	<Minimum>.102</Minimum>
-	<Maximum>.112</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.1605</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

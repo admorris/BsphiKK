@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_mass</Name>
-	<Value>1.522</Value> # 1.522+0.006−0.003
-	<Minimum>1.519</Minimum>
-	<Maximum>1.528</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.522</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525LHCb_width</Name> # 0.084+0.012−0.008
+	<Name>ftwop1525LHCb_width</Name>
 	<Value>0.084</Value>
-	<Minimum>.076</Minimum>
-	<Maximum>.096</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.1260</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

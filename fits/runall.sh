@@ -2,7 +2,12 @@
 make -C modules -j
 currentdir=$(pwd)
 rapidfit=/scratch/adam/RapidFit/bin/fitting
-fitfolders=(toystudies mcfits/phasespace mcfits/pwave datafits)
+if [ "$1" == "" ]
+then
+	fitfolders=(toystudies mcfits/phasespace mcfits/pwave datafits)
+else
+	fitfolders=($1)
+fi
 for folder in ${fitfolders[@]}
 do
 	cd $currentdir/$folder

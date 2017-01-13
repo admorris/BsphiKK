@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>rho1700_mass</Name>
-	<Value>1.720</Value> # 1.720±0.020
-	<Minimum>1.700</Minimum>
-	<Maximum>1.740</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.720</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>rho1700_width</Name> # 0.250±0.100
+	<Name>rho1700_width</Name>
 	<Value>0.250</Value>
-	<Minimum>.150</Minimum>
-	<Maximum>.350</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.3750</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

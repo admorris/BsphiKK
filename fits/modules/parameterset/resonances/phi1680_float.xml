@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>phi1680_mass</Name>
-	<Value>1.680</Value> # 1.680±0.020
-	<Minimum>1.660</Minimum>
-	<Maximum>1.700</Maximum>
-	<Type>Float</Type>
+	<Value>1.680</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1680_width</Name> # 0.159±0.050
+	<Name>phi1680_width</Name>
 	<Value>0.159</Value>
-	<Minimum>.109</Minimum>
-	<Maximum>.209</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.2385</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

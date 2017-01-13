@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>ftwop1525_mass</Name>
-	<Value>1.525</Value> # 1.525±0.005
-	<Minimum>1.520</Minimum>
-	<Maximum>1.530</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.525</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_width</Name> # 0.073+0.006−0.005
+	<Name>ftwop1525_width</Name>
 	<Value>0.073</Value>
-	<Minimum>.068</Minimum>
-	<Maximum>.079</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.1095</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

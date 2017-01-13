@@ -1,7 +1,7 @@
 # shape: spin-1 BW
-# style: 1
-# width: 1
-# colour: 1
+# style: 9
+# width 2
+# colour: 6
 <PhysicsParameter>
 	<Name>phi1020_fraction</Name>
 	<Value>0.01</Value>
