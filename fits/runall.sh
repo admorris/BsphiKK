@@ -1,4 +1,5 @@
 #!/bin/bash
+# Usage: runall.sh [<folder>] [<pattern to match>]
 make -C modules -j
 currentdir=$(pwd)
 rapidfit=/scratch/adam/RapidFit/bin/fitting
@@ -11,8 +12,8 @@ fi
 for folder in ${fitfolders[@]}
 do
 	cd $currentdir/$folder
-	for file in $(ls *.xml)
-		do $rapidfit -f $file
+	for file in $(ls *$2*xml)
+		do $rapidfit -f $file $3
 		/scratch/adam/BsphiKK/fits/output/mergeprojections.sh
 		/scratch/adam/BsphiKK/fits/output/compareresult.sh
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')

@@ -1,0 +1,12 @@
+<PhysicsParameter>
+	<Name>BsBFradius</Name>
+	<Value>1.0</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV^-1</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>KKBFradius</Name>
+	<Value>3.0</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV^-1</Unit>
+</PhysicsParameter>

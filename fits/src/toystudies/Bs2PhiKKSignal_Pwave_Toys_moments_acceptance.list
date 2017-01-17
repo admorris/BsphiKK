@@ -1,6 +1,6 @@
 pdf/default.xml
 pdf/moments_acceptance.xml
-pdf/evtgenbarrierfactors.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
@@ -8,9 +8,10 @@ parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/deltaGammas_float.xml
-phasespaceboundary/mKK_phi.xml
+phasespaceboundary/mKK_1080.xml
 phasespaceboundary/angles.xml
-output/phirange.xml
+output/lowrange_MC.xml
+output/phirange_MC.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml

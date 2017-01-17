@@ -1,5 +1,5 @@
 pdf/default.xml
-pdf/evtgenbarrierfactors.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/phasespace_MC_truth.xml

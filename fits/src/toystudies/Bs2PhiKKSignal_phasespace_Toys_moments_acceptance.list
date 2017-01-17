@@ -1,6 +1,6 @@
 pdf/default.xml
 pdf/moments_acceptance.xml
-pdf/evtgenbarrierfactors.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml

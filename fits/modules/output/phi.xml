@@ -1,9 +1,9 @@
 <Name>phi</Name>
 <FixedIntegrationPoints>10000</FixedIntegrationPoints>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-<PDFpoints>50</PDFpoints>
+<PDFpoints>51</PDFpoints>
 <DrawPull>True</DrawPull>
-<DataBins>15</DataBins>
+<DataBins>25</DataBins>
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
-<Ymin>-50</Ymin>
+<Ymin>-30</Ymin>

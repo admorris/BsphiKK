@@ -1,7 +1,7 @@
 <Name>mKK</Name>
 <FixedIntegrationPoints>1000</FixedIntegrationPoints>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
-<PDFpoints>200</PDFpoints>
+<PDFpoints>85</PDFpoints>
 <DrawPull>True</DrawPull>
 <DataBins>42</DataBins> # 80 MeV/bin
 <UseSpline>False</UseSpline>

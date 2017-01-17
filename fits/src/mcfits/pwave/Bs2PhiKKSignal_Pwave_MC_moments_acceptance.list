@@ -1,5 +1,5 @@
 pdf/default.xml
-pdf/evtgenbarrierfactors.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 pdf/moments_acceptance.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
@@ -10,7 +10,8 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_BCON_1080.xml
 phasespaceboundary/angles_BCON.xml
-output/phirange.xml
+output/lowrange_MC.xml
+output/phirange_MC.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
