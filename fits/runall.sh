@@ -14,8 +14,8 @@ do
 	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
 		do $rapidfit -f $file $3
-		/scratch/adam/BsphiKK/fits/output/mergeprojections.sh
-		/scratch/adam/BsphiKK/fits/output/compareresult.sh
+		$currentdir/output/mergeprojections.sh
+		$currentdir/output/compareresult.sh
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		mv -v RapidFitOutput* FitResult_$(echo $file | sed 's/\.xml//g')
 	done
