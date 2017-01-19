@@ -4,15 +4,35 @@ from Configurables import DaVinci
 # Flags for year and Data/MC
 DataYear = "2012"
 IsMC = True
+restrip = False
 
 # Define selection ############################################################
 from PhysSelPython.Wrappers import Selection, SelectionSequence, DataOnDemand, AutomaticData
 from Configurables import SubstitutePID
-from StrippingSelections.StrippingBs2KKhh import BsPhiRhoConf
+#from StrippingSelections.StrippingBs2KKhh import BsPhiRhoConf
 
 # Choose appropriate stripping line
-strippingline = "Phys/BsPhiRhoLine/Particles" if not IsMC else "/Event/AllStreams/Phys/BsPhiRhoLine/Particles"
-_strippingOutput = AutomaticData(Location = strippingline)
+if not restrip:
+  strippingline = "Phys/BsPhiRhoLine/Particles" if not IsMC else "/Event/AllStreams/Phys/BsPhiRhoLine/Particles"
+  _strippingOutput = AutomaticData(Location = strippingline)
+else:
+  from StrippingConf.Configuration import StrippingConf, StrippingStream
+  from StrippingSettings.Utils import strippingConfiguration
+  from StrippingArchive.Utils import buildStreams
+  from StrippingArchive import strippingArchive
+  from Configurables import EventNodeKiller
+  event_node_killer = EventNodeKiller("Strip21Killer")
+  event_node_killer.Nodes = ['/Event/AllStreams', '/Event/Strip']
+  strippingversion = "stripping20"
+  strippingline = "StrippingBs2KKhhBsPhiRhoLine"
+  streams = buildStreams(stripping=strippingConfiguration(strippingversion),archive=strippingArchive(strippingversion))
+  custom_stream = StrippingStream("CustomS20BsPhiRhoLine")
+  for stream in streams:
+    for line in stream.lines:
+      if line.name() == strippingline:
+        custom_stream.appendLines([line])
+  sc = StrippingConf(Streams=[custom_stream], MaxCandidates=-1)
+  _strippingOutput=sc.sequence()
 
 # Change mass hypothesis
 newDecay = "DECTREE('B_s0 -> (phi(1020) -> K+ K-) (f_0(980) -> K+ K-)')"
@@ -198,14 +218,16 @@ userAlgos.Members.append( etuple )
 
 myTupleName = 'BsphiKK.root'
 
-dv = DaVinci( 
+dv = DaVinci(
     HistogramFile = 'dummy.root',
     TupleFile = myTupleName,
     UserAlgorithms = [userAlgos],
     DataType  = DataYear,
-    EvtMax = -1,
+    EvtMax = 10,
     InputType = 'DST' if IsMC else 'MDST',
     RootInTES = "/Event/AllStreams" if IsMC else '/Event/Bhadron',
     PrintFreq  = 1000,
     Simulation = IsMC,
     Lumi = False if IsMC else True )
+if restrip:
+  dv.appendToMainSequence([event_node_killer])

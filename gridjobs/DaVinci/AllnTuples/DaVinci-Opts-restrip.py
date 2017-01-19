@@ -2,9 +2,9 @@ from Gaudi.Configuration import *
 from Configurables import DaVinci
 
 # Flags for year and Data/MC
-DataYear = "2011"
-IsMC = False
-restrip = False
+DataYear = "2012"
+IsMC = True
+restrip = True
 
 # Define selection ############################################################
 from PhysSelPython.Wrappers import Selection, SelectionSequence, DataOnDemand, AutomaticData
