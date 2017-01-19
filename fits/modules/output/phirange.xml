@@ -3,8 +3,8 @@
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>61</PDFpoints>
 <DrawPull>True</DrawPull>
-<Minimum>1.004461</Minimum>
-<Maximum>1.034461</Maximum>
+<Xmin>1.004461</Xmin>
+<Xmax>1.034461</Xmax>
 <DataBins>30</DataBins> # +-15 MeV around the phi mass 1 MeV/bin
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
