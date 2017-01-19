@@ -31,7 +31,7 @@ else:
     for line in stream.lines:
       if line.name() == strippingline:
         custom_stream.appendLines([line])
-  sc = StrippingConf(Streams=[custom_stream], MaxCandidates=-1, AcceptBadEvents=false, BadEventSelection=filterBadEvents)
+  sc = StrippingConf(Streams=[custom_stream], MaxCandidates=-1)
   _strippingOutput=sc.sequence()
 
 # Change mass hypothesis

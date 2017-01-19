@@ -51,6 +51,8 @@ int main(int argc, char* argv[])
     cout << "Usage: " << argv[0] << " <filename> <cut>" << endl;
     return 1;
   }
+  cout << "Initial cutstring: \"" << beforecut << "\"" << endl;
+  cout << "Cutstring to test: \"" << aftercut  << "\"" << endl;
   GetCutEff(filename,beforecut,aftercut,vmap.count("save"),res,dbf);
   return 0;
 }

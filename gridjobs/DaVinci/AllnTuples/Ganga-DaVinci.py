@@ -10,9 +10,9 @@ os.system("sed -i 's/= \"2012\"/= \"2011\"/g' DaVinci-Opts_11.py")
 os.system("cp DaVinci-Opts.py DaVinci-Opts-restrip.py") 
 os.system("sed -i 's/restrip = False/restrip = True/g' DaVinci-Opts-restrip.py")
 
-#DaVinciVersion = 'v36r1'
-DaVinciVersion = 'v39r0'
-dirc = '/scratch/adam/BsphiKK/gridjobs/DaVinci/AllnTuples/'
+DaVinciVersion = 'v36r1'
+#DaVinciVersion = 'v40r3p1'
+dirc = '~/work/public/BsphiKK/gridjobs/DaVinci/AllnTuples/'
 
 def submit_job(name, optionsfile, LFNfile):
   dv = DaVinci()

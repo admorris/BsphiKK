@@ -35,7 +35,7 @@ Double_t RooThreeBodyPhaseSpace::evaluate() const
 Double_t RooThreeBodyPhaseSpace::p(Double_t m, Double_t ma, Double_t mb) const
 {
   Double_t momentum;
-  momentum=(m*m-(ma+mb)*(ma+mb))*(m*m-(ma-mb)*(ma-mb));
+  momentum=(pow(m,2)-pow(ma+mb,2))*(pow(m,2)-pow(ma-mb,2));
   if(momentum<0) return 0;
   momentum=sqrt(momentum);
   momentum/=2*m;
