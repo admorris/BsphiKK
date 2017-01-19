@@ -12,10 +12,8 @@ from Configurables import SubstitutePID
 #from StrippingSelections.StrippingBs2KKhh import BsPhiRhoConf
 
 # Choose appropriate stripping line
-if not restrip:
-  strippingline = "Phys/BsPhiRhoLine/Particles" if not IsMC else "/Event/AllStreams/Phys/BsPhiRhoLine/Particles"
-  _strippingOutput = AutomaticData(Location = strippingline)
-else:
+strippingline = "Phys/BsPhiRhoLine/Particles" if not IsMC else "/Event/AllStreams/Phys/BsPhiRhoLine/Particles"
+if restrip:
   from StrippingConf.Configuration import StrippingConf, StrippingStream
   from StrippingSettings.Utils import strippingConfiguration
   from StrippingArchive.Utils import buildStreams
@@ -24,15 +22,16 @@ else:
   event_node_killer = EventNodeKiller("Strip21Killer")
   event_node_killer.Nodes = ['/Event/AllStreams', '/Event/Strip']
   strippingversion = "stripping20"
-  strippingline = "StrippingBs2KKhhBsPhiRhoLine"
+  strippingname = "StrippingBs2KKhhBsPhiRhoLine"
   streams = buildStreams(stripping=strippingConfiguration(strippingversion),archive=strippingArchive(strippingversion))
   custom_stream = StrippingStream("CustomS20BsPhiRhoLine")
   for stream in streams:
     for line in stream.lines:
-      if line.name() == strippingline:
+      if line.name() == strippingname:
         custom_stream.appendLines([line])
   sc = StrippingConf(Streams=[custom_stream], MaxCandidates=-1)
-  _strippingOutput=sc.sequence()
+
+_strippingOutput = AutomaticData(Location = strippingline)
 
 # Change mass hypothesis
 newDecay = "DECTREE('B_s0 -> (phi(1020) -> K+ K-) (f_0(980) -> K+ K-)')"
@@ -230,4 +229,4 @@ dv = DaVinci(
     Simulation = IsMC,
     Lumi = False if IsMC else True )
 if restrip:
-  dv.appendToMainSequence([event_node_killer])
+  dv.appendToMainSequence([event_node_killer, sc.sequence()])
