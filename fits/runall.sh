@@ -13,7 +13,8 @@ for folder in ${fitfolders[@]}
 do
 	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
-		do $rapidfit -f $file $3
+	do
+		$rapidfit -f $file $3 | tee RapidFitOutput-$(date --iso-8601).log
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')

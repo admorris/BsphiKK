@@ -1,6 +1,6 @@
 pdf/default.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-minimiser/minuit2.xml
+minimiser/minuit.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/resonances/phi1020_float.xml
