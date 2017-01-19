@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>fzero1370_mass</Name>
+	<Value>1.350</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero1370_width</Name>
+	<Value>0.350</Value>
+	<Minimum>0</Minimum>
+	<Maximum>.5250</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

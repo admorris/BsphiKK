@@ -1,0 +1,15 @@
+<ExternalConstraint>
+	<Name>fzero980_mass</Name>
+	<Value>0.9399</Value>
+	<Minimum>0.0063</Minimum>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>fzero980_gpipi</Name>
+	<Value>0.199</Value>
+	<Error>0.030</Error>
+</ExternalConstraint>
+<ExternalConstraint>
+	<Name>fzero980_Rg</Name>
+	<Value>3.0</Value>
+	<Error>0.3</Error>
+</ExternalConstraint>

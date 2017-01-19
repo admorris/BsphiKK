@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>ftwo1565_mass</Name>
+	<Value>1.562</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1565_width</Name>
+	<Value>0.134</Value>
+	<Minimum>0</Minimum>
+	<Maximum>.2010</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

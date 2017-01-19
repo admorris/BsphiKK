@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>fzero1370_mass</Name>
-	<Value>1.350</Value> # PDG: 1.350±0.150
-	<Minimum>1.200</Minimum>
-	<Maximum>1.500</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.350</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>fzero1370_width</Name> # PDG: 0.350±0.150
+	<Name>fzero1370_width</Name>
 	<Value>0.350</Value>
-	<Minimum>.200</Minimum>
-	<Maximum>.500</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.5250</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

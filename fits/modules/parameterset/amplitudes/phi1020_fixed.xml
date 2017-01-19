@@ -1,30 +1,40 @@
 <PhysicsParameter>
 	<Name>phi1020_Aperpsq</Name>
-	<Value>0.305</Value> # 0.305 Sean
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_Azerosq</Name>
-	<Value>0.364</Value> # 0.364 Sean
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltaperp</Name>
-	<Value>2.67</Value> # 2.67 Sean
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltazero</Name>
-	<Value>0.0</Value> # Fix 0
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltapara</Name>
-	<Value>2.54</Value> # 2.54 Sean
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

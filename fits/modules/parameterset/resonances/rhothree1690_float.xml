@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>rhothree1690_mass</Name>
+	<Value>1.696</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rhothree1690_width</Name>
+	<Value>0.161</Value>
+	<Minimum>0</Minimum>
+	<Maximum>.2415</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>fzero1370LHCb_mass</Name>
+	<Value>1.475</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero1370LHCb_width</Name>
+	<Value>0.113</Value>
+	<Minimum>0</Minimum>
+	<Maximum>.1695</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

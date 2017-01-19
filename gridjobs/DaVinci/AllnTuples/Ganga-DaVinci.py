@@ -18,7 +18,8 @@ def submit_job(name, optionsfile, LFNfile):
   dv = DaVinci()
   dv.version = DaVinciVersion
   dv.user_release_area = '/afs/cern.ch/user/a/admorris/cmtuser'
-  dv.platform='x86_64-slc6-gcc48-opt'
+#  dv.platform='x86_64-slc6-gcc48-opt'
+  dv.platform='x86_64-slc6-gcc49-opt'
   dv.optsfile = [File ( optionsfile ) ]
   j = Job (
     name         = name,

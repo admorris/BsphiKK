@@ -1,5 +1,5 @@
 <Source>File</Source>
 #<FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/BsphiKK_data_mvacut_final_Sweighted.root</FileName>
-<FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/BsphiKK_data_mvaVars_vetoes_Sweighted.root</FileName>
+<FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/BsphiKK_data_mvacut_Sweighted.root</FileName>
 <NTuplePath>DecayTree</NTuplePath>
 <NumberEvents>10000000000000000</NumberEvents>

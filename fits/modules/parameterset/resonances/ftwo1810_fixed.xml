@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>ftwo1810_mass</Name>
-	<Value>1.815</Value> # PDG: 1.815±0.012
-	<Minimum>1.803</Minimum>
-	<Maximum>1.827</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.815</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1810_width</Name> # PDG: 0.197±0.022
+	<Name>ftwo1810_width</Name>
 	<Value>0.197</Value>
-	<Minimum>.175</Minimum>
-	<Maximum>.219</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.2955</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

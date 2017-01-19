@@ -17,6 +17,7 @@ fits/datafits/*
 fits/mcfits/*
 fits/toystudies/*
 fits/*.xml
+fits/*.root
 # TMVA stuff
 mva/.__afs*
 mva/TMVA*root

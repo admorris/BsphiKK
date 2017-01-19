@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>azero1450_mass</Name>
-	<Value>1.474</Value> # PDG: 1.474±0.019
-	<Minimum>1.455</Minimum>
-	<Maximum>1.493</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.474</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>azero1450_width</Name> # PDG: 0.265±0.013
+	<Name>azero1450_width</Name>
 	<Value>0.265</Value>
-	<Minimum>.252</Minimum>
-	<Maximum>.278</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.3975</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

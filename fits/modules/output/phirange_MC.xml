@@ -1,0 +1,10 @@
+<Name>mKK</Name>
+<FixedIntegrationPoints>1000</FixedIntegrationPoints>
+<UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+<PDFpoints>601</PDFpoints>
+<DrawPull>True</DrawPull>
+<Xmin>1.004461</Xmin>
+<Xmax>1.034461</Xmax>
+<DataBins>300</DataBins> # +-15 MeV around the phi mass 0.1 MeV/bin
+<UseSpline>False</UseSpline>
+<NoLegend>True</NoLegend>

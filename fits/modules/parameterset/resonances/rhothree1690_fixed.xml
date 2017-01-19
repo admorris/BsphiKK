@@ -1,16 +1,16 @@
 <PhysicsParameter>
 	<Name>rhothree1690_mass</Name>
-	<Value>1.696</Value> # PDG: 1.696±0.004
-	<Minimum>1.692</Minimum>
-	<Maximum>1.700</Maximum>
-	<Type>Fixed</Type>
+	<Value>1.696</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>rhothree1690_width</Name> # PDG: 0.161±0.010
+	<Name>rhothree1690_width</Name>
 	<Value>0.161</Value>
-	<Minimum>.151</Minimum>
-	<Maximum>.171</Maximum>
+	<Minimum>0</Minimum>
+	<Maximum>.2415</Maximum>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

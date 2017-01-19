@@ -1,0 +1,9 @@
+<Name>mKK</Name>
+<FixedIntegrationPoints>1000</FixedIntegrationPoints>
+<UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
+<PDFpoints>185</PDFpoints>
+<DrawPull>True</DrawPull>
+<DataBins>92</DataBins> # 988-1080 1 MeV/bin
+<UseSpline>False</UseSpline>
+<NoLegend>True</NoLegend>
+<Xmax>1.080</Xmax>
