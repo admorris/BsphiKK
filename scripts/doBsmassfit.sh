@@ -2,6 +2,15 @@
 cd ../ntuples/
 table=../scripts/tables/MassFits.csv
 ../bin/BsMassFit \
+    -M BsphiKK_MC_mvacut.root \
+    -R BsphiKK_data_mvacut.root \
+    -O ../latex/figs/Bsmassfit_mvacut \
+    -N B_s0_LOKI_Mass \
+    --pulls \
+    --save-results Bsmassfitmvacut \
+    --output-file ${table} \
+    --sweight
+../bin/BsMassFit \
     -M BsphiKK_MC_mvacut_final.root \
     -R BsphiKK_data_mvacut_final.root \
     -O ../latex/figs/Bsmassfit_mvacut_final \
