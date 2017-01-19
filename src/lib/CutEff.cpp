@@ -27,9 +27,11 @@ CutResult_t CutEff(TTree* intree, string beforecut, string cut)
     aftercut=beforecut;
   Long64_t cutyield   = intree->GetEntries(aftercut.c_str());
   timer.Stop();
+  CutResult_t kept(nocutyield, cutyield);
+  CutResult_t rejected(nocutyield, nocutyield-cutyield);
   cout << "         Kept\tCut\n"
-       << "#events: " << cutyield << "\t" << nocutyield-cutyield << "\n"
-       << "percent: " << setprecision(3) << 100.0*cutyield/nocutyield << "%\t" << 100.0*(nocutyield-cutyield)/nocutyield << "%\n"
+       << "#events: " << setprecision(1) << cutyield << "±" << sqrt(cutyield) << "\t" << nocutyield-cutyield << "±" << sqrt(nocutyield-cutyield) << "\n"
+       << "percent: " << setprecision(3) << "(" << kept.GetEff()*100 << "±" << kept.GetEffErr()*100 << ")%\t(" << rejected.GetEff()*100 << "±" << rejected.GetEffErr()*100 << ")%\n"
        << "time taken: " << timer.RealTime() << " s" << endl;
-  return CutResult_t(nocutyield,cutyield);
+  return kept;
 }

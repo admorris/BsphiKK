@@ -77,11 +77,12 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   MassFitter* ResFit = new MassFitter(x);
   Component* ResMod = ResFit->AddComponent("Resolution","Double Gaussian");
   ResMod->SetRange("mean",-10,10);
-  ResMod->SetValue("mean",0);
-  ResMod->SetRange("sigma1",0,10);
-  ResMod->SetValue("sigma1",0.5);
+  ResMod->FixValue("mean",0);
+  ResMod->SetRange("fgaus1",0,1);
+  ResMod->SetRange("sigma1",0,20);
+  ResMod->SetValue("sigma1",4.6);
   ResMod->SetRange("sigma2",0,40);
-  ResMod->SetValue("sigma2",2);
+  ResMod->SetValue("sigma2",20);
   ResFit->Fit(data);
   RooPlot* frame = x->frame();
   cout << "Plotting" << endl;
@@ -96,6 +97,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   newtree->Draw("res:TRUEMASS");
   can.SaveAs((plotname+"_2Dscatter.pdf").c_str());
 /*Do convolved fit************************************************************/
+/*
   RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),493*2,1080);
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
@@ -118,6 +120,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   plotmaker plotter2(frame);
   plotter2.SetTitle((xtitle), unit);
   plotter2.Draw()->SaveAs((plotname+"_fit.pdf").c_str());
+*/
 }
 /*Main function***************************************************************/
 int main(int argc, char* argv[])
