@@ -1,5 +1,5 @@
 pdf/BsPhiPhi.xml
-minimiser/minuit2.xml
+minimiser/minuit.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml

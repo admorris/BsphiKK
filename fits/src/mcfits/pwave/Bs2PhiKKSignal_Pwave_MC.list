@@ -1,7 +1,7 @@
 pdf/default.xml
 pdf/mKKresolution.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-minimiser/minuit2.xml
+minimiser/minuit.xml
 fitfunction/default.xml
 dataset/pwave_MC.xml
 parameterset/resonances/phi1020_float.xml

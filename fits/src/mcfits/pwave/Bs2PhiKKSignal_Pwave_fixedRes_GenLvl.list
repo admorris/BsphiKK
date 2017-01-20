@@ -1,12 +1,12 @@
 pdf/default.xml
-parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit.xml
 fitfunction/default.xml
-dataset/toys.xml
-parameterset/resonances/phi1020_float.xml
+dataset/pwave_gen.xml
+parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
-parameterset/deltaGammas_float.xml
+parameterset/deltaGammas_fixed.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_1080.xml
 phasespaceboundary/angles.xml
 output/lowrange_MC.xml

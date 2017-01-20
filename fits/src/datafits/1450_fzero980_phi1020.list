@@ -2,7 +2,7 @@ pdf/default.xml
 pdf/mKKresolution.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 pdf/moments_acceptance.xml
-minimiser/minuit2.xml
+minimiser/minuit.xml
 fitfunction/default.xml
 fitfunction/sweighted.xml
 dataset/data_sweight.xml
