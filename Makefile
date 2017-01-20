@@ -27,6 +27,7 @@ BINDIR     = bin
 # Location of compiled "common" libraries from ssh://git@gitlab.cern.ch:7999/admorris/common.git
 COMMONDIR  = $(PWD)/common
 COMHDRDIR  = $(COMMONDIR)/include
+COMHDRS   := $(shell find $(COMHDRDIR) -name '*.h')
 COMLIBDIR  = $(COMMONDIR)/lib
 
 # Get files and make list of objects and libraries
@@ -47,17 +48,17 @@ LIBFLAGS   = -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(pat
 
 .PHONY: all $(COMMONDIR) clean
 
-all : $(LIBS) $(BINS) | $(LOGDIRS)
+all : $(LIBS) $(BINS) $(COMMONDIR) | $(LOGDIRS)
 $(COMMONDIR) :
 	make -C $@
 # Build binaries
-$(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) $(COMLIBS) | $(BINDIR)
+$(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) | $(COMMONDIR) $(BINDIR)
 	$(CC) $< -o $@ $(LIBFLAGS)
 # Build libraries
-$(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS) | $(LIBDIR)
+$(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS) | $(COMMONDIR) $(LIBDIR)
 	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 # Build objects
-$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS) $(COMMONDIR) | $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR)
+$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS) $(COMHDRS) | $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR)
 	$(CC) $(CXXFLAGS) -c $< -o $@
 # Make directories
 $(LOGDIRS) $(BINDIR) $(LIBDIR) $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR) :
