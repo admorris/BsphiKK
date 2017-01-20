@@ -25,7 +25,7 @@ OBJDIR     = build
 LIBDIR     = $(PWD)/lib
 BINDIR     = bin
 # Location of compiled "common" libraries from ssh://git@gitlab.cern.ch:7999/admorris/common.git
-COMMONDIR  = $(PWD)/../common
+COMMONDIR  = common
 COMHDRDIR  = $(COMMONDIR)/include
 COMLIBDIR  = $(COMMONDIR)/lib
 
@@ -35,7 +35,6 @@ LIBSRCS   := $(shell find $(SRCDIR)/$(LIBSRCDIR) -name '*.$(SRCEXT)')
 HDRS      := $(shell find $(HDRDIR) -name '*.$(HDREXT)')
 LIBS      := $(patsubst $(SRCDIR)/$(LIBSRCDIR)/%.$(SRCEXT), $(LIBDIR)/lib%.$(LIBEXT), $(LIBSRCS))
 BINS      := $(patsubst $(SRCDIR)/$(BINSRCDIR)/%.$(SRCEXT), $(BINDIR)/%, $(BINSRCS))
-COMLIBS   := $(shell find $(COMLIBDIR) -name '*.$(LIBEXT)')
 
 # Where the output is
 OUTPUT     = $(OBJDIR)/*/*.$(OBJEXT) $(OBJDIR)/*.$(OBJEXT) $(LIBDIR)/*.$(LIBEXT) $(BINDIR)/*
@@ -43,10 +42,14 @@ LOGDIRS    = latex/figs latex/results ntuples scripts/log scripts/tables
 
 # Compiler flags
 CXXFLAGS   = -Wall -fPIC -I$(HDRDIR) -I$(COMHDRDIR) $(ROOTCFLAGS)
-COMLIBFLAGS = -L$(COMLIBDIR) $(patsubst $(COMLIBDIR)/lib%.$(LIBEXT), -l%, $(COMLIBS))
+COMLIBFLAGS = -L$(COMLIBDIR) $(shell make -sC $(COMMONDIR) libflags)
 LIBFLAGS   = -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS) -lgsl -lgslcblas -lboost_program_options -Wl,-rpath,$(LIBDIR):$(COMLIBDIR):$(ROOTLIBDIR)
 
+.PHONY: all $(COMMONDIR) clean
+
 all : $(LIBS) $(BINS) | $(LOGDIRS)
+$(COMMONDIR) :
+	make -C $@
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) $(COMLIBS) | $(BINDIR)
 	$(CC) $< -o $@ $(LIBFLAGS)
@@ -54,7 +57,7 @@ $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) $(COMLIBS) | $(BINDIR)
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS) | $(LIBDIR)
 	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 # Build objects
-$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS) | $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR)
+$(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS) $(COMMONDIR) | $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR)
 	$(CC) $(CXXFLAGS) -c $< -o $@
 # Make directories
 $(LOGDIRS) $(BINDIR) $(LIBDIR) $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR) :
@@ -62,3 +65,5 @@ $(LOGDIRS) $(BINDIR) $(LIBDIR) $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINS
 # Remove all the output
 clean :
 	$(RM) $(OUTPUT)
+	make -C $(COMMONDIR) clean
+
