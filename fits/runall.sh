@@ -14,7 +14,7 @@ do
 	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
 	do
-		$rapidfit -f $file $3 | tee RapidFitOutput-$(date --iso-8601).log
+		$rapidfit -f $file $3 | tee RapidFitOutput-$(date +"%Y%m%d_%H%M%S").log
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
