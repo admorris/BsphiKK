@@ -24,7 +24,7 @@ fi
 echo "<ExternalConstraint>"
 echo "	<Name>${name}_mass</Name>"
 echo "	<Value>${mass}</Value>"
-echo "	<Minimum>${merr}</Minimum>"
+echo "	<Error>${merr}</Error>"
 echo "</ExternalConstraint>"
 echo "<ExternalConstraint>"
 echo "	<Name>${name}_width</Name>"
