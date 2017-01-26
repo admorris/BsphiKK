@@ -26,7 +26,7 @@ def submit_job(name, optionsfile, LFNfile):
     application  = dv,
     splitter     = SplitByFiles(filesPerJob = 1, maxFiles = 1, ignoremissing = True, bulksubmit=False),
     backend      = Dirac(),
-    outputfiles  = [ DiracFile('BsphiKK.root'), DiracFile('dummy.root'), LocalFile('summary.xml')],
+    outputfiles  = [ LocalFile('BsphiKK.root'), DiracFile('dummy.root'), LocalFile('summary.xml')],
     inputdata    = dv.readInputData( dirc + LFNfile )
   )
   j.do_auto_resubmit = True
