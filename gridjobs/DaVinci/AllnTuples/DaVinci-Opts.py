@@ -22,7 +22,10 @@ if restrip:
   event_node_killer = EventNodeKiller("Strip21Killer")
   event_node_killer.Nodes = ['/Event/AllStreams', '/Event/Strip']
   strippingversion = "stripping20"
-  strippingname = "StrippingBs2KKhhBsPhiRhoLine"
+  #strippingname = "StrippingBs2KKhhBsPhiRhoLine"
+  strippingname = "StrippingBsPhiRhoLine"
+  #strippingline = "/Event/Phys/Bs2KKhhBsPhiRhoLine/Particles"
+  strippingline = "/Event/Phys/BsPhiRhoLine/Particles"
   streams = buildStreams(stripping=strippingConfiguration(strippingversion),archive=strippingArchive(strippingversion))
   custom_stream = StrippingStream("CustomS20BsPhiRhoLine")
   for stream in streams:
@@ -222,7 +225,7 @@ dv = DaVinci(
     TupleFile = myTupleName,
     UserAlgorithms = [userAlgos],
     DataType  = DataYear,
-    EvtMax = 1000,
+    EvtMax = -1,
     InputType = 'DST' if IsMC else 'MDST',
     RootInTES = "/Event/AllStreams" if IsMC else '/Event/Bhadron',
     PrintFreq  = 1000,

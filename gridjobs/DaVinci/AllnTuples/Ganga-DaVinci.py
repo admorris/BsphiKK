@@ -11,22 +11,22 @@ os.system("cp DaVinci-Opts.py DaVinci-Opts-restrip.py")
 os.system("sed -i 's/restrip = False/restrip = True/g' DaVinci-Opts-restrip.py")
 
 #DaVinciVersion = 'v36r1'
-DaVinciVersion = 'v36r7p7'
+DaVinciVersion = 'v36r1p3'
 dirc = '~/work/public/BsphiKK/gridjobs/DaVinci/AllnTuples/'
 
 def submit_job(name, optionsfile, LFNfile):
   dv = DaVinci()
   dv.version = DaVinciVersion
   dv.user_release_area = '/afs/cern.ch/user/a/admorris/cmtuser'
-#  dv.platform='x86_64-slc6-gcc48-opt'
-  dv.platform='x86_64-slc6-gcc49-opt'
+  dv.platform='x86_64-slc6-gcc48-opt'
+#  dv.platform='x86_64-slc6-gcc49-opt'
   dv.optsfile = [File ( optionsfile ) ]
   j = Job (
     name         = name,
     application  = dv,
-    splitter     = SplitByFiles(filesPerJob = 1, maxFiles = 1, ignoremissing = True, bulksubmit=False),
+    splitter     = SplitByFiles(filesPerJob = 25, maxFiles = -1, ignoremissing = True, bulksubmit=False),
     backend      = Dirac(),
-    outputfiles  = [ LocalFile('BsphiKK.root'), DiracFile('dummy.root'), LocalFile('summary.xml')],
+    outputfiles  = [ DiracFile('BsphiKK.root'), DiracFile('dummy.root'), LocalFile('summary.xml')],
     inputdata    = dv.readInputData( dirc + LFNfile )
   )
   j.do_auto_resubmit = True
@@ -43,10 +43,10 @@ for i in range (2):
 #    submit_job(name = "BsphiKK", optionsfile = "./DaVinci-Opts.py", LFNfile = LFNlist)
 for i in range (2):
     LFNlist = 'MC201213104024Beam4000GeV-2012-Mag' + magnet[i] + '-Nu2.5-Pythia8Sim08iDigi13Trig0x409f0045Reco14cStripping20NoPrescalingFlaggedALLSTREAMSDST.py'
-#    submit_job(name = "BsphiKK", optionsfile = "./DaVinci-Opts.py", LFNfile = LFNlist)
+#    submit_job(name = "BsphiKKmore", optionsfile = "./DaVinci-Opts.py", LFNfile = LFNlist)
 for i in range (2):
     LFNlist = 'MC201213104025Beam4000GeV-2012-Mag' + magnet[i] + '-Nu2.5-Pythia8Sim09bDigi13Trig0x409f0045Reco14cStripping21NoPrescalingFlaggedALLSTREAMSDST.py'
-    submit_job(name = "BsphiKK", optionsfile = "./DaVinci-Opts-restrip.py", LFNfile = LFNlist)
+    submit_job(name = "BsphiKKrestrip", optionsfile = "./DaVinci-Opts-restrip.py", LFNfile = LFNlist)
 # Bd to phi K*
 for i in range (2):
     LFNlist = 'MC201211104021Beam4000GeV-2012-Mag' + magnet[i] + '-Nu2.5-Pythia8Sim08aDigi13Trig0x409f0045Reco14aStripping20NoPrescalingFlaggedALLSTREAMS.DST.py'
