@@ -1,8 +1,6 @@
 #! /bin/bash
-source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/LbLogin.sh
-source ~/.bash_profile
-source ~/.bashrc
-source /etc/bashrc
+source eos.sh
+source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r6p9/InstallArea/scripts/LbLogin.sh
 lhcb-proxy-init
 ntuple_name='BsphiKK'
 user=admorris
@@ -10,28 +8,8 @@ gangaout=~/gangadir/workspace/${user}/LocalXML/
 lfns='LFNs.txt'
 ###########################################################
 user_fl=${user:0:1}
-source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/SetupProject.sh Ganga
-for(( jobno=573; jobno<=577; jobno++))
+for(( jobno=0; jobno<=1; jobno++))
 do
-  if [ "${jobno}" == "575" ]
-  then
-    continue
-  fi
-  cd ${gangaout}
-  ganga getlfns.py ${jobno}
-done
-source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r3p1/InstallArea/scripts/SetupProject.sh LHCbDirac
-source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh
-if [ ! -d ~/${EOS_HOME}/ ]
-then
-  source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos
-fi
-for(( jobno=573; jobno<=577; jobno++))
-do
-  if [ "${jobno}" == "575" ]
-  then
-    continue
-  fi
   # Copy outputs to tmp
   cd /tmp/${user}
   mkdir ${jobno}tmp
@@ -42,7 +20,7 @@ do
   while read line
   do
     echo "Retrieving LFN $n: " $line
-    dirac-dms-get-file $line
+    /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r6p9/InstallArea/scripts/lb-run LHCbDirac dirac-dms-get-file $line
     mv -v ${ntuple_name}.root ${ntuple_name}${n}_noPID.root
     cutapplier ${ntuple_name}${n}_noPID.root DecayTreeTuple/DecayTree "Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.01&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.01&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.01&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.01" ${ntuple_name}${n}_PIDcut.root
     n=$(($n+1))
@@ -53,7 +31,7 @@ do
   then
     rm -v ${ntuple_name}*root
   fi
-  mv -v ../${ntuple_name}_${jobno}*.root ~/${EOS_HOME}/phiKK/
+  mv -v ../${ntuple_name}_${jobno}*.root ${EOS_nTuples_dir}
 done
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
 exit 0
