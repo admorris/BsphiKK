@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>ftwo1640_mass</Name>
 	<Value>1.639</Value>
-	<Minimum>0.006</Minimum>
+	<Error>0.006</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>ftwo1640_width</Name>

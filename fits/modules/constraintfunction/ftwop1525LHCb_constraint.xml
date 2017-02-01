@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>ftwop1525LHCb_mass</Name>
 	<Value>1.522</Value>
-	<Minimum>.00450000000000000000</Minimum>
+	<Error>.00450000000000000000</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>ftwop1525LHCb_width</Name>

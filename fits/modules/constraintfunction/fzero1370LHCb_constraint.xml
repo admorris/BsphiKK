@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>fzero1370LHCb_mass</Name>
 	<Value>1.475</Value>
-	<Minimum>0.006</Minimum>
+	<Error>0.006</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>fzero1370LHCb_width</Name>

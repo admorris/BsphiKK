@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>phi1020_mass</Name>
 	<Value>1.019461</Value>
-	<Minimum>0.000019</Minimum>
+	<Error>0.000019</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>phi1020_width</Name>

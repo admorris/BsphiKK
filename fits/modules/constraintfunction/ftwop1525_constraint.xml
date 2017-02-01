@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>ftwop1525_mass</Name>
 	<Value>1.525</Value>
-	<Minimum>0.005</Minimum>
+	<Error>0.005</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>ftwop1525_width</Name>
