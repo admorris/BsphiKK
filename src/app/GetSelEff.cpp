@@ -12,18 +12,10 @@ using namespace std;
 void GetSelEff(string filename, bool save, string DBfilename)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
-  string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)";
+  string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS)";
   if(filename.find("MC")!=string::npos)
   {
     trigger+="&&(B_s0_BKGCAT<20||B_s0_BKGCAT==50)";
-  }
-  if(filename.find("data")!=string::npos) // Sideband cut
-  {
-    trigger+="&&(B_s0_LOKI_Mass>5600)";
-  }
-  else
-  {
-    trigger+="&&(B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600)";
   }
   Cut_t cuts[] =
   {
@@ -36,6 +28,8 @@ void GetSelEff(string filename, bool save, string DBfilename)
   , Cut_t("KpiPID","Kminus_ProbNNk*(1-Kminus_ProbNNpi)>0.025&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>0.025&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.025&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.025")
   , Cut_t("KpPID","Kplus_ProbNNk*(1-Kplus_ProbNNp)>0.01&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>0.01&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.01&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.01")
   , Cut_t("DauIPchi2","phi_1020_IPCHI2_OWNPV>16&&KK_IPCHI2_OWNPV>16")
+  , Cut_t("KKVtxChi2","KK_ENDVERTEX_CHI2<25")
+  , Cut_t("StdTightKaons","Kminus0_PIDK>0&&Kplus0_PIDK>0")
   };
   string totalcut = "B_s0_M>0";// Something true for all events so the others can be appended with &&
   const unsigned int n = sizeof(cuts)/sizeof(Cut_t);
