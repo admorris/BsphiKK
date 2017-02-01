@@ -13,6 +13,5 @@
 ./doBsmassfit.sh | tee log/Bsmassfit.log
 ./plotmoments.sh | tee log/plotmoments.log
 ./angacc.sh | tee log/angacc.log
-./compare4Dacceptance.sh | tee log/compare4Dacceptance.log
 exit 0
 
