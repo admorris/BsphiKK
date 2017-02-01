@@ -26,9 +26,14 @@ trackisMuoncut="Kminus_isMuon==0&&Kplus_isMuon==0&&Kminus0_isMuon==0&&Kplus0_isM
 KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
 #Phi mass window cut
 phiMcut="TMath::Abs(phi_1020_LOKI_Mass-${phimass})<${phiwindow}"
+## Symmetrise the stripping cuts
 #phi and rho IP chi2 cuts
 phiIPCHI2cut="phi_1020_IPCHI2_OWNPV>16"
 KKIPCHI2cut="KK_IPCHI2_OWNPV>16"
+# KK vertex chi2 cut
+KKEVCHI2cut="KK_ENDVERTEX_CHI2<25"
+# stdtightkaons
+StdTightKaons="Kminus0_PIDK<0&&Kplus0_PIDK<0"
 #Bs mass window cut
 BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
 sidebandcut="B_s0_LOKI_Mass>5500"
