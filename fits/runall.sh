@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: runall.sh [<folder>] [<pattern to match>]
+# Usage: runall.sh [<folder>] [<pattern to match>]  [<extra RapidFit options>]
 make -C modules -j
 currentdir=$(pwd)
 if [ "$1" == "" ]
@@ -13,10 +13,10 @@ do
 	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
 	do
+                mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
+                cd FitResult_$(echo $file | sed 's/\.xml//g')
 		fitting -f $file $3 | tee RapidFitOutput-$(date +"%Y%m%d_%H%M%S").log
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
-		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
-		mv -v RapidFitOutput* FitResult_$(echo $file | sed 's/\.xml//g')
 	done
 done
