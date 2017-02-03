@@ -1,4 +1,5 @@
 <Source>File</Source>
-<FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/BsphiKK_Gen_mvaVars_foracceptance.root</FileName>
+<FileName>root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/ntuples/BsphiKK_Gen_mvaVars.root</FileName>
 <NTuplePath>MCDecayTree</NTuplePath>
+<CutString>1800>KK_M</CutString>
 <NumberEvents>10000000000000000</NumberEvents>
