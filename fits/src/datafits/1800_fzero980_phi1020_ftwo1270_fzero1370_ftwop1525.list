@@ -22,7 +22,7 @@ parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_fixed.xml
 parameterset/deltaGammas_fixed.xml
-phasespaceboundary/mKK_BCON_1600.xml
+phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 phasespaceboundary/sweight.xml
 output/lowrange.xml

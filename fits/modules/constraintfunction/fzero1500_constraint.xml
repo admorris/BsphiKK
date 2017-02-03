@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>fzero1500_mass</Name>
 	<Value>1.504</Value>
-	<Minimum>0.006</Minimum>
+	<Error>0.006</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>fzero1500_width</Name>

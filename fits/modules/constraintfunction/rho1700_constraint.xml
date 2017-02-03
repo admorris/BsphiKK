@@ -1,7 +1,7 @@
 <ExternalConstraint>
 	<Name>rho1700_mass</Name>
 	<Value>1.720</Value>
-	<Minimum>0.020</Minimum>
+	<Error>0.020</Error>
 </ExternalConstraint>
 <ExternalConstraint>
 	<Name>rho1700_width</Name>
