@@ -12,7 +12,7 @@ using namespace std;
 void GetVetoEff(string filename, bool save, string DBfilename)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
-  string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo2BodyBBDTDecision_TOS||B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS||B_s0_Hlt2IncPhiDecision_TOS)";
+  string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS)";
   Cut_t cuts[] =
   {
     Cut_t("BdPhiKstar","TMath::Abs(phiKpiM-5279.58)>60||(TMath::Abs(phiKpiM-5279.58)<50&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi)")

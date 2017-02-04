@@ -33,7 +33,7 @@ KKIPCHI2cut="KK_IPCHI2_OWNPV>16"
 # KK vertex chi2 cut
 KKEVCHI2cut="KK_ENDVERTEX_CHI2<25"
 # stdtightkaons
-StdTightKaons="Kminus0_PIDK<0&&Kplus0_PIDK<0"
+StdTightKaons="Kminus0_PIDK>0&&Kplus0_PIDK>0"
 #Bs mass window cut
 BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
 sidebandcut="B_s0_LOKI_Mass>5500"

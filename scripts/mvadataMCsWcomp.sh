@@ -5,23 +5,21 @@ Bs="#it{B}^{0}_{s}"
 titles=("$Bs~ln#it{#chi}^{2}_{FD}" "$Bs~ln#it{#chi}^{2}_{IP}" "$Bs~ln#it{#chi}^{2}_{EV}" "$Bs~#it{p_{T}}~/~5" "$Bs~#eta" "min~#it{K}~ln#it{#chi}^{2}_{IP}" "min~#it{K}~#it{p_{T}}")
 units=(none none none "GeV/#it{c}^{2}" none none "GeV/#it{c}^{2}")
 ranges=("--lower 5 --upper 14" "--lower -6 --upper 4" "--lower -3 --upper 3" "--lower 0 --upper 8" "--lower 1 --upper 6" "--lower 0 --upper 10" "--lower 0 --upper 6" )
-for file in $(ls *mvaVars_vetoes_Sweighted.root)
+file="BsphiKK_data_mvaVars_vetoes_Sweighted.root"
+MCfile="BsphiKK_MC_mvaVars_vetoes.root"
+for i in `seq 0 6`
 do
-  MCfile=$(echo $file | sed 's/data/MC/' | sed 's/_Sweighted//')
-  for i in `seq 0 6`
-  do
-    plotname="../latex/figs/mvaVar$(echo $file | sed -r 's/.*data(.*)_mvaVars.*/\1/')_${branches[i]}"
-    ../bin/CompareBranch \
-         --CDfile $file \
-         --MCfile $MCfile \
-         --CDweight \"Nsig_sw\" \
-         --MCbranch \"${branches[i]}\" \
-         --CDbranch \"${branches[i]}\" \
-         --title \"${titles[i]}\" \
-         --unit \"${units[i]}\" \
-         --plot \"$plotname\" \
-         ${ranges[i]}
-  done
+  plotname="../latex/figs/mvaVar$(echo $file | sed -r 's/.*data(.*)_mvaVars.*/\1/')_${branches[i]}"
+  ../bin/CompareBranch \
+       --CDfile $file \
+       --MCfile $MCfile \
+       --CDweight \"Nsig_sw\" \
+       --MCbranch \"${branches[i]}\" \
+       --CDbranch \"${branches[i]}\" \
+       --title \"${titles[i]}\" \
+       --unit \"${units[i]}\" \
+       --plot \"$plotname\" \
+       ${ranges[i]}
 done
 exit 0
 

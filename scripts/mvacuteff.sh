@@ -1,4 +1,5 @@
 #!/bin/bash
+source mvaopticut.sh
 cd ../ntuples/
 ../bin/BsMassFit -M ../ntuples/Bsphiphi_MC_mva.root \
                  -R ../ntuples/BsphiKK_data_mva.root \

@@ -12,8 +12,6 @@
 ## Get input parameters for angular fit
 ./doBsmassfit.sh | tee log/Bsmassfit.log
 ./plotmoments.sh | tee log/plotmoments.log
-./angacc_hist.sh | tee log/angacc_hist.log
-./compare4Dacceptance.sh | tee log/compare4Dacceptance.log
-./bkgparam.sh | tee log/bkgparam.log
+./angacc.sh | tee log/angacc.log
 exit 0
 
