@@ -1,1 +1,1 @@
-<ConfigurationParameter>HistogramFile:/afs/cern.ch/work/a/admorris/public/BsphiKK/Acceptance.root</ConfigurationParameter>
+<ConfigurationParameter>HistogramFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/AdaptiveHistogram_Acceptance.root</ConfigurationParameter>

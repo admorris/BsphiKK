@@ -1,4 +1,4 @@
 <Source>File</Source>
-<FileName>/afs/cern.ch/work/a/admorris/public/BsphiKK/ntuples/Bsphiphi_Gen_mvaVars.root</FileName>
+<FileName>root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/ntuples/Bsphiphi_Gen_mvaVars.root</FileName>
 <NTuplePath>MCDecayTree</NTuplePath>
 <NumberEvents>10000000000000000</NumberEvents>
