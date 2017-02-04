@@ -4,7 +4,7 @@
 #include "TCanvas.h"
 // RooFit headers
 #include "RooAddPdf.h"
-#include "RooRealVar.h"
+#include "RooEffProd.h"
 #include "RooFormulaVar.h"
 #include "RooProdPdf.h"
 #include "RooRealVar.h"
@@ -299,34 +299,28 @@ void MassFitter::assemble()
   RooArgList pdflist;
   RooArgList coeflist;
   RooAbsPdf* tmp_pdf;
+//  TODO: https://root.cern.ch/root/html/tutorials/roofit/rf703_effpdfprod.C.html
   switch(_components.size())
   {
     case 0:
       throw runtime_error("Trying to assemble a PDF with no components.");
       break;
     case 1:
-      if(_hasweightfunction)
-        tmp_pdf = new RooProdPdf((_components[0]->GetName()+"_w").c_str(),(_components[0]->GetName()+"_w").c_str(),*(_components[0]->GetPDF()),*(_weightfunction->GetPDF()));
-      else
-        tmp_pdf = _components[0]->GetPDF();
+      tmp_pdf = _components[0]->GetPDF();
       break;
     default:
       for(auto pdf : _components)
       {
-        if(_hasweightfunction)
-          pdflist.add(*(new RooProdPdf((pdf->GetName()+"_w").c_str(),(pdf->GetName()+"_w").c_str(),*(pdf->GetPDF()),*(_weightfunction->GetPDF()))));
-        else
-          pdflist.add(*(pdf->GetPDF()));
+        pdflist.add(*(pdf->GetPDF()));
         if(_useyieldvars)
           coeflist.add(*(pdf->GetYieldVar()));
       }
       tmp_pdf = _useyieldvars ? new RooAddPdf("model","Total PDF",pdflist,coeflist) : new RooAddPdf("model","Total PDF",pdflist) ;
       break;
   }
-/*
   if(_hasweightfunction)
-    _pdf = new RooProdPdf("wmodel",("Total PDF weighted by " + _weightfunction->GetName()).c_str(),*tmp_pdf,*(_weightfunction->GetPDF()));
-  else*/
+    _pdf = new RooEffProd("model_w","Total weighted PDF",*tmp_pdf,*_weightfunction);
+  else
     _pdf = tmp_pdf;
   _haspdf = true;
 }
@@ -386,19 +380,15 @@ SPlot* MassFitter::GetsPlot(RooArgList list)
   return new SPlot("sData","An SPlot", *_data, _pdf, list);
 }
 /******************************************************************************/
-Component* MassFitter::SetWeightFunction(string type)
+void MassFitter::SetWeightFunction(string function)
 {
-  string name = "phase space";
-  if(!_hasweightfunction)
-    _hasweightfunction = true;
-  else
-  {
-    cout << "Overwriting existing weight function: " << _weightfunction->GetName() << endl;
-    delete _weightfunction;
-  }
-  cout << "Creating new weight function: " << name << endl;
-  _weightfunction = makeshape(type,type);
-  return _weightfunction;
+  _hasweightfunction = true;
+  _weightfunction = new RooFormulaVar("weight_function",function.c_str(),*_mass);
+}
+void MassFitter::SetWeightFunction(RooFormulaVar* function)
+{
+  _hasweightfunction = true;
+  _weightfunction = function;
 }
 /******************************************************************************/
 Component* MassFitter::BifurcatedGaussian(string name)
@@ -767,3 +757,4 @@ Component* MassFitter::ThreeBodyPhaseSpace(string name)
   pdf->AddThing(m3);
   return pdf;
 }
+

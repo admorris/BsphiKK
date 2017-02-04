@@ -86,12 +86,13 @@ class MassFitter
     SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
     SPlot*              GetsPlot(RooArgList);
     void                SetWeighted();
-    Component*          SetWeightFunction(string);
+    void                SetWeightFunction(string);
+    void                SetWeightFunction(RooFormulaVar*);
   private:
     vector<Component*>  _components;
     Component*          makeshape(string,string);
     RooAbsPdf*          _pdf;
-    Component*          _weightfunction;
+    RooFormulaVar*      _weightfunction;
     RooDataSet*         _data;
     RooRealVar*         _mass;
     void                init();
@@ -126,3 +127,4 @@ class MassFitter
     Component*          ThreeBodyPhaseSpace(string);
 };
 #endif
+
