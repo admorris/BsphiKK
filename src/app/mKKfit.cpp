@@ -19,7 +19,8 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool phsp, bool fitnonres, bool fitfzero, bool fitftwop)
+using std::sprintf;
+void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool fitacceptance, bool fitnonres, bool fitfzero, bool fitftwop)
 {
 /*Physics parameters**********************************************************/
   // Define in MeV
@@ -59,66 +60,44 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   RooRealVar* Nfzero   = new RooRealVar("N","Number of f0(980) candidates",150,0,1e6);
   RooRealVar* Nphi     = new RooRealVar("N","Number of phi candidates",3000,0,1e6);
   RooRealVar* Nftwop   = new RooRealVar("N","Number of f2'(1525) candidates",200,0,1e6);
-/*Phase space function********************************************************/
-  if(phsp)
+  RooRealVar* thrscale = new RooRealVar("thrscale","Threshold shape scale",100.,0.,1e4);
+  RooRealVar* accslope = new RooRealVar("accslope","Acceptance slope",0.,-100.,0.);
+/*Construct acceptance function***********************************************/
+  if(fitacceptance)
   {
-    Component* phasespace = massfitter->SetWeightFunction("Three Body Phase Space");
-    if(unit.find("GeV")!=string::npos)
-    {
-      phasespace->SetRange("M",mBs*1e-3,mBs*1e-3);
-      phasespace->FixValue("M",mBs*1e-3);
-      phasespace->SetRange("m1",mK*1e-3,mK*1e-3);
-      phasespace->FixValue("m1",mK*1e-3);
-      phasespace->SetRange("m2",mK*1e-3,mK*1e-3);
-      phasespace->FixValue("m2",mK*1e-3);
-      phasespace->SetRange("m3",mphi*1e-3,mphi*1e-3);
-      phasespace->FixValue("m3",mphi*1e-3);
-    }
-    else
-    {
-      phasespace->SetRange("M",mBs,mBs);
-      phasespace->FixValue("M",mBs);
-      phasespace->SetRange("m1",mK,mK);
-      phasespace->FixValue("m1",mK);
-      phasespace->SetRange("m2",mK,mK);
-      phasespace->FixValue("m2",mK);
-      phasespace->SetRange("m3",mphi,mphi);
-      phasespace->FixValue("m3",mphi);
-    }
+    double threshold = unit.find("GeV")!=string::npos ? 2e-3*mK : 2*mK;
+    char function[100];
+    sprintf(function,"TMath::Erf(@1*(@0-%f))*(1+@2*(@0-%f))",threshold,threshold);
+//    sprintf(function,"TMath::TanH(@1*(@0-%f))*(1+@2*(@0-%f))",threshold,threshold);
+//    sprintf(function,"TMath::ATan(@1*(@0-%f))*(1+@2*(@0-%f))*2.0*TMath::InvPi()",threshold,threshold);
+    massfitter->SetWeightFunction(new RooFormulaVar("acceptance",function,RooArgList(*m,*thrscale,*accslope)));
   }
 /*Non-resonant kaon pairs*****************************************************/
   Component* nonres;
   if(fitnonres)
   {
-    if(!phsp)
+    nonres = massfitter->AddComponent("nonres","Three Body Phase Space",Nnonres);
+    if(unit.find("GeV")!=string::npos)
     {
-      nonres = massfitter->AddComponent("nonres","Three Body Phase Space",Nnonres);
-      if(unit.find("GeV")!=string::npos)
-      {
-        nonres->SetRange("M",mBs*1e-3,mBs*1e-3);
-        nonres->FixValue("M",mBs*1e-3);
-        nonres->SetRange("m1",mK*1e-3,mK*1e-3);
-        nonres->FixValue("m1",mK*1e-3);
-        nonres->SetRange("m2",mK*1e-3,mK*1e-3);
-        nonres->FixValue("m2",mK*1e-3);
-        nonres->SetRange("m3",mphi*1e-3,mphi*1e-3);
-        nonres->FixValue("m3",mphi*1e-3);
-      }
-      else
-      {
-        nonres->SetRange("M",mBs,mBs);
-        nonres->FixValue("M",mBs);
-        nonres->SetRange("m1",mK,mK);
-        nonres->FixValue("m1",mK);
-        nonres->SetRange("m2",mK,mK);
-        nonres->FixValue("m2",mK);
-        nonres->SetRange("m3",mphi,mphi);
-        nonres->FixValue("m3",mphi);
-      }
+      nonres->SetRange("M",mBs*1e-3,mBs*1e-3);
+      nonres->FixValue("M",mBs*1e-3);
+      nonres->SetRange("m1",mK*1e-3,mK*1e-3);
+      nonres->FixValue("m1",mK*1e-3);
+      nonres->SetRange("m2",mK*1e-3,mK*1e-3);
+      nonres->FixValue("m2",mK*1e-3);
+      nonres->SetRange("m3",mphi*1e-3,mphi*1e-3);
+      nonres->FixValue("m3",mphi*1e-3);
     }
     else
     {
-      nonres = massfitter->AddComponent("nonres","Flat",Nnonres);
+      nonres->SetRange("M",mBs,mBs);
+      nonres->FixValue("M",mBs);
+      nonres->SetRange("m1",mK,mK);
+      nonres->FixValue("m1",mK);
+      nonres->SetRange("m2",mK,mK);
+      nonres->FixValue("m2",mK);
+      nonres->SetRange("m3",mphi,mphi);
+      nonres->FixValue("m3",mphi);
     }
     nonres->SetColour(kCyan+1);
     nonres->SetStyle(kDotted);
@@ -317,10 +296,10 @@ int main(int argc, char* argv[])
   desc.add_options()
     ("help,H"    ,                                                                                 "produce help message")
     ("conv"      ,                                                                                 "do convolution"      )
+    ("fitacc"    ,                                                                                 "fit for acceptance"  )
     ("fitnonres" ,                                                                                 "use nonres component")
     ("fitfzero"  ,                                                                                 "use f0 component"    )
     ("fitftwop"  ,                                                                                 "use f2' component"   )
-    ("phsp"      ,                                                                                 "weight by |p1*||p3|" )
     ("file,F"    , value<string>(&file  )->default_value("ntuples/BsphiKK_data_1800_mvacut.root"), "data ntuple"         )
     ("branch,B"  , value<string>(&branch)->default_value("KK_M"                                 ), "mass branch"         )
     ("cuts,C"    , value<string>(&cuts  )->default_value(""                                     ), "cuts"                )
@@ -342,6 +321,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("phsp"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"));
+  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitacc"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"));
   return 0;
 }
+
