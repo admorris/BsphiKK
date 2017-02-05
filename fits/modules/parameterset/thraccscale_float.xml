@@ -1,0 +1,8 @@
+<PhysicsParameter>
+	<Name>thraccscale</Name>
+	<Value>232</Value>
+	<Type>Float</Type>
+	<Minimum>100</Minimum>
+	<Maximum>1000</Maximum>
+	<Unit>GeV^{-1}</Unit>
+</PhysicsParameter>
