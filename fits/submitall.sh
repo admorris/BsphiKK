@@ -16,8 +16,8 @@ do
 		submission_script=$(echo "submit_$file" | sed 's/xml/sh/')
 		cat <<-EOF > ${submission_script}
 		#!/bin/bash
-		#$ -N "$(echo $file | sed 's/.xml//')"
-		#$ -l h_rt=00:05:00 
+		#$ -N "j_$(echo $file | sed 's/.xml//')"
+		#$ -l h_rt=00:30:00 
 		#$ -l h_vmem=1G
 		#$ -pe mpi 32
 		#$ -cwd
