@@ -20,7 +20,7 @@ using std::endl;
 using std::string;
 using std::vector;
 using std::sprintf;
-void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool fitacceptance, bool fitnonres, bool fitfzero, bool fitftwop)
+void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool fitacceptance, bool fitnonres, bool fitfzero, bool fitftwop, bool dontfitphi)
 {
 /*Physics parameters**********************************************************/
   // Define in MeV
@@ -44,7 +44,8 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
 /*Fit the resolution**********************************************************/
   using namespace RooFit;
 /*Do convolved fit************************************************************/
-  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
+  double threshold = unit.find("GeV")!=string::npos ? 2e-3*mK : 2*mK;
+  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),std::min(threshold,xlow),xup);
   cout << "Importing tree" << endl;
   RooDataSet* data;
   MassFitter* massfitter = new MassFitter(m);
@@ -65,7 +66,6 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
 /*Construct acceptance function***********************************************/
   if(fitacceptance)
   {
-    double threshold = unit.find("GeV")!=string::npos ? 2e-3*mK : 2*mK;
     char function[100];
     sprintf(function,"TMath::Erf(@1*(@0-%f))*(1+@2*(@0-%f))",threshold,threshold);
 //    sprintf(function,"TMath::TanH(@1*(@0-%f))*(1+@2*(@0-%f))",threshold,threshold);
@@ -139,47 +139,50 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   }
 /*phi(1020)*******************************************************************/
   Component* phi;
-  if(convolve)
+  if(!dontfitphi)
   {
-    phi = massfitter->AddComponent("phi","RBW(X)Gauss",Nphi);
-  }
-  else
-  {
-    phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
-  }
-  phi->SetColour(kMagenta+1);
-  phi->SetStyle(9);
-  phi->FixValue("spin",1);
-  if(unit.find("GeV")!=string::npos)
-  {
-    phi->SetRange("mean",mphi*1e-3,mphi*1e-3);
-    phi->FixValue("mean",mphi*1e-3);
-    phi->SetRange("width",Gphi*1e-3,Gphi*1e-3);
-    phi->FixValue("width",Gphi*1e-3);
-    phi->SetRange("radius",BWBFradius*1e3,BWBFradius*1e3);
-    phi->FixValue("radius",BWBFradius*1e3);
-    phi->SetRange("mK",mK*1e-3,mK*1e-3);
-    phi->FixValue("mK",mK*1e-3);
     if(convolve)
     {
-      phi->SetRange("sigma1",mKKresolution_lo*1e-3,mKKresolution_hi*1e-3);
-      phi->FixValue("sigma1",mKKresolution_MC*1e-3);
+      phi = massfitter->AddComponent("phi","RBW(X)Gauss",Nphi);
     }
-  }
-  else
-  {
-    phi->SetRange("mean",mphi,mphi);
-    phi->FixValue("mean",mphi);
-    phi->SetRange("width",Gphi,Gphi);
-    phi->FixValue("width",Gphi);
-    phi->SetRange("radius",BWBFradius,BWBFradius);
-    phi->FixValue("radius",BWBFradius);
-    phi->SetRange("mK",mK,mK);
-    phi->FixValue("mK",mK);
-    if(convolve)
+    else
     {
-      phi->SetRange("sigma1",mKKresolution_lo,mKKresolution_hi);
-      phi->FixValue("sigma1",mKKresolution_MC);
+      phi = massfitter->AddComponent("phi","Rel Breit-Wigner",Nphi);
+    }
+    phi->SetColour(kMagenta+1);
+    phi->SetStyle(9);
+    phi->FixValue("spin",1);
+    if(unit.find("GeV")!=string::npos)
+    {
+      phi->SetRange("mean",mphi*1e-3,mphi*1e-3);
+      phi->FixValue("mean",mphi*1e-3);
+      phi->SetRange("width",Gphi*1e-3,Gphi*1e-3);
+      phi->FixValue("width",Gphi*1e-3);
+      phi->SetRange("radius",BWBFradius*1e3,BWBFradius*1e3);
+      phi->FixValue("radius",BWBFradius*1e3);
+      phi->SetRange("mK",mK*1e-3,mK*1e-3);
+      phi->FixValue("mK",mK*1e-3);
+      if(convolve)
+      {
+        phi->SetRange("sigma1",mKKresolution_lo*1e-3,mKKresolution_hi*1e-3);
+        phi->FixValue("sigma1",mKKresolution_MC*1e-3);
+      }
+    }
+    else
+    {
+      phi->SetRange("mean",mphi,mphi);
+      phi->FixValue("mean",mphi);
+      phi->SetRange("width",Gphi,Gphi);
+      phi->FixValue("width",Gphi);
+      phi->SetRange("radius",BWBFradius,BWBFradius);
+      phi->FixValue("radius",BWBFradius);
+      phi->SetRange("mK",mK,mK);
+      phi->FixValue("mK",mK);
+      if(convolve)
+      {
+        phi->SetRange("sigma1",mKKresolution_lo,mKKresolution_hi);
+        phi->FixValue("sigma1",mKKresolution_MC);
+      }
     }
   }
 /*f2'(1525)*******************************************************************/
@@ -300,6 +303,7 @@ int main(int argc, char* argv[])
     ("fitnonres" ,                                                                                 "use nonres component")
     ("fitfzero"  ,                                                                                 "use f0 component"    )
     ("fitftwop"  ,                                                                                 "use f2' component"   )
+    ("dontfitphi",                                                                                 "no phi component"    )
     ("file,F"    , value<string>(&file  )->default_value("ntuples/BsphiKK_data_1800_mvacut.root"), "data ntuple"         )
     ("branch,B"  , value<string>(&branch)->default_value("KK_M"                                 ), "mass branch"         )
     ("cuts,C"    , value<string>(&cuts  )->default_value(""                                     ), "cuts"                )
@@ -321,7 +325,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitacc"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"));
+  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitacc"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"),vmap.count("dontfitphi"));
   return 0;
 }
 
