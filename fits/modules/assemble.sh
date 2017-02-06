@@ -7,6 +7,8 @@ function warning
 {
 	echo -e "\033[33mWARNING:\e[0m $1" 1>&2
 }
+# SGE/OGE job options
+declare -a joboptions
 # List of resonances to eventually go in a ConfigurationParameter
 declare -a resonances
 declare -a widths
@@ -61,7 +63,10 @@ for arg in "$@"
 do
 	if [ -e "$arg" ]
 	then
-		if [[ $arg == *"pdf/"* ]]
+		if [[ $arg == *"joboptions/"* ]]
+		then
+			joboptions+=("$arg")
+		elif [[ $arg == *"pdf/"* ]]
 		then
 			pdf+=("$arg")
 		elif [[ $arg == *"dataset/"* ]]
@@ -164,6 +169,10 @@ then
 	colourlist="1:${colourlist}1"
 fi
 # write the XML file
+for file in "${joboptions[@]}"
+do
+cat $file # every line of these files should start with a # character, which makes it ignored by RapidFit and it only picked up by the job submission script
+done
 echo "<RapidFit>"
 echo "	<ParameterSet>"
 for file in "${parameterset[@]}"

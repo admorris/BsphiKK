@@ -14,3 +14,4 @@ output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
 parameterset/thraccscale_float.xml
+joboptions/05min.sh
