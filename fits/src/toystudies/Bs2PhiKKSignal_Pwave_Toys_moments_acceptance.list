@@ -7,7 +7,7 @@ dataset/toys.xml
 parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
-parameterset/deltaGammas_float.xml
+parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_1080.xml
 phasespaceboundary/angles.xml
 output/lowrange_MC.xml

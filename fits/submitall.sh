@@ -40,3 +40,5 @@ do
 		rm ${submission_script}
 	done
 done
+qsub stageout.sh
+
