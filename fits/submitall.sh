@@ -26,9 +26,6 @@ do
 		#$ -l h_vmem=1G
 		#$ -pe sharedmem 4
 		#$ -cwd
-		# Remake the XML file
-		rm $file
-		make -C ${currentdir}/modules ../${folder}/${file}
 		# Set up the environment
 		export PATH=\$PATH:~/RapidFit/bin
 		. /etc/profile.d/modules.sh
