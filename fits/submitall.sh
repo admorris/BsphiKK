@@ -24,21 +24,30 @@ do
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		$runtimeoption
 		#$ -l h_vmem=1G
-		#$ -pe mpi 16
+		#$ -pe sharedmem 4
 		#$ -cwd
+		# Remake the XML file
+		rm $file
+		make -C ${currentdir}/modules ../${folder}/${file}
+		# Set up the environment
 		export PATH=\$PATH:~/RapidFit/bin
 		. /etc/profile.d/modules.sh
 		module load root
 		module load igmm/apps/texlive
+		# Move to the right folder
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
-		fitting -f ../$file $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+		# Perform the fit
+		fitting -f ../${file} $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+		# Deal with the output
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
 		EOF
+		# Submit the jobs
 		qsub ${submission_script}
 		rm ${submission_script}
 	done
 done
+cd $currentdir
 qsub stageout.sh
 
