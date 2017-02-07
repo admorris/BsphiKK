@@ -18,6 +18,7 @@ fits/mcfits/*
 fits/toystudies/*
 fits/*.xml
 fits/*.root
+fits/RFjobconfig.sh
 # TMVA stuff
 mva/.__afs*
 mva/TMVA*root

@@ -27,10 +27,8 @@ do
 		#$ -pe mpi 16
 		#$ -cwd
 		# Set up the environment
-		export PATH=\$PATH:~/RapidFit/bin
-		. /etc/profile.d/modules.sh
-		module load root
-		module load igmm/apps/texlive
+		source RFjobconfig.sh
+		export PATH=\$PATH:$RapidFitDir/bin
 		# Move to the right folder
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
