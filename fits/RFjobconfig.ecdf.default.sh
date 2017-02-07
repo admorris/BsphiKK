@@ -1,6 +1,6 @@
 #!/bin/bash
 # RapidFit location
-RapidFitDir=~/RapidFit
+export RapidFitDir=~/RapidFit
 # Load ROOT and TexLive
 . /etc/profile.d/modules.sh
 module load root
