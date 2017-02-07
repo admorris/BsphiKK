@@ -24,7 +24,7 @@ do
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		$runtimeoption
 		#$ -l h_vmem=1G
-		#$ -pe sharedmem 4
+		#$ -pe mpi 16
 		#$ -cwd
 		# Set up the environment
 		export PATH=\$PATH:~/RapidFit/bin
@@ -45,6 +45,4 @@ do
 		rm ${submission_script}
 	done
 done
-cd $currentdir
-qsub stageout.sh
 

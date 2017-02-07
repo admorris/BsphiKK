@@ -26,4 +26,4 @@ output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
 parameterset/thraccscale_fixed.xml
-joboptions/20min.sh
+joboptions/40min.sh

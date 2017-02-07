@@ -188,7 +188,7 @@ for file in "${fitfunction[@]}"
 do
 	parsefile $file 2
 done
-echo "		<Threads>4</Threads>"
+echo "		<Threads>$(nproc)</Threads>"
 echo "	</FitFunction>"
 echo "	<CommonPhaseSpace>"
 echo "		<PhaseSpaceBoundary>"
@@ -230,7 +230,7 @@ for file in "${output[@]}"
 do
 	echo "		<ComponentProjection>"
 	parsefile $file 3
-	echo "		  <Threads>4</Threads>"
+	echo "		  <Threads>$(nproc)</Threads>"
 	if [ ${#resonances[@]} -gt 1 ]
 	then
 		if [ ${#widths[@]} -eq ${#resonances[@]} ]
