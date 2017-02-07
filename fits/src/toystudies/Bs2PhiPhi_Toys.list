@@ -3,7 +3,7 @@ minimiser/minuit.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
-parameterset/deltaGammas_float.xml
+parameterset/deltaGammas_fixed.xml
 phasespaceboundary/angles.xml
 output/phi.xml
 output/ctheta_1.xml
