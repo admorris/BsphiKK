@@ -24,8 +24,9 @@ do
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		$runtimeoption
 		#$ -l h_vmem=1G
-		#$ -pe mpi 4
+		#$ -pe mpi 16
 		#$ -cwd
+		#$ -hold_jid buildRapidFit
 		# Re-make the XML file to pick up the number of threads this machine has
 		rm $file && make -C $currentdir/modules ../$folder/$file
 		# Set up the environment
