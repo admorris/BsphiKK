@@ -1,0 +1,40 @@
+<PhysicsParameter>
+	<Name>ftwo1750_Aperpsq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1750_Azerosq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1750_deltaperp</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type> #phase
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1750_deltazero</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type> #phase
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>ftwo1750_deltapara</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type> #phase
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

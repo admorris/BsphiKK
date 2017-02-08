@@ -40,6 +40,7 @@ newKK   rhothree1690    3       1.696   0.004   0.004   0.161   0.010   0.010
 newKK   rho1700         1       1.720   0.020   0.020   0.250   0.100   0.100
 newKK   atwo1700        2       1.732   0.016   0.016   0.194   0.040   0.040
 newKK   fzero1710       0       1.723   0.006   0.005   0.139   0.008   0.008
+newKK   ftwo1750        2       1.737   0.009   0.009   0.151   0.033   0.033
 newKK   ftwo1810        2       1.815   0.012   0.012   0.197   0.022   0.022
 # Custom styles for the phi and f2'
 for file in $(ls fractions/phi1020* fractions/ftwop1525*)
