@@ -15,15 +15,9 @@ parameterset/amplitudes/phi1020_float_LHCbAmp.xml
 parameterset/fractions/ftwo1270_float.xml
 parameterset/amplitudes/ftwo1270_float.xml
 parameterset/resonances/ftwo1270_fixed.xml
-parameterset/fractions/atwo1320_float.xml
-parameterset/amplitudes/atwo1320_float.xml
-parameterset/resonances/atwo1320_fixed.xml
 parameterset/fractions/fzero1370LHCb_float.xml
 parameterset/resonances/fzero1370LHCb_fixed.xml
 parameterset/amplitudes/fzero1370LHCb_float.xml
-parameterset/fractions/fzero1500_float.xml
-parameterset/resonances/fzero1500_fixed.xml
-parameterset/amplitudes/fzero1500_float.xml
 parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_BCON_1450.xml
 phasespaceboundary/angles_BCON.xml
@@ -34,4 +28,4 @@ output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
 parameterset/thraccscale_fixed.xml
-joboptions/160min.sh
+joboptions/40min.sh
