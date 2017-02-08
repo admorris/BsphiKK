@@ -1,40 +1,40 @@
 <PhysicsParameter>
-	<Name>atwo1320_Aperpsq</Name>
+	<Name>rho1700_Aperpsq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1320_Azerosq</Name>
+	<Name>rho1700_Azerosq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1320_deltaperp</Name>
+	<Name>rho1700_deltaperp</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type>
+	<Type>Fixed</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1320_deltazero</Name>
+	<Name>rho1700_deltazero</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type>
+	<Type>Fixed</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1320_deltapara</Name>
+	<Name>rho1700_deltapara</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type>
+	<Type>Fixed</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

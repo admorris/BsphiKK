@@ -15,10 +15,10 @@ function newKK()
 	sed -i 's/Float/Fixed/' resonances/${name}_fixed.xml
 	./newamplitude.sh ${name} ${spin} 0.0 > amplitudes/${name}_float.xml
 	./newamplitude.sh ${name} ${spin} 3.14159 > amplitudes/${name}_float_pi.xml
-	cp amplitudes/${name}_float.xml amplitudes/${name}_fixed.xml
+	cp amplitudes/${name}_float.xml amplitudes/${name}_fixed_zero.xml
 	mv amplitudes/${name}_float_pi.xml amplitudes/${name}_fixed_pi.xml
-	sed -i 's/Float/Fixed/' amplitudes/${name}_fixed.xml
-	sed -i 's/Float/Fixed/' amplitudes/${name}_fixed_pi.xml
+	sed -i 's/<Type>Float<\/Type> #phase/<Type>Fixed<\/Type> #phase/' amplitudes/${name}_fixed_zero.xml
+	sed -i 's/<Type>Float<\/Type> #phase/<Type>Fixed<\/Type> #phase/' amplitudes/${name}_fixed_pi.xml
 	./newfraction.sh ${name} ${spin} > fractions/${name}_float.xml
 	./newconstraint.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > ../constraintfunction/${name}_constraint.xml
 }

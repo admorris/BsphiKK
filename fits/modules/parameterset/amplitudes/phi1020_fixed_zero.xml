@@ -1,40 +1,40 @@
 <PhysicsParameter>
-	<Name>ftwop1525_Aperpsq</Name>
+	<Name>phi1020_Aperpsq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_Azerosq</Name>
+	<Name>phi1020_Azerosq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_deltaperp</Name>
+	<Name>phi1020_deltaperp</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type>
+	<Type>Fixed</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_deltazero</Name>
+	<Name>phi1020_deltazero</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type>
+	<Type>Fixed</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwop1525_deltapara</Name>
+	<Name>phi1020_deltapara</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type>
+	<Type>Fixed</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

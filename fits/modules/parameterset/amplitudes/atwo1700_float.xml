@@ -19,7 +19,7 @@
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Float</Type>
+	<Type>Float</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -27,7 +27,7 @@
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Float</Type>
+	<Type>Float</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -35,6 +35,6 @@
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Float</Type>
+	<Type>Float</Type> #phase
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
