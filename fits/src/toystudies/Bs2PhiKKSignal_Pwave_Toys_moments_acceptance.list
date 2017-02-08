@@ -1,7 +1,7 @@
 pdf/default.xml
 pdf/moments_acceptance.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-minimiser/minuit.xml
+minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/resonances/phi1020_float.xml

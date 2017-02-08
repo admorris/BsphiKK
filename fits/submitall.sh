@@ -24,7 +24,7 @@ do
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		$runtimeoption
 		#$ -l h_vmem=1G
-		#$ -pe mpi 16
+		#$ -pe mpi 4
 		#$ -cwd
 		# Re-make the XML file to pick up the number of threads this machine has
 		rm $file && make -C $currentdir/modules ../$folder/$file
