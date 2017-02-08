@@ -1,0 +1,40 @@
+<PhysicsParameter>
+	<Name>rhothree1690_Aperpsq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rhothree1690_Azerosq</Name>
+	<Value>0.333</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rhothree1690_deltaperp</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rhothree1690_deltazero</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>rhothree1690_deltapara</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

@@ -2,12 +2,13 @@
 # Self-documenting the argument set
 name=$1
 spin=$2
+phase=$3
 # Generate the XML
 if [ ${spin} == "0" ]
 then
 	echo "<PhysicsParameter>"
 	echo "	<Name>${name}_deltazero</Name>"
-	echo "	<Value>0.0</Value>"
+	echo "	<Value>${phase}</Value>"
 	echo "	<Minimum>-3.7</Minimum>"
 	echo "	<Maximum>3.7</Maximum>"
 	echo "	<Type>Float</Type>"
@@ -32,7 +33,7 @@ else
 	echo "</PhysicsParameter>"
 	echo "<PhysicsParameter>"
 	echo "	<Name>${name}_deltaperp</Name>"
-	echo "	<Value>0.0</Value>"
+	echo "	<Value>${phase}</Value>"
 	echo "	<Minimum>-3.7</Minimum>"
 	echo "	<Maximum>3.7</Maximum>"
 	echo "	<Type>Float</Type>"
@@ -40,7 +41,7 @@ else
 	echo "</PhysicsParameter>"
 	echo "<PhysicsParameter>"
 	echo "	<Name>${name}_deltazero</Name>"
-	echo "	<Value>0.0</Value>"
+	echo "	<Value>${phase}</Value>"
 	echo "	<Minimum>-3.7</Minimum>"
 	echo "	<Maximum>3.7</Maximum>"
 	echo "	<Type>Float</Type>"
@@ -48,7 +49,7 @@ else
 	echo "</PhysicsParameter>"
 	echo "<PhysicsParameter>"
 	echo "	<Name>${name}_deltapara</Name>"
-	echo "	<Value>0.0</Value>"
+	echo "	<Value>${phase}</Value>"
 	echo "	<Minimum>-3.7</Minimum>"
 	echo "	<Maximum>3.7</Maximum>"
 	echo "	<Type>Float</Type>"

@@ -1,0 +1,8 @@
+<PhysicsParameter>
+	<Name>azero1450_deltazero</Name>
+	<Value>3.14159</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
