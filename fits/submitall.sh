@@ -14,17 +14,17 @@ do
 	for file in $(ls *$2*xml)
 	do
 		submission_script=$(echo "submit_$file" | sed 's/xml/sh/')
-		runtimeoption=$(grep -h --color=never "\-l h_rt=" $file)
-		if [ "$runtimeoption" == "" ]
-		then
-			runtimeoption=" #$ -l h_rt=00:20:00"
-		fi
+#		runtimeoption=$(grep -h --color=never "\-l h_rt=" $file)
+#		if [ "$runtimeoption" == "" ]
+#		then
+			runtimeoption=" #$ -l h_rt=04:00:00"
+#		fi
 		cat <<-EOF > ${submission_script}
 		#!/bin/bash
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		$runtimeoption
 		#$ -l h_vmem=1G
-		#$ -pe mpi 16
+		#$ -pe mpi 4
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
 		# Re-make the XML file to pick up the number of threads this machine has

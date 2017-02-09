@@ -9,6 +9,11 @@ function warning
 }
 # SGE/OGE job options
 declare -a joboptions
+# Is this a batch job or not?
+if [ -z "$NSLOTS" ]
+then
+	NSLOTS=$(nproc)
+fi
 # List of resonances to eventually go in a ConfigurationParameter
 declare -a resonances
 declare -a widths
@@ -188,7 +193,7 @@ for file in "${fitfunction[@]}"
 do
 	parsefile $file 2
 done
-echo "		<Threads>$(nproc)</Threads>"
+echo "		<Threads>${NSLOTS}</Threads>"
 echo "	</FitFunction>"
 echo "	<CommonPhaseSpace>"
 echo "		<PhaseSpaceBoundary>"
@@ -230,7 +235,7 @@ for file in "${output[@]}"
 do
 	echo "		<ComponentProjection>"
 	parsefile $file 3
-	echo "		  <Threads>$(nproc)</Threads>"
+	echo "		  <Threads>${NSLOTS}</Threads>"
 	if [ ${#resonances[@]} -gt 1 ]
 	then
 		if [ ${#widths[@]} -eq ${#resonances[@]} ]
