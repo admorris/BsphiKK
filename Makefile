@@ -53,13 +53,16 @@ $(COMMONDIR) :
 	make -C $@
 # Build binaries
 $(BINDIR)/% : $(OBJDIR)/$(BINSRCDIR)/%.$(OBJEXT) $(LIBS) | $(COMMONDIR) $(BINDIR)
-	$(CC) $< -o $@ $(LIBFLAGS)
+	@echo "Linking $@"
+	@$(CC) $< -o $@ $(LIBFLAGS)
 # Build libraries
 $(LIBDIR)/lib%.$(LIBEXT) : $(OBJDIR)/$(LIBSRCDIR)/%.$(OBJEXT) $(HDRS) | $(COMMONDIR) $(LIBDIR)
-	$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
+	@echo "Making shared object $@"
+	@$(CC) -shared $< -o $@ -Wl,--as-needed $(COMLIBFLAGS) $(ROOTLIBS) $(EXTRA_ROOTLIBS)
 # Build objects
 $(OBJDIR)/%.$(OBJEXT) : $(SRCDIR)/%.$(SRCEXT) $(HDRS) $(COMHDRS) | $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR)
-	$(CC) $(CXXFLAGS) -c $< -o $@
+	@echo "Compiling $@"
+	@$(CC) $(CXXFLAGS) -c $< -o $@
 # Make directories
 $(LOGDIRS) $(BINDIR) $(LIBDIR) $(OBJDIR) $(OBJDIR)/$(LIBSRCDIR) $(OBJDIR)/$(BINSRCDIR) :
 	mkdir -p $@
