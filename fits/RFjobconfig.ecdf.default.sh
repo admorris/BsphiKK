@@ -3,4 +3,5 @@
 export RapidFitDir=~/RapidFit
 export ParallelEnv="#$ -pe sharedmem 4"
 # Load ROOT and TexLive
-alias SetupEnvironment=". /etc/profile.d/modules.sh;module load root;module load igmm/apps/texlive"
+export SetupEnvironment=". /etc/profile.d/modules.sh;module load root;module load igmm/apps/texlive"
+

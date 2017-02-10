@@ -13,10 +13,11 @@ cat <<-EOF > ${submission_script}
 	# Hard runtime limit
 	#$ -l h_rt=00:10:00
 	source $currentdir/RFjobconfig.sh
-	SetupEnvironment
+	$SetupEnvironment
 	cd \$RapidFitDir
 	make -j
 	EOF
 # Submit the job
 qsub ${submission_script}
 rm ${submission_script}
+
