@@ -1,5 +1,6 @@
 #!/bin/bash
 # Usage: submitall.sh [<folder>] [<pattern to match>] [<extra RapidFit options>]
+source RFjobconfig.sh
 make -C modules -j
 currentdir=$(pwd)
 if [ "$1" == "" ]
@@ -24,13 +25,14 @@ do
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		$runtimeoption
 		#$ -l h_vmem=1G
-		#$ -pe mpi 4
+		$ParallelEnv
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
 		# Re-make the XML file to pick up the number of threads this machine has
 		rm $file && make -C $currentdir/modules ../$folder/$file
 		# Set up the environment
 		source $currentdir/RFjobconfig.sh
+		SetupEnvironment
 		export PATH=\$PATH:\$RapidFitDir/bin
 		# Move to the right folder
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
