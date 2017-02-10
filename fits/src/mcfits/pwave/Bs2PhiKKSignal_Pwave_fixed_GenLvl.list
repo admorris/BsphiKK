@@ -1,5 +1,5 @@
 pdf/default.xml
-minimiser/minuit2.xml
+minimiser/minuit.xml
 fitfunction/default.xml
 dataset/pwave_gen.xml
 parameterset/resonances/phi1020_fixed.xml
