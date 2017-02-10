@@ -32,7 +32,9 @@ do
 		rm $file && make -C $currentdir/modules ../$folder/$file
 		# Set up the environment
 		source $currentdir/RFjobconfig.sh
-		$SetupEnvironment
+		EOF
+		echo -e "$SetupEnvironment" >> ${submission_script}
+		cat <<-EOF >> ${submission_script}
 		export PATH=\$PATH:\$RapidFitDir/bin
 		# Move to the right folder
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
