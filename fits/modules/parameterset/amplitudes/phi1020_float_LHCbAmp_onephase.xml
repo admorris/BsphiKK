@@ -16,9 +16,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltaperp</Name>
-	<Value>2.67</Value> # 2.67+-0.23
-	<Minimum>1.87</Minimum>
-	<Maximum>3.47</Maximum>
+	<Value>0.0</Value> # Fix 0
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
