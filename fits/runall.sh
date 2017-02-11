@@ -13,10 +13,11 @@ do
 	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
 	do
-                mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
-                cd FitResult_$(echo $file | sed 's/\.xml//g')
+		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
+		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		fitting -f ../$file $3 | tee RapidFitOutput-$(date +"%Y%m%d_%H%M%S").log
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
+		cd ..
 	done
 done
