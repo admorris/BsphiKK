@@ -12,9 +12,6 @@ parameterset/amplitudes/fzero980_float.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
-parameterset/fractions/ftwo1270_float.xml
-parameterset/amplitudes/ftwo1270_float.xml
-parameterset/resonances/ftwo1270_fixed.xml
 parameterset/fractions/atwo1320_float.xml
 parameterset/amplitudes/atwo1320_float.xml
 parameterset/resonances/atwo1320_fixed.xml
