@@ -46,7 +46,8 @@ KpPIDval="0.01"
 KpiPIDcut="Kminus_ProbNNk*(1-Kminus_ProbNNpi)>${KpiPIDval}&&Kplus_ProbNNk*(1-Kplus_ProbNNpi)>${KpiPIDval}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>${KpiPIDval}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>${KpiPIDval}"
 KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>${KpPIDval}&&Kminus_ProbNNk*(1-Kminus_ProbNNp)>${KpPIDval}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${KpPIDval}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${KpPIDval}"
 #Monte Carlo background category
-BKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
+signalBKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
+misIDBKGCATcut="(B_s0_BKGCAT==30)"
 ###############################################################################
 phikstveto="(TMath::Abs(phiKpluspiminusM-${Bdmass})>${Bdwindow}&&TMath::Abs(KpluspiminusM-${Kstmass})>${Kstwindow}&&TMath::Abs(phiKminuspiplusM-${Bdmass})>${Bdwindow}&&TMath::Abs(KminuspiplusM-${Kstmass})>${Kstwindow})||(((TMath::Abs(phiKpluspiminusM-${Bdmass})<${Bdwindow}||TMath::Abs(KpluspiminusM-${Kstmass})<${Kstwindow})&&Kminus0_ProbNNk>Kminus0_ProbNNpi)&&((TMath::Abs(phiKminuspiplusM-${Bdmass})<${Bdwindow}||TMath::Abs(KminuspiplusM-${Kstmass})<${Kstwindow})&&Kplus0_ProbNNk>Kplus0_ProbNNpi))"
 LbphiKpveto="(TMath::Abs(phiKpluspbarM-${Lbmass})>${Lbwindow}&&TMath::Abs(phiKminuspM-${Lbmass})>${Lbwindow})||(((TMath::Abs(phiKpluspbarM-${Lbmass})<${Lbwindow})&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&((TMath::Abs(phiKminuspM-${Lbmass})<${Lbwindow})&&Kplus0_ProbNNk>Kplus0_ProbNNp))"
