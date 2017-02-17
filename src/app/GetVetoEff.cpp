@@ -15,7 +15,7 @@ void GetVetoEff(string filename, bool save, string DBfilename)
   string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS)";
   Cut_t cuts[] =
   {
-    Cut_t("BdPhiKstar","(TMath::Abs(phiKpluspiminusM-5279.58)>60&&TMath::Abs(KpluspiminusM-891.66)>150&&TMath::Abs(phiKminuspiplusM-5279.58)>60&&TMath::Abs(KminuspiplusM-891.66)>150)||(((TMath::Abs(phiKpluspiminusM-5279.58)<60||TMath::Abs(KpluspiminusM-891.66)<150)&&Kminus0_ProbNNk>Kminus0_ProbNNpi)&&((TMath::Abs(phiKminuspiplusM-5279.58)<60||TMath::Abs(KminuspiplusM-891.66)<150)&&Kplus0_ProbNNk>Kplus0_ProbNNpi))")
+    Cut_t("BdPhiKstar","(TMath::Abs(phiKpluspiminusM-${Bdmass})>${Bdwindow}&&TMath::Abs(phiKminuspiplusM-${Bdmass})>${Bdwindow})||((TMath::Abs(phiKpluspiminusM-${Bdmass})<${Bdwindow}&&Kminus0_ProbNNk>Kminus0_ProbNNpi)&&(TMath::Abs(phiKminuspiplusM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi))")
   , Cut_t("LbPhiKp","(TMath::Abs(phiKpluspbarM-${Lbmass})>${Lbwindow}&&TMath::Abs(phiKminuspM-${Lbmass})>${Lbwindow})||(((TMath::Abs(phiKpluspbarM-${Lbmass})<${Lbwindow})&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&((TMath::Abs(phiKminuspM-${Lbmass})<${Lbwindow})&&Kplus0_ProbNNk>Kplus0_ProbNNp))")
   , Cut_t("LcPhip","TMath::Abs(phipM-2286.46)>24||(TMath::Abs(phipM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&TMath::Abs(phipbarM-2286.46)>24||(TMath::Abs(phipbarM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp) ")
   , Cut_t("DPhiK","TMath::Abs(phiKplusM-1968.3)>24&&TMath::Abs(phiKminusM-1968.3)>24")
