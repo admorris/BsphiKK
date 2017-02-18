@@ -1,0 +1,36 @@
+# shape: peaking
+# style: 1
+# width: 1
+# colour: 1
+<PhysicsParameter>
+	<Name>Bd2PhiKstar_fraction</Name>
+	<Value>0.0</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>10.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>Bd2PhiKstar_mean</Name>
+	<Value>0.0</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>Bd2PhiKstar_sigma</Name>
+	<Value>0.0</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>Bd2PhiKstar_alpha</Name>
+	<Value>0.0</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>Bd2PhiKstar_n</Name>
+	<Value>0.0</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

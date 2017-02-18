@@ -48,7 +48,7 @@ function parsefile # <file> <indentation depth>
 declare phiname
 # empty arrays for required tags, values are paths to XML files containing the tags
 # <PDF> contains a <Name> tag and several <ConfigurationParameter> tagss
-declare -a pdf
+declare -a signalpdf
 # <DataSet> with optional cuts
 declare -a dataset
 # <Output> can contain several <ComponentProjection> tags
@@ -71,9 +71,9 @@ do
 		if [[ $arg == *"joboptions/"* ]]
 		then
 			joboptions+=("$arg")
-		elif [[ $arg == *"pdf/"* ]]
+		elif [[ $arg == *"pdf/Bs2PhiKKSignal/"* ]]
 		then
-			pdf+=("$arg")
+			signalpdf+=("$arg")
 		elif [[ $arg == *"dataset/"* ]]
 		then
 			dataset+=("$arg")
@@ -125,10 +125,10 @@ then
 	warning "No minimiser given. Using default: Minuit"
 	minimiser="minimiser/minuit.xml"
 fi
-if [ ${#pdf[@]} -eq 0 ]
+if [ ${#signalpdf[@]} -eq 0 ]
 then
 	warning "No PDF given. Using default: Bs2PhiKKSignal"
-	pdf+="pdf/default.xml"
+	signalpdf+="pdf/Bs2PhiKKSignal/default.xml"
 fi
 if [ ${#dataset[@]} -eq 0 ]
 then
@@ -205,7 +205,7 @@ echo "		</PhaseSpaceBoundary>"
 echo "	</CommonPhaseSpace>"
 echo "	<ToFit>"
 echo "		<PDF>"
-for file in "${pdf[@]}"
+for file in "${signalpdf[@]}"
 do
 	parsefile $file 3
 done

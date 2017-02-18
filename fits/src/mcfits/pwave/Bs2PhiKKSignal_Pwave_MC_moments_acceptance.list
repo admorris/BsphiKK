@@ -1,7 +1,7 @@
-pdf/default.xml
-pdf/mKKresolution.xml
+pdf/Bs2PhiKKSignal/default.xml
+pdf/Bs2PhiKKSignal/mKKresolution.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-pdf/moments_acceptance.xml
+pdf/Bs2PhiKKSignal/moments_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 dataset/pwave_MC.xml
