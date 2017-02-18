@@ -10,7 +10,10 @@ for mode in ${modes[@]}
 do
   if [ "$mode" == "Bsphiphi_MC"  -o  "$mode" == "BsphiKK_MC" ]
   then
-    applied_cut="${totalcut}&&${BKGCATcut}&&${BsMcut}"
+    applied_cut="${totalcut}&&${signalBKGCATcut}&&${BsMcut}"
+  elif [[ "$mode" == *"_MC" ]]
+  then
+    applied_cut="${totalcut}&&${misIDBKGCATcut}&&${BsMcut}"
   elif [ "$mode" == "BsphiKK_sideband" ]
   then
     applied_cut="${totalcut}"

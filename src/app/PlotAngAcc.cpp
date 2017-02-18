@@ -31,7 +31,7 @@ void PlotAngAcc(string filename)
                         , "cos #it{#theta_{2}}"
                         };
   string unit[4] = { " MeV/#it{c}^{2}", "", "", "" };
-  double minima[4] = {0.988, -M_PI, -1, -1};
+  double minima[4] = {0.980, -M_PI, -1, -1};
   double maxima[4] = {1.800, +M_PI, +1, +1};
   int nbins[4] = {30, 30, 30, 30};
   map<string,string> titlemap;
@@ -41,8 +41,9 @@ void PlotAngAcc(string filename)
   {
     titlemap[varname[i]] = axistitle[i];
     TCanvas canv1d((varname[i]+"1Dplot").c_str(),"",1200,900);
+    int nsamples = 10;
     TH1D AccData((varname[i]+"AccData").c_str(),"",nbins[i],minima[i],maxima[i]);
-    TH1D AccProj((varname[i]+"AccProj").c_str(),"",nbins[i],minima[i],maxima[i]);
+    TH1D AccProj((varname[i]+"AccProj").c_str(),"",nbins[i]*nsamples,minima[i],maxima[i]);
     canv1d.SetFillColor(kWhite);
     TPad pad;
     // left right bottom top
@@ -64,8 +65,9 @@ void PlotAngAcc(string filename)
     AccData.SetMarkerSize(1);
     AccData.SetMarkerStyle(8);
     AccData.SetMarkerColor(kBlack);
-    sampledtree->Draw((varname[i]+">>"+AccProj.GetName()).c_str(),"weight","HIST SAME C");
-    AccProj.Scale(1./AccProj.Integral());
+    string option = varname[i] == "mKK" ? "HIST SAME L" : "HIST SAME C";
+    sampledtree->Draw((varname[i]+">>"+AccProj.GetName()).c_str(),"weight",option.c_str());
+    AccProj.Scale((double)nsamples/AccProj.Integral());
     AccProj.SetLineColor(kRed);
     AccProj.SetLineWidth(2);
     AccProj.SetMarkerSize(0);

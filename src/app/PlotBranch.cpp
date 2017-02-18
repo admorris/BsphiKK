@@ -15,6 +15,7 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
 {
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
   frame->SetMaximum(frame->GetMaximum()*1.3);
+  frame->SetMinimum(0);
   plotmaker plotter(frame);
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("E1");

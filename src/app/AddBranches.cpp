@@ -155,30 +155,38 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   TLorentzVector phiKplusP;   double phiKplusM;         outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
   TLorentzVector phiKminusP;  double phiKminusM;        outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
   // phi pipi
-  TLorentzVector phipipiP;    double phipipiM;          outtree->Branch("phipipiM",   &phipipiM,   "phipipiM/D"   );
-  TLorentzVector pipiP;       double pipiM;             outtree->Branch("pipiM",      &pipiM,      "pipiM/D"      );
-  TLorentzVector phipiplusP;  double phipiplusM;        outtree->Branch("phipiplusM", &phipiplusM, "phipiplusM/D" );
-  TLorentzVector phipiminusP; double phipiminusM;       outtree->Branch("phipiminusM",&phipiminusM,"phipiminusM/D");
+  TLorentzVector phipipiP;    double phipipiM;    outtree->Branch("phipipiM",    &phipipiM,    "phipipiM/D"   );
+  TLorentzVector pipiP;       double pipiM;       outtree->Branch("pipiM",       &pipiM,       "pipiM/D"      );
+  TLorentzVector phipiplusP;  double phipiplusM;  outtree->Branch("phipiplusM",  &phipiplusM,  "phipiplusM/D" );
+  TLorentzVector phipiminusP; double phipiminusM; outtree->Branch("phipiminusM", &phipiminusM, "phipiminusM/D");
   // phi K pi
-  TLorentzVector KpiP;        double KpiM;              outtree->Branch("KpiM",       &KpiM,       "KpiM/D"       );
-  TLorentzVector phiKpiP;     double phiKpiM;           outtree->Branch("phiKpiM",    &phiKpiM,    "phiKpiM/D"    );
+  TLorentzVector KpiP;             double KpiM;             outtree->Branch("KpiM",             &KpiM,             "KpiM/D"            );
+  TLorentzVector KpluspiminusP;    double KpluspiminusM;    outtree->Branch("KpluspiminusM",    &KpluspiminusM,    "KpluspiminusM/D"   );
+  TLorentzVector KminuspiplusP;    double KminuspiplusM;    outtree->Branch("KminuspiplusM",    &KminuspiplusM,    "KminuspiplusM/D"   );
+  TLorentzVector phiKpiP;          double phiKpiM;          outtree->Branch("phiKpiM",          &phiKpiM,          "phiKpiM/D"         );
+  TLorentzVector phiKpluspiminusP; double phiKpluspiminusM; outtree->Branch("phiKpluspiminusM", &phiKpluspiminusM, "phiKpluspiminusM/D");
+  TLorentzVector phiKminuspiplusP; double phiKminuspiplusM; outtree->Branch("phiKminuspiplusM", &phiKminuspiplusM, "phiKminuspiplusM/D");
   // phi K p
-  TLorentzVector phipP;       double phipM;             outtree->Branch("phipM",      &phipM,      "phipM/D"      );
-  TLorentzVector phipbarP;    double phipbarM;          outtree->Branch("phipbarM",   &phipbarM,   "phipbarM/D"   );
-  TLorentzVector KpP;         double KpM;               outtree->Branch("KpM",        &KpM,        "KpM/D"        );
-  TLorentzVector phiKpP;      double phiKpM;            outtree->Branch("phiKpM",     &phiKpM,     "phiKpM/D"     );
+  TLorentzVector phipP;         double phipM;         outtree->Branch("phipM",         &phipM,         "phipM/D"        );
+  TLorentzVector phipbarP;      double phipbarM;      outtree->Branch("phipbarM",      &phipbarM,      "phipbarM/D"     );
+  TLorentzVector KpP;           double KpM;           outtree->Branch("KpM",           &KpM,           "KpM/D"          );
+  TLorentzVector KpluspbarP;    double KpluspbarM;    outtree->Branch("KpluspbarM",    &KpluspbarM,    "KpluspbarM/D"   );
+  TLorentzVector KminuspP;      double KminuspM;      outtree->Branch("KminuspM",      &KminuspM,      "KminuspM/D"     );
+  TLorentzVector phiKpP;        double phiKpM;        outtree->Branch("phiKpM",        &phiKpM,        "phiKpM/D"       );
+  TLorentzVector phiKpluspbarP; double phiKpluspbarM; outtree->Branch("phiKpluspbarM", &phiKpluspbarM, "phiKpluspbarM/D");
+  TLorentzVector phiKminuspP;   double phiKminuspM;   outtree->Branch("phiKminuspM",   &phiKminuspM,   "phiKminuspM/D"  );
   // phi pi p
-  TLorentzVector pipP;        double pipM;              outtree->Branch("pipM",       &pipM,       "pipM/D"       );
-  TLorentzVector pipbarP;     double pipbarM;           outtree->Branch("pipbarM",    &pipbarM,    "pibarM/D"     );
-  TLorentzVector phipipP;     double phipipM;           outtree->Branch("phipipM",    &phipipM,    "phipipM/D"    );
-  TLorentzVector phipipbarP;  double phipipbarM;        outtree->Branch("phipipbarM", &phipipbarM, "phipipbarM/D" );
+  TLorentzVector pipP;       double pipM;       outtree->Branch("pipM",       &pipM,       "pipM/D"       );
+  TLorentzVector pipbarP;    double pipbarM;    outtree->Branch("pipbarM",    &pipbarM,    "pibarM/D"     );
+  TLorentzVector phipipP;    double phipipM;    outtree->Branch("phipipM",    &phipipM,    "phipipM/D"    );
+  TLorentzVector phipipbarP; double phipipbarM; outtree->Branch("phipipbarM", &phipipbarM, "phipipbarM/D" );
   // PID variables for tracks identified as something else
-  double pion_ProbNNk;    outtree->Branch("pion_ProbNNk",   &pion_ProbNNk,   "pion_ProbNNk/D" );
-  double pion_ProbNNpi;   outtree->Branch("pion_ProbNNpi",  &pion_ProbNNpi,  "pion_ProbNNpi/D");
-  double pion_ProbNNp;    outtree->Branch("pion_ProbNNp",   &pion_ProbNNp,   "pion_ProbNNp/D" );
-  double proton_ProbNNk;  outtree->Branch("proton_ProbNNk", &proton_ProbNNk, "proton_ProbNNk/D" );
-  double proton_ProbNNpi; outtree->Branch("proton_ProbNNpi",&proton_ProbNNpi,"proton_ProbNNpi/D");
-  double proton_ProbNNp;  outtree->Branch("proton_ProbNNp", &proton_ProbNNp, "proton_ProbNNp/D" );
+  double pion_ProbNNk;    outtree->Branch("pion_ProbNNk",    &pion_ProbNNk,    "pion_ProbNNk/D"   );
+  double pion_ProbNNpi;   outtree->Branch("pion_ProbNNpi",   &pion_ProbNNpi,   "pion_ProbNNpi/D"  );
+  double pion_ProbNNp;    outtree->Branch("pion_ProbNNp",    &pion_ProbNNp,    "pion_ProbNNp/D"   );
+  double proton_ProbNNk;  outtree->Branch("proton_ProbNNk",  &proton_ProbNNk,  "proton_ProbNNk/D" );
+  double proton_ProbNNpi; outtree->Branch("proton_ProbNNpi", &proton_ProbNNpi, "proton_ProbNNpi/D");
+  double proton_ProbNNp;  outtree->Branch("proton_ProbNNp",  &proton_ProbNNp,  "proton_ProbNNp/D" );
   // GeV branches
   Double_t phi_1020_LOKI_M_GeV;   outtree->Branch("phi_1020_LOKI_M_GeV", &phi_1020_LOKI_M_GeV, "phi_1020_LOKI_M_GeV/D");
   Double_t KK_LOKI_M_GeV;         outtree->Branch("KK_LOKI_M_GeV"      , &KK_LOKI_M_GeV      , "KK_LOKI_M_GeV/D"      );
@@ -266,12 +274,22 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     phipiminusP = hP[0] + hP[1] + pionP;
     phipiminusM = phipiminusP.M();
     phipipiP    = phipiminusP; // 3/4 of phi pi pi 4momentum
+    // phi K+ pi-
+    phiKpluspiminusP = phiKplusP + pionP;
+    phiKpluspiminusM = phiKpluspiminusP.M();
+    KpluspiminusP    = hP[3] + pionP;
+    KpluspiminusM    = KpluspiminusP.M();
     // phi pi+
     pionP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pimass);
     pipiP     += pionP; // Other half of the pi pi 4momentum
     phipipiP  += pionP; // Other 1/4 of the phi pi pi 4momentum
     phipiplusP = hP[0] + hP[1] + pionP;
     phipiplusM = phipiplusP.M();
+    // phi K- pi+
+    phiKminuspiplusP = phiKminusP + pionP;
+    phiKminuspiplusM = phiKminuspiplusP.M();
+    KminuspiplusP    = hP[2] + pionP;
+    KminuspiplusM    = KminuspiplusP.M();
     // phi pi pi and pi pi
     phipipiM   = phipipiP.M();
     pipiM      = pipiP.M();
@@ -304,10 +322,20 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     protonP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pmass);
     phipP = hP[0] + hP[1] + protonP;
     phipM = phipP.M();
+    // phi K+ anti-proton
+    phiKpluspbarP = phiKplusP + protonP;
+    phiKpluspbarM = phiKpluspbarP.M();
+    KpluspbarP    = hP[3] + protonP;
+    KpluspbarM    = KpluspbarP.M();
     // phi anti-proton
     protonP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pmass);
     phipbarP = hP[0] + hP[1] + protonP;
     phipbarM = phipbarP.M();
+    // phi K− proton
+    phiKminuspP = phiKminusP + protonP;
+    phiKminuspM = phiKminuspP.M();
+    KminuspP    = hP[2] + protonP;
+    KminuspM    = KminuspP.M();
     // phi pi− proton
     protonP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pmass);
     pionP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pimass);
