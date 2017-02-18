@@ -15,15 +15,10 @@ do
 	for file in $(ls *$2*xml)
 	do
 		submission_script=$(echo "submit_$file" | sed 's/xml/sh/')
-#		runtimeoption=$(grep -h --color=never "\-l h_rt=" $file)
-#		if [ "$runtimeoption" == "" ]
-#		then
-			runtimeoption=" #$ -l h_rt=04:00:00"
-#		fi
 		cat <<-EOF > ${submission_script}
 		#!/bin/bash
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
-		$runtimeoption
+		#$ -l h_rt=24:00:00
 		#$ -l h_vmem=1G
 		$ParallelEnv
 		#$ -cwd
