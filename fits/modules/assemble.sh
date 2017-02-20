@@ -47,8 +47,9 @@ function parsefile # <file> <indentation depth>
 # Name of the phi parameters, needed for p1*p3 etc.
 declare phiname
 # empty arrays for required tags, values are paths to XML files containing the tags
-# <PDF> contains a <Name> tag and several <ConfigurationParameter> tagss
+# <PDF> contains a <Name> tag and several <ConfigurationParameter> tags
 declare -a signalpdf
+declare -a backgroundpdf
 # <DataSet> with optional cuts
 declare -a dataset
 # <Output> can contain several <ComponentProjection> tags
@@ -71,9 +72,12 @@ do
 		if [[ $arg == *"joboptions/"* ]]
 		then
 			joboptions+=("$arg")
-		elif [[ $arg == *"pdf/Bs2PhiKKSignal/"* ]]
+		elif [[ $arg == *"pdf/signal/"* ]]
 		then
 			signalpdf+=("$arg")
+		elif [[ $arg == *"pdf/background/"* ]]
+		then
+			backgroundpdf+=("$arg")
 		elif [[ $arg == *"dataset/"* ]]
 		then
 			dataset+=("$arg")
@@ -125,7 +129,7 @@ then
 	warning "No minimiser given. Using default: Minuit"
 	minimiser="minimiser/minuit.xml"
 fi
-if [ ${#signalpdf[@]} -eq 0 ]
+if [ ${#signalpdf[@]} -eq 0 && ${#backgroundpdf[@]} -eq 0 ]
 then
 	warning "No PDF given. Using default: Bs2PhiKKSignal"
 	signalpdf+="pdf/Bs2PhiKKSignal/default.xml"
@@ -179,15 +183,18 @@ do
 cat $file # every line of these files should start with a # character, which makes it ignored by RapidFit and it only picked up by the job submission script
 done
 echo "<RapidFit>"
+# Build the parameter set
 echo "	<ParameterSet>"
 for file in "${parameterset[@]}"
 do
 	parsefile $file 2
 done
 echo "	</ParameterSet>"
+# Choose the minimiser
 echo "	<Minimiser>"
 parsefile $minimiser 2
 echo "	</Minimiser>"
+# Build the fit function
 echo "	<FitFunction>"
 for file in "${fitfunction[@]}"
 do
@@ -195,6 +202,7 @@ do
 done
 echo "		<Threads>${NSLOTS}</Threads>"
 echo "	</FitFunction>"
+# Build the phase space boundary
 echo "	<CommonPhaseSpace>"
 echo "		<PhaseSpaceBoundary>"
 for file in "${phasespaceboundary[@]}"
@@ -204,14 +212,37 @@ done
 echo "		</PhaseSpaceBoundary>"
 echo "	</CommonPhaseSpace>"
 echo "	<ToFit>"
-echo "		<PDF>"
-for file in "${signalpdf[@]}"
-do
-	parsefile $file 3
-done
-echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
-echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
-echo "		</PDF>"
+# Build the PDF
+if [ ${#signalpdf[@]} -gt 0 && ${#backgroundpdf[@]} -gt 0 ]
+	echo "	<NormalisedSumPDF>"
+	echo "		<FractionName>signal_fraction</FractionName>"
+fi
+# Build the signal PDF
+if [ ${#signalpdf[@]} -gt 0 ]
+	echo "		<PDF>"
+	for file in "${signalpdf[@]}"
+	do
+		parsefile $file 3
+	done
+	echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
+	echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
+	echo "		</PDF>"
+	echo "		<DataSet>"
+fi
+# Build the background PDF
+if [ ${#backgroundpdf[@]} -gt 0 ]
+	echo "		<PDF>"
+	for file in "${backgroundpdf[@]}"
+	do
+		parsefile $file 3
+	done
+	echo "			<ConfigurationParameter>components:${bkglist}</ConfigurationParameter>"
+	echo "		</PDF>"
+fi
+if [ ${#signalpdf[@]} -gt 0 && ${#backgroundpdf[@]} -gt 0 ]
+	echo "	</NormalisedSumPDF>"
+fi
+# Build the dataset
 echo "		<DataSet>"
 for file in "${dataset[@]}"
 do
@@ -220,6 +251,7 @@ done
 echo "			<CommonPhaseSpace>"
 echo "			</CommonPhaseSpace>"
 echo "		</DataSet>"
+# Optional external constraint functions
 if [ ! ${#constraintfunction[@]} -eq 0 ]
 then
 	echo "		<ConstraintFunction>"
@@ -230,6 +262,7 @@ then
 	echo "		</ConstraintFunction>"
 fi
 echo "	</ToFit>"
+# Build the output projections
 echo "	<Output>"
 for file in "${output[@]}"
 do

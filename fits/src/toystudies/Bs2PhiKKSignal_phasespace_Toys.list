@@ -1,4 +1,4 @@
-pdf/Bs2PhiKKSignal/default.xml
+pdf/signal/default.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit.xml
 fitfunction/default.xml
