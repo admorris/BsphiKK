@@ -4,10 +4,8 @@
 # colour: 1
 <PhysicsParameter>
 	<Name>combinatorial_fraction</Name>
-	<Value>0.0</Value>
-	<Minimum>0.0</Minimum>
-	<Maximum>10.0</Maximum>
-	<Type>Float</Type>
+	<Value>1.0</Value>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
