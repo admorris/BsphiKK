@@ -16,9 +16,14 @@ then
 fi
 # List of resonances to eventually go in a ConfigurationParameter
 declare -a resonances
-declare -a widths
-declare -a styles
-declare -a colours
+declare -a sigwidths
+declare -a sigstyles
+declare -a sigcolours
+# List of background components
+declare -a components
+declare -a bkgwidths
+declare -a bkgstyles
+declare -a bkgcolours
 function getoption # <file> <option>
 {
 	while IFS= read line
@@ -102,9 +107,17 @@ do
 				# The first line should contain the spin and resonance shape
 				particle=$(echo $arg | sed -r 's/.*fractions\/([a-zA-Z0-9]*)_.*/\1/g')
 				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
-				widths+=("$(getoption $arg width)")
-				styles+=("$(getoption $arg style)")
-				colours+=("$(getoption $arg colour)")
+				sigwidths+=("$(getoption $arg width)")
+				sigstyles+=("$(getoption $arg style)")
+				sigcolours+=("$(getoption $arg colour)")
+			elif [[ $arg == *"backgrounds/"* ]]
+			then
+				# The first line should contain the spin and resonance shape
+				particle=$(echo $arg | sed -r 's/.*fractions\/([a-zA-Z0-9]*)_.*/\1/g')
+				components+=("${particle}($(getoption $arg shape))")
+				sigwidths+=("$(getoption $arg width)")
+				sigstyles+=("$(getoption $arg style)")
+				sigcolours+=("$(getoption $arg colour)")
 			fi
 		elif [[ $arg == *"constraintfunction/"* ]]
 		then

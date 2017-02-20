@@ -1,0 +1,5 @@
+<PhysicsParameter>
+	<Name>signal_fraction</Name>
+	<Value>0.95</Value>
+	<Type>Fixed</Type>
+</PhysicsParameter>
