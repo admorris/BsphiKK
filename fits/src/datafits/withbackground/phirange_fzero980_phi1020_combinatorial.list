@@ -7,6 +7,7 @@ pdf/background/combinatorial_moments.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 dataset/data_mva.xml
+parameterset/signal_fraction_fixed.xml
 parameterset/fractions/fzero980_float.xml
 parameterset/resonances/fzero980_fixed.xml
 parameterset/amplitudes/fzero980_float.xml
@@ -17,7 +18,6 @@ parameterset/deltaGammas_fixed.xml
 parameterset/backgrounds/combinatorial.xml
 phasespaceboundary/mKK_BCON_phi.xml
 phasespaceboundary/angles_BCON.xml
-phasespaceboundary/sweight.xml
 output/phirange.xml
 output/phi.xml
 output/ctheta_1.xml

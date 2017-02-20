@@ -265,7 +265,6 @@ then
 	echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
 	echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
 	echo "		</PDF>"
-	echo "		<DataSet>"
 fi
 # Build the background PDF
 if [[ ${#backgroundpdf[@]} -gt 0 ]]
