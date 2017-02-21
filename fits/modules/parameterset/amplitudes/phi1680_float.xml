@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>phi1680_Aperpsq</Name>
-	<Value>0.495</Value>
+	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
@@ -8,7 +8,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1680_Azerosq</Name>
-	<Value>0.010</Value>
+	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>

@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>phi1020_mass</Name>
+	<Value>1.019461</Value>
+	<Minimum>0.988</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Float</Type>#Please don't float this without Gaussian constraints!
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>phi1020_width</Name>
+	<Value>0.004266</Value>
+	<Minimum>0</Minimum>
+	<Maximum>.0063990</Maximum>
+	<Type>Float</Type>
+	<Unit>Fixed</Unit>
+</PhysicsParameter>
