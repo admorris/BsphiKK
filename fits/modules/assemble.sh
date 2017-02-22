@@ -10,15 +10,20 @@ function warning
 # SGE/OGE job options
 declare -a joboptions
 # Is this a batch job or not?
-if [ -z "$NSLOTS" ]
+if [[ -z "$NSLOTS" ]]
 then
 	NSLOTS=$(nproc)
 fi
 # List of resonances to eventually go in a ConfigurationParameter
 declare -a resonances
-declare -a widths
-declare -a styles
-declare -a colours
+declare -a sigwidths
+declare -a sigstyles
+declare -a sigcolours
+# List of background components
+declare -a components
+declare -a bkgwidths
+declare -a bkgstyles
+declare -a bkgcolours
 function getoption # <file> <option>
 {
 	while IFS= read line
@@ -47,8 +52,9 @@ function parsefile # <file> <indentation depth>
 # Name of the phi parameters, needed for p1*p3 etc.
 declare phiname
 # empty arrays for required tags, values are paths to XML files containing the tags
-# <PDF> contains a <Name> tag and several <ConfigurationParameter> tagss
-declare -a pdf
+# <PDF> contains a <Name> tag and several <ConfigurationParameter> tags
+declare -a signalpdf
+declare -a backgroundpdf
 # <DataSet> with optional cuts
 declare -a dataset
 # <Output> can contain several <ComponentProjection> tags
@@ -66,14 +72,17 @@ declare -a fitfunction
 # read the arguments into arrays
 for arg in "$@"
 do
-	if [ -e "$arg" ]
+	if [[ -e "$arg" ]]
 	then
 		if [[ $arg == *"joboptions/"* ]]
 		then
 			joboptions+=("$arg")
-		elif [[ $arg == *"pdf/"* ]]
+		elif [[ $arg == *"pdf/signal/"* ]]
 		then
-			pdf+=("$arg")
+			signalpdf+=("$arg")
+		elif [[ $arg == *"pdf/background/"* ]]
+		then
+			backgroundpdf+=("$arg")
 		elif [[ $arg == *"dataset/"* ]]
 		then
 			dataset+=("$arg")
@@ -98,9 +107,17 @@ do
 				# The first line should contain the spin and resonance shape
 				particle=$(echo $arg | sed -r 's/.*fractions\/([a-zA-Z0-9]*)_.*/\1/g')
 				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
-				widths+=("$(getoption $arg width)")
-				styles+=("$(getoption $arg style)")
-				colours+=("$(getoption $arg colour)")
+				sigwidths+=("$(getoption $arg width)")
+				sigstyles+=("$(getoption $arg style)")
+				sigcolours+=("$(getoption $arg colour)")
+			elif [[ $arg == *"backgrounds/"* ]]
+			then
+				# The first line should contain the spin and resonance shape
+				particle=$(echo $arg | sed -r 's/.*backgrounds\/([a-zA-Z0-9]*)\.xml/\1/g')
+				components+=("${particle}($(getoption $arg shape))")
+				bkgwidths+=("$(getoption $arg width)")
+				bkgstyles+=("$(getoption $arg style)")
+				bkgcolours+=("$(getoption $arg colour)")
 			fi
 		elif [[ $arg == *"constraintfunction/"* ]]
 		then
@@ -120,32 +137,32 @@ do
 	fi
 done
 # test that the required files have been given
-if [ -z "$minimiser" ]
+if [[ -z "$minimiser" ]]
 then
 	warning "No minimiser given. Using default: Minuit"
 	minimiser="minimiser/minuit.xml"
 fi
-if [ ${#pdf[@]} -eq 0 ]
+if [[ ${#signalpdf[@]} -eq 0 && ${#backgroundpdf[@]} -eq 0 ]]
 then
 	warning "No PDF given. Using default: Bs2PhiKKSignal"
-	pdf+="pdf/default.xml"
+	signalpdf+="pdf/Bs2PhiKKSignal/default.xml"
 fi
-if [ ${#dataset[@]} -eq 0 ]
+if [[ ${#dataset[@]} -eq 0 ]]
 then
 	error "You must provide a DataSet"
 	exit 1
 fi
-if [ ${#phasespaceboundary[@]} -eq 0 ]
+if [[ ${#phasespaceboundary[@]} -eq 0 ]]
 then
 	error "You must provide a PhaseSpaceBoundary"
 	exit 1
 fi
-if [ ${#parameterset[@]} -eq 0 ]
+if [[ ${#parameterset[@]} -eq 0 ]]
 then
 	error "You must provide a ParameterSet"
 	exit 1
 fi
-if [ ${#fitfunction[@]} -eq 0 ]
+if [[ ${#fitfunction[@]} -eq 0 ]]
 then
 	warning "No FitFunction given. Using default: NegativeLogLikelihoodNumerical"
 	fitfunction+=("fitfunction/default.xml")
@@ -155,19 +172,42 @@ for item in "${resonances[@]}"
 do
 	reslist="${reslist}${item} "
 done
-if [ ${#resonances[@]} -gt 1 ]
+if [[ ${#resonances[@]} -gt 1 ]]
 then
-	for item in "${widths[@]}"
+	for item in "${sigwidths[@]}"
 	do
 		widthlist="${widthlist}${item}:"
 	done
 	widthlist="2:${widthlist}2"
-	for item in "${styles[@]}"
+	for item in "${sigstyles[@]}"
 	do
 		stylelist="${stylelist}${item}:"
 	done
 	stylelist="1:${stylelist}5"
-	for item in "${colours[@]}"
+	for item in "${sigcolours[@]}"
+	do
+		colourlist="${colourlist}${item}:"
+	done
+	colourlist="1:${colourlist}1"
+fi
+# Get the background components options
+for item in "${components[@]}"
+do
+	bkglist="${bkglist}${item} "
+done
+if [[ ${#components[@]} -gt 1 ]]
+then
+	for item in "${bkgwidths[@]}"
+	do
+		widthlist="${widthlist}${item}:"
+	done
+	widthlist="2:${widthlist}2"
+	for item in "${bkgstyles[@]}"
+	do
+		stylelist="${stylelist}${item}:"
+	done
+	stylelist="1:${stylelist}5"
+	for item in "${bkgcolours[@]}"
 	do
 		colourlist="${colourlist}${item}:"
 	done
@@ -179,15 +219,18 @@ do
 cat $file # every line of these files should start with a # character, which makes it ignored by RapidFit and it only picked up by the job submission script
 done
 echo "<RapidFit>"
+# Build the parameter set
 echo "	<ParameterSet>"
 for file in "${parameterset[@]}"
 do
 	parsefile $file 2
 done
 echo "	</ParameterSet>"
+# Choose the minimiser
 echo "	<Minimiser>"
 parsefile $minimiser 2
 echo "	</Minimiser>"
+# Build the fit function
 echo "	<FitFunction>"
 for file in "${fitfunction[@]}"
 do
@@ -195,6 +238,7 @@ do
 done
 echo "		<Threads>${NSLOTS}</Threads>"
 echo "	</FitFunction>"
+# Build the phase space boundary
 echo "	<CommonPhaseSpace>"
 echo "		<PhaseSpaceBoundary>"
 for file in "${phasespaceboundary[@]}"
@@ -204,14 +248,40 @@ done
 echo "		</PhaseSpaceBoundary>"
 echo "	</CommonPhaseSpace>"
 echo "	<ToFit>"
-echo "		<PDF>"
-for file in "${pdf[@]}"
-do
-	parsefile $file 3
-done
-echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
-echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
-echo "		</PDF>"
+# Build the PDF
+if [[ ${#signalpdf[@]} -gt 0 && ${#backgroundpdf[@]} -gt 0 ]]
+then
+	echo "	<NormalisedSumPDF>"
+	echo "		<FractionName>signal_fraction</FractionName>"
+fi
+# Build the signal PDF
+if [[ ${#signalpdf[@]} -gt 0 ]]
+then
+	echo "		<PDF>"
+	for file in "${signalpdf[@]}"
+	do
+		parsefile $file 3
+	done
+	echo "			<ConfigurationParameter>resonances:${reslist}</ConfigurationParameter>"
+	echo "			<ConfigurationParameter>phiname:${phiname}</ConfigurationParameter>"
+	echo "		</PDF>"
+fi
+# Build the background PDF
+if [[ ${#backgroundpdf[@]} -gt 0 ]]
+then
+	echo "		<PDF>"
+	for file in "${backgroundpdf[@]}"
+	do
+		parsefile $file 3
+	done
+	echo "			<ConfigurationParameter>components:${bkglist}</ConfigurationParameter>"
+	echo "		</PDF>"
+fi
+if [[ ${#signalpdf[@]} -gt 0 && ${#backgroundpdf[@]} -gt 0 ]]
+then
+	echo "	</NormalisedSumPDF>"
+fi
+# Build the dataset
 echo "		<DataSet>"
 for file in "${dataset[@]}"
 do
@@ -220,7 +290,8 @@ done
 echo "			<CommonPhaseSpace>"
 echo "			</CommonPhaseSpace>"
 echo "		</DataSet>"
-if [ ! ${#constraintfunction[@]} -eq 0 ]
+# Optional external constraint functions
+if [[ ! ${#constraintfunction[@]} -eq 0 ]]
 then
 	echo "		<ConstraintFunction>"
 	for file in "${constraintfunction[@]}"
@@ -230,25 +301,26 @@ then
 	echo "		</ConstraintFunction>"
 fi
 echo "	</ToFit>"
+# Build the output projections
 echo "	<Output>"
 for file in "${output[@]}"
 do
 	echo "		<ComponentProjection>"
 	parsefile $file 3
 	echo "		  <Threads>${NSLOTS}</Threads>"
-	if [ ${#resonances[@]} -gt 1 ]
+	if [[ ${#resonances[@]} -gt 1 ]]
 	then
-		if [ ${#widths[@]} -eq ${#resonances[@]} ]
+		if [[ ${#sigwidths[@]} -eq ${#resonances[@]} && ${#bkgwidths[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<WidthKey>${widthlist}</WidthKey>"
 		else
 			warning "Only ${#widths[@]} width keys"
 		fi
-		if [ ${#styles[@]} -eq ${#resonances[@]} ]
+		if [[ ${#sigstyles[@]} -eq ${#resonances[@]} && ${#bkgstyles[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<StyleKey>${stylelist}</StyleKey>"
 		fi
-		if [ ${#colours[@]} -eq ${#resonances[@]} ]
+		if [[ ${#sigcolours[@]} -eq ${#resonances[@]} && ${#bkgcolours[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<ColorKey>${colourlist}</ColorKey>"
 		fi

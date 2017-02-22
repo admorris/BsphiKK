@@ -1,0 +1,7 @@
+<PhysicsParameter>
+	<Name>signal_fraction</Name>
+	<Value>1.0</Value>
+	<Type>Float</Type>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
+</PhysicsParameter>

@@ -1,6 +1,6 @@
-pdf/default.xml
-pdf/mKKresolution.xml
-pdf/histogram_acceptance.xml
+pdf/signal/Bs2PhiKK.xml
+pdf/signal/mKKresolution.xml
+pdf/signal/histogram_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 dataset/phasespace_MC_truth.xml
