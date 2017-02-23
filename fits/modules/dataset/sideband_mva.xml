@@ -1,1 +1,4 @@
-<CutString>B_s0_LOKI_Mass>5466.82||5266.82>B_s0_LOKI_Mass</CutString>
+<Source>File</Source>
+<FileName>root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/ntuples/BsphiKK_sideband_mvacut.root</FileName>
+<NTuplePath>DecayTree</NTuplePath>
+<NumberEvents>10000000000000000</NumberEvents>
