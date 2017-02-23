@@ -1,5 +1,5 @@
 pdf/signal/Bs2PhiKK.xml
-pdf/signal/mKKresolution.xml
+pdf/signal/mKKresolution_10pc.xml
 pdf/signal/moments_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
@@ -13,7 +13,6 @@ parameterset/resonances/phi1020_float_mass.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-constraintfunction/phi1020_constraint.xml
 phasespaceboundary/mKK_BCON_phi.xml
 phasespaceboundary/angles_BCON.xml
 phasespaceboundary/sweight.xml
