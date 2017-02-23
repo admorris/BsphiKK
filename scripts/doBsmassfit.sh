@@ -9,15 +9,25 @@ table=../scripts/tables/MassFits.csv
     --pulls \
     --save-results Bsmassfitmvacut \
     --output-file ${table} \
-    --sweight
+ranges=(1080 1200 1350 1450 1550 1650 1800)
+for range in ${ranges[@]}
+do
+cutapplier BsphiKK_data_mvacut.root DecayTree "BCON_KK_M<$range" BsphiKK_data_mvacut_$range.root
 ../bin/BsMassFit \
     -M BsphiKK_MC_mvacut.root \
-    -R BsphiKK_data_mvacut.root \
-    -O ../latex/figs/Bsmassfit_mvacut \
+    -R BsphiKK_data_mvacut_$range.root \
+    -O ../latex/figs/Bsmassfit_mvacut_$range \
     -N B_s0_LOKI_Mass \
     --pulls \
-    --save-results Bsmassfitmvacut \
-    --output-file ${table} \
+    --sweight
+done
+cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" BsphiKK_data_mvacut_phirange.root
+../bin/BsMassFit \
+    -M BsphiKK_MC_mvacut.root \
+    -R BsphiKK_data_mvacut_phirange.root \
+    -O ../latex/figs/Bsmassfit_mvacut_phirange \
+    -N B_s0_LOKI_Mass \
+    --pulls \
     --sweight
 ../bin/BsMassFit \
     -M BsphiKK_MC_mvacut.root \

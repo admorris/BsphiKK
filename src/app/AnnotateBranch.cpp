@@ -18,11 +18,10 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
 {
   using namespace std;
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
-  
   unsigned int n;
   annotation** particles;
 /*****************************************************************************/
-  annotation* KKpeaks[] = 
+  annotation* KKpeaks[] =
   {
     resonance(1019.461,"  #it{#phi}"        )
   , resonance(1864.84 ,"#it{D}^{0}"         )
@@ -32,21 +31,21 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   , resonance(3556.20 ,"#it{#chi}_{#it{c}2}")
   , resonance(3686.109," #psi(2S)"          )
   };
-  annotation* beautymesons[] = 
+  annotation* beautymesons[] =
   {
     resonance(5279.61,"#it{B}^{0}")
   , resonance(5366.79,"#it{B_{s}}^{0}")
   };
-  annotation* beautybaryons[] = 
+  annotation* beautybaryons[] =
   {
     resonance(5619.51,"#it{#Lambda_{b}}^{0}")
   };
-  annotation* charmmesons[] = 
+  annotation* charmmesons[] =
   {
     resonance(1869.61,"#it{D}^{#plus}"    )
   , resonance(1968.30,"#it{D_{s}}^{#plus}")
   };
-  annotation* charmantimesons[] = 
+  annotation* charmantimesons[] =
   {
     resonance(1869.61,"#it{D}^{#minus}"    )
   , resonance(1968.30,"#it{D_{s}}^{#minus}")
@@ -58,6 +57,10 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   annotation* charmantibaryons[] =
   {
     resonance(2286.46,"#it{#bar{#Lambda}_{c}}^{#minus}")
+  };
+  annotation* strangebaryons[] =
+  {
+    resonance(1519.5,"#it{#Lambda}(1520)^{0}")
   };
 /*****************************************************************************/
   bool go = true;
@@ -73,32 +76,37 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   else if(branchname == "phipiplusM" || branchname == "phiKplusM")
   {
     particles = charmmesons;
-    n = sizeof(charmmesons)/sizeof(annotation*);    
+    n = sizeof(charmmesons)/sizeof(annotation*);
   }
   else if(branchname == "phipiminusM" || branchname == "phiKminusM")
   {
     particles = charmantimesons;
-    n = sizeof(charmantimesons)/sizeof(annotation*);  
+    n = sizeof(charmantimesons)/sizeof(annotation*);
   }
-  else if(branchname == "phipM" || branchname == "KpM")
+  else if(branchname == "phipM")
   {
     particles = charmbaryons;
-    n = sizeof(charmbaryons)/sizeof(annotation*);    
+    n = sizeof(charmbaryons)/sizeof(annotation*);
+  }
+  else if(branchname == "KpM")
+  {
+    particles = strangebaryons;
+    n = sizeof(strangebaryons)/sizeof(annotation*);
   }
   else if(branchname == "phipbarM")
   {
     particles = charmantibaryons;
-    n = sizeof(charmantibaryons)/sizeof(annotation*);    
+    n = sizeof(charmantibaryons)/sizeof(annotation*);
   }
   else if(branchname == "phiKpiM" || branchname == "phipipiM" || branchname == "phiphimass" || branchname == "phikstmass")
   {
     particles = beautymesons;
-    n = sizeof(beautymesons)/sizeof(annotation*);    
+    n = sizeof(beautymesons)/sizeof(annotation*);
   }
   else if(branchname == "phiKpM")
   {
     particles = beautybaryons;
-    n = sizeof(beautybaryons)/sizeof(annotation*);    
+    n = sizeof(beautybaryons)/sizeof(annotation*);
   }
   else
   {
@@ -158,7 +166,6 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   }
   canv->SaveAs((plotname+".pdf").c_str());
 }
-
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;

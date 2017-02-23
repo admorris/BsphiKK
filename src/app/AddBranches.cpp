@@ -322,20 +322,20 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     protonP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pmass);
     phipP = hP[0] + hP[1] + protonP;
     phipM = phipP.M();
-    // phi K+ anti-proton
-    phiKpluspbarP = phiKplusP + protonP;
-    phiKpluspbarM = phiKpluspbarP.M();
-    KpluspbarP    = hP[3] + protonP;
-    KpluspbarM    = KpluspbarP.M();
-    // phi anti-proton
-    protonP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pmass);
-    phipbarP = hP[0] + hP[1] + protonP;
-    phipbarM = phipbarP.M();
     // phi K− proton
     phiKminuspP = phiKminusP + protonP;
     phiKminuspM = phiKminuspP.M();
     KminuspP    = hP[2] + protonP;
     KminuspM    = KminuspP.M();
+    // phi anti-proton
+    protonP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pmass);
+    phipbarP = hP[0] + hP[1] + protonP;
+    phipbarM = phipbarP.M();
+    // phi K+ anti-proton
+    phiKpluspbarP = phiKplusP + protonP;
+    phiKpluspbarM = phiKpluspbarP.M();
+    KpluspbarP    = hP[3] + protonP;
+    KpluspbarM    = KpluspbarP.M();
     // phi pi− proton
     protonP.SetXYZM(h_LOKI_PX[3],h_LOKI_PY[3],h_LOKI_PZ[3],pmass);
     pionP.SetXYZM(h_LOKI_PX[2],h_LOKI_PY[2],h_LOKI_PZ[2],pimass);

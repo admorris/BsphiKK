@@ -3,7 +3,7 @@
 # width: 1
 # colour: 1
 <PhysicsParameter>
-	<Name>fzero1370_fraction</Name>
+	<Name>fzero1500LHCb_fraction</Name>
 	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>
