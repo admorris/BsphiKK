@@ -1,8 +1,8 @@
 #!/bin/bash
 Bdmass="5279.58"
-#Kstmass="891.66"
+Kstmass="891.66"
 Bdwindow="60" # Try 60
-#Kstwindow="150"
+Kstwindow="150"
 Lbmass="5619.5"
 Lbwindow="60" # Try 60
 Lcmass="2286.46"
@@ -49,8 +49,8 @@ KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>${KpPIDval}&&Kminus_ProbNNk*(1-Kminus_
 signalBKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
 misIDBKGCATcut="(B_s0_BKGCAT==30)"
 ###############################################################################
-phikstveto="(TMath::Abs(phiKpluspiminusM-${Bdmass})>${Bdwindow}&&TMath::Abs(phiKminuspiplusM-${Bdmass})>${Bdwindow})||((TMath::Abs(phiKpluspiminusM-${Bdmass})<${Bdwindow}&&Kminus0_ProbNNk>Kminus0_ProbNNpi)&&(TMath::Abs(phiKminuspiplusM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi))"
-LbphiKpveto="(TMath::Abs(phiKpluspbarM-${Lbmass})>${Lbwindow}&&TMath::Abs(phiKminuspM-${Lbmass})>${Lbwindow})||(((TMath::Abs(phiKpluspbarM-${Lbmass})<${Lbwindow})&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&((TMath::Abs(phiKminuspM-${Lbmass})<${Lbwindow})&&Kplus0_ProbNNk>Kplus0_ProbNNp))"
+phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
 Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(TMath::Abs(phipbarM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
 DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
 Dtophipiveto="TMath::Abs(phipiplusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiminusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
