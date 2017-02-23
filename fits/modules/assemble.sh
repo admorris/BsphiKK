@@ -113,7 +113,7 @@ do
 			elif [[ $arg == *"backgrounds/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
-				particle=$(echo $arg | sed -r 's/.*backgrounds\/([a-zA-Z0-9]*)\.xml/\1/g')
+				particle=$(echo $arg | sed -r 's/.*backgrounds\/([a-zA-Z0-9]*)(_fixed|_float)?\.xml/\1/g')
 				components+=("${particle}($(getoption $arg shape))")
 				bkgwidths+=("$(getoption $arg width)")
 				bkgstyles+=("$(getoption $arg style)")

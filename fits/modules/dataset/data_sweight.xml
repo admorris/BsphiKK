@@ -1,6 +1,4 @@
 <Source>File</Source>
-#<FileName>root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/ntuples/BsphiKK_data_mvacut_final_Sweighted.root</FileName>
 <FileName>root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/ntuples/BsphiKK_data_mvacut_Sweighted.root</FileName>
 <NTuplePath>DecayTree</NTuplePath>
 <NumberEvents>10000000000000000</NumberEvents>
-<CutString>"Kminus_ProbNNk>Kminus_ProbNNpi&&Kplus_ProbNNk>Kplus_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi&&Kplus0_ProbNNk>Kplus0_ProbNNpi"</CutString>

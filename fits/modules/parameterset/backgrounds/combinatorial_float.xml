@@ -1,0 +1,34 @@
+# shape: combinatorial
+# style: 1
+# width: 1
+# colour: 1
+<PhysicsParameter>
+	<Name>combinatorial_fraction</Name>
+	<Value>1.0</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorial_A</Name>
+	<Value>2.0</Value>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorial_B</Name>
+	<Value>-3.5</Value>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorial_C</Name>
+	<Value>0.01</Value>
+	<Type>Float</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorial_M</Name>
+	<Value>0.987354</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

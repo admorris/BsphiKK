@@ -5,7 +5,7 @@ pdf/signal/moments_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 fitfunction/sweighted.xml
-dataset/data_sweight.xml
+dataset/data_phirange_sweight.xml
 parameterset/fractions/nonres_float.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_fixed.xml
