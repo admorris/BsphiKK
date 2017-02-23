@@ -20,7 +20,6 @@ void CompareBranch(string MCfilename, string CDfilename, string MCbranchname, st
   TH1D*  CDhist = MakeBranchPlot(CDfilename,CDbranchname,CDcuts,CDweight,xlow,xup,nbins);
   MChist->Scale(1./MChist->Integral());
   CDhist->Scale(1./CDhist->Integral());
-  MChist->SetDrawOption("B");
   MChist->SetFillColor(kOrange);
   MChist->SetLineColor(kOrange);
   MChist->SetMaximum(MChist->GetMaximum()*1.3);
@@ -28,7 +27,7 @@ void CompareBranch(string MCfilename, string CDfilename, string MCbranchname, st
   // Draw everything
   plotmaker plotter(MChist);
   plotter.SetTitle(xtitle, unit);
-  TCanvas* plot = plotter.Draw();
+  TCanvas* plot = plotter.Draw("HIST");
   CDhist->Draw("sameE1");
   plot->SaveAs((plotname+".pdf").c_str());
 }
