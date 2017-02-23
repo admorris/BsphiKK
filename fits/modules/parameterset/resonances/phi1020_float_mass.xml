@@ -11,6 +11,6 @@
 	<Value>0.004266</Value>
 	<Minimum>0</Minimum>
 	<Maximum>.0063990</Maximum>
-	<Type>Float</Type>
-	<Unit>Fixed</Unit>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
 </PhysicsParameter>
