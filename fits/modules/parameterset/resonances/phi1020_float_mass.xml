@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>phi1020_mass</Name>
-	<Value>1.019461</Value>
+	<Value>1.02</Value>
 	<Minimum>0.988</Minimum>
 	<Maximum>2.0</Maximum>
 	<Type>Float</Type>#Please don't float this without Gaussian constraints!

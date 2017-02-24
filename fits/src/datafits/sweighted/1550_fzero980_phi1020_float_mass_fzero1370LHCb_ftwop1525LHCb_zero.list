@@ -4,7 +4,7 @@ pdf/signal/moments_acceptance.xml
 minimiser/minuit.xml
 fitfunction/default.xml
 fitfunction/sweighted.xml
-dataset/data_sweight.xml
+dataset/data_1550_sweight.xml
 parameterset/fractions/fzero980_float.xml
 parameterset/resonances/fzero980_fixed.xml
 parameterset/amplitudes/fzero980_float.xml

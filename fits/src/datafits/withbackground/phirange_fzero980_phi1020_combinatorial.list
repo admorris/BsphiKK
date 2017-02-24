@@ -15,7 +15,8 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/deltaGammas_fixed.xml
-parameterset/backgrounds/combinatorial.xml
+parameterset/backgrounds/combinatorial_fixed.xml
+parameterset/backgrounds/combinatorialphi1020_fixed.xml
 phasespaceboundary/mKK_BCON_phi.xml
 phasespaceboundary/angles_BCON.xml
 output/phirange.xml
