@@ -75,14 +75,11 @@ void GetResolution(string filename, vector<string> particlename, string branchna
 //  RooGaussian* model = new RooGaussian("model","",*x,mean,sigma);
 //  model->fitTo(*data);
   MassFitter* ResFit = new MassFitter(x);
-  Component* ResMod = ResFit->AddComponent("Resolution","Double Gaussian");
+  Component* ResMod = ResFit->AddComponent("Resolution","Single Gaussian");
   ResMod->SetRange("mean",-10,10);
   ResMod->FixValue("mean",0);
-  ResMod->SetRange("fgaus1",0,1);
   ResMod->SetRange("sigma1",0,20);
-  ResMod->SetValue("sigma1",4.6);
-  ResMod->SetRange("sigma2",0,40);
-  ResMod->SetValue("sigma2",20);
+  ResMod->SetValue("sigma1",0.7);
   ResFit->Fit(data);
   RooPlot* frame = x->frame();
   cout << "Plotting" << endl;
@@ -93,9 +90,9 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   plotmaker plotter(frame);
   plotter.SetTitle(("#Delta"+xtitle), unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
-  TCanvas can;
-  newtree->Draw("res:TRUEMASS");
-  can.SaveAs((plotname+"_2Dscatter.pdf").c_str());
+//  TCanvas can;
+//  newtree->Draw("res:TRUEMASS");
+//  can.SaveAs((plotname+"_2Dscatter.pdf").c_str());
 /*Do convolved fit************************************************************/
 /*
   RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),493*2,1080);
