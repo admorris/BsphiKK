@@ -1,6 +1,5 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
-parameterset/barrierfactorradii_fixed_EvtGen.xml
 pdf/signal/moments_acceptance.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_moments.xml
@@ -15,6 +14,8 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/deltaGammas_fixed.xml
+parameterset/mKKrespars_fixed.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 parameterset/backgrounds/combinatorial_fixed.xml
 parameterset/backgrounds/combinatorialphi1020_fixed.xml
 phasespaceboundary/mKK_BCON_phi.xml

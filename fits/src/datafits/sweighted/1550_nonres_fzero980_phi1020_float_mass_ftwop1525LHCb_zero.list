@@ -16,6 +16,7 @@ parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_fixed.xml
 parameterset/amplitudes/ftwop1525LHCb_fixed_zero.xml
 parameterset/deltaGammas_fixed.xml
+parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_BCON_1550.xml
 phasespaceboundary/angles_BCON.xml
