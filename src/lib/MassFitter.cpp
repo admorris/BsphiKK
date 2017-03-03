@@ -632,13 +632,13 @@ Component* MassFitter::BWxGauss(string name)
 /******************************************************************************/
 Component* MassFitter::RBWxGauss(string name)
 {
-  RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1021);
-  RooRealVar*        width  = new RooRealVar("width","Natural width",4.266,3.5,5);
-  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",3.0e-3,1.0e-3,5.0e-3); // 3 GeV^-1 = 0.003 MeV^-1
+  RooRealVar*        mean   = new RooRealVar("mean","Mean mass",1019.461,1018,1020);
+  RooRealVar*        width  = new RooRealVar("width","Natural width",4.266);
+  RooRealVar*        radius = new RooRealVar("radius","Blatt-Weisskopf barrier factor radius",3.0e-3); // 3 GeV^-1 = 0.003 MeV^-1
   RooRealVar*        mK     = new RooRealVar("mK","kaon mass",493.677);
-  RooRealVar*        spin   = new RooRealVar("spin","spin",1,0,2);
+  RooRealVar*        spin   = new RooRealVar("spin","spin",1);
   RooRealVar*        zero   = new RooRealVar("zero","Gaussian mean",0);
-  RooRealVar*        sigma1 = new RooRealVar("sigma1","Detector resolution",1,0,10);
+  RooRealVar*        sigma1 = new RooRealVar("sigma1","Detector resolution",0.7);
   RooRelBreitWigner* rbw    = new RooRelBreitWigner("rbw","Relativistic Breit Wigner",*_mass,*mean,*width,*radius,*mK,*mK,*spin);
   RooGaussian*       gauss  = new RooGaussian("gauss","Gaussian",*_mass,*zero,*sigma1);
   _mass->setBins(10000,"cache");
@@ -693,10 +693,10 @@ Component* MassFitter::Flatte(string name)
 /******************************************************************************/
 Component* MassFitter::ThresholdShape(string name)
 {
-  RooRealVar* dm0    = new RooRealVar("dm0","dm0",2*493.677,0.,4000.);
-  RooRealVar* a      = new RooRealVar("a","A",2,-100,100);
-  RooRealVar* b      = new RooRealVar("b","B",-3.5,-100,100);
-  RooRealVar* c      = new RooRealVar("c","C",10,-100,100);
+  RooRealVar* dm0    = new RooRealVar("dm0","dm0",2*493.677);
+  RooRealVar* a      = new RooRealVar("a","A",2,1,3);
+  RooRealVar* b      = new RooRealVar("b","B",-3.5,-5,-1);
+  RooRealVar* c      = new RooRealVar("c","C",10,1,100);
   RooDstD0BG* thepdf = new RooDstD0BG("shape","Threshold shape",*_mass,*dm0,*c,*a,*b);
   Component* pdf = new Component(name,thepdf);
   pdf->AddThing(dm0);

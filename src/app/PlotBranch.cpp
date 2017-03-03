@@ -4,16 +4,18 @@
 // BOOST headers
 #include "boost/program_options.hpp"
 // ROOT headers
-#include "TH1.h"
+#include "TFile.h"
 // Custom headers
 #include "plotmaker.h"
 #include "MakeBranchPlot.h"
 using std::string;
 using std::cout;
 using std::endl;
-void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale)
+void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile)
 {
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
+  string histname = plotname.find_last_of("/") == string::npos? plotname : plotname.substr(plotname.find_last_of("/")+1);
+  frame->SetName(histname.c_str());
   frame->SetMaximum(frame->GetMaximum()*1.3);
   frame->SetMinimum(0);
   plotmaker plotter(frame);
@@ -29,6 +31,13 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
     overlay->Draw("same");
   }
   plot->SaveAs((plotname+".pdf").c_str());
+  if(saveasrootfile)
+  {
+    TFile* file = TFile::Open((histname+".root").c_str(),"RECREATE");
+    frame->Write();
+    plot->Write();
+    file->Close();
+  }
 }
 
 int main(int argc, char* argv[])
@@ -40,6 +49,7 @@ int main(int argc, char* argv[])
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                  "produce help message"                )
+    ("root"    ,                                                                                  "save plot as .root file"             )
     ("file,F"  , value<string>(&file   )->default_value("ntuples/BsphiKK_data_mva.root"        ), "data file"                           )
     ("branch,B", value<string>(&branch )->default_value("B_s0_LOKI_Mass"                       ), "branch to plot"                      )
     ("weight,W", value<string>(&weight )->default_value(""                                     ), "weighting variable"                  )
@@ -62,6 +72,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale);
+  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"));
   return 0;
 }
