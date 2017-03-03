@@ -1,5 +1,6 @@
 // Standard headers
 #include <string>
+#include <vector>
 // BOOST headers
 #include "boost/program_options.hpp"
 // ROOT headers
@@ -15,7 +16,7 @@
 #include "GetTree.h"
 #include "ResultDB.h"
 
-void FitBranch(string filename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, bool drawpulls, string resname, string DBfilename)
+void FitBranch(std::string filename, std::string branchname, std::vector<std::string> model, std::string xtitle, std::string unit, std::string plotname, std::string cuts, std::string weight, double xlow, double xup, int nbins, bool drawpulls, std::string resname, std::string DBfilename)
 {
   TFile* file = TFile::Open(filename.c_str());
   TTree* tree = GetTree(file,cuts);
@@ -35,7 +36,13 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
   }
   RooPlot* frame = x->frame();
   MassFitter FitModel(x);
-  Component* Model = FitModel.AddComponent("model",modelname);
+  std::vector<Component*> components;
+  int nentries = tree->GetEntries(cuts.c_str());
+  for(std::string modelname: model)
+  {
+    RooRealVar* N = new RooRealVar("N","",nentries/model.size(),0,nentries);
+    components.push_back(FitModel.AddComponent(modelname,modelname,N));
+  }
   FitModel.Fit(data);
   std::cout << "Plotting" << endl;
   data->plotOn(frame,Binning(nbins));
@@ -56,14 +63,18 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
   }
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+".pdf").c_str());
-  vector<parameter> pars;
+  std::vector<parameter> pars;
   RooAbsArg* arg;
-  RooFIter iterator = Model->GetParameters(data)->fwdIterator();
-  while((arg = iterator.next()))
+  for(auto Model: components)
   {
-    string name = arg->GetName();
-    size_t pos = name.find("model");
-    pars.push_back(parameter(name.substr(pos+5),arg->GetTitle(),Model));
+    RooFIter iterator = Model->GetParameters(data)->fwdIterator();
+    while((arg = iterator.next()))
+    {
+      std::string name = arg->GetName();
+      std::string modelname = Model->GetName();
+      size_t pos = name.find(modelname);
+      pars.push_back(parameter(name.substr(pos+modelname.length()),arg->GetTitle(),Model));
+    }
   }
 /******************************************************************************/
   if(resname!="")
@@ -85,27 +96,27 @@ void FitBranch(string filename, string branchname, string modelname, string xtit
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
-  using std::string;
   options_description desc("Allowed options",120);
-  std::string file, branch, model, cuts, xtitle, unit, plot, weight, dbf, resname;
+  std::string file, branch, cuts, xtitle, unit, plot, weight, dbf, resname;
+  std::vector<std::string> model;
   double xlow, xup;
   int nbins;
   desc.add_options()
-    ("help,H"  ,                                                                                 "produce help message"                  )
-    ("pulls,P" ,                                                                                 "plot with pulls"                       )
-    ("file,F"  , value<string>(&file  )->default_value("ntuples/BsphiKK_data_mva.root"        ), "data file"                             )
-    ("branch,B", value<string>(&branch)->default_value("B_s0_LOKI_Mass"                       ), "branch to plot"                        )
-    ("model,M" , value<string>(&model )->default_value("Gaussian"                             ), "model to use in fit"                   )
-    ("weight,W", value<string>(&weight)->default_value(""                                     ), "weighting variable"                    )
-    ("cuts,C"  , value<string>(&cuts  )->default_value(""                                     ), "optional cuts"                         )
-    ("title,T" , value<string>(&xtitle)->default_value("#it{m}(#it{#phi K^{#plus}K^{#minus}})"), "x-axis title (takes ROOT LaTeX format)")
-    ("unit,U"  , value<string>(&unit  )->default_value("MeV/#it{c}^{2}"                       ), "unit (takes ROOT LaTeX format)"        )
-    ("plot,O"  , value<string>(&plot  )->default_value("plottedbranch"                        ), "output plot filename"                  )
-    ("upper,u" , value<double>(&xup   )->default_value(5600                                   ), "branch upper limit"                    )
-    ("lower,l" , value<double>(&xlow  )->default_value(5200                                   ), "branch lower limit"                    )
-    ("bins,b"  , value<int   >(&nbins )->default_value(50                                     ), "number of bins"                        )
-    ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"               ), "output file"                    )
-    ("save-results", value<string>(&resname   )->default_value(""                             ), "name to save results as"               )
+    ("help,H"  ,                                                                                      "produce help message"                  )
+    ("pulls,P" ,                                                                                      "plot with pulls"                       )
+    ("file,F"  , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mva.root"        ), "data file"                             )
+    ("branch,B", value<std::string>(&branch)->default_value("B_s0_LOKI_Mass"                       ), "branch to plot"                        )
+    ("model,M" , value<std::vector<std::string>>(&model )->multitoken(                             ), "model to use in fit"                   )
+    ("weight,W", value<std::string>(&weight)->default_value(""                                     ), "weighting variable"                    )
+    ("cuts,C"  , value<std::string>(&cuts  )->default_value(""                                     ), "optional cuts"                         )
+    ("title,T" , value<std::string>(&xtitle)->default_value("#it{m}(#it{#phi K^{#plus}K^{#minus}})"), "x-axis title (takes ROOT LaTeX format)")
+    ("unit,U"  , value<std::string>(&unit  )->default_value("MeV/#it{c}^{2}"                       ), "unit (takes ROOT LaTeX format)"        )
+    ("plot,O"  , value<std::string>(&plot  )->default_value("plottedbranch"                        ), "output plot filename"                  )
+    ("upper,u" , value<double>(&xup   )->default_value(5600                                        ), "branch upper limit"                    )
+    ("lower,l" , value<double>(&xlow  )->default_value(5200                                        ), "branch lower limit"                    )
+    ("bins,b"  , value<int   >(&nbins )->default_value(50                                          ), "number of bins"                        )
+    ("output-file" , value<std::string>(&dbf    )->default_value("FitResults.csv"                  ), "output file"                           )
+    ("save-results", value<std::string>(&resname)->default_value(""                                ), "name to save results as"               )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
