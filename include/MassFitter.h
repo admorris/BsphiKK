@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 // RooFit headers
 #include "RooAbsPdf.h"
 #include "RooAbsReal.h"
@@ -63,6 +64,26 @@ class Component
     int _colour;
     // Flags
     bool _hasyieldvar;
+};
+struct parameter
+{
+  parameter(string _n, string _l, Component* _c) : name(_c->GetName()+_n), latex(_l)
+  {
+    value = _c->GetValue(_n);
+    error = _c->GetError(_n);
+  }
+  string name;
+  string latex;
+  double value;
+  double error;
+  string safename()
+  {
+    string temp = name;
+    replace(temp.begin(),temp.end(),'1','A'); // Numbers can't go in LaTeX macros
+    replace(temp.begin(),temp.end(),'2','B');
+    replace(temp.begin(),temp.end(),'3','C');
+    return temp;
+  }
 };
 class MassFitter
 {
