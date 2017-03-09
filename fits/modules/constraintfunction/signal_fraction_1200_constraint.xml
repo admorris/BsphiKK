@@ -1,0 +1,7 @@
+#S:	4102.48±64.8044
+#B:	77.1316±5.22503
+<ExternalConstraint>
+	<Name>signal_fraction</Name>
+	<Value>0.981546</Value>
+	<Error>0.021760</Error>
+</ExternalConstraint>

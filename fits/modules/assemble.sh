@@ -113,7 +113,7 @@ do
 			elif [[ $arg == *"backgrounds/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
-				particle=$(echo $arg | sed -r 's/.*backgrounds\/([a-zA-Z0-9]*)(_fixed|_float)?\.xml/\1/g')
+				particle=$(echo $arg | sed -r 's/.*backgrounds\/([a-zA-Z0-9]*)(_.*)?\.xml/\1/g')
 				components+=("${particle}($(getoption $arg shape))")
 				bkgwidths+=("$(getoption $arg width)")
 				bkgstyles+=("$(getoption $arg style)")
@@ -167,52 +167,91 @@ then
 	warning "No FitFunction given. Using default: NegativeLogLikelihoodNumerical"
 	fitfunction+=("fitfunction/default.xml")
 fi
+
+# Style of total PDF
+if [[ ${#resonances[@]} -gt 1 || ${#components[@]} -gt 1 ]]
+then
+	widthlist="2"
+	stylelist="1"
+	colourlist="1"
+fi
+
 # Get the resonance options
 for item in "${resonances[@]}"
 do
 	reslist="${reslist}${item} "
 done
+
+# Style of total signal PDF
+if [[ ${#components[@]} -gt 0 && ${#resonances[@]} -gt 0 ]]
+then
+	if [[ ${#resonances[@]} -gt 1 ]]
+	then
+		widthlist="${widthlist}:0"
+	else
+		widthlist="${widthlist}:2"
+	fi
+	stylelist="${stylelist}:1"
+	colourlist="${colourlist}:1"
+fi
+
+# Style the signal components
 if [[ ${#resonances[@]} -gt 1 ]]
 then
 	for item in "${sigwidths[@]}"
 	do
-		widthlist="${widthlist}${item}:"
+		widthlist="${widthlist}:${item}"
 	done
-	widthlist="2:${widthlist}2"
 	for item in "${sigstyles[@]}"
 	do
-		stylelist="${stylelist}${item}:"
+		stylelist="${stylelist}:${item}"
 	done
-	stylelist="1:${stylelist}5"
 	for item in "${sigcolours[@]}"
 	do
-		colourlist="${colourlist}${item}:"
+		colourlist="${colourlist}:${item}"
 	done
-	colourlist="1:${colourlist}1"
+	# Style of interference
+	widthlist="${widthlist}:2"
+	stylelist="${stylelist}:5"
+	colourlist="${colourlist}:1"
 fi
+
 # Get the background components options
 for item in "${components[@]}"
 do
 	bkglist="${bkglist}${item} "
 done
+
+# Style of total background PDF
+if [[ ${#components[@]} -gt 0 && ${#resonances[@]} -gt 0 ]]
+then
+	if [[ ${#components[@]} -gt 1 ]]
+	then
+		widthlist="${widthlist}:0"
+	else
+		widthlist="${widthlist}:2"
+	fi
+	stylelist="${stylelist}:1"
+	colourlist="${colourlist}:2"
+fi
+
+# Style the background components
 if [[ ${#components[@]} -gt 1 ]]
 then
 	for item in "${bkgwidths[@]}"
 	do
-		widthlist="${widthlist}${item}:"
+		widthlist="${widthlist}:${item}"
 	done
-	widthlist="2:${widthlist}2"
 	for item in "${bkgstyles[@]}"
 	do
-		stylelist="${stylelist}${item}:"
+		stylelist="${stylelist}:${item}"
 	done
-	stylelist="1:${stylelist}5"
 	for item in "${bkgcolours[@]}"
 	do
-		colourlist="${colourlist}${item}:"
+		colourlist="${colourlist}:${item}"
 	done
-	colourlist="1:${colourlist}1"
 fi
+
 # write the XML file
 for file in "${joboptions[@]}"
 do
@@ -308,7 +347,7 @@ do
 	echo "		<ComponentProjection>"
 	parsefile $file 3
 	echo "		  <Threads>${NSLOTS}</Threads>"
-	if [[ ${#resonances[@]} -gt 1 ]]
+	if [[ ${#resonances[@]} -gt 1 || ${#components[@]} -gt 1 ]]
 	then
 		if [[ ${#sigwidths[@]} -eq ${#resonances[@]} && ${#bkgwidths[@]} -eq ${#components[@]} ]]
 		then

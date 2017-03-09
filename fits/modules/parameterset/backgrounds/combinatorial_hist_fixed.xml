@@ -1,0 +1,10 @@
+# shape: histogram
+# style: 1
+# width: 1
+# colour: 1
+<PhysicsParameter>
+	<Name>combinatorial_fraction</Name>
+	<Value>1.0</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

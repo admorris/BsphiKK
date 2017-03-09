@@ -1,5 +1,7 @@
+#S:	4102.48±64.8044
+#B:	77.1316±5.22503
 <PhysicsParameter>
 	<Name>signal_fraction</Name>
-	<Value>0.95</Value>
+	<Value>0.981546</Value>
 	<Type>Fixed</Type>
 </PhysicsParameter>

@@ -10,25 +10,25 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_A</Name>
-	<Value>0.0</Value>
+	<Value>2.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_B</Name>
-	<Value>0.0</Value>
+	<Value>-3.5</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_C</Name>
-	<Value>0.0</Value>
+	<Value>0.01</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_M</Name>
-	<Value>0.0</Value>
+	<Value>0.987354</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

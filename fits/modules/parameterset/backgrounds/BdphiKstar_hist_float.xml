@@ -1,10 +1,10 @@
-# shape: spin-0 FT
-# style: 9
-# width: 2
-# colour: 3
+# shape: histogram
+# style: 1
+# width: 1
+# colour: 1
 <PhysicsParameter>
-	<Name>fzero980_fraction</Name>
-	<Value>0.26</Value>
+	<Name>BdphiKstar_fraction</Name>
+	<Value>0.0</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>
 	<Type>Float</Type>

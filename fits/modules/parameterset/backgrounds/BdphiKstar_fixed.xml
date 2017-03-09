@@ -3,7 +3,7 @@
 # width: 1
 # colour: 1
 <PhysicsParameter>
-	<Name>Bd2PhiKstar_fraction</Name>
+	<Name>BdphiKstar_fraction</Name>
 	<Value>0.0</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>
@@ -11,26 +11,26 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>Bd2PhiKstar_mean</Name>
-	<Value>0.0</Value>
+	<Name>BdphiKstar_mean</Name>
+	<Value>1.0875</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>Bd2PhiKstar_sigma</Name>
-	<Value>0.0</Value>
+	<Name>BdphiKstar_sigma</Name>
+	<Value>0.038308</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>Bd2PhiKstar_alpha</Name>
-	<Value>0.0</Value>
+	<Name>BdphiKstar_alpha</Name>
+	<Value>-0.82875</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>Bd2PhiKstar_n</Name>
-	<Value>0.0</Value>
+	<Name>BdphiKstar_n</Name>
+	<Value>1.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

@@ -1,0 +1,7 @@
+pdf/signal/Bs2PhiPhi.xml
+minimiser/minuit.xml
+fitfunction/default.xml
+dataset/toys.xml
+parameterset/amplitudes/phi1020_fixed_LHCbAmp.xml
+parameterset/deltaGammas_fixed.xml
+phasespaceboundary/angles.xml

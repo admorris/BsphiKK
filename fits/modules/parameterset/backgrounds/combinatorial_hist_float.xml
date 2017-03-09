@@ -12,7 +12,7 @@
 	<Name>combinatorial_A</Name>
 	<Value>2.0</Value>
 	<Minimum>1.0</Minimum>
-	<Maximum>10.0</Maximum>
+	<Maximum>3.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

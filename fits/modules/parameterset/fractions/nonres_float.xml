@@ -6,7 +6,7 @@
 	<Name>nonres_fraction</Name>
 	<Value>0.224</Value>
 	<Minimum>0.0</Minimum>
-	<Maximum>0.3</Maximum>
+	<Maximum>10.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

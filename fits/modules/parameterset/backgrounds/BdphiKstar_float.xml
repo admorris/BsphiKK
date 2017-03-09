@@ -3,31 +3,29 @@
 # width: 1
 # colour: 1
 <PhysicsParameter>
-	<Name>combinatorialphi1020_fraction</Name>
+	<Name>BdphiKstar_fraction</Name>
 	<Value>1.0</Value>
-	<Type>Float</Type>
-	<Minimum>0.0</Minimum>
-	<Maximum>10.0</Maximum>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_mean</Name>
-	<Value>1.02</Value>
+	<Name>BdphiKstar_mean</Name>
+	<Value>1.0875</Value>
 	<Minimum>1.0</Minimum>
 	<Maximum>1.2</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_sigma</Name>
-	<Value>0.010</Value>
-	<Minimum>0.004</Minimum>
+	<Name>BdphiKstar_sigma</Name>
+	<Value>0.038308</Value>
+	<Minimum>0.010</Minimum>
 	<Maximum>0.100</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_alpha</Name>
+	<Name>BdphiKstar_alpha</Name>
 	<Value>-0.82875</Value>
 	<Minimum>-5.0</Minimum>
 	<Maximum>5.0</Maximum>
@@ -35,8 +33,10 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_n</Name>
+	<Name>BdphiKstar_n</Name>
 	<Value>1.0</Value>
-	<Type>Fixed</Type>
+	<Minimum>1.0</Minimum>
+	<Maximum>5.0</Maximum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
