@@ -6,9 +6,7 @@ double dS = 64.8044;
 double B = 77.1316;
 double dB = 5.22503;
 
-double N = S+B;
-double dN = sqrt(dS*dS + dB*dB);
-double f = S/N;
-double df = f*sqrt(pow(dS/S,2) + pow(dN/N,2));
+double f = S/(S+B);
+double df = S * dB/std::pow(S+B,2);
 printf("F = %f ± %f\n",f,df);
 }
