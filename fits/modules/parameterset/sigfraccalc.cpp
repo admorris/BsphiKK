@@ -1,14 +1,18 @@
-//S:	4102.48±64.8044
-//B:	77.1316±5.22503
+#include <cstdio>
+#include <cstdlib>
+int main(int argc, char* argv[])
 {
-double S = 4102.48;
-double dS = 64.8044;
-double B = 77.1316;
-double dB = 5.22503;
-
-double N = S+B;
-double dN = sqrt(dS*dS + dB*dB);
-double f = S/N;
-double df = f*sqrt(pow(dS/S,2) + pow(dN/N,2));
-printf("F = %f ± %f\n",f,df);
+	if(argc != 5)
+	{
+		printf("Usage: %s <signal yield> <sig yield error> <background yield> <bkg yield error>\n",argv[0]);
+		return 1;
+	}
+	double S  = atof(argv[1]);
+	double dS = atof(argv[2]);
+	double B  = atof(argv[3]);
+	double dB = atof(argv[4]);
+	double f  = S/(S+B);
+	double df = S * dB/((S+B)*(S+B));
+	printf("F = %f ± %f\n",f,df);
+	return 0;
 }

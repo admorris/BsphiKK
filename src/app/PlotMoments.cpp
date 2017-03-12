@@ -18,7 +18,7 @@ struct LegendreMomentPlot
   LegendreMomentPlot(int _order, int nbins, double xlow, double xup) : order(_order)
   {
     string name = "<P_{" + itoa(order) + "}>";
-    cout << name << endl;
+    std::cout << name << std::endl;
     hist = TH1D(name.c_str(),"",nbins,xlow,xup);
   }
   int order;
@@ -27,10 +27,10 @@ struct LegendreMomentPlot
 
 void PlotMoments(string file, string massbranch, string ct2branch, string cuts, string weightname, string xtitle, string unit, string plotname, double xlow, double xup, int nbins, int max_order)
 {
-  vector<LegendreMomentPlot> plots;
+  std::vector<LegendreMomentPlot> plots;
   for(int order = 0; order <= max_order; order++)
     plots.push_back(LegendreMomentPlot(order, nbins, xlow, xup));
-  cout << "Booked " << plots.size() << " histograms" << endl;
+  std::cout << "Booked " << plots.size() << " histograms" << std::endl;
   TTree* tree = GetTree(file,cuts);
   float weight = 1;
   if(weightname != "")
@@ -87,10 +87,10 @@ int main(int argc, char* argv[])
   notify(vmap);
   if (vmap.count("help"))
   {
-    cout << desc << endl;
+    std::cout << desc << std::endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
+  std::cout << "Entering main function" << std::endl;
   PlotMoments(file, mass, ct2, cuts, weight, xtitle, unit, plot, xlow, xup, nbins, N);
   return 0;
 }
