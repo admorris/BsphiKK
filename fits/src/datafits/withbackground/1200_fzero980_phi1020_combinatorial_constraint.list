@@ -7,7 +7,7 @@ minimiser/minuit.xml
 fitfunction/default.xml
 dataset/data_mva.xml
 dataset/Bs_LOKI_Mass_2sigma_cut.xml
-parameterset/signal_fraction_float.xml
+parameterset/signal_fraction_1200_fixed.xml
 constraintfunction/signal_fraction_1200_constraint.xml
 parameterset/fractions/fzero980_float.xml
 parameterset/resonances/fzero980_fixed.xml
