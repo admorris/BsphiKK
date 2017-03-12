@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-    cout << "Usage: " << argv[0] << " <filename> <initial cut> <final cut>" << endl;
+    std::cout << "Usage: " << argv[0] << " <filename> <initial cut> <final cut>" << std::endl;
     return 1;
   }
   return 0;
