@@ -2,7 +2,7 @@
 	<Name>atwo1320_Aperpsq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
-	<Maximum>1.0</Maximum>
+	<Maximum>0.999</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
@@ -10,7 +10,7 @@
 	<Name>atwo1320_Azerosq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
-	<Maximum>1.0</Maximum>
+	<Maximum>0.999</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
