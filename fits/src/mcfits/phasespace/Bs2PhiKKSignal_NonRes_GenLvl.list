@@ -1,5 +1,5 @@
 pdf/signal/Bs2PhiKK.xml
-minimiser/minuit.xml
+minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/phasespace_gen_foracceptance.xml
 parameterset/resonances/phi1020_fixed.xml

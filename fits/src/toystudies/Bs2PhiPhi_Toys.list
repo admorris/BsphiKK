@@ -1,5 +1,5 @@
 pdf/signal/Bs2PhiPhi.xml
-minimiser/minuit.xml
+minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/amplitudes/phi1020_fixed_LHCbAmp.xml

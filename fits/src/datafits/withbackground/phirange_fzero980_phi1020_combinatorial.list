@@ -4,7 +4,7 @@ pdf/signal/moments_acceptance.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_moments.xml
 pdf/background/combinatorial_histogram.xml
-minimiser/minuit.xml
+minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/data_mva.xml
 dataset/Bs_LOKI_Mass_2sigma_cut.xml

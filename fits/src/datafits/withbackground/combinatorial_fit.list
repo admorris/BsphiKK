@@ -1,6 +1,6 @@
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_moments.xml
-minimiser/minuit.xml
+minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/data_mva.xml
 dataset/sideband_100MeV_cut.xml

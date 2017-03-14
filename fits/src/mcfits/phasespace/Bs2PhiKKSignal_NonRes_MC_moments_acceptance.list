@@ -1,7 +1,7 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
 pdf/signal/moments_acceptance.xml
-minimiser/minuit.xml
+minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/phasespace_MC_truth.xml
 parameterset/resonances/phi1020_fixed.xml
