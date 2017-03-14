@@ -7,6 +7,10 @@ function warning
 {
 	echo -e "\033[33mWARNING:\e[0m $1" 1>&2
 }
+function getparticlename
+{
+	echo $1 | sed -r "s/.*$2\/([a-zA-Z0-9]*)_.*/\1/g"
+}
 # SGE/OGE job options
 declare -a joboptions
 # Is this a batch job or not?
@@ -65,6 +69,7 @@ declare -a phasespaceboundary
 declare -a parameterset
 # <ConstraintFunction> contains several <ExternalConstraint> tags
 declare -a constraintfunction
+declare -a unitarityconstraints
 # <Minimiser> i.e. just <MinimiserName>Minuit</MinimiserName>
 declare minimiser
 # <FitFunction> with optional weight variable
@@ -97,15 +102,22 @@ do
 			parameterset+=("$arg")
 			if [[ $arg == *"resonances/"* ]]
 			then
-				particle=$(echo $arg | sed -r 's/.*resonances\/([a-zA-Z0-9]*)_.*/\1/g')
+				particle=$(getparticlename $arg resonances)
 				if [[ $particle == *"phi"*"1020"* ]] # There are other phis, so the mass must be specified
 				then
 					phiname=$particle
 				fi
+			elif [[ $arg == *"amplitudes/"* ]]
+			then
+				particle=$(getparticlename $arg amplitudes)
+				if [[ $(grep -c "Aperpsq" $arg) -gt 0 ]]
+				then
+					unitarityconstraints+=("${particle}")
+				fi
 			elif [[ $arg == *"fractions/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
-				particle=$(echo $arg | sed -r 's/.*fractions\/([a-zA-Z0-9]*)_.*/\1/g')
+				particle=$(getparticlename $arg fractions)
 				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
 				sigwidths+=("$(getoption $arg width)")
 				sigstyles+=("$(getoption $arg style)")
@@ -113,7 +125,7 @@ do
 			elif [[ $arg == *"backgrounds/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
-				particle=$(echo $arg | sed -r 's/.*backgrounds\/([a-zA-Z0-9]*)(_.*)?\.xml/\1/g')
+				particle=$(getparticlename $arg backgrounds)
 				components+=("${particle}($(getoption $arg shape))")
 				bkgwidths+=("$(getoption $arg width)")
 				bkgstyles+=("$(getoption $arg style)")
@@ -330,13 +342,21 @@ echo "			<CommonPhaseSpace>"
 echo "			</CommonPhaseSpace>"
 echo "		</DataSet>"
 # Optional external constraint functions
-if [[ ! ${#constraintfunction[@]} -eq 0 ]]
+if [[ ${#constraintfunction[@]} -gt 0 || ${#unitarityconstraints[@]} -gt 0 ]]
 then
 	echo "		<ConstraintFunction>"
 	for file in "${constraintfunction[@]}"
 	do
 		parsefile $file 3
 	done
+	if [[ ${#unitarityconstraints[@]} -gt 0 ]]
+	then
+		echo "			<ExternalConstraint>"
+		echo "				<Name>UNITARITY;${unitarityconstraints[@]};_Aperpsq _Azerosq</Name>"
+		echo "				<Value>1.0</Value> # Sum of params must be less than Value"
+		echo "				<Error>0.00001</Error> # NLL penalised by the amount (Amount above Value)^2 / Error^2"
+		echo "			</ExternalConstraint>"
+	fi
 	echo "		</ConstraintFunction>"
 fi
 echo "	</ToFit>"
