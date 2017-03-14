@@ -19,7 +19,7 @@ do
 		#!/bin/bash
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		#$ -l h_rt=24:00:00
-		#$ -l h_vmem=1G
+		#$ -l h_vmem=2G
 		$ParallelEnv
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
