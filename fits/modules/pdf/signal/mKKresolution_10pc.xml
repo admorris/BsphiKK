@@ -1,9 +1,0 @@
-# If the parameter "convolve" is set to true, the PDF will look for "mKKres_"+{"sigma1","sigma2","frac","nsteps","nsigma"} which describe the parameters of a double Gaussian centred at 0, as well as the number of steps and how many sigma away the limits of the integral should be
-<ConfigurationParameter>convolve:true</ConfigurationParameter>
-<ConfigurationParameter>mKKres_nsteps:20</ConfigurationParameter>
-<ConfigurationParameter>mKKres_nsigma:3</ConfigurationParameter>
-<ConfigurationParameter>mKKres_sigma1:0.745e-3</ConfigurationParameter>
-<ConfigurationParameter>mKKres_sigma2:2.09e-3</ConfigurationParameter>
-<ConfigurationParameter>mKKres_frac:0.92</ConfigurationParameter>
-
-

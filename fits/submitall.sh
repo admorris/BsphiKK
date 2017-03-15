@@ -5,7 +5,7 @@ make -C modules -j
 currentdir=$(pwd)
 if [ "$1" == "" ]
 then
-	fitfolders=(toystudies mcfits/phasespace mcfits/pwave datafits)
+	fitfolders=(toystudies mcfits/phasespace mcfits/pwave datafits/sweighted datafits/withbackground)
 else
 	fitfolders=($1)
 fi
@@ -19,7 +19,7 @@ do
 		#!/bin/bash
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		#$ -l h_rt=24:00:00
-		#$ -l h_vmem=2G
+		#$ -l h_vmem=4G
 		$ParallelEnv
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
