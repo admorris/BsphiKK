@@ -11,6 +11,7 @@ parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 output/fullrange.xml
+output/lowrange.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml

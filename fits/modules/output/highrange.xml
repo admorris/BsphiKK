@@ -7,5 +7,5 @@
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
 <Xmin>1.080</Xmin>
-<Ymax>120</Ymax>
-<Ymin>-20</Ymin>
+#<Ymax>120</Ymax>
+#<Ymin>-20</Ymin>

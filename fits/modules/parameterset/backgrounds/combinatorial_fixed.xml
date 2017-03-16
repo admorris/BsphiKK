@@ -1,7 +1,7 @@
 # shape: combinatorial
-# style: 1
-# width: 1
-# colour: 1
+# style: 2
+# width: 2
+# colour: 46
 <PhysicsParameter>
 	<Name>combinatorial_fraction</Name>
 	<Value>1.0</Value>
@@ -23,12 +23,6 @@
 <PhysicsParameter>
 	<Name>combinatorial_C</Name>
 	<Value>0.01</Value>
-	<Type>Fixed</Type>
-	<Unit>GeV</Unit>
-</PhysicsParameter>
-<PhysicsParameter>
-	<Name>combinatorial_M</Name>
-	<Value>0.987354</Value>
 	<Type>Fixed</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>

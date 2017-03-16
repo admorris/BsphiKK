@@ -1,7 +1,7 @@
 # shape: resonant,1,BW
-# style: 1
-# width: 1
-# colour: 1
+# style: 2
+# width: 2
+# colour: 39
 <PhysicsParameter>
 	<Name>combinatorialphi1020_fraction</Name>
 	<Value>1.0</Value>

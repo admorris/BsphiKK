@@ -1,7 +1,7 @@
 # shape: peaking
-# style: 1
-# width: 1
-# colour: 1
+# style: 2
+# width: 2
+# colour: 30
 <PhysicsParameter>
 	<Name>BdphiKstar_fraction</Name>
 	<Value>1.0</Value>
@@ -11,24 +11,24 @@
 <PhysicsParameter>
 	<Name>BdphiKstar_mean</Name>
 	<Value>1.0875</Value>
-	<Minimum>1.0</Minimum>
-	<Maximum>1.2</Maximum>
+	<Minimum>1.06</Minimum>
+	<Maximum>1.10</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>BdphiKstar_sigma</Name>
 	<Value>0.038308</Value>
-	<Minimum>0.010</Minimum>
-	<Maximum>0.100</Maximum>
+	<Minimum>0.02</Minimum>
+	<Maximum>0.06</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>BdphiKstar_alpha</Name>
 	<Value>-0.82875</Value>
-	<Minimum>-5.0</Minimum>
-	<Maximum>5.0</Maximum>
+	<Minimum>-1.0</Minimum>
+	<Maximum>0.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
@@ -37,6 +37,6 @@
 	<Value>1.0</Value>
 	<Minimum>1.0</Minimum>
 	<Maximum>5.0</Maximum>
-	<Type>Float</Type>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
