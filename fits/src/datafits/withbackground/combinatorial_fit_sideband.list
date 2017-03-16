@@ -4,12 +4,13 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/sideband_mva.xml
 parameterset/resonances/phi1020_fixed.xml
-parameterset/backgrounds/combinatorial_fixed.xml
+parameterset/backgrounds/combinatorial_float.xml
 parameterset/backgrounds/combinatorialphi1020_float.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 output/fullrange.xml
+output/lowrange.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml

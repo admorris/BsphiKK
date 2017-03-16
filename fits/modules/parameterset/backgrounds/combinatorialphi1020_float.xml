@@ -1,10 +1,10 @@
 # shape: peaking
-# style: 1
-# width: 1
-# colour: 1
+# style: 2
+# width: 2
+# colour: 39
 <PhysicsParameter>
 	<Name>combinatorialphi1020_fraction</Name>
-	<Value>1.0</Value>
+	<Value>10.0</Value>
 	<Type>Float</Type>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>
