@@ -1,12 +1,34 @@
-# shape: resonant,1,BW
+# shape: peaking
 # style: 2
 # width: 2
 # colour: 39
 <PhysicsParameter>
 	<Name>combinatorialphi1020_fraction</Name>
+	<Value>9.01</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorialphi1020_mean</Name>
+	<Value>1.02</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorialphi1020_sigma</Name>
+	<Value>0.004</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorialphi1020_alpha</Name>
+	<Value>-0.42</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>combinatorialphi1020_n</Name>
 	<Value>1.0</Value>
-	<Type>Float</Type>
-	<Minimum>0.0</Minimum>
-	<Maximum>10.0</Maximum>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

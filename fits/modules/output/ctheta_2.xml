@@ -6,4 +6,4 @@
 <DataBins>25</DataBins>
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
-#<Ymin>-30</Ymin>
+<Ymin>0</Ymin>
