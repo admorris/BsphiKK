@@ -47,7 +47,7 @@ newKK   ftwo1810        2       1.815   0.012   0.012   0.197   0.022   0.022
 for file in $(ls fractions/phi1020* fractions/ftwop1525*)
 do
 	sed -i 's/style: 1/style: 9/' $file
-	sed -i 's/width: 1/width 2/' $file
+	sed -i 's/width: 1/width: 2/' $file
 	sed -i 's/colour: 1/colour: 28/' $file
 done
 sed -i 's/colour: [0-9]*/colour: 6/' fractions/phi1020*
