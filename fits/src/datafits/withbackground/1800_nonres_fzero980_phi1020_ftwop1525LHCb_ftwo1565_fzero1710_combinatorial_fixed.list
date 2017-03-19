@@ -3,7 +3,6 @@ pdf/signal/mKKresolution.xml
 pdf/signal/moments_acceptance.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_moments.xml
-pdf/background/BdphiKstar_moments.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/data_mva.xml
@@ -18,7 +17,10 @@ parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
-parameterset/amplitudes/ftwop1525LHCb_fixed_zero.xml
+parameterset/amplitudes/ftwop1525LHCb_float.xml
+parameterset/fractions/ftwo1565_float.xml
+parameterset/resonances/ftwo1565_fixed.xml
+parameterset/amplitudes/ftwo1565_float.xml
 parameterset/fractions/fzero1710_float.xml
 parameterset/resonances/fzero1710_fixed.xml
 parameterset/amplitudes/fzero1710_float.xml
@@ -27,7 +29,6 @@ parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 parameterset/backgrounds/combinatorial_fixed.xml
 parameterset/backgrounds/combinatorialphi1020_fixed.xml
-parameterset/backgrounds/BdphiKstar_fixed.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 output/lowrange.xml
