@@ -35,7 +35,7 @@ do
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		# Perform the fit
-		fitting -f ../${file} $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+		fitting -f ../${file} --generateToyXML --calculateFitFractions $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
 		# Deal with the output
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
