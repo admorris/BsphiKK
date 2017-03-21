@@ -21,8 +21,7 @@ std::vector<LegendreMomentPlot> LegendreMomentPlot::FillPlotsFromTree(TTree& tre
   std::vector<LegendreMomentPlot> plots;
   for(int order = 0; order <= max_order; order++)
     plots.push_back(LegendreMomentPlot(order, nbins, xlow, xup));
-  std::cout << "Booked " << plots.size() << " histograms" << std::endl;
-  float weight = 1;
+  float weight = 1; // RooStats s-plot tends to add floats to a TTree
   if(weightname != "")
     tree.SetBranchAddress(weightname.c_str(),&weight);
   double mass; tree.SetBranchAddress(massbranch.c_str(),&mass);
