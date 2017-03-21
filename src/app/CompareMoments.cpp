@@ -31,7 +31,7 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
     TH1D residualplot(CDplots[order].hist);
     residualplot.Add(&MCplots[order].hist,-1);
     residualplot.SetFillColor(kBlack);
-    for(int ibin = 1; ibin < nbins+1; ibin++)
+    for(int ibin = 1; ibin < nbins+1; ibin++) // Turn residuals into pulls (I think)
       residualplot.SetBinContent(ibin,residualplot.GetBinContent(ibin)/CDplots[order].hist.GetBinError(ibin));
     plotmaker plot(&CDplots[order].hist);
     plot.SetPullPlot(&residualplot);
