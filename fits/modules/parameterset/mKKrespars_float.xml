@@ -1,0 +1,8 @@
+<PhysicsParameter>
+	<Name>mKKres_sigmazero</Name>
+	<Value>1.6-05</Value>
+	<Minimum>0.5e-05</Minimum>
+	<Maximum>2.0e-05</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
