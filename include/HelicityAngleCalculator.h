@@ -1,3 +1,4 @@
+#pragma once
 #include "TLorentzVector.h"
 
 class HelicityAngleCalculator

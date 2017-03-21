@@ -1,5 +1,4 @@
-#ifndef __annotation_h__
-#define __annotation_h__
+#pragma once
 #include <string>
 #include "TLine.h"
 #include "TLatex.h"
@@ -10,4 +9,4 @@ typedef struct
   TLatex label;
 } annotation;
 annotation* resonance(double mass, string name, bool drawline = true);
-#endif
+

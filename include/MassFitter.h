@@ -1,5 +1,4 @@
-#ifndef __MASSFITTER_H__
-#define __MASSFITTER_H__
+#pragma once
 // Standard C++ headers
 #include <vector>
 #include <string>
@@ -147,5 +146,3 @@ class MassFitter
     // Other models
     Component*          ThreeBodyPhaseSpace(string);
 };
-#endif
-
