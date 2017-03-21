@@ -30,7 +30,7 @@ do
 		EOF
 		echo -e "$SetupEnvironment" >> ${submission_script}
 		cat <<-EOF >> ${submission_script}
-		export PATH=\$PATH:\$RapidFitDir/bin
+		export PATH=\$PATH:\$RapidFitDir/bin:$currentdir/../bin
 		# Move to the right folder
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
@@ -39,6 +39,7 @@ do
 		# Deal with the output
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh
+		$currentdir/output/comparemoments.sh
 		EOF
 		# Submit the jobs
 		qsub ${submission_script}
