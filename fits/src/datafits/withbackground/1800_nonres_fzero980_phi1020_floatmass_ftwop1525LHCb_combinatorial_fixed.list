@@ -18,14 +18,8 @@ parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
-parameterset/fractions/ftwo1640_float.xml
-parameterset/resonances/ftwo1640_fixed.xml
-parameterset/amplitudes/ftwo1640_float.xml
-parameterset/fractions/phi1680_float.xml
-parameterset/resonances/phi1680_fixed.xml
-parameterset/amplitudes/phi1680_float.xml
 parameterset/deltaGammas_fixed.xml
-parameterset/mKKrespars_float.xml
+parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 parameterset/backgrounds/combinatorial_fixed.xml
 parameterset/backgrounds/combinatorialphi1020_fixed.xml
