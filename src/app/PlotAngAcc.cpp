@@ -53,7 +53,6 @@ void PlotAngAcc(string filename)
     pad.Draw();
     pad.cd();
     dataacctree->Draw((varname[i]+">>"+AccData.GetName()).c_str(),"weight","E1");
-    AccData.Scale(1./AccData.Integral());
     AccData.SetMinimum(0);
     AccData.SetTitle("");
     AccData.GetXaxis()->SetTitle(axistitle[i].c_str());
@@ -67,7 +66,7 @@ void PlotAngAcc(string filename)
     AccData.SetMarkerColor(kBlack);
     string option = varname[i] == "mKK" ? "HIST SAME L" : "HIST SAME C";
     sampledtree->Draw((varname[i]+">>"+AccProj.GetName()).c_str(),"weight",option.c_str());
-    AccProj.Scale((double)nsamples/AccProj.Integral());
+    AccProj.Scale(AccData.Integral()*(double)nsamples/AccProj.Integral());
     AccProj.SetLineColor(kRed);
     AccProj.SetLineWidth(2);
     AccProj.SetMarkerSize(0);

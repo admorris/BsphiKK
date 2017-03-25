@@ -6,12 +6,13 @@
 // ROOT headers
 #include "TFile.h"
 // Custom headers
+#include "annotation.h"
 #include "plotmaker.h"
 #include "MakeBranchPlot.h"
 using std::string;
 using std::cout;
 using std::endl;
-void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile)
+void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile, bool drawline, double lineat)
 {
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
   string histname = plotname.find_last_of("/") == string::npos? plotname : plotname.substr(plotname.find_last_of("/")+1);
@@ -24,12 +25,22 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
   if(overlayfilename!="")
   {
     TH1D* overlay = MakeBranchPlot(overlayfilename, branchname, cuts, weight, xlow, xup, nbins);
-    overlay->Scale(scale);
+    if(scale>0) overlay->Scale(scale);
+    else overlay->Scale(frame->Integral()/overlay->Integral());
     overlay->SetDrawOption("B");
     overlay->SetFillColor(kOrange);
     overlay->SetLineColor(kOrange);
     overlay->Draw("same");
+    frame->Draw("E1 same");
   }
+  TLine* cutvalline;
+  if(drawline)
+  {
+    cutvalline = new TLine(lineat,0,lineat,frame->GetMaximum());
+    cutvalline->SetLineStyle(2);
+    cutvalline->SetLineColor(2);
+  }
+  cutvalline->Draw();
   plot->SaveAs((plotname+".pdf").c_str());
   if(saveasrootfile)
   {
@@ -38,6 +49,7 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
     plot->Write();
     file->Close();
   }
+  delete cutvalline;
 }
 
 int main(int argc, char* argv[])
@@ -45,7 +57,7 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
   string file, branch, cuts, xtitle, unit, plot, weight, overlay;
-  double xlow, xup, scale;
+  double xlow, xup, scale, lineat;
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                  "produce help message"                )
@@ -62,6 +74,7 @@ int main(int argc, char* argv[])
     ("bins,b"  , value<int   >(&nbins  )->default_value(50                                     ), "number of bins"                      )
     ("overlay" , value<string>(&overlay)->default_value(""                                     ), "file to overlay the same branch from")
     ("scale"   , value<double>(&scale  )->default_value(1                                      ), "scale factor for the overlaid branch")
+    ("lineat"  , value<double>(&lineat )->default_value(0                                      ), "draw vertical line at this value"    )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -72,6 +85,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"));
+  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"),vmap.count("lineat"),lineat);
   return 0;
 }

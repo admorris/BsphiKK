@@ -9,15 +9,16 @@
 #include "TTree.h"
 #include "TH1.h"
 #include "TMath.h"
+#include "TLine.h"
 // Custom headers
 #include "MakeBranchPlot.h"
 #include "plotmaker.h"
-void CompareBranch(std::string MCfilename, std::string CDfilename, std::string MCbranchname, std::string CDbranchname, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins)
+void CompareBranch(std::string MCfilename, std::string CDfilename, std::string MCbranchname, std::string CDbranchname, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, bool drawline, double lineat)
 {
   TH1D*  MChist = MakeBranchPlot(MCfilename,MCbranchname,MCcuts,MCweight,xlow,xup,nbins);
   TH1D*  CDhist = MakeBranchPlot(CDfilename,CDbranchname,CDcuts,CDweight,xlow,xup,nbins);
-  MChist->Scale(1./MChist->Integral());
-  CDhist->Scale(1./CDhist->Integral());
+  MChist->Scale(CDhist->Integral()/MChist->Integral());
+  CDhist->Scale();
   MChist->SetFillColor(kOrange);
   MChist->SetLineColor(kOrange);
   MChist->SetMaximum(MChist->GetMaximum()*1.3);
@@ -27,6 +28,14 @@ void CompareBranch(std::string MCfilename, std::string CDfilename, std::string M
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("HIST");
   CDhist->Draw("sameE1");
+  TLine* cutvalline;
+  if(drawline)
+  {
+    cutvalline = new TLine(lineat,0,lineat,MChist->GetMaximum());
+    cutvalline->SetLineStyle(2);
+    cutvalline->SetLineColor(2);
+  }
+  cutvalline->Draw();
   plot->SaveAs((plotname+".pdf").c_str());
 }
 
@@ -35,7 +44,7 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   options_description desc("Allowed options",(unsigned)120);
   std::string MCfile, CDfile, MCbranch, CDbranch, MCcuts, CDcuts, xtitle, unit, plot, MCweight, CDweight;
-  double xlow, xup;
+  double xlow, xup, lineat;
   int nbins;
   desc.add_options()
     ("help"    ,                                                                                "produce help message"             )
@@ -53,6 +62,7 @@ int main(int argc, char* argv[])
     ("upper"   , value<double     >(&xup     )->default_value(5600                           ), "branch upper limit"               )
     ("lower"   , value<double     >(&xlow    )->default_value(5200                           ), "branch lower limit"               )
     ("bins"    , value<int        >(&nbins   )->default_value(20                             ), "number of bins"                   )
+    ("lineat"  , value<double>(&lineat )->default_value(0                                      ), "draw vertical line at this value"    )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -63,6 +73,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::cout << "Entering main function" << std::endl;
-  CompareBranch(MCfile,CDfile,MCbranch,CDbranch,xtitle,unit,plot,MCcuts,CDcuts,MCweight,CDweight,xlow,xup,nbins);
+  CompareBranch(MCfile,CDfile,MCbranch,CDbranch,xtitle,unit,plot,MCcuts,CDcuts,MCweight,CDweight,xlow,xup,nbins,vmap.count("lineat"),lineat);
   return 0;
 }
