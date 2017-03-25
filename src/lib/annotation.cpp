@@ -20,3 +20,4 @@ annotation* resonance(double mass, string name, bool drawline)
   _a->label.SetText(mass,1.0,name.c_str());
   return _a;
 }
+

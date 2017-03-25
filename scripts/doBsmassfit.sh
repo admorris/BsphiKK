@@ -8,7 +8,7 @@ table=../scripts/tables/MassFits.csv
     -N B_s0_LOKI_Mass \
     --pulls \
     --save-results Bsmassfitmvacut \
-    --output-file ${table} \
+    --output-file ${table} 
 ranges=(1080 1200 1350 1450 1550 1650 1800)
 for range in ${ranges[@]}
 do
