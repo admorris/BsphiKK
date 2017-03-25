@@ -21,7 +21,6 @@
 #include "MassFitter.h"
 #include "plotmaker.h"
 #include "GetTree.h"
-#include "itoa.h"
 #include "GetData.h"
 #include "ResultDB.h"
 void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename)
@@ -56,7 +55,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   {
     for(unsigned int i = 0; i < npkbkgs; i++)
     {
-      string name = "peaking"+itoa(i);
+      string name = "peaking"+std::to_string(i);
       char ext[] = ".root";
       size_t extpos = backgrounds[i].find(ext);
       string PBfilename = backgrounds[i].substr(0,extpos+strlen(ext));
@@ -152,7 +151,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       }
       PBplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
       TCanvas* canv = PBplotter->Draw();
-      canv->SaveAs((plotfilename+"_PB"+itoa(i)+".pdf").c_str());
+      canv->SaveAs((plotfilename+"_PB"+std::to_string(i)+".pdf").c_str());
       if(PBmass != &mass)
       {
         delete PBmass;
@@ -238,9 +237,9 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   for(int window = 2; window <= 3; window++)
   {
     cout << "Integrating fitted data PDF over μ±" << window << "σ" << endl;
-    mass.setRange((itoa(window)+"sigma").c_str(),mean-window*resolution,mean+window*resolution);
-    RooAbsReal* sigmodint = sigmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
-    RooAbsReal* bkgmodint = bkgmod->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
+    mass.setRange((std::to_string(window)+"sigma").c_str(),mean-window*resolution,mean+window*resolution);
+    RooAbsReal* sigmodint = sigmod->createIntegral(mass,NormSet(mass),Range((std::to_string(window)+"sigma").c_str()));
+    RooAbsReal* bkgmodint = bkgmod->createIntegral(mass,NormSet(mass),Range((std::to_string(window)+"sigma").c_str()));
     double tempNsig    = sigmodint->getVal()*Nsig->getVal()
          , tempNsigerr = sigmodint->getVal()*Nsig->getError()
          , tempNbkg    = bkgmodint->getVal()*Nbkg->getVal()
@@ -264,7 +263,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     cout << "B:\t" << tempNbkg << "±" << tempNbkgerr << endl;
     for(unsigned int i = 0; i < npkbkgs; i++)
     {
-      RooAbsReal* pkgmodint = PkgMod[i]->GetPDF()->createIntegral(mass,NormSet(mass),Range((itoa(window)+"sigma").c_str()));
+      RooAbsReal* pkgmodint = PkgMod[i]->GetPDF()->createIntegral(mass,NormSet(mass),Range((std::to_string(window)+"sigma").c_str()));
       cout << "B" << i << ":\t" << pkgmodint->getVal()*PkgMod[i]->GetValue("N") << endl;
     }
   }

@@ -1,5 +1,4 @@
-#ifndef __AngularAcceptanceFill_h__
-#define __AngularAcceptanceFill_h__
+#pragma once
 #include <iostream>
 #include "NDHist.h"
 #include "TTree.h"
@@ -37,4 +36,4 @@ void Fill(vector<string> branches, TTree* tree, NDHist& hist, bool sym = false)
   if(hist.Integral() != n)
     cout << "The histogram contains " << hist.Integral() << " events" << endl;
 }
-#endif
+

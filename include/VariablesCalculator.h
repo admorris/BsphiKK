@@ -1,8 +1,7 @@
 /* Taken from Urania/Phys/LbTo4H/analysis/src
  * Author: Andrea Merli, September 2014
  */
-#ifndef VARIABLESCALCULATOR_H
-#define VARIABLESCALCULATOR_H
+#pragma once
 
 // ROOT
 #include "TLorentzVector.h"
@@ -22,4 +21,3 @@ class VariablesCalculator
  private:
 };
 
-#endif

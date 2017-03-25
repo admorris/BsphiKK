@@ -1,5 +1,4 @@
-#ifndef __GetDataFunctions_h__
-#define __GetDataFunctions_h__
+#pragma once
 // ROOT headers
 #include "TFile.h"
 #include "TTree.h"
@@ -21,4 +20,4 @@ RooDataSet* GetData(string name, string filename, string cuts, RooRealVar* massv
   TTree* tree = GetTree(filename,cuts);
   return new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));
 }
-#endif
+
