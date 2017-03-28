@@ -4,11 +4,13 @@ Please see the TWiki page:
 https://twiki.cern.ch/twiki/bin/viewauth/LHCbPhysics/Bs2PhiKK
 
 ## Dependencies
-- ROOT 6.06.02  
-- My 'common' libraries: https://github.com/abmorris/common  
- - Included as a git submodule for this project. After cloning, you must do `git submodule init` then `git submodule update`  
-- My fork of RapidFit: https://github.com/abmorris/RapidFit  
- - `scripts/angacc.sh` and `fits/runall.sh` assume that `RapidFit/bin/fitting` is in `$PATH`  
+- ROOT 6.06.02
+- My 'common' libraries: https://github.com/abmorris/common
+  - Included as a git submodule for this project. After cloning, you must do `git submodule init` then `git submodule update`
+  - Remember to do `git submodule update` after each `git pull`
+- My fork of RapidFit: https://github.com/abmorris/RapidFit
+  - Use the branch `bsphikk`
+  - `scripts/angacc.sh` and `fits/runall.sh` assume that `RapidFit/bin/fitting` is in `$PATH`
 
 ## Getting the nTuples
 For the collision data and full MC ntuples, it should be enough to run `ganga Ganga-DaVinci.py` from the folder `gridjobs/DaVinci/AllnTuples/`  
@@ -23,4 +25,4 @@ The output files of `scripts/angacc.sh` and `scripts/angacc_hist.sh` should be p
 
 ## Angular fit
 The script `fits/runall.sh` will assemble the RapidFit XML files and perform fits. It can take arguments to specify which fits should be run. See `fits/README.md` for more details.
-
+There are also scripts to run on the Edinburgh batch systems (SOPA and Eddie).
