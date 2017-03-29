@@ -44,7 +44,7 @@ do
 	cat <<-EOF >> ${submission_script}
 	export PATH=\$PATH:\$RapidFitDir/bin
 	# Perform the fit
-	fitting ${nThreadsFlag} -f ../${recentxml} -repeats ${nrepeats} --useUUID | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+	fitting ${nThreadsFlag} -f ../${recentxml} --calculateFitFractions -repeats ${nrepeats} --useUUID | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
 	EOF
 	# Submit the jobs
 	qsub ${submission_script}
