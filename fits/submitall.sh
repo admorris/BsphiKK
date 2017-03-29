@@ -23,8 +23,10 @@ do
 		$ParallelEnv
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
-		# Re-make the XML file to pick up the number of threads this machine has
-		rm $file && make -C $currentdir/modules ../$folder/$file
+		if [[ \${NSLOTS} ]]
+		then
+			nThreadsFlag="--OverrideXML /RapidFit/FitFunction/Threads \${NSLOTS}"
+		fi
 		# Set up the environment
 		source $currentdir/RFjobconfig.sh
 		EOF
@@ -35,7 +37,7 @@ do
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		# Perform the fit
-		fitting -f ../${file} --generateToyXML --calculateFitFractions $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --calculateFitFractions $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
 		# Deal with the output
 		$currentdir/output/mergeprojections.sh
 		$currentdir/output/compareresult.sh

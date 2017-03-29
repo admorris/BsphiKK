@@ -21,8 +21,7 @@ xmltimestamp=$(echo $recentxml | sed -r 's/outputXMLFile(.*)\.xml/\1/')
 dirtimestamp=$(echo $recentdir | sed 's/RapidFitOutput_//')
 if [ "$xmltimestamp" == "$dirtimestamp" ]
 then
-  sed -i 's/<NumberEvents>[0-9]*<\/NumberEvents>/<NumberEvents>1000000<\/NumberEvents>/g' $recentxml
-  fitting -f $recentxml --saveOneDataSet toys.root
+  fitting -f $recentxml --saveOneDataSet toys.root --OverrideXML /RapidFit/DataSet/NumberEvents 1000000
   mv -v toys.root $recentdir
   cd $recentdir
   CompareMoments --MCfile toys.root --MCmass mKK --MCangle ctheta_2 --lower 1.05 --bins 25 --CDfile $ntuple --CDweight Nsig_sw --CDcut "B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass"
