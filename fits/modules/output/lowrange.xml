@@ -3,6 +3,7 @@
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>91</PDFpoints>
 <DrawPull>True</DrawPull>
+<CalcChi2>True</CalcChi2>
 <DataBins>46</DataBins> # 988-1080 2 MeV/bin
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>

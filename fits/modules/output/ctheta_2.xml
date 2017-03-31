@@ -3,6 +3,7 @@
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>51</PDFpoints>
 <DrawPull>True</DrawPull>
+<CalcChi2>True</CalcChi2>
 <DataBins>25</DataBins>
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
