@@ -11,30 +11,27 @@
 
 #include <string>
 #include <iostream>
+#include <memory>
 
-using std::string;
-using std::cout;
-using std::endl;
-using std::map;
-void PlotAngAcc(string filename)
+void PlotAngAcc(std::string filename, int index)
 {
-  TFile* file = TFile::Open(filename.c_str());
+  auto file = std::unique_ptr<TFile>(TFile::Open(filename.c_str()));
   TTree* dataacctree = (TTree*)file->Get("dataacctuple");
   TTree* sampledtree = (TTree*)file->Get("sampledtuple");
   gStyle->SetOptStat(0);
-  string varname[4] = {"mKK","phi","ctheta_1","ctheta_2"};
-  string axistitle[4] = { "#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]"
+  std::string varname[4] = {"mKK","phi","ctheta_1","ctheta_2"};
+  std::string axistitle[4] = { "#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]"
                         , "#it{#Phi}"
                         , "cos #it{#theta_{1}}"
                         , "cos #it{#theta_{2}}"
                         };
-  string unit[4] = { " MeV/#it{c}^{2}", "", "", "" };
+  std::string unit[4] = { " MeV/#it{c}^{2}", "", "", "" };
   double minima[4] = {0.980, -M_PI, -1, -1};
   double maxima[4] = {1.800, +M_PI, +1, +1};
   int nbins[4] = {30, 30, 30, 30};
-  map<string,string> titlemap;
+  std::map<std::string,std::string> titlemap;
   float textsize = 0.055;
-  cout << "Drawing 1D plots" << endl;
+  std::cout << "Drawing 1D plots" << std::endl;
   for(int i = 0; i < 4; i++)
   {
     titlemap[varname[i]] = axistitle[i];
@@ -62,7 +59,7 @@ void PlotAngAcc(string filename)
     AccData.SetMarkerSize(1);
     AccData.SetMarkerStyle(8);
     AccData.SetMarkerColor(kBlack);
-    string option = varname[i] == "mKK" ? "HIST SAME L" : "HIST SAME C";
+    std::string option = varname[i] == "mKK" ? "HIST SAME L" : "HIST SAME C";
     sampledtree->Draw((varname[i]+">>"+AccProj.GetName()).c_str(),"weight",option.c_str());
     AccProj.Scale(AccData.Integral()*(double)nsamples/AccProj.Integral());
     AccProj.SetLineColor(kRed);
@@ -80,7 +77,7 @@ void PlotAngAcc(string filename)
     AccData.GetYaxis()->CenterTitle();
     double _blurbx        = 0.75;
     double _blurby        = 0.80;
-    string _blurbtext     = "#splitline{LHCb}{#scale[0.75]{Preliminary}}";
+    std::string _blurbtext     = "#splitline{LHCb}{#scale[0.75]{Preliminary}}";
     TLatex _blurb(_blurbx,_blurby,_blurbtext.c_str());
     _blurb.SetTextFont(132);
     _blurb.SetTextColor(1);
@@ -88,24 +85,22 @@ void PlotAngAcc(string filename)
     _blurb.SetTextAlign(11);
     _blurb.SetTextSize(0.07);
     _blurb.Draw();
-    canv1d.SaveAs(("acceptance_"+varname[i]+"_proj.pdf").c_str());
+    std::string plotfilename = "acceptance_"+varname[i]+"_proj";
+    if(index >= 0) plotfilename += "_" + std::to_string(index);
+    canv1d.SaveAs((plotfilename+".pdf").c_str());
   }
-  TCanvas* canv[6];
-  string comb[6] = {"ctheta_1:ctheta_2","ctheta_1:phi","ctheta_2:phi","phi:mKK","ctheta_1:mKK","ctheta_2:mKK"};
-  for(int i = 0; i < 6; i++)
+  const std::vector<std::string> combinations = {"ctheta_1:ctheta_2","ctheta_1:phi","ctheta_2:phi","phi:mKK","ctheta_1:mKK","ctheta_2:mKK"};
+  for(auto comb : combinations)
   {
-    canv[i] = new TCanvas(("projection"+comb[i]).c_str(),"",500,500);
-  }
-  for(int i = 0; i < 6; i++)
-  {
-    cout << "Drawing " << comb[i] << endl;
-    canv[i]->cd();
-    string::size_type separator = comb[i].find(':');
+    TCanvas canv(("projection"+comb).c_str(),"",500,500);
+    std::cout << "Drawing " << comb << std::endl;
+    canv.cd();
+    std::string::size_type separator = comb.find(':');
     TPad pad("pad","",0,0,1,1);
     pad.SetMargin(0.12,0.08,0.12,0.08);
     pad.Draw();
     pad.cd();
-    sampledtree->Draw(comb[i].c_str(),"weight","COLZ");
+    sampledtree->Draw(comb.c_str(),"weight","COLZ");
     TH2F* graph = (TH2F*)pad.GetPrimitive("htemp");
     graph->SetTitle("");
     graph->GetXaxis()->SetTitleSize(textsize);
@@ -114,30 +109,37 @@ void PlotAngAcc(string filename)
     graph->GetYaxis()->SetTitleSize(textsize);
     graph->GetYaxis()->SetLabelSize(textsize);
     graph->GetYaxis()->CenterTitle();
-    if(comb[i].find("mKK")!=string::npos)
+    if(comb.find("mKK")!=std::string::npos)
     {
       graph->GetXaxis()->SetNdivisions(505);
     }
-    cout << titlemap[comb[i].substr(0,separator)] << endl;
-    graph->GetYaxis()->SetTitle(titlemap[comb[i].substr(0,separator)].c_str());
-    graph->GetXaxis()->SetTitle(titlemap[comb[i].substr(separator+1,comb[i].size())].c_str());
-    cout << "Fetched graph" << endl;
-    std::replace(comb[i].begin(),comb[i].end(), ':', '-');
-    canv[i]->SaveAs(("acceptance_"+comb[i]+".pdf").c_str());
+    std::cout << titlemap[comb.substr(0,separator)] << std::endl;
+    graph->GetYaxis()->SetTitle(titlemap[comb.substr(0,separator)].c_str());
+    graph->GetXaxis()->SetTitle(titlemap[comb.substr(separator+1,comb.size())].c_str());
+    std::cout << "Fetched graph" << std::endl;
+    std::replace(comb.begin(),comb.end(), ':', '-');
+    std::string plotfilename = "acceptance_"+comb;
+    if(index >= 0) plotfilename += "_" + std::to_string(index);
+    canv.SaveAs((plotfilename+".pdf").c_str());
   }
 }
 int main(int argc, char* argv[])
 {
-  if(argc==1)
+  switch(argc)
   {
-    PlotAngAcc("sampled_acceptance.root");
-    return 0;
-  }
-  else if(argc>2)
-  {
-    cout << "Too many arguments." << endl;
+  case 1:
+    PlotAngAcc("sampled_acceptance.root", -1);
+    break;
+  case 2:
+    PlotAngAcc((std::string)argv[1],-1);
+    break;
+  case 3:
+    PlotAngAcc((std::string)argv[1],std::atoi(argv[2]));
+    break;
+  default:
+    std::cerr << "Too many arguments." << std::endl;
     return 1;
+    break;
   }
-  PlotAngAcc((string)argv[1]);
   return 0;
 }

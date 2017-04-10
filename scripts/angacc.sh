@@ -1,11 +1,14 @@
 #!/bin/bash
 cd ../fits
 fitting -f acceptance.xml --calculateAcceptanceCoefficients
-mv LegendreMoments.root LegendreMoments_Acceptance.root
+rename LegendreMoments LegendreMoments_Acceptance LegendreMoments_*.root
 source eos.sh
-cp -v LegendreMoments_Acceptance.root ${nTuples_dir}
-mv sampled_LegendreMomentShape.root sampled_acceptance.root
-../bin/PlotAngAcc sampled_acceptance.root
+cp -v LegendreMoments_Acceptance_*.root ${nTuples_dir}
+rename LegendreMomentShape acceptance sampled_LegendreMomentShape_*.root
+for file in $(ls sampled_acceptance_*.root)
+do
+  ../bin/PlotAngAcc $file $(echo $file | sed 's/sampled_acceptance_//g' | sed 's/\.root//g')
+done
 mv -v acceptance_*pdf ../latex/figs/
 exit 0
 
