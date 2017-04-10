@@ -19,3 +19,10 @@
 	<Maximum>1.0</Maximum>
 	<Unit>Unitless</Unit>
 </Observable>
+<Observable>
+	<Name>TISTOS</Name>
+	<TF1>B_s0_L0Global_TIS</TF1>
+	<Value>0</Value>
+	<Value>1</Value>
+	<Unit>Unitless</Unit>
+</Observable>
