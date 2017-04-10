@@ -20,7 +20,7 @@
 	<Unit>Unitless</Unit>
 </Observable>
 <Observable>
-	<Name>TISTOS</Name>
+	<Name>TIS</Name>
 	<TF1>B_s0_L0Global_TIS</TF1>
 	<Value>0</Value>
 	<Value>1</Value>
