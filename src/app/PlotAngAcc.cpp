@@ -13,7 +13,7 @@
 #include <iostream>
 #include <memory>
 
-void PlotAngAcc(std::string filename, int index)
+void PlotAngAcc(std::string filename, std::string trailer)
 {
   auto file = std::unique_ptr<TFile>(TFile::Open(filename.c_str()));
   TTree* dataacctree = (TTree*)file->Get("dataacctuple");
@@ -86,7 +86,7 @@ void PlotAngAcc(std::string filename, int index)
     _blurb.SetTextSize(0.07);
     _blurb.Draw();
     std::string plotfilename = "acceptance_"+varname[i]+"_proj";
-    if(index >= 0) plotfilename += "_" + std::to_string(index);
+    if(trailer != "") plotfilename += "_" + trailer;
     canv1d.SaveAs((plotfilename+".pdf").c_str());
   }
   const std::vector<std::string> combinations = {"ctheta_1:ctheta_2","ctheta_1:phi","ctheta_2:phi","phi:mKK","ctheta_1:mKK","ctheta_2:mKK"};
@@ -119,7 +119,7 @@ void PlotAngAcc(std::string filename, int index)
     std::cout << "Fetched graph" << std::endl;
     std::replace(comb.begin(),comb.end(), ':', '-');
     std::string plotfilename = "acceptance_"+comb;
-    if(index >= 0) plotfilename += "_" + std::to_string(index);
+    if(trailer != "") plotfilename += "_" + trailer;
     canv.SaveAs((plotfilename+".pdf").c_str());
   }
 }
@@ -128,13 +128,13 @@ int main(int argc, char* argv[])
   switch(argc)
   {
   case 1:
-    PlotAngAcc("sampled_acceptance.root", -1);
+    PlotAngAcc("sampled_acceptance.root", "");
     break;
   case 2:
-    PlotAngAcc((std::string)argv[1],-1);
+    PlotAngAcc((std::string)argv[1],"");
     break;
   case 3:
-    PlotAngAcc((std::string)argv[1],std::atoi(argv[2]));
+    PlotAngAcc((std::string)argv[1],(std::string)argv[2]);
     break;
   default:
     std::cerr << "Too many arguments." << std::endl;
