@@ -14,15 +14,18 @@
 
 void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCmassname, std::string CDmassname, std::string MCanglename, std::string CDanglename, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, int max_order)
 {
+  TCanvas allplots("allplots","",1200,1200);
   auto CDtree = std::unique_ptr<TTree>(GetTree(CDfilename,CDcuts));
   auto MCtree = std::unique_ptr<TTree>(GetTree(MCfilename,MCcuts));
   std::string CDmassrange = CDmassname + ">" + std::to_string(xlow) + "&&" + CDmassname + "<" + std::to_string(xup);
   std::string MCmassrange = MCmassname + ">" + std::to_string(xlow) + "&&" + MCmassname + "<" + std::to_string(xup);
   double scale = CDtree->GetEntries(CDmassrange.c_str())/(double)MCtree->GetEntries(MCmassrange.c_str());
-  std::vector<LegendreMomentPlot> CDplots = LegendreMomentPlot::FillPlotsFromTree(*CDtree,CDmassname,CDanglename,CDweight,xtitle,unit,plotname,xlow,xup,nbins,max_order, 1);
-  std::vector<LegendreMomentPlot> MCplots = LegendreMomentPlot::FillPlotsFromTree(*MCtree,MCmassname,MCanglename,MCweight,xtitle,unit,plotname,xlow,xup,nbins,max_order,scale);
+  std::cout << "Number of data events in " << CDmassrange << " : " << CDtree->GetEntries(CDmassrange.c_str()) << "\n";
+  std::cout << "Number of toy events in " << MCmassrange << " : " << MCtree->GetEntries(MCmassrange.c_str()) << "\n";
+  std::cout << "The normalisation is " << scale << "\n";
+  std::vector<LegendreMomentPlot> CDplots = LegendreMomentPlot::FillPlotsFromTree("data",*CDtree,CDmassname,CDanglename,CDweight,xtitle,unit,plotname,xlow,xup,nbins,max_order, 1);
+  std::vector<LegendreMomentPlot> MCplots = LegendreMomentPlot::FillPlotsFromTree("model",*MCtree,MCmassname,MCanglename,MCweight,xtitle,unit,plotname,xlow,xup,nbins,max_order,scale);
   assert(MCplots.size() == CDplots.size());
-  TCanvas allplots("allplots","",1200,1200);
   int ny = std::round(std::ceil(std::sqrt(max_order)));
   int nx = std::round(std::ceil(double(max_order)/ny));
   allplots.Divide(nx,ny);

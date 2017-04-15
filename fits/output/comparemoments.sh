@@ -24,7 +24,7 @@ then
   fitting -f $recentxml --saveOneDataSet toys.root --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 1000000
   mv -v toys.root $recentdir
   cd $recentdir
-  CompareMoments --MCfile toys.root --MCmass mKK --MCangle ctheta_2 --lower 1.05 --bins 25 --CDfile $ntuple --CDweight Nsig_sw --CDcut "B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass"
+  CompareMoments --MCfile toys.root --MCmass mKK --MCangle ctheta_2 --lower 1.05 --bins 25 --CDfile $ntuple --CDcut "B_s0_LOKI_Mass>5326.12&&5406.56>B_s0_LOKI_Mass"
 else
   echo "Most recent XML timestamp ($xmltimestamp) does not match most recent output dir timestamp ($dirtimestamp). Will not generate toys."
 fi

@@ -15,7 +15,7 @@
 void PlotMoments(std::string file, std::string massbranch, std::string ct2branch, std::string cuts, std::string weightname, std::string xtitle, std::string unit, std::string plotname, double xlow, double xup, int nbins, int max_order)
 {
   auto tree = std::unique_ptr<TTree>(GetTree(file,cuts));
-  std::vector<LegendreMomentPlot> plots = LegendreMomentPlot::FillPlotsFromTree(*tree,massbranch,ct2branch,weightname,xtitle,unit,plotname,xlow,xup,nbins,max_order,1.0);
+  std::vector<LegendreMomentPlot> plots = LegendreMomentPlot::FillPlotsFromTree("data",*tree,massbranch,ct2branch,weightname,xtitle,unit,plotname,xlow,xup,nbins,max_order,1.0);
   TCanvas allplots("allplots","",1200,1200);
   int ny = std::round(std::ceil(std::sqrt(max_order)));
   int nx = std::round(std::ceil(double(max_order)/ny));
