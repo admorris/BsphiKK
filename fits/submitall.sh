@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: submitall.sh [<folder>] [<pattern to match>] [<extra RapidFit options>]
 source RFjobconfig.sh
-make -C modules -j
+make -C modules -j$(nproc)
 currentdir=$(pwd)
 if [ "$1" == "" ]
 then
