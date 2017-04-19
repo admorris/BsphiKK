@@ -1,6 +1,6 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
-pdf/signal/moments_acceptanceTOS.xml
+pdf/signal/moments_acceptanceTIS.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_moments.xml
 minimiser/minuit2.xml
@@ -30,8 +30,9 @@ phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 output/lowrange.xml
 output/highrange.xml
+output/fullrange.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
 parameterset/thraccscale_fixed.xml
-phasespaceboundary/TOS.xml
+phasespaceboundary/TIS.xml
