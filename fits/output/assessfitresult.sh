@@ -18,6 +18,6 @@ do
 	ftwopfrac=$(getnumber "1ftwop1525LHCb(2,BW)           " $file)
 	ftwopfL=$(getnumber   "ftwop1525LHCb\_Azerosq     " $file)
 	status=$(getnumber "Status" $file | tail -1)
-	echo "${folder} & ${status} & ${nll} & ${aic} & ${bic} & ${chisq} & ${ftwopfrac} & ${ftwopfL} \\\\"
+	echo "${folder} & ${status} & ${nll} & ${aic} & ${bic} & ${chisq} & ${phifrac} & ${ftwopfrac} & ${ftwopfL} \\\\"
 done
 

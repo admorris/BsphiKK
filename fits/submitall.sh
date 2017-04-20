@@ -37,12 +37,13 @@ do
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		# Perform the fit
-		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 $3 | tee RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
+		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 $3 | tee \${logfile}
 		# Deal with the output
-		$currentdir/output/mergeprojections.sh
-		$currentdir/output/compareresult.sh
-		$currentdir/output/comparemoments.sh
-		$currentdir/output/calculatefitfractions.sh
+		$currentdir/output/mergeprojections.sh | tee -a \${logfile}
+		$currentdir/output/compareresult.sh | tee -a \${logfile}
+		$currentdir/output/comparemoments.sh | tee -a \${logfile}
+		$currentdir/output/calculatefitfractions.sh | tee -a \${logfile}
 		EOF
 		# Submit the jobs
 		qsub ${submission_script}
