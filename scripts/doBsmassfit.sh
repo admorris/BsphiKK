@@ -9,7 +9,7 @@ table=../scripts/tables/MassFits.csv
     --pulls \
     --save-results Bsmassfitmvacut \
     --output-file ${table} 
-ranges=(1080 1200 1350 1450 1550 1650 1800)
+ranges=(1045 1080 1200 1350 1450 1550 1650 1800)
 for range in ${ranges[@]}
 do
 cutapplier BsphiKK_data_mvacut.root DecayTree "BCON_KK_M<$range" BsphiKK_data_mvacut_$range.root
