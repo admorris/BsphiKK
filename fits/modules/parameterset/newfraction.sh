@@ -2,8 +2,9 @@
 # Self-documenting the argument set
 name=$1
 spin=$2
+shape=$3
 # Generate the XML
-echo "# shape: spin-${spin} BW"
+echo "# shape: spin-${spin} ${shape}"
 echo "# style: 1"
 echo "# width: 1"
 echo "# colour: 1"

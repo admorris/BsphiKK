@@ -9,7 +9,7 @@ function warning
 }
 function getparticlename
 {
-	echo $1 | sed -r "s/.*$2\/([a-zA-Z0-9]*)_.*/\1/g"
+	echo $1 | sed -r "s/.*$2\/([a-zA-Z0-9]*)_.*/\1/g" | sed "s/_spline//g"
 }
 # SGE/OGE job options
 declare -a joboptions

@@ -19,7 +19,11 @@ function newKK()
 	mv amplitudes/${name}_float_pi.xml amplitudes/${name}_fixed_pi.xml
 	sed -i 's/<Type>Float<\/Type> #phase/<Type>Fixed<\/Type> #phase/' amplitudes/${name}_fixed_zero.xml
 	sed -i 's/<Type>Float<\/Type> #phase/<Type>Fixed<\/Type> #phase/' amplitudes/${name}_fixed_pi.xml
-	./newfraction.sh ${name} ${spin} > fractions/${name}_float.xml
+	./newfraction.sh ${name} ${spin} "BW" > fractions/${name}_float.xml
+	if [ "${spin}" == "0" ]
+	then
+		./newfraction.sh ${name} ${spin} "SP" > fractions/${name}_spline_float.xml
+	fi
 	./newconstraint.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > ../constraintfunction/${name}_constraint.xml
 }
 #       Name            J       mass    +       −       width   +       −

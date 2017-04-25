@@ -1,0 +1,12 @@
+# shape: spin-0 SP
+# style: 9
+# width: 2
+# colour: 3
+<PhysicsParameter>
+	<Name>fzero980_fraction</Name>
+	<Value>0.26</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>10.0</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
