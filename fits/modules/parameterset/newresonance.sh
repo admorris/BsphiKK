@@ -7,7 +7,7 @@ width=$3
 echo "<PhysicsParameter>"
 echo "	<Name>${name}_mass</Name>"
 echo "	<Value>${mass}</Value>"
-echo "	<Minimum>0.988</Minimum>"
+echo "	<Minimum>0.930</Minimum>"
 echo "	<Maximum>2.0</Maximum>"
 echo "	<Type>Float</Type>#Please don't float this without Gaussian constraints!"
 echo "	<Unit>GeV</Unit>"

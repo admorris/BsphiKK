@@ -3,7 +3,7 @@
 # width: 2
 # colour: 39
 <PhysicsParameter>
-	<Name>combinatorialphi1020_fraction</Name>
+	<Name>combphi1020_fraction</Name>
 	<Value>10.0</Value>
 	<Type>Float</Type>
 	<Minimum>0.0</Minimum>
@@ -11,7 +11,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_mean</Name>
+	<Name>combphi1020_mean</Name>
 	<Value>1.02</Value>
 	<Minimum>1.0</Minimum>
 	<Maximum>1.2</Maximum>
@@ -19,7 +19,7 @@
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_sigma</Name>
+	<Name>combphi1020_sigma</Name>
 	<Value>0.010</Value>
 	<Minimum>0.004</Minimum>
 	<Maximum>0.100</Maximum>
@@ -27,7 +27,7 @@
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_alpha</Name>
+	<Name>combphi1020_alpha</Name>
 	<Value>-0.82875</Value>
 	<Minimum>-5.0</Minimum>
 	<Maximum>5.0</Maximum>
@@ -35,7 +35,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>combinatorialphi1020_n</Name>
+	<Name>combphi1020_n</Name>
 	<Value>1.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>

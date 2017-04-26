@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>1500knot_mass</Name>
+	<Value>1.5</Value>
+	<Minimum>0.930</Minimum>
+	<Maximum>2.0</Maximum>
+	<Type>Fixed</Type>#Please don't float this without Gaussian constraints!
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>1500knot_width</Name>
+	<Value>0</Value>
+	<Minimum>0</Minimum>
+	<Maximum>0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>

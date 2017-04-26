@@ -1,8 +1,8 @@
 #!/bin/bash
 function newKK()
 {
-	echo "Building ${name}"
 	name=$1
+	echo "Building ${name}"
 	spin=$2
 	mass=$3
 	muperr=$4
