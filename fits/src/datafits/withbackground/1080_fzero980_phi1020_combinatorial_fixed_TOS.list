@@ -19,7 +19,7 @@ parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 parameterset/backgrounds/combinatorial_fixed.xml
-parameterset/backgrounds/combinatorialphi1020_fixed.xml
+parameterset/backgrounds/combphi1020_fixed.xml
 phasespaceboundary/mKK_BCON_1080.xml
 phasespaceboundary/angles_BCON.xml
 output/fullrange.xml

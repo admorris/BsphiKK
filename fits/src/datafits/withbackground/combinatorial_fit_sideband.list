@@ -5,7 +5,7 @@ fitfunction/default.xml
 dataset/sideband_mva.xml
 parameterset/resonances/phi1020_fixed.xml
 parameterset/backgrounds/combinatorial_float.xml
-parameterset/backgrounds/combinatorialphi1020_float.xml
+parameterset/backgrounds/combphi1020_float.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
