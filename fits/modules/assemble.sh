@@ -7,6 +7,10 @@ function warning
 {
 	echo -e "\033[33mWARNING:\e[0m $1" 1>&2
 }
+function inform
+{
+	echo -e "\033[32mINFO:\e[0m $1" 1>&2
+}
 function getparticlename
 {
 	echo $1 | sed -r "s/.*$2\/([a-zA-Z0-9]*)_.*/\1/g" | sed "s/_spline//g"
@@ -23,6 +27,7 @@ declare -a resonances
 declare -a sigwidths
 declare -a sigstyles
 declare -a sigcolours
+declare -a swavesplineknots
 # List of background components
 declare -a components
 declare -a bkgwidths
@@ -119,9 +124,14 @@ do
 				# The first line should contain the spin and resonance shape
 				particle=$(getparticlename $arg fractions)
 				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
-				sigwidths+=("$(getoption $arg width)")
-				sigstyles+=("$(getoption $arg style)")
-				sigcolours+=("$(getoption $arg colour)")
+				if [[ "$(getoption $arg shape)" == *"spin-0 SP"* ]]
+				then
+					swavesplineknots+=("${particle}")
+				else
+					sigwidths+=("$(getoption $arg width)")
+					sigstyles+=("$(getoption $arg style)")
+					sigcolours+=("$(getoption $arg colour)")
+				fi
 			elif [[ $arg == *"backgrounds/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
@@ -222,6 +232,13 @@ then
 	do
 		colourlist="${colourlist}:${item}"
 	done
+	# Style of s-wave spline
+	if [[ ${#swavesplineknots[@]} -gt 0 ]]
+	then
+		widthlist="${widthlist}:2"
+		stylelist="${stylelist}:9"
+		colourlist="${colourlist}:3"
+	fi
 	# Style of interference
 	widthlist="${widthlist}:2"
 	stylelist="${stylelist}:5"
@@ -369,17 +386,18 @@ do
 	echo "		  <Threads>${NSLOTS}</Threads>"
 	if [[ ${#resonances[@]} -gt 1 || ${#components[@]} -gt 1 ]]
 	then
-		if [[ ${#sigwidths[@]} -eq ${#resonances[@]} && ${#bkgwidths[@]} -eq ${#components[@]} ]]
+		numsigkeys=$(echo "${#resonances[@]}-${#swavesplineknots[@]}" | bc -l)
+		if [[ ${#sigwidths[@]} -eq ${numsigkeys} && ${#bkgwidths[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<WidthKey>${widthlist}</WidthKey>"
 		else
-			warning "Only ${#widths[@]} width keys"
+			warning "${#sigwidths[@]} signal width keys (${numsigkeys} expected) and ${#bkgwidths[@]} background width keys (${#components[@]} expected)"
 		fi
-		if [[ ${#sigstyles[@]} -eq ${#resonances[@]} && ${#bkgstyles[@]} -eq ${#components[@]} ]]
+		if [[ ${#sigstyles[@]} -eq ${numsigkeys} && ${#bkgstyles[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<StyleKey>${stylelist}</StyleKey>"
 		fi
-		if [[ ${#sigcolours[@]} -eq ${#resonances[@]} && ${#bkgcolours[@]} -eq ${#components[@]} ]]
+		if [[ ${#sigcolours[@]} -eq ${numsigkeys} && ${#bkgcolours[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<ColorKey>${colourlist}</ColorKey>"
 		fi

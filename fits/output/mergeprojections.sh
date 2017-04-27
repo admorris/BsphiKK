@@ -28,6 +28,10 @@ if [ -e Overlay_mKK_${suffix}.pdf ]
 then
   echo "    \includegraphics[width=0.49\textwidth]{Overlay_mKK_${suffix}.pdf}" >> projections.tex
 fi
+if [ -e Overlay_mKK_${suffix}.pdf.~2~ ]
+then
+mv Overlay_mKK_${suffix}.pdf.~2~ Overlay_mKK_${suffix}.pdf
+fi
 if [ -e Overlay_mKK_${suffix}.pdf.~1~ ]
 then
 mv -v Overlay_mKK_${suffix}.pdf Overlay_mKK_high_${suffix}.pdf
