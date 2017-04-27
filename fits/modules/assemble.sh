@@ -23,6 +23,7 @@ declare -a resonances
 declare -a sigwidths
 declare -a sigstyles
 declare -a sigcolours
+declare -a swavesplineknots
 # List of background components
 declare -a components
 declare -a bkgwidths
@@ -119,9 +120,14 @@ do
 				# The first line should contain the spin and resonance shape
 				particle=$(getparticlename $arg fractions)
 				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
-				sigwidths+=("$(getoption $arg width)")
-				sigstyles+=("$(getoption $arg style)")
-				sigcolours+=("$(getoption $arg colour)")
+				if [[ "$(getoption $arg shape)" == *"spin-0 SP"* ]]
+				then
+					swavesplineknots+="${particle}"
+				else
+					sigwidths+=("$(getoption $arg width)")
+					sigstyles+=("$(getoption $arg style)")
+					sigcolours+=("$(getoption $arg colour)")
+				fi
 			elif [[ $arg == *"backgrounds/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
@@ -222,6 +228,13 @@ then
 	do
 		colourlist="${colourlist}:${item}"
 	done
+	# Style of s-wave spline
+	if [[ ${#swavesplineknots[@]} -gt 0 ]]
+	then
+		widthlist="${widthlist}:2"
+		stylelist="${stylelist}:9"
+		colourlist="${colourlist}:3"
+	fi
 	# Style of interference
 	widthlist="${widthlist}:2"
 	stylelist="${stylelist}:5"
