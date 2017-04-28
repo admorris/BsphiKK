@@ -13,18 +13,19 @@
 // Custom headers
 #include "MakeBranchPlot.h"
 #include "plotmaker.h"
-void CompareBranch(std::string MCfilename, std::string CDfilename, std::string MCbranchname, std::string CDbranchname, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, bool drawline, double lineat)
+void CompareBranch(std::string MCfilename, std::string CDfilename, std::string MCbranchname, std::string CDbranchname, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, bool drawline, double lineat, bool noblurb)
 {
   TH1D*  MChist = MakeBranchPlot(MCfilename,MCbranchname,MCcuts,MCweight,xlow,xup,nbins);
   TH1D*  CDhist = MakeBranchPlot(CDfilename,CDbranchname,CDcuts,CDweight,xlow,xup,nbins);
-  MChist->Scale(CDhist->Integral()/MChist->Integral());
-  CDhist->Scale();
+  MChist->Scale(1.0/MChist->Integral());
+  CDhist->Scale(1.0/CDhist->Integral());
   MChist->SetFillColor(kOrange);
   MChist->SetLineColor(kOrange);
-  MChist->SetMaximum(MChist->GetMaximum()*1.3);
+  MChist->SetMaximum(std::max(CDhist->GetMaximum(),MChist->GetMaximum())*1.3);
   MChist->SetMinimum(0);
   // Draw everything
   plotmaker plotter(MChist);
+  if(noblurb) plotter.SetBlurb("");
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("HIST");
   CDhist->Draw("sameE1");
@@ -48,6 +49,7 @@ int main(int argc, char* argv[])
   int nbins;
   desc.add_options()
     ("help"    ,                                                                                "produce help message"             )
+    ("noblurb" ,                                                                                "no blurb"                         )
     ("MCfile"  , value<std::string>(&MCfile  )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "Monte Carlo file"                 )
     ("CDfile"  , value<std::string>(&CDfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"              )
     ("MCbranch", value<std::string>(&MCbranch)->default_value("B_s0_LOKI_Mass"               ), "Monte Carlo branch to plot"       )
@@ -62,7 +64,7 @@ int main(int argc, char* argv[])
     ("upper"   , value<double     >(&xup     )->default_value(5600                           ), "branch upper limit"               )
     ("lower"   , value<double     >(&xlow    )->default_value(5200                           ), "branch lower limit"               )
     ("bins"    , value<int        >(&nbins   )->default_value(20                             ), "number of bins"                   )
-    ("lineat"  , value<double>(&lineat )->default_value(0                                      ), "draw vertical line at this value"    )
+    ("lineat"  , value<double     >(&lineat  )->default_value(0                              ), "draw vertical line at this value" )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -73,6 +75,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::cout << "Entering main function" << std::endl;
-  CompareBranch(MCfile,CDfile,MCbranch,CDbranch,xtitle,unit,plot,MCcuts,CDcuts,MCweight,CDweight,xlow,xup,nbins,vmap.count("lineat"),lineat);
+  CompareBranch(MCfile,CDfile,MCbranch,CDbranch,xtitle,unit,plot,MCcuts,CDcuts,MCweight,CDweight,xlow,xup,nbins,vmap.count("lineat"),lineat,vmap.count("noblurb"));
   return 0;
 }

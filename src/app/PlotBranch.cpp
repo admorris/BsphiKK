@@ -12,14 +12,16 @@
 using std::string;
 using std::cout;
 using std::endl;
-void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile, bool drawline, double lineat)
+void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile, bool drawline, double lineat, bool unitarea, bool noblurb)
 {
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
+  if(unitarea) frame->Scale(1.0/frame->Integral());
   string histname = plotname.find_last_of("/") == string::npos? plotname : plotname.substr(plotname.find_last_of("/")+1);
   frame->SetName(histname.c_str());
   frame->SetMaximum(frame->GetMaximum()*1.3);
   frame->SetMinimum(0);
   plotmaker plotter(frame);
+  if(noblurb) plotter.SetBlurb("");
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("E1");
   if(overlayfilename!="")
@@ -61,7 +63,9 @@ int main(int argc, char* argv[])
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                  "produce help message"                )
+    ("noblurb" ,                                                                                  "no blurb"                            )
     ("root"    ,                                                                                  "save plot as .root file"             )
+    ("unitarea",                                                                                  "normalise to unit area"              )
     ("file,F"  , value<string>(&file   )->default_value("ntuples/BsphiKK_data_mva.root"        ), "data file"                           )
     ("branch,B", value<string>(&branch )->default_value("B_s0_LOKI_Mass"                       ), "branch to plot"                      )
     ("weight,W", value<string>(&weight )->default_value(""                                     ), "weighting variable"                  )
@@ -85,6 +89,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"),vmap.count("lineat"),lineat);
+  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"),vmap.count("lineat"),lineat,vmap.count("unitarea"),vmap.count("noblurb"));
   return 0;
 }

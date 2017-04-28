@@ -13,7 +13,7 @@
 #include "MakeBranchPlot.h"
 #include "plotmaker.h"
 using std::string;
-void CompareBranchRatio(string Dfilename, string Nfilename, string Dbranchname, string Nbranchname, string xtitle, string unit, string plotname, string Dcuts, string Ncuts, string Dweight, string Nweight, double xlow, double xup, int nbins)
+void CompareBranchRatio(string Dfilename, string Nfilename, string Dbranchname, string Nbranchname, string xtitle, string unit, string plotname, string Dcuts, string Ncuts, string Dweight, string Nweight, double xlow, double xup, int nbins, bool noblurb)
 {
   TH1D*  Dhist = MakeBranchPlot(Dfilename,Dbranchname,Dcuts,Dweight,xlow,xup,nbins);
   TH1D*  Nhist = MakeBranchPlot(Nfilename,Nbranchname,Ncuts,Nweight,xlow,xup,nbins);
@@ -22,6 +22,7 @@ void CompareBranchRatio(string Dfilename, string Nfilename, string Dbranchname, 
   Nhist->SetMinimum(0);
   // Draw everything
   plotmaker plotter(Nhist);
+  if(noblurb) plotter.SetBlurb("");
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("E1");
   plot->SaveAs((plotname+".pdf").c_str());
@@ -36,6 +37,7 @@ int main(int argc, char* argv[])
   int nbins;
   desc.add_options()
     ("help"   ,                                                                               "produce help message"          )
+    ("noblurb",                                                                               "no blurb"                      )
     ("Dfile"  , value<std::string>(&Dfile  )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "denominator file"              )
     ("Nfile"  , value<std::string>(&Nfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "numerator file"                )
     ("Dbranch", value<std::string>(&Dbranch)->default_value("KK_M"                         ), "denominator branch to plot"    )
@@ -60,6 +62,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::cout << "Entering main function" << std::endl;
-  CompareBranchRatio(Dfile,Nfile,Dbranch,Nbranch,xtitle,unit,plot,Dcuts,Ncuts,Dweight,Nweight,xlow,xup,nbins);
+  CompareBranchRatio(Dfile,Nfile,Dbranch,Nbranch,xtitle,unit,plot,Dcuts,Ncuts,Dweight,Nweight,xlow,xup,nbins,vmap.count("noblurb"));
   return 0;
 }
