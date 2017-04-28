@@ -12,7 +12,7 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_float_mass.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
-parameterset/resonances/ftwop1525LHCb_float.xml
+parameterset/resonances/ftwop1525LHCb_float_width.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
