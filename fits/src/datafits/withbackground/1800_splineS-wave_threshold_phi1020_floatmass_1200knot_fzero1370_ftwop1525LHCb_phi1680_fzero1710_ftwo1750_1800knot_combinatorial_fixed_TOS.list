@@ -28,8 +28,7 @@ parameterset/backgrounds/combphi1020_fixed.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 output/lowrange.xml
-output/highrange.xml
-output/fullrange.xml
+output/fullrange_ymax.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
