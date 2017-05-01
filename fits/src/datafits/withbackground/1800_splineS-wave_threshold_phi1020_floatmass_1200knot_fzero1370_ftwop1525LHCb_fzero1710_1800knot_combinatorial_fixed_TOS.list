@@ -12,7 +12,7 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_float_mass.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
-parameterset/resonances/ftwop1525LHCb_float.xml
+parameterset/resonances/ftwop1525LHCb_float_width.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
@@ -32,6 +32,9 @@ phasespaceboundary/TOS.xml
 parameterset/fractions/thresholdknot_float.xml
 parameterset/amplitudes/thresholdknot_float.xml
 parameterset/resonances/thresholdknot_fixed.xml
+parameterset/fractions/1200knot_float.xml
+parameterset/amplitudes/1200knot_float.xml
+parameterset/resonances/1200knot_fixed.xml
 parameterset/fractions/fzero1370_spline_float.xml
 parameterset/amplitudes/fzero1370_float.xml
 parameterset/resonances/fzero1370_fixed.xml
