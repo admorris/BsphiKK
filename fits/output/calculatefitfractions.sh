@@ -7,7 +7,7 @@ then
   exit 0
 fi
 tmpxml="Temp_Fixed.xml"
-sed "s/[Ff]loat/Fixed/g" $recentxml | sed "s/[Ff]ree/Fixed/g" | sed "s/UseAcceptance:True/UseAcceptance:False/g" > $tmpxml
+sed "s/[Ff]loat/Fixed/g" $recentxml | sed "s/[Ff]ree/Fixed/g" | sed "s/UseAcceptance:True/UseAcceptance:False/g" | sed "s/convolve:[Tt]rue/convolve:False/g" > $tmpxml
 fitting -f $tmpxml --calculateFitFractions --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 1 --OverrideXML /RapidFit/ParameterSet/PhysicsParameter/signal_fraction/Value 1.0 --OverrideXML /RapidFit/ToFit/DataSet/PhaseSpaceBoundary/Observable/mKK/Maximum 1.80
 rm $tmpxml
 xmltimestamp=$(echo $recentxml | sed -r 's/outputXMLFile(.*)\.xml/\1/')
