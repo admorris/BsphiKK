@@ -10,15 +10,12 @@ for mode in ${modes[@]}
 do
   if [ "$mode" == "Bsphiphi_MC"  -o  "$mode" == "BsphiKK_MC" ]
   then
-    applied_cut="${totalcut}&&${signalBKGCATcut}&&${BsMcut}"
+    applied_cut="${totalcut}&&${signalBKGCATcut}"
   elif [[ "$mode" == *"_MC" ]]
   then
-    applied_cut="${totalcut}&&${misIDBKGCATcut}&&${BsMcut}"
-  elif [ "$mode" == "BsphiKK_sideband" ]
-  then
-    applied_cut="${totalcut}"
+    applied_cut="${totalcut}&&${misIDBKGCATcut}"
   else
-    applied_cut="${totalcut}&&${BsMcut}"
+    applied_cut="${totalcut}"
   fi
   cutapplier ${nTuples_dir}${mode}_loosePID.root DecayTreeTuple/DecayTree ${applied_cut} ${mode}_cuts.root &
 done

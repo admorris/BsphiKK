@@ -35,7 +35,6 @@ KKEVCHI2cut="KK_ENDVERTEX_CHI2<25"
 # stdtightkaons
 StdTightKaons="Kminus0_PIDK>0&&Kplus0_PIDK>0"
 #Bs mass window cut
-BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
 sidebandcut="B_s0_LOKI_Mass>5500"
 #Bs flight distance chi-squared cut
 BsFDCHI2cut="B_s0_FDCHI2_OWNPV>250"
