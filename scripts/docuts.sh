@@ -20,5 +20,5 @@ do
   cutapplier ${nTuples_dir}${mode}_loosePID.root DecayTreeTuple/DecayTree ${applied_cut} ${mode}_cuts.root &
 done
 wait
-return 0
+
 

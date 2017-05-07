@@ -16,6 +16,6 @@ do
   done
 done
 mv -v acceptance_*pdf ../latex/figs/
-return 0
+
 ls
 

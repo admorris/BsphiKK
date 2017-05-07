@@ -4,5 +4,5 @@
 ./seleff.sh
 ./vetoeff.sh | tee log/vetoeff.log
 ./plotttrigeff.sh
-return 0
+
 

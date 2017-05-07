@@ -13,5 +13,5 @@
 ./doBsmassfit.sh | tee log/Bsmassfit.log
 ./plotmoments.sh | tee log/plotmoments.log
 ./angacc.sh | tee log/angacc.log
-return 0
+
 

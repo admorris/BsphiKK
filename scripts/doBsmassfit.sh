@@ -72,5 +72,5 @@ cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" Bsphi
     --save-results BsmassfitmvacutAB \
     --output-file ${table}
 ../bin/ExportResults ${table} ../latex/results/MassFits.tex
-return 0
+
 
