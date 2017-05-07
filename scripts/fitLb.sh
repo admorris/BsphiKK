@@ -17,5 +17,5 @@ cd ../ntuples
              --cuts "BCON_KK_M<1800" \
              --plot ../latex/figs/LbphiKp_fit_for_yield_vetoes \
              --pulls
-exit 0
+return 0
 

@@ -34,5 +34,5 @@ do
   mv -v ../${ntuple_name}_${jobno}*.root ${EOS_nTuples_dir}
 done
 source /afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse umount ~/eos
-exit 0
+return 0
 

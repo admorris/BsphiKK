@@ -15,5 +15,5 @@ for mode in ${modes[@]}; do
 done
 rm -v log_*.tmp
 ../bin/ExportResults ../scripts/tables/CutBasedSel.csv ../latex/results/CutBasedSel.tex
-exit 0
+return 0
 
