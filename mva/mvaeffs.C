@@ -30,7 +30,7 @@ using std::endl;
 #include "TGLabel.h"
 #include "TGNumberEntry.h"
 
-#include "../include/ResultDB.h"
+#include "../common/include/ResultDB.h"
 
 // this macro plots the signal and background efficiencies
 // as a function of the MVA cut.
@@ -564,7 +564,7 @@ void StatDialogMVAEffs::PrintResults( const MethodInfo* info )
 void mvaeffs( TString fin = "TMVA.root", Float_t ns = 1920.59, Float_t nb = 1148.17,
               Bool_t useTMVAStyle = kTRUE, TString formula="S/sqrt(S+B)" )
 {
-//   gSystem->Load("../lib/libResultDB.so");
+//   gSystem->Load("../common/lib/libResultDB.so");
 
    TMVAGlob::Initialize( useTMVAStyle );
 

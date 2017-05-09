@@ -4,7 +4,7 @@ source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r4p2/InstallAre
 sigN=$(grep "initialmassfitABSignalNthreesigma" ../scripts/tables/MassFits.csv | sed -r 's/^[a-zA-Z]*\s+[a-zA-Z]*\s+([0-9\.]+).*/\1/')
 bkgN=$(grep "initialmassfitABCombinatorialNthreesigma" ../scripts/tables/MassFits.csv | sed -r 's/^[a-zA-Z]*\s+[a-zA-Z]*\s+([0-9\.]+).*/\1/')
 root -l -b <<EOF # wow
-.L ../lib/libResultDB.so
+.L ../common/lib/libResultDB.so
 .L mvaeffs.C+
 mvaeffs("TMVA.root",${sigN},${bkgN})
 .q # I'm so sorry 
