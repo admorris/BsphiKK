@@ -1,9 +1,10 @@
 // global TMVA style settings
-#ifndef TMVA_TMVAGLOB
-#define TMVA_TMVAGLOB
+#ifndef TMVA_TMVAGLOB_LOCAL
+#define TMVA_TMVAGLOB_LOCAL
 
 #include <iostream>
 
+#include "TClass.h"
 #include "TPad.h"
 #include "TCanvas.h"
 #include "TColor.h"

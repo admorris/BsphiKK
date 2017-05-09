@@ -7,6 +7,7 @@ using std::endl;
 
 #include "RQ_OBJECT.h"
 
+#include "TClass.h"
 #include "TH1.h"
 #include "TROOT.h"
 #include "TList.h"
