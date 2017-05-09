@@ -18,12 +18,12 @@ CDfile="BsphiKK_data_mva_Sweighted.root"
 ../bin/CompareBranch \
      --CDfile $CDfile \
      --MCfile $MCfile \
-     --CDweight \"Nsig_sw\" \
-     --MCbranch \"${branch}\" \
-     --CDbranch \"${branch}\" \
-     --title \"${title}\" \
-     --unit \"${unit}\" \
-     --plot \"$plotname\" \
+     --CDweight Nsig_sw \
+     --MCbranch ${branch} \
+     --CDbranch ${branch} \
+     --title ${title} \
+     --unit ${unit} \
+     --plot $plotname \
      ${range} \
      --bins 100
 
