@@ -8,5 +8,5 @@ bin/GetResolution -F ntuples/BsphiKK_MC_mvacut.root -P Kplus0 Kminus0 -B BCON_KK
 bin/GetResolution -F ntuples/BsphiKK_MC_mvacut.root -P Kplus0 Kminus0 -B BCON_KK_M -l -10 -u 10 -O latex/figs/mKKresolution_6 -C "BCON_KK_M>1500&&BCON_KK_M<1600&&KK_TRUEID!=333" | tee KKresolution6.log
 bin/GetResolution -F ntuples/BsphiKK_MC_mvacut.root -P Kplus0 Kminus0 -B BCON_KK_M -l -10 -u 10 -O latex/figs/mKKresolution_7 -C "BCON_KK_M>1600&&BCON_KK_M<1700&&KK_TRUEID!=333" | tee KKresolution7.log
 bin/GetResolution -F ntuples/BsphiKK_MC_mvacut.root -P Kplus0 Kminus0 -B BCON_KK_M -l -10 -u 10 -O latex/figs/mKKresolution_8 -C "BCON_KK_M>1700&&BCON_KK_M<1800&&KK_TRUEID!=333" | tee KKresolution8.log
-exit 0
+
 

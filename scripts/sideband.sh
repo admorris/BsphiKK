@@ -6,4 +6,4 @@ cutapplier BsphiKK_data_nocut.root DecayTreeTuple/DecayTree ${sidebandcut} Bsphi
 cutapplier BsphiKK_data_loosePID.root DecayTreeTuple/DecayTree ${sidebandcut} BsphiKK_sideband_loosePID.root &
 cutapplier BsphiKK_data_loosePID.root DecayTreeTuple/DecayTree "${sidebandcut}&&${StdTightKaons}&&${KKIPCHI2cut}" BsphiKK_sideband_PIDcuts.root &
 wait
-exit 0
+

@@ -26,5 +26,5 @@ CDfile="BsphiKK_data_mva_Sweighted.root"
      --plot \"$plotname\" \
      ${range} \
      --bins 100
-exit 0
+
 

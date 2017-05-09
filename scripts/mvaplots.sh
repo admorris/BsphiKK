@@ -11,5 +11,5 @@ root -l -b -q mvas.C\(\"TMVA.root\",0\)
 root -l -b -q mvas.C\(\"TMVA.root\",3\)
 #Classifier Background Rejection vs Signal Efficiency (ROC curve)
 root -l -b -q efficiencies.C\(\"TMVA.root\"\)
-exit 0
+
 

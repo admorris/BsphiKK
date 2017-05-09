@@ -15,5 +15,5 @@ root -l -q -b "cuteff.C+(\"LbphiKp_MC_bdtVars\",\"B_s0_LOKI_Mass\",\"\",\"${veto
 root -l -q -b "cuteff.C+(\"BsphiKK_data_bdtVars\",\"B_s0_LOKI_Mass\",\"TMath::Abs(B_s0_LOKI_Mass-5366.77)<${Lbwidth}\",\"${veto}\")"
 echo "################################################################################"
 done
-exit 0
+
 

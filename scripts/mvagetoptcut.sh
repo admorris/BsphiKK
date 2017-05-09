@@ -15,5 +15,5 @@ optcut=$(../bin/PrintResult ../scripts/tables/mvaeffs.csv MLPoptcut | grep "^val
 echo "#!/bin/bash" > ../scripts/mvaopticut.sh
 echo "optcut=$optcut" >> ../scripts/mvaopticut.sh
 echo "" >> ../scripts/mvaopticut.sh
-exit 0
+
 

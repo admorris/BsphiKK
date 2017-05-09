@@ -62,5 +62,5 @@ for mode in ${modes[@]}; do
     rm -v ../ntuples/${mode}_${label}_mvaVars_vetoes.root
   done
 done
-exit 0
+
 

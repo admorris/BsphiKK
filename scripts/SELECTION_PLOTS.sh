@@ -11,5 +11,5 @@
 ## Plot fully-selected m(KK) and helicity angles
 ./plotmKK_mva.sh | tee log/plotmKK_mva.log
 ./plot4D.sh | tee log/plot4D.log
-exit 0
+
 

@@ -21,5 +21,5 @@ cd ../ntuples/
                  --initial-cut "BCON_KK_M>1050&&BCON_KK_M<1800" --final-cut "mlp<${optcut}" \
                  --save --output-file ../scripts/tables/mvaeffs.csv --result-name sidebandmvacutrej
 ../bin/ExportResults ../scripts/tables/mvaeffs.csv ../latex/results/mvaeffs.tex
-exit 0
+
 

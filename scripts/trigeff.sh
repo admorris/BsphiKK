@@ -9,5 +9,5 @@ cutapplier ${nTuples_dir}BsphiKK_MC_nocut.root "DecayTreeTuple/DecayTree" "KK_M<
 ../bin/GetTrigEff ../ntuples/BsphiKK_MC_mKKcut.root --save --output-file ../scripts/tables/TrigEffs.csv  | tee log/BsphiKK_MC_mKKcut_trigeff.log
 rm -v ../ntuples/BsphiKK_MC_mKKcut.root
 ../bin/ExportResults ../scripts/tables/TrigEffs.csv ../latex/results/TrigEffs.tex
-exit 0
+
 

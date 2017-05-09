@@ -21,5 +21,5 @@ do
        --plot \"$plotname\" \
        ${ranges[i]}
 done
-exit 0
+
 
