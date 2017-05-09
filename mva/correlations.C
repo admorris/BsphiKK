@@ -24,7 +24,7 @@ void correlations( TString fin = "TMVA.root", Bool_t isRegression = kFALSE,
    const Int_t width = 600;
    for (Int_t ic=0; ic<ncls; ic++) {
 
-      TH2* h2 = file->Get( hName[ic] );
+      TH2* h2 = (TH2*)file->Get( hName[ic] );
       if(!h2) {
          cout << "Did not find histogram " << hName[ic] << " in " << fin << endl;
          continue;

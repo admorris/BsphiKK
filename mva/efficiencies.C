@@ -1,6 +1,6 @@
 #include "tmvaglob.C"
 
-void plot_efficiencies( TFile* file, Int_t type = 2, TDirectory* BinDir)
+void plot_efficiencies( TFile* file, Int_t type = 2, TDirectory* BinDir = gDirectory)
 {
    // input:   - Input file (result from TMVA),
    //          - type = 1 --> plot efficiency(B) versus eff(S)
@@ -77,7 +77,7 @@ void plot_efficiencies( TFile* file, Int_t type = 2, TDirectory* BinDir)
    TIter next(&methods);
 
    // loop over all methods
-   while (key = (TKey*)next()) {
+   while ((key = (TKey*)next())) {
       TDirectory * mDir = (TDirectory*)key->ReadObj();
       TList titles;
       UInt_t ninst = TMVAGlob::GetListOfTitles(mDir,titles);
