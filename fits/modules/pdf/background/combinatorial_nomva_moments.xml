@@ -1,0 +1,3 @@
+<ConfigurationParameter>combinatorial_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>
+<ConfigurationParameter>combphi1020_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>
+<ConfigurationParameter>combftwo1270_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>
