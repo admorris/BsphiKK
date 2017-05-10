@@ -7,6 +7,7 @@ function plotstripcut()
   lolim=$4
   uplim=$5
   cutv=$6
+  nbins=$7
   ../bin/PlotBranch \
     -F ../ntuples/BsphiKK_data_cuts.root \
     -C "BCON_KK_M<1800" \
@@ -16,7 +17,7 @@ function plotstripcut()
     -O ../latex/figs/strip_$branch \
     -l $lolim \
     -u $uplim \
-    -b 50
+    -b $nbins
 }
 
 #StdNoPIDsPions               : (PT>250*MeV) & (MIPCHI2DV(PRIMARY) > 4.)
@@ -47,16 +48,20 @@ function plotstripcut()
 # - Vtxχ²
 # - Mass
 for track in "Kplus" "Kminus" "Kplus0" "Kminus0"
-do
-  plotstripcut "${track}_PT"         "p_{T}"                "MeV/#it{c}"  0 2000  500
-  plotstripcut "${track}_DLLk"       "DLL(#it{K#minus#pi})" ""          -10   10    0
-  plotstripcut "${track}_IPCHISQ"    "#chi^{2}_{IP}"        ""            0  100   16
-  plotstripcut "${track}_TRACKCHISQ" "#chi^{2}_{Track}"     ""            0  100  
-  plotstripcut "${track}_GHOSTPROB"  "Ghost prob"           ""            0    1  0.5
+do #            Branch                    Title                                   Unit         min  max  cut bins
+  plotstripcut "${track}_PT"              "p_{T}"                                 "MeV/#it{c}"   0 2000  500  200
+  plotstripcut "${track}_PIDK"            "DLL(#it{K#minus#pi})"                  ""           -10   80    0   90
+  plotstripcut "${track}_IPCHI2_OWNPV"    "#chi^{2}_{IP}"                         ""             0  100   16  100
+  plotstripcut "${track}_TRACK_CHI2NDOF"  "#chi^{2}_{Track}/ndof"                 ""             0    5  3.5   50
+  plotstripcut "${track}_TRACK_GhostProb" "Ghost prob"                            ""             0    1  0.5  100
 done
-for resonance in "phi_1020" "KK"
-do
-  plotstripcut "${resonance}_PT"  "p_{T}" "MeV/#it{c}" 0 3000  900
-  plotstripcut "${resonance}_P"   "p"     "MeV/#it{c}" 0 3000 1000
+for KKres in "phi_1020" "KK"
+do #            Branch                    Title                                   Unit             min    max  cut bins
+  plotstripcut "${KKres}_PT"              "p_{T}"                                 "MeV/#it{c}"       0  10000  900  100
+  plotstripcut "${KKres}_P"               "p"                                     "MeV/#it{c}"       0 100000 1000  100
+  plotstripcut "${KKres}_IPCHI2_OWNPV"    "#chi^{2}_{IP}"                         ""                 0    200   10  100
+#  plotstripcut "${KKres}_" # DOCAχ² not in ntuple??
+  plotstripcut "${KKres}_ENDVERTEX_CHI2"  "#chi^{2}_{Vtx}"                        ""                 0     30   25   30
+  plotstripcut "${KKres}_M"               "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" "MeV/#it{c}^{2}" 980   1800    0   41
 done
 
