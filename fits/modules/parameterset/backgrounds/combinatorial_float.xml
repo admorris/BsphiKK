@@ -10,15 +10,15 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_A</Name>
-	<Value>2.0</Value>
-	<Minimum>1.0</Minimum>
-	<Maximum>10.0</Maximum>
+	<Value>10.0</Value>
+	<Minimum>0.1</Minimum>
+	<Maximum>20.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_B</Name>
-	<Value>-3.5</Value>
+	<Value>-2.5</Value>
 	<Minimum>-5.0</Minimum>
 	<Maximum>-1.0</Maximum>
 	<Type>Float</Type>
@@ -26,9 +26,9 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>combinatorial_C</Name>
-	<Value>0.01</Value>
+	<Value>0.03</Value>
 	<Minimum>0.001</Minimum>
-	<Maximum>0.1</Maximum>
+	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
