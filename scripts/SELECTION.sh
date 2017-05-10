@@ -8,6 +8,5 @@
 ./MVA.sh
 ./killclones.sh | tee log/killclones.log
 source eos.sh
-xrdcp --verbose --force ../ntuples/*mvacut*.root ../ntuples/*Gen*mvaVars* ${nTuples_dir}/ntuples/
-
+xrdcp --verbose --force ../ntuples/*mva.root ../ntuples/*mvacut*.root ../ntuples/*Gen*mvaVars* ${nTuples_dir}/ntuples/
 
