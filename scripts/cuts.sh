@@ -24,9 +24,9 @@ ghstcut="Kminus_TRACK_GhostProb<0.3&&Kplus_TRACK_GhostProb<0.3&&Kminus0_TRACK_Gh
 trackisMuoncut="Kminus_isMuon==0&&Kplus_isMuon==0&&Kminus0_isMuon==0&&Kplus0_isMuon==0"
 #Kaon PT>500 (as in PhiRhoLine) to all Kaons
 KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
-#Phi mass window cut
-phiMcut="TMath::Abs(phi_1020_LOKI_Mass-${phimass})<${phiwindow}"
 ## Symmetrise the stripping cuts
+#kaon IP chi2 cuts
+KaonIPCHI2cut="Kminus_IPCHI2_OWNPV>16&&Kplus_IPCHI2_OWNPV>16"
 #phi and rho IP chi2 cuts
 phiIPCHI2cut="phi_1020_IPCHI2_OWNPV>16"
 KKIPCHI2cut="KK_IPCHI2_OWNPV>16"
@@ -48,10 +48,17 @@ KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>${KpPIDval}&&Kminus_ProbNNk*(1-Kminus_
 signalBKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
 misIDBKGCATcut="(B_s0_BKGCAT==30)"
 ###############################################################################
+#Phi mass window cut
+phiMcut="abs(BCON_phi_M-${phimass})<${phiwindow}"
+#phi K* veto
 phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+#Lb to phi K p veto
 LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
+#Lc to phi p veto
 Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(TMath::Abs(phipbarM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
+#D to kaons veto
 DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
+#D to phi pi veto
 Dtophipiveto="TMath::Abs(phipiplusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiminusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
 vetoes=($phikstveto $LbphiKpveto $Lcphipveto $DtoKaonsveto $Dtophipiveto)
 

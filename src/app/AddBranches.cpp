@@ -151,6 +151,7 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
 /*New mass branches************************************************************/
   // phi KK
   TLorentzVector BCON_KK_P;   double BCON_KK_M;         outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
+  TLorentzVector BCON_phi_P;  double BCON_phi_M;        outtree->Branch("BCON_phi_M", &BCON_phi_M, "BCON_phi_M/D" );
   TLorentzVector KK_TRUEP;    double KK_TRUEM; if(isMC) outtree->Branch("KK_TRUEM",   &KK_TRUEM,   "KK_TRUEM/D"   );
   TLorentzVector phiKplusP;   double phiKplusM;         outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
   TLorentzVector phiKminusP;  double phiKminusM;        outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
@@ -227,6 +228,8 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
     }
     // Track 4-momenta with constrained Bs mass
     for(int j = 0; j < 4; j++) h_BCONP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
+    BCON_phi_P = doswap? h_BCONP[2] + h_BCONP[3] : h_BCONP[0] + h_BCONP[1];
+    BCON_phi_M = BCON_phi_P.M();
     BCON_KK_P = doswap? h_BCONP[0] + h_BCONP[1] : h_BCONP[2] + h_BCONP[3];
     BCON_KK_M = BCON_KK_P.M();
     BCON_KK_M_GeV = BCON_KK_M*1e-3;
