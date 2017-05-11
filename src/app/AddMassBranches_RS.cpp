@@ -15,10 +15,14 @@ void addBranches(string filename = "f1420")
        * outtree = intree->CloneTree(0);
   // Read the number of events in the input file
   Int_t n = intree->GetEntries();
-  double mass;
-  intree->SetBranchAddress("m_b",&mass);
-  outtree->Branch("B_s0_M",&mass);
-  outtree->Branch("B_s0_LOKI_Mass",&mass);
+  double mphiKK;
+  intree->SetBranchAddress("m_b",&mphiKK);
+  outtree->Branch("B_s0_M",&mphiKK);
+  outtree->Branch("B_s0_LOKI_Mass",&mphiKK);
+  double mKK;
+  intree->SetBranchAddress("mkk",&mKK);
+  outtree->Branch("KK_M",&mKK);
+  outtree->Branch("BCON_KK_M",&mKK);
 /*Event loop*******************************************************************/
   for(Int_t i = 0; i < n; i++)
   {
