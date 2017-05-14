@@ -1,10 +1,10 @@
 #!/bin/bash
 Bdmass="5279.58"
 Kstmass="891.66"
-Bdwindow="60" # Try 60
+Bdwindow="60"
 Kstwindow="150"
 Lbmass="5619.5"
-Lbwindow="60" # Try 60
+Lbwindow="60"
 Lcmass="2286.46"
 Lcwindow="24"
 Dsmass="1968.3"
@@ -51,14 +51,14 @@ misIDBKGCATcut="(B_s0_BKGCAT==30)"
 #Phi mass window cut
 phiMcut="abs(BCON_phi_M-${phimass})<${phiwindow}"
 #phi K* veto
-phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+phikstveto="(abs(phiKpiM-${Bdmass})>${Bdwindow}||(abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 #Lb to phi K p veto
-LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
+LbphiKpveto="(abs(phiKpM-${Lbmass})>${Lbwindow}||(abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
 #Lc to phi p veto
-Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(TMath::Abs(phipbarM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
+Lcphipveto="(abs(phipM-${Lcmass})>${Lcwindow}||(abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(abs(phipbarM-${Lcmass})>${Lcwindow}||(abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
 #D to kaons veto
-DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
+DtoKaonsveto="abs(phiKplusM-${Dsmass})>${Dswindow}&&abs(phiKminusM-${Dsmass})>${Dswindow}"
 #D to phi pi veto
-Dtophipiveto="TMath::Abs(phipiplusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiminusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
+Dtophipiveto="abs(phipiplusM-${Ddmass})>${Ddwindow}&&abs(phipiminusM-${Ddmass})>${Ddwindow}&&abs(phipiplusM-${Dsmass})>${Dswindow}&&abs(phipiminusM-${Dsmass})>${Dswindow}"
 vetoes=($phikstveto $LbphiKpveto $Lcphipveto $DtoKaonsveto $Dtophipiveto)
 

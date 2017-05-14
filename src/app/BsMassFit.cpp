@@ -23,7 +23,7 @@
 #include "GetTree.h"
 #include "GetData.h"
 #include "ResultDB.h"
-void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename, bool noblurb)
+void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb)
 {
   int nbins = 50;
   using namespace std;
@@ -150,7 +150,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       {
         PBplotter = new plotmaker(PBframe);
       }
-      if(noblurb) PBplotter->SetBlurb("");
+      PBplotter->SetBlurb(blurb);
       PBplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
       TCanvas* canv = PBplotter->Draw();
       canv->SaveAs((plotfilename+"_PB"+std::to_string(i)+".pdf").c_str());
@@ -184,7 +184,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   {
     MCplotter = new plotmaker(MCframe);
   }
-  if(noblurb) MCplotter->SetBlurb("");
+  MCplotter->SetBlurb(blurb);
   MCplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
   TCanvas* MCcanv = MCplotter->Draw();
   MCcanv->SaveAs((plotfilename+"_MC.pdf").c_str());
@@ -223,7 +223,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   {
     CDplotter = new plotmaker(CDframe);
   }
-  if(noblurb) CDplotter->SetBlurb("");
+  CDplotter->SetBlurb(blurb);
   CDplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
   CDplotter->SetLogy(logy);
   TCanvas* canv = CDplotter->Draw();
@@ -358,13 +358,13 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf;
+  string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf, blurb;
   vector<string> pkbkgs, yopts;
   vector<double> yields;
   int drawregion;
   desc.add_options()
     ("help,H"      ,                                                                             "produce help message"           )
-    ("noblurb"     ,                                                                             "no blurb"                       )
+    ("blurb", value<string>(&blurb), "blurb text")
     ("sweight,W"   ,                                                                             "apply sweights to data"         )
     ("pulls,P"     ,                                                                             "plot with pulls"                )
     ("logy"        ,                                                                             "log y scale"                    )
@@ -390,7 +390,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf,vmap.count("noblurb"));
+  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf,blurb);
   return 0;
 }
 

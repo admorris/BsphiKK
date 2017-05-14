@@ -12,7 +12,7 @@
 using std::string;
 using std::cout;
 using std::endl;
-void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile, bool drawline, double lineat, bool unitarea, bool noblurb)
+void PlotBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlayfilename, double scale, bool saveasrootfile, bool drawline, double lineat, bool unitarea,std::string blurb)
 {
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
   if(unitarea) frame->Scale(1.0/frame->Integral());
@@ -21,7 +21,7 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
   frame->SetMaximum(frame->GetMaximum()*1.3);
   frame->SetMinimum(0);
   plotmaker plotter(frame);
-  if(noblurb) plotter.SetBlurb("");
+  plotter.SetBlurb(blurb);
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("E1");
   if(overlayfilename!="")
@@ -58,12 +58,12 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  string file, branch, cuts, xtitle, unit, plot, weight, overlay;
+  string file, branch, cuts, xtitle, unit, plot, weight, overlay, blurb;
   double xlow, xup, scale, lineat;
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                  "produce help message"                )
-    ("noblurb" ,                                                                                  "no blurb"                            )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("root"    ,                                                                                  "save plot as .root file"             )
     ("unitarea",                                                                                  "normalise to unit area"              )
     ("file,F"  , value<string>(&file   )->default_value("ntuples/BsphiKK_data_mva.root"        ), "data file"                           )
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
     ("bins,b"  , value<int   >(&nbins  )->default_value(50                                     ), "number of bins"                      )
     ("overlay" , value<string>(&overlay)->default_value(""                                     ), "file to overlay the same branch from")
     ("scale"   , value<double>(&scale  )->default_value(1                                      ), "scale factor for the overlaid branch")
-    ("lineat"  , value<double>(&lineat )->default_value(0                                      ), "draw vertical line at this value"    )
+    ("lineat"  , value<double>(&lineat )                                                        , "draw vertical line at this value"    )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -89,6 +89,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"),vmap.count("lineat"),lineat,vmap.count("unitarea"),vmap.count("noblurb"));
+  PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"),vmap.count("lineat"),lineat,vmap.count("unitarea"),blurb);
   return 0;
 }

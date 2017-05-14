@@ -15,7 +15,7 @@
 #include "GetTree.h"
 #include "GetData.h"
 
-void FitLb(string filename, string Sfilename, string Bfilename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins, bool drawpulls, bool noblurb)
+void FitLb(string filename, string Sfilename, string Bfilename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins, bool drawpulls,std::string blurb)
 {
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
@@ -51,7 +51,7 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   {
     plotter = new plotmaker(Sframe);
   }
-  if(noblurb) plotter->SetBlurb("");
+  plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+"S.pdf").c_str());
   SigMod->FloatPar("mean");
@@ -89,7 +89,7 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   {
     plotter = new plotmaker(Cframe);
   }
-  if(noblurb) plotter->SetBlurb("");
+  plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+".pdf").c_str());
 }
@@ -99,12 +99,12 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  std::string file, sfile, bfile, branch, model, cuts, xtitle, unit, plot;
+  std::string file, sfile, bfile, branch, model, cuts, xtitle, unit, plot, blurb;
   double xlow, xup;
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                             "produce help message")
-    ("noblurb" ,                                                                             "no blurb"            )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("pulls,P" ,                                                                             "plot with pulls"     )
     ("file,F"  , value<string>(&file  )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"           )
     ("Sfile"   , value<string>(&sfile )->default_value("ntuples/LbphiKp_MC_mvaVars.root"  ), "signal MC file"      )
@@ -128,6 +128,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),vmap.count("noblurb"));
+  FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),blurb);
   return 0;
 }

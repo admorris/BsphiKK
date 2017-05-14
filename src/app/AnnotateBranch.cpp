@@ -14,7 +14,7 @@
 using std::string;
 using std::cout;
 using std::endl;
-void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale, bool noblurb)
+void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale,std::string blurb)
 {
   using namespace std;
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
@@ -114,7 +114,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     go=false;
   }
   plotmaker plotter(frame);
-  if(noblurb) plotter.SetBlurb("");
+  plotter.SetBlurb(blurb);
 //  frame->SetDrawOption("E1");
   plotter.SetTitle(xtitle,unit);
   TCanvas* canv = plotter.Draw("E1");
@@ -171,12 +171,12 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  string file, branch, cuts, xtitle, unit, plot, weight, overlay;
+  string file, branch, cuts, xtitle, unit, plot, weight, overlay, blurb;
   double xlow, xup, scale;
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                              "produce help message"                )
-    ("noblurb" ,                                                                              "no blurb"                            )
+    ("blurb", value<string>(&blurb), "blurb text")
     ("file,F"  , value<string>(&file   )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"                           )
     ("branch,B", value<string>(&branch )->default_value("KK_M"                             ), "branch to plot"                      )
     ("weight,W", value<string>(&weight )->default_value(""                                 ), "weighting variable"                  )
@@ -199,6 +199,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("noblurb"));
+  AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,blurb);
   return 0;
 }
