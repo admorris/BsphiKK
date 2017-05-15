@@ -22,7 +22,7 @@ void PlotMoments(std::string file, std::string massbranch, std::string ct2branch
   allplots.Divide(nx,ny);
   for(auto& lmplot : plots)
   {
-    plotmaker plot(&lmplot.hist);
+    plotmaker<TH1> plot(&lmplot.hist);
     plot.SetBlurb(blurb);
     plot.SetTitle(xtitle,unit);
     TCanvas* canvas = plot.Draw();

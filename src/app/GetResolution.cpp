@@ -87,7 +87,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
 //  model->plotOn(frame);
   ResFit->Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
-  plotmaker plotter(frame);
+  plotmaker<RooPlot> plotter(frame);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(("#Delta"+xtitle), unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
@@ -115,7 +115,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   cout << "Plotting" << endl;
   data->plotOn(frame,(Binning(nbins)));
   PhiFit->Plot(frame);
-  plotmaker plotter2(frame);
+  plotmaker<RooPlot> plotter2(frame);
   plotter2.SetTitle((xtitle), unit);
   plotter2.Draw()->SaveAs((plotname+"_fit.pdf").c_str());
 */

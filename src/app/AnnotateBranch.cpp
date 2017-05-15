@@ -113,7 +113,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     cout << "No stored list of resonances for branch name " << branchname << endl;
     go=false;
   }
-  plotmaker plotter(frame);
+  plotmaker<TH1> plotter(frame);
   plotter.SetBlurb(blurb);
 //  frame->SetDrawOption("E1");
   plotter.SetTitle(xtitle,unit);

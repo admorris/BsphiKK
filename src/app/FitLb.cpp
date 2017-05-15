@@ -30,7 +30,7 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
 //        ,* Bframe = x->frame()
         ;
   MassFitter FitModel(x);
-  plotmaker* plotter;
+  plotmaker<RooPlot>* plotter;
   RooRealVar NLb("N","",100,0,10000);
   RooRealVar NBs("N","",100,0,100000);
 /*Fit to LbphiKp MC************************************************************/
@@ -44,12 +44,12 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   {
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(Sframe->pullHist(),"B");
-    plotter = new plotmaker(Sframe);
+    plotter = new plotmaker<RooPlot>(Sframe);
     plotter->SetPullPlot(pullframe);
   }
   else
   {
-    plotter = new plotmaker(Sframe);
+    plotter = new plotmaker<RooPlot>(Sframe);
   }
   plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);
@@ -64,12 +64,12 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
 //  {
 //    RooPlot* pullframe = x->frame(Title("Pull"));
 //    pullframe->addPlotable(Bframe->pullHist(),"B");
-//    plotter = new plotmaker(Bframe);
+//    plotter = new plotmaker<RooPlot>(Bframe);
 //    plotter->SetPullPlot(pullframe);
 //  }
 //  else
 //  {
-//    plotter = new plotmaker(Bframe);
+//    plotter = new plotmaker<RooPlot>(Bframe);
 //  }
 //  plotter->SetTitle(xtitle, unit);
 //  plotter->Draw()->SaveAs((plotname+"B.pdf").c_str());
@@ -82,12 +82,12 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   {
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(Cframe->pullHist(),"B");
-    plotter = new plotmaker(Cframe);
+    plotter = new plotmaker<RooPlot>(Cframe);
     plotter->SetPullPlot(pullframe);
   }
   else
   {
-    plotter = new plotmaker(Cframe);
+    plotter = new plotmaker<RooPlot>(Cframe);
   }
   plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);

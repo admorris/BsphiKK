@@ -48,18 +48,18 @@ void FitBranch(std::string filename, std::string branchname, std::vector<std::st
   data->plotOn(frame,Binning(nbins));
   FitModel.Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
-  plotmaker* plotter;
+  plotmaker<RooPlot>* plotter;
   if(drawpulls)
   {
     RooHist* pullhist = frame->pullHist();
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    plotter = new plotmaker(frame);
+    plotter = new plotmaker<RooPlot>(frame);
     plotter->SetPullPlot(pullframe);
   }
   else
   {
-    plotter = new plotmaker(frame);
+    plotter = new plotmaker<RooPlot>(frame);
   }
   plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);

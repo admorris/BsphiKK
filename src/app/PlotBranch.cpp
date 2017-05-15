@@ -20,7 +20,7 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
   frame->SetName(histname.c_str());
   frame->SetMaximum(frame->GetMaximum()*1.3);
   frame->SetMinimum(0);
-  plotmaker plotter(frame);
+  plotmaker<TH1> plotter(frame);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("E1");

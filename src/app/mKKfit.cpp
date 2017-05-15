@@ -222,7 +222,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   cout << "Plotting" << endl;
   data->plotOn(frame,(Binning(nbins)));
   massfitter->Plot(frame);
-  plotmaker fullplot(frame);
+  plotmaker<RooPlot> fullplot(frame);
   fullplot.SetBlurb(blurb);
   RooHist* pullhist = frame->pullHist();
   RooPlot* pullframe = m->frame(Title("Pull"));
@@ -271,7 +271,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     pullframe_lo->addPlotable(pullhist_lo,"B");
     pullframe_hi->addPlotable(pullhist_hi,"B");
     // Draw the low-mass plot
-    plotmaker lowplot(frame_lo);
+    plotmaker<RooPlot> lowplot(frame_lo);
     lowplot.SetBlurb(blurb);
     lowplot.SetPullPlot(pullframe_lo);
     lowplot.SetTitle(xtitle, unit);
@@ -281,7 +281,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     frame_lo->GetYaxis()->SetTitle(ytitle_lo.str().c_str());
     can->SaveAs((plotname+"_low_range.pdf").c_str());
     // Draw the high-mass plot
-    plotmaker highplot(frame_hi);
+    plotmaker<RooPlot> highplot(frame_hi);
     highplot.SetBlurb(blurb);
     highplot.SetPullPlot(pullframe_hi);
     highplot.SetTitle(xtitle, unit);

@@ -24,7 +24,7 @@ void CompareBranch(std::string MCfilename, std::string CDfilename, std::string M
   MChist->SetMaximum(std::max(CDhist->GetMaximum(),MChist->GetMaximum())*1.3);
   MChist->SetMinimum(0);
   // Draw everything
-  plotmaker plotter(MChist);
+  plotmaker<TH1> plotter(MChist);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("HIST");

@@ -36,7 +36,7 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
     residualplot.SetFillColor(kBlack);
     for(int ibin = 1; ibin < nbins+1; ibin++) // Turn residuals into pulls (I think)
       residualplot.SetBinContent(ibin,residualplot.GetBinContent(ibin)/CDplots[order].hist.GetBinError(ibin));
-    plotmaker plot(&CDplots[order].hist);
+    plotmaker<TH1> plot(&CDplots[order].hist);
     plot.SetBlurb(blurb);
     plot.SetPullPlot(&residualplot);
     plot.SetTitle(xtitle,unit);

@@ -21,7 +21,7 @@ void CompareBranchRatio(string Dfilename, string Nfilename, string Dbranchname, 
   Nhist->SetMaximum(Nhist->GetMaximum()*1.5);
   Nhist->SetMinimum(0);
   // Draw everything
-  plotmaker plotter(Nhist);
+  plotmaker<TH1> plotter(Nhist);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("E1");

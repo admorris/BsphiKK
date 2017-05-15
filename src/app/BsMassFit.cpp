@@ -137,18 +137,18 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       PBdata->plotOn(PBframe,Binning(nbins));
       PDFtoPlot->plotOn(PBframe,LineStyle(kSolid),LineColor(kRed));
       cout << "Plotting peaking background" << endl;
-      plotmaker* PBplotter;
+      plotmaker<RooPlot>* PBplotter;
       if(drawpulls)
       {
         RooHist* pullhist = PBframe->pullHist();
         RooPlot* pullframe = PBmass->frame(Title("Pull"));
         pullframe->addPlotable(pullhist,"B");
-        PBplotter = new plotmaker(PBframe);
+        PBplotter = new plotmaker<RooPlot>(PBframe);
         PBplotter->SetPullPlot(pullframe);
       }
       else
       {
-        PBplotter = new plotmaker(PBframe);
+        PBplotter = new plotmaker<RooPlot>(PBframe);
       }
       PBplotter->SetBlurb(blurb);
       PBplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
@@ -171,18 +171,18 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   RooPlot* MCframe = mass.frame();
   MCdata.plotOn(MCframe,Binning(nbins));
   SigMod->GetPDF()->plotOn(MCframe,LineStyle(kSolid),LineColor(kRed));
-  plotmaker* MCplotter;
+  plotmaker<RooPlot>* MCplotter;
   if(drawpulls)
   {
     RooHist* pullhist = MCframe->pullHist();
     RooPlot* pullframe = mass.frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    MCplotter = new plotmaker(MCframe);
+    MCplotter = new plotmaker<RooPlot>(MCframe);
     MCplotter->SetPullPlot(pullframe);
   }
   else
   {
-    MCplotter = new plotmaker(MCframe);
+    MCplotter = new plotmaker<RooPlot>(MCframe);
   }
   MCplotter->SetBlurb(blurb);
   MCplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
@@ -210,18 +210,18 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   phiKKFitter.Fit(&CDdata);
   resolution *= SigMod->GetValue("scalef");
   phiKKFitter.Plot(CDframe);
-  plotmaker* CDplotter;
+  plotmaker<RooPlot>* CDplotter;
   if(drawpulls)
   {
     RooHist* pullhist = CDframe->pullHist();
     RooPlot* pullframe = mass.frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    CDplotter = new plotmaker(CDframe);
+    CDplotter = new plotmaker<RooPlot>(CDframe);
     CDplotter->SetPullPlot(pullframe);
   }
   else
   {
-    CDplotter = new plotmaker(CDframe);
+    CDplotter = new plotmaker<RooPlot>(CDframe);
   }
   CDplotter->SetBlurb(blurb);
   CDplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
