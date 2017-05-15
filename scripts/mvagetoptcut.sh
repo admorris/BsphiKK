@@ -11,7 +11,12 @@ root -l -b <<EOF # wow
 EOF
 cp -v plots/*.pdf ../latex/figs/
 # Store optimal cut
-optcut=$(../bin/PrintResult ../scripts/tables/mvaeffs.csv MLPoptcut | grep "^value.*$" | sed -r 's/^value\s*:\s*([0-9\.]*.*$)/\1/')
+optcut=$(../bin/PrintResult ../scripts/tables/mvaeffs.csv MLPoptcut | grep "^rawvalue.*$" | sed -r 's/^rawvalue\s*:\s*([0-9\.]*.*$)/\1/')
+if [ -z $optcut ]
+then
+	optcut="0.0" # Not great but stops it crashing
+	echo "WARNING: optimal cut missing and set to zero"
+fi
 echo "#!/bin/bash" > ../scripts/mvaopticut.sh
 echo "optcut=$optcut" >> ../scripts/mvaopticut.sh
 echo "" >> ../scripts/mvaopticut.sh

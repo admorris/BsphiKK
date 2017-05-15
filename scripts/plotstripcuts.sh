@@ -1,23 +1,26 @@
 #!/bin/bash
+source cuts.sh
 function plotstripcut()
 {
-  branch=$1
-  title=$2
-  unit=$3
-  lolim=$4
-  uplim=$5
-  cutv=$6
-  nbins=$7
+  particle=$1
+  branch=$2
+  title=$3
+  unit=$4
+  lolim=$5
+  uplim=$6
+  cutv=$7
+  nbins=$8
   ../bin/PlotBranch \
-    -F ../ntuples/BsphiKK_data_cuts.root \
-    -C "BCON_KK_M<1800" \
-    -B "$branch" \
+    -F ../ntuples/BsphiKK_data_mvaVars_vetoes.root \
+    -C "abs(KK_M-${phimass})<$phiwindow" \
+    -B "${particle}_$branch" \
     -T "$title" \
     -U "$unit" \
-    -O ../latex/figs/strip_$branch \
+    -O ../latex/figs/strip_${branch}_${particle} \
     -l $lolim \
     -u $uplim \
-    -b $nbins
+    -b $nbins \
+    --lineat $cutv &
 }
 
 #StdNoPIDsPions               : (PT>250*MeV) & (MIPCHI2DV(PRIMARY) > 4.)
@@ -35,33 +38,32 @@ function plotstripcut()
 
 # Kaons
 # - pT
-# - DLLk
-# - IPχ²
-# - Trackχ²
-# - GhostProb
-
+# - DLL(K−π)
+# - IP χ²
+# - Track χ²
+# - Ghost Prob
+for track in "Kplus" "Kminus" "Kplus0" "Kminus0"
+do #           Particle   Branch            Title                                   Unit         min  max  cut bins
+  plotstripcut "${track}" "PT"              "p_{T}"                                 "MeV/#it{c}"   0 2000  500  200
+  plotstripcut "${track}" "PIDK"            "DLL(#it{K#minus#pi})"                  ""           -10   80    0   90
+  plotstripcut "${track}" "IPCHI2_OWNPV"    "#chi^{2}_{IP}"                         ""             0  100   16  100
+  plotstripcut "${track}" "TRACK_CHI2NDOF"  "#chi^{2}_{Track}/ndof"                 ""             0    5  3.5   50
+  plotstripcut "${track}" "TRACK_GhostProb" "Ghost prob"                            ""             0    1  0.3  100
+done
 # ϕ and KK
 # - pT
 # - p
-# - IPχ²
-# - DOCAχ²
-# - Vtxχ²
+# - IP χ²
+# - DOCA χ²
+# - Vtx χ²
 # - Mass
-for track in "Kplus" "Kminus" "Kplus0" "Kminus0"
-do #            Branch                    Title                                   Unit         min  max  cut bins
-  plotstripcut "${track}_PT"              "p_{T}"                                 "MeV/#it{c}"   0 2000  500  200
-  plotstripcut "${track}_PIDK"            "DLL(#it{K#minus#pi})"                  ""           -10   80    0   90
-  plotstripcut "${track}_IPCHI2_OWNPV"    "#chi^{2}_{IP}"                         ""             0  100   16  100
-  plotstripcut "${track}_TRACK_CHI2NDOF"  "#chi^{2}_{Track}/ndof"                 ""             0    5  3.5   50
-  plotstripcut "${track}_TRACK_GhostProb" "Ghost prob"                            ""             0    1  0.5  100
-done
 for KKres in "phi_1020" "KK"
-do #            Branch                    Title                                   Unit             min    max  cut bins
-  plotstripcut "${KKres}_PT"              "p_{T}"                                 "MeV/#it{c}"       0  10000  900  100
-  plotstripcut "${KKres}_P"               "p"                                     "MeV/#it{c}"       0 100000 1000  100
-  plotstripcut "${KKres}_IPCHI2_OWNPV"    "#chi^{2}_{IP}"                         ""                 0    200   10  100
-#  plotstripcut "${KKres}_" # DOCAχ² not in ntuple??
-  plotstripcut "${KKres}_ENDVERTEX_CHI2"  "#chi^{2}_{Vtx}"                        ""                 0     30   25   30
-  plotstripcut "${KKres}_M"               "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" "MeV/#it{c}^{2}" 980   1800    0   41
+do #           Particle   Branch            Title                                   Unit              min    max  cut bins
+  plotstripcut "${KKres}" "PT"              "p_{T}"                                 "MeV/#it{c}"        0   5000  900  100
+  plotstripcut "${KKres}" "P"               "p"                                     "MeV/#it{c}"        0  20000 1000  100
+  plotstripcut "${KKres}" "IPCHI2_OWNPV"    "#chi^{2}_{IP}"                         ""                  0    512   16   64
+  plotstripcut "${KKres}" "ENDVERTEX_CHI2"  "#chi^{2}_{Vtx}"                        ""                  0     30   25   30
+  plotstripcut "${KKres}" "M"               "#it{m}(#it{K}^{#plus}#it{K}^{#minus})" "MeV/#it{c}^{2}" 1000   1050    0   50
 done
+wait
 

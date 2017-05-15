@@ -12,7 +12,7 @@
 #include "plotmaker.h"
 #include "LegendreMomentPlot.h"
 
-void PlotMoments(std::string file, std::string massbranch, std::string ct2branch, std::string cuts, std::string weightname, std::string xtitle, std::string unit, std::string plotname, double xlow, double xup, int nbins, int max_order, bool noblurb)
+void PlotMoments(std::string file, std::string massbranch, std::string ct2branch, std::string cuts, std::string weightname, std::string xtitle, std::string unit, std::string plotname, double xlow, double xup, int nbins, int max_order,std::string blurb)
 {
   auto tree = std::unique_ptr<TTree>(GetTree(file,cuts));
   std::vector<LegendreMomentPlot> plots = LegendreMomentPlot::FillPlotsFromTree("data",*tree,massbranch,ct2branch,weightname,xtitle,unit,plotname,xlow,xup,nbins,max_order,1.0);
@@ -23,7 +23,7 @@ void PlotMoments(std::string file, std::string massbranch, std::string ct2branch
   for(auto& lmplot : plots)
   {
     plotmaker plot(&lmplot.hist);
-    if(noblurb) plot.SetBlurb("");
+    plot.SetBlurb(blurb);
     plot.SetTitle(xtitle,unit);
     TCanvas* canvas = plot.Draw();
     std::stringstream ytitle;
@@ -42,12 +42,12 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  std::string file, mass, phi, ct1, ct2, cuts, weight, xtitle, unit, plot;
+  std::string file, mass, phi, ct1, ct2, cuts, weight, xtitle, unit, plot, blurb;
   double xlow, xup;
   int nbins, N;
   desc.add_options()
     ("help,H"    ,                                                                                 "produce help message")
-    ("noblurb"   ,                                                                                 "no blurb"            )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("file,F"    , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mvacut.root"), "data ntuple"         )
     ("mass"      , value<std::string>(&mass  )->default_value("BCON_KK_M_GeV"                   ), "mass branch"         )
     ("costheta"  , value<std::string>(&ct2   )->default_value("cos_theta2"                      ), "cosθ branch"         )
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::cout << "Entering main function" << std::endl;
-  PlotMoments(file, mass, ct2, cuts, weight, xtitle, unit, plot, xlow, xup, nbins, N,vmap.count("noblurb"));
+  PlotMoments(file, mass, ct2, cuts, weight, xtitle, unit, plot, xlow, xup, nbins, N,blurb);
   return 0;
 }
 

@@ -59,33 +59,10 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
    Int_t noPlots = TMVAGlob::GetNumberOfInputVariables( dir ) +
       TMVAGlob::GetNumberOfTargets( dir );
 
-   // define Canvas layout here!
-   // default setting
-   Int_t xPad;  // no of plots in x
-   Int_t yPad;  // no of plots in y
-   Int_t width; // size of canvas
-   Int_t height;
-   switch (noPlots) {
-   case 1:
-      xPad = 1; yPad = 1; width = 550; height = 0.90*width; break;
-   case 2:
-      xPad = 2; yPad = 1; width = 600; height = 0.50*width; break;
-   case 3:
-      xPad = 3; yPad = 1; width = 900; height = 0.4*width; break;
-   case 4:
-      xPad = 2; yPad = 2; width = 600; height = width; break;
-   default:
-      xPad = 2; yPad = 4; width = 400; height = 2.0*width; break;
-   }
-
-   Int_t noPadPerCanv = xPad * yPad ;
-
    // counter variables
    Int_t countCanvas = 0;
-   Int_t countPad    = 0;
 
    // loop over all objects in directory
-   TCanvas* canv = 0;
    TKey*    key  = 0;
    Bool_t   createNewFig = kFALSE;
    TIter next(dir->GetListOfKeys());
@@ -101,17 +78,7 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
       TH1 *sig = (TH1*)key->ReadObj();
       TString hname(sig->GetName());
 
-      // create new canvas
-      if (countPad%noPadPerCanv==0) {
-         ++countCanvas;
-         canv = new TCanvas( Form("canvas%d", countCanvas), title,
-                             countCanvas*50+50, countCanvas*20, width, height );
-         canv->Divide(xPad,yPad);
-         canv->Draw();
-      }
-
-      TPad* cPad = (TPad*)canv->cd(countPad++%noPadPerCanv+1);
-      
+      TCanvas canv(Form( "canv%i", countCanvas ));
       // find the corredponding backgrouns histo
       TString bgname = hname;
       bgname.ReplaceAll("__Signal","__Background");
@@ -141,10 +108,9 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
 
       // finally plot and overlay
       Float_t sc = 1.1;
-      if (countPad == 1) sc = 1.3;
       sig->SetMaximum( TMath::Max( sig->GetMaximum(), bgd->GetMaximum() )*sc );
       sig->Draw( "hist" );
-      cPad->SetLeftMargin( 0.17 );
+      canv.SetLeftMargin( 0.17 );
 
       sig->GetYaxis()->SetTitleOffset( 1.70 );
       if (!isRegression) {
@@ -155,18 +121,20 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
       cout << newtitle[sig->GetXaxis()->GetTitle()] << endl;
       sig->GetXaxis()->SetTitle(newtitle[sig->GetXaxis()->GetTitle()].c_str());
       // Draw legend
+      /*
       if (countPad == 1 && !isRegression) {
-         TLegend *legend= new TLegend( cPad->GetLeftMargin(), 
-                                       1-cPad->GetTopMargin()-.15, 
-                                       cPad->GetLeftMargin()+.4, 
-                                       1-cPad->GetTopMargin() );
+         TLegend *legend= new TLegend( canv.GetLeftMargin(),
+                                       1-canv.GetTopMargin()-.15,
+                                       canv.GetLeftMargin()+.4,
+                                       1-canv.GetTopMargin() );
          legend->SetFillStyle(1);
          legend->AddEntry(sig,"Signal","F");
          legend->AddEntry(bgd,"Background","F");
          legend->SetBorderSize(1);
          legend->SetMargin( 0.3 );
          legend->Draw("same");
-      } 
+      }
+      */
 
       // redraw axes
       sig->Draw("sameaxis");
@@ -193,22 +161,10 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
       t->AppendPad();    
 
       // save canvas to file
-      if (countPad%noPadPerCanv==0) {
-         TString fname = Form( "plots/%s_c%i", outfname.Data(), countCanvas );
-         TMVAGlob::plot_logo();
-         TMVAGlob::imgconv( canv, fname );
-         createNewFig = kFALSE;
-      }
-      else {
-         createNewFig = kTRUE;
-      }
-   }
-   
-   if (createNewFig) {
       TString fname = Form( "plots/%s_c%i", outfname.Data(), countCanvas );
       TMVAGlob::plot_logo();
-      TMVAGlob::imgconv( canv, fname );
-      createNewFig = kFALSE;
+      TMVAGlob::imgconv( &canv, fname );
+      countCanvas++;
    }
 
    return;

@@ -20,7 +20,7 @@ using std::endl;
 using std::string;
 using std::vector;
 using std::sprintf;
-void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool fitacceptance, bool fitnonres, bool fitfzero, bool fitftwop, bool dontfitphi, bool noblurb)
+void mKKfit(string filename, string branchname, string cuts, string weight, string xtitle, string unit, string plotname, double xlow, double xup, double yup, int nbins, bool convolve, bool fitacceptance, bool fitnonres, bool fitfzero, bool fitftwop, bool dontfitphi,std::string blurb)
 {
 /*Physics parameters**********************************************************/
   // Define in MeV
@@ -223,7 +223,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
   data->plotOn(frame,(Binning(nbins)));
   massfitter->Plot(frame);
   plotmaker fullplot(frame);
-  if(noblurb) fullplot.SetBlurb("");
+  fullplot.SetBlurb(blurb);
   RooHist* pullhist = frame->pullHist();
   RooPlot* pullframe = m->frame(Title("Pull"));
   pullframe->addPlotable(pullhist,"B");
@@ -272,7 +272,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     pullframe_hi->addPlotable(pullhist_hi,"B");
     // Draw the low-mass plot
     plotmaker lowplot(frame_lo);
-    if(noblurb) lowplot.SetBlurb("");
+    lowplot.SetBlurb(blurb);
     lowplot.SetPullPlot(pullframe_lo);
     lowplot.SetTitle(xtitle, unit);
     can = lowplot.Draw();
@@ -282,7 +282,7 @@ void mKKfit(string filename, string branchname, string cuts, string weight, stri
     can->SaveAs((plotname+"_low_range.pdf").c_str());
     // Draw the high-mass plot
     plotmaker highplot(frame_hi);
-    if(noblurb) highplot.SetBlurb("");
+    highplot.SetBlurb(blurb);
     highplot.SetPullPlot(pullframe_hi);
     highplot.SetTitle(xtitle, unit);
     can = highplot.Draw();
@@ -296,12 +296,12 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  string file, branch, cuts, xtitle, unit, plot, weight;
+  string file, branch, cuts, xtitle, unit, plot, weight, blurb;
   double xlow, xup, yup;
   int nbins;
   desc.add_options()
     ("help,H"    ,                                                                                 "produce help message")
-    ("noblurb"   ,                                                                                 "no blurb"            )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("conv"      ,                                                                                 "do convolution"      )
     ("fitacc"    ,                                                                                 "fit for acceptance"  )
     ("fitnonres" ,                                                                                 "use nonres component")
@@ -329,7 +329,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitacc"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"),vmap.count("dontfitphi"),vmap.count("noblurb"));
+  mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitacc"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"),vmap.count("dontfitphi"),blurb);
   return 0;
 }
 

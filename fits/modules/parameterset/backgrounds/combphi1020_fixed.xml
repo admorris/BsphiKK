@@ -5,7 +5,9 @@
 <PhysicsParameter>
 	<Name>combphi1020_fraction</Name>
 	<Value>9.01</Value>
-	<Type>Fixed</Type>
+	<Maximum>10</Maximum>
+	<Minimum>0</Minimum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>

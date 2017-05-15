@@ -23,14 +23,15 @@
 #include "GetTree.h"
 #include "GetData.h"
 #include "ResultDB.h"
-void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename, bool noblurb)
+void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb)
 {
+  int nbins = 50;
   using namespace std;
 /*Input************************************************************************/
   // Open the input file and get the tree
   using namespace RooFit;
   cout << "Fitting to the branch " << branchtofit << endl;
-  RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5200,5600);
+  RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5150,5600);
 /*Set up the fitter************************************************************/
   MassFitter phiKKFitter(&mass);
   RooRealVar* Nsig  = new RooRealVar("N","Number of signal events",4500,0,120000);
@@ -92,15 +93,15 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         if(PBbranch=="HISTPDF")
         {
           PBmass = &mass;
-          PBdata = GetData(name,PBfilename,cuts,PBmass);
-          PDFtoPlot = GetDataHist(name,PBfilename,cuts,PBmass);
+          PBdata = GetData(name,PBfilename,"",PBmass);
+          PDFtoPlot = GetDataHist(name,PBfilename,"",PBmass);
           comp = phiKKFitter.AddComponent(name,PDFtoPlot,yield);
           comp->SetStyle(kSolid);
         }
         else
         {
           PBmass = new RooRealVar(PBbranch.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5000,5600);
-          PBdata = GetData(name,PBfilename,cuts,PBmass);
+          PBdata = GetData(name,PBfilename,"",PBmass);
           PBFitter = new MassFitter(PBmass);
           Component* PBMod = PBFitter->AddComponent(("temp"+name).c_str(),shapename);
           if(shapename == "Crystal Ball + 1 Gaussian")
@@ -119,7 +120,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       else
       {
         PBmass = &mass;
-        PBdata = GetData(name,PBfilename,cuts,PBmass);
+        PBdata = GetData(name,PBfilename,"",PBmass);
         comp = phiKKFitter.AddComponent(name,shapename,yield);
         if(shapename == "Crystal Ball + 1 Gaussian")
         {
@@ -133,7 +134,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       }
       PkgMod.push_back(comp);
       RooPlot* PBframe = PBmass->frame();
-      PBdata->plotOn(PBframe,Binning(50));
+      PBdata->plotOn(PBframe,Binning(nbins));
       PDFtoPlot->plotOn(PBframe,LineStyle(kSolid),LineColor(kRed));
       cout << "Plotting peaking background" << endl;
       plotmaker* PBplotter;
@@ -149,7 +150,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       {
         PBplotter = new plotmaker(PBframe);
       }
-      if(noblurb) PBplotter->SetBlurb("");
+      PBplotter->SetBlurb(blurb);
       PBplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
       TCanvas* canv = PBplotter->Draw();
       canv->SaveAs((plotfilename+"_PB"+std::to_string(i)+".pdf").c_str());
@@ -168,7 +169,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   RooDataSet MCdata("MCdata","",mass,RooFit::Import(*MCtree));
   SigMod->FixShapeTo(&MCdata);
   RooPlot* MCframe = mass.frame();
-  MCdata.plotOn(MCframe,Binning(50));
+  MCdata.plotOn(MCframe,Binning(nbins));
   SigMod->GetPDF()->plotOn(MCframe,LineStyle(kSolid),LineColor(kRed));
   plotmaker* MCplotter;
   if(drawpulls)
@@ -183,7 +184,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   {
     MCplotter = new plotmaker(MCframe);
   }
-  if(noblurb) MCplotter->SetBlurb("");
+  MCplotter->SetBlurb(blurb);
   MCplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
   TCanvas* MCcanv = MCplotter->Draw();
   MCcanv->SaveAs((plotfilename+"_MC.pdf").c_str());
@@ -191,7 +192,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   TTree* CDtree = GetTree(CDfilename,cuts);
   RooDataSet CDdata("CDdata","",RooArgSet(mass),RooFit::Import(*CDtree));
   RooPlot* CDframe = mass.frame();
-  CDdata.plotOn(CDframe,Binning(50));
+  CDdata.plotOn(CDframe,Binning(nbins));
   double resolution = 0, f1, f2, s1, s2, s3;
   f1 = SigMod->GetValue("fgaus1");
   f2 = SigMod->GetValue("fgaus2");
@@ -222,7 +223,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   {
     CDplotter = new plotmaker(CDframe);
   }
-  if(noblurb) CDplotter->SetBlurb("");
+  CDplotter->SetBlurb(blurb);
   CDplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
   CDplotter->SetLogy(logy);
   TCanvas* canv = CDplotter->Draw();
@@ -357,13 +358,13 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf;
+  string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf, blurb;
   vector<string> pkbkgs, yopts;
   vector<double> yields;
   int drawregion;
   desc.add_options()
     ("help,H"      ,                                                                             "produce help message"           )
-    ("noblurb"     ,                                                                             "no blurb"                       )
+    ("blurb", value<string>(&blurb), "blurb text")
     ("sweight,W"   ,                                                                             "apply sweights to data"         )
     ("pulls,P"     ,                                                                             "plot with pulls"                )
     ("logy"        ,                                                                             "log y scale"                    )
@@ -389,7 +390,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf,vmap.count("noblurb"));
+  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf,blurb);
   return 0;
 }
 

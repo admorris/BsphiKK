@@ -1,7 +1,8 @@
 pdf/background/Bs2PhiKK.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
-dataset/phikst_MC.xml
+dataset/data.xml
+dataset/sideband_100MeV_cut.xml
 parameterset/backgrounds/combinatorial_fixed.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml

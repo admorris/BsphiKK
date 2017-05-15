@@ -55,6 +55,7 @@ void DrawGraph(string name, TGraphErrors* graph)
   graph->GetXaxis()->SetLabelFont(132);
   graph->GetYaxis()->SetLabelFont(132);
   graph->GetYaxis()->CenterTitle();
+  /*
   double _blurbx        = 0.75;
   double _blurby        = 0.80;
   string _blurbtext     = "#splitline{LHCb}{#scale[0.75]{Preliminary}}";
@@ -65,6 +66,7 @@ void DrawGraph(string name, TGraphErrors* graph)
   _blurb->SetTextAlign(11);
   _blurb->SetTextSize(0.07);
   _blurb->Draw();
+  */
   canvas->SaveAs((name+".pdf").c_str());
   canvas->Write();
 }
