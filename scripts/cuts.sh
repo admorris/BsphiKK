@@ -1,4 +1,5 @@
 #!/bin/bash
+Bsmass="5366.77"
 Bdmass="5279.58"
 Kstmass="891.66"
 Bdwindow="60"
@@ -53,7 +54,7 @@ phiMcut="abs(BCON_phi_M-${phimass})<${phiwindow}"
 #phi K* veto
 phikstveto="(abs(phiKpiM-${Bdmass})>${Bdwindow}||(abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
 #Lb to phi K p veto
-LbphiKpveto="(abs(phiKpM-${Lbmass})>${Lbwindow}||(abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
+LbphiKpveto="(abs(phiKpluspbarM-${Lbmass})>${Lbwindow}||(abs(phiKpluspbarM-${Lbmass})<${Lbwindow}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.5))&&(abs(phiKminuspM-${Lbmass})>${Lbwindow}||(abs(phiKminuspM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.5))"
 #Lc to phi p veto
 Lcphipveto="(abs(phipM-${Lcmass})>${Lcwindow}||(abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(abs(phipbarM-${Lcmass})>${Lcwindow}||(abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
 #D to kaons veto
