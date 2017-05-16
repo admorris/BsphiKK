@@ -14,8 +14,9 @@
 #include "MassFitter.h"
 #include "GetTree.h"
 #include "GetData.h"
+#include "ResultDB.h"
 
-void FitLb(string filename, string Sfilename, string Bfilename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins, bool drawpulls,std::string blurb, bool doSweight)
+void FitLb(string filename, string Sfilename, string Bfilename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins, bool drawpulls,std::string blurb, bool doSweight, std::string resname, std::string DBfilename)
 {
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
@@ -126,13 +127,27 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
     outputFile->Close();
     cout << "Written to " << outputFile->GetName() << endl;
   }
+  vector<parameter> pars;
+  pars.push_back(parameter("N","N_{\\Lambda_{b}}",SigMod));
+  pars.push_back(parameter("N","N_{B^0_{s}}",BkgMod));
+/******************************************************************************/
+  if(resname!="")
+  {
+    ResultDB table(DBfilename);
+    for(auto& par : pars)
+      table.Update(resname+par.safename(),"N",par.value,par.error);
+    table.Save();
+    cout << "Results saved to " << DBfilename << endl;
+  }
+  for(auto& par : pars)
+    cout << "$" << par.latex << "$ & $" << par.value << " \\pm " << par.error << "$ \\\\" << endl;
 }
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  std::string file, sfile, bfile, branch, model, cuts, xtitle, unit, plot, blurb;
+  std::string file, sfile, bfile, branch, model, cuts, xtitle, unit, plot, blurb, dbf, resname;
   double xlow, xup;
   int nbins;
   desc.add_options()
@@ -152,6 +167,8 @@ int main(int argc, char* argv[])
     ("upper,u" , value<double>(&xup   )->default_value(6000                               ), "branch upper limit"    )
     ("lower,l" , value<double>(&xlow  )->default_value(5500                               ), "branch lower limit"    )
     ("bins,b"  , value<int   >(&nbins )->default_value(50                                 ), "number of bins"        )
+    ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"           ), "output file"           )
+    ("save-results", value<string>(&resname   )                                           , "name to save results as")
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -162,7 +179,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),blurb,vmap.count("sweight"));
+  FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),blurb,vmap.count("sweight"), resname, dbf);
   return 0;
 }
 

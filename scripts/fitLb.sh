@@ -1,6 +1,7 @@
 #!/bin/bash
 source cuts.sh
 cd ../ntuples
+table=../scripts/tables/MassFits.csv
 cutapplier BsphiKK_data_mvaVars.root "DecayTree" "abs(phiKpM-${Lbmass})<${Lbwindow}&&BCON_KK_M<1800" LbphiKp_data_mvaVars.root
 ../bin/FitLb --file LbphiKp_data_mvaVars.root \
              --Sfile LbphiKp_MC_mvaVars.root \
@@ -10,6 +11,8 @@ cutapplier BsphiKK_data_mvaVars.root "DecayTree" "abs(phiKpM-${Lbmass})<${Lbwind
              --plot ../latex/figs/LbphiKp_fit_for_yield \
              --bins $(echo "${Lbwindow}/2" | bc -l | sed 's/\..*//') \
              --sweight \
+             --save-results LbphiKpdatafit \
+             --output-file ${table} \
              --pulls
 
 ../bin/FitLb --file LbphiKp_data_mvaVars.root \

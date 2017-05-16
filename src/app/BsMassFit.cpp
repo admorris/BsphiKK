@@ -335,7 +335,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   if(resname!="")
   {
     ResultDB table(DBfilename);
-    for(auto par : pars)
+    for(auto& par : pars)
     {
       table.Update(resname+par.safename(),"N",par.value,par.error);
     }
@@ -346,7 +346,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     table.Save();
     cout << "Results saved to " << DBfilename << endl;
   }
-  for(auto par : pars)
+  for(auto& par : pars)
   {
     cout << "$" << par.latex << "$ & $" << par.value << " \\pm " << par.error << "$ \\\\" << endl;
   }

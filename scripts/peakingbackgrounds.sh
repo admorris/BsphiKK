@@ -12,7 +12,7 @@ function expectedyield()
 # External stuff
 BFBsPhiPhi="0.0000184"
 BFBdPhiKst="0.00001"
-BFLbPhiKp=$(echo "$BFBsPhiPhi*0.000317/0.00197" | bc -l) # BF(Bs→ϕϕ) * BF(Λb→J/ψKp) / BF(Bs→J/ψϕ)
+#BFLbPhiKp=$(echo "$BFBsPhiPhi*0.000317/0.00197" | bc -l) # BF(Bs→ϕϕ) * BF(Λb→J/ψKp) / BF(Bs→J/ψϕ)
 BFPhiKK="0.489"
 BFKstKpi="0.66666666667"
 fdfs=$(echo "1/0.259" | bc -l)
@@ -29,7 +29,10 @@ NGenLbPhiKp=$( echo "(528968+523401)/0.184" | bc -l)
 NSelLbPhiKp=$(../bin/GetEntries ../ntuples/LbphiKp_MC_mvacut.root DecayTree)
 # Calculate expected yields
 NExpBdPhiKst=$(expectedyield $NFitBsPhiPhi $NGenBsPhiPhi $NSelBsPhiPhi $NGenBdPhiKst $NSelBdPhiKst $(echo "($BFBdPhiKst/$BFBsPhiPhi)*($BFKstKpi/$BFPhiKK)*$fdfs" | bc -l))
-NExpLbPhiKp=$(expectedyield $NFitBsPhiPhi $NGenBsPhiPhi $NSelBsPhiPhi $NGenLbPhiKp $NSelLbPhiKp $(echo "($BFLbPhiKp/$BFBsPhiPhi)*(1/$BFPhiKK)*$fLbfs" | bc -l))
+#NExpLbPhiKp=$(expectedyield $NFitBsPhiPhi $NGenBsPhiPhi $NSelBsPhiPhi $NGenLbPhiKp $NSelLbPhiKp $(echo "($BFLbPhiKp/$BFBsPhiPhi)*(1/$BFPhiKK)*$fLbfs" | bc -l))
+NLbData=$(../bin/PrintResult tables/MassFits.csv "LbphiKpdatafitLbN" | grep "^rawvalue.*$" | sed -r 's/^rawvalue\s*:\s*([0-9\.]*.*$)/\1/')
+NLbMC=$(../bin/GetEntries ../ntuples/LbphiKp_MC_mvaVars.root DecayTree)
+NExpLbPhiKp=$(echo "$NLbData * $NSelLbPhiKp/$NLbMC" | bc -l)
 
 echo "Number of expected B⁰→ϕK* events: $NExpBdPhiKst"
 echo "Number of expected Λb→ϕKp events: $NExpLbPhiKp"
