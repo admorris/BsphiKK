@@ -15,12 +15,13 @@
 #include "GetTree.h"
 #include "GetData.h"
 
-void FitLb(string filename, string Sfilename, string Bfilename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins, bool drawpulls,std::string blurb)
+void FitLb(string filename, string Sfilename, string Bfilename, string branchname, string modelname, string xtitle, string unit, string plotname, string cuts, double xlow, double xup, int nbins, bool drawpulls,std::string blurb, bool doSweight)
 {
   using namespace RooFit;
   RooRealVar* x = new RooRealVar(branchname.c_str(),xtitle.c_str(),xlow,xup);
   std::cout << "Importing trees" << endl;
-  RooDataSet* Cdata = GetData("collision",filename,cuts,x)
+  TTree* tree = GetTree(filename,cuts);
+  RooDataSet* Cdata = GetData("collision",tree,x)
            ,* Sdata = GetData("Lb",Sfilename,cuts,x)
 //           ,* Bdata = GetData("Bs",Bfilename,cuts,x)
            ;
@@ -54,7 +55,7 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+"S.pdf").c_str());
-  SigMod->FloatPar("mean");
+//  SigMod->FloatPar("mean");
 /*Fit to BsphiKK MC************************************************************/
   Component* BkgMod = FitModel.AddComponent("Bs","Exponential",&NBs); (void)BkgMod;
 //  BkgMod->FixShapeTo(Bdata);
@@ -74,6 +75,7 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
 //  plotter->SetTitle(xtitle, unit);
 //  plotter->Draw()->SaveAs((plotname+"B.pdf").c_str());
 /*Fit to collision data********************************************************/
+  SigMod->FloatPar("mean");
   FitModel.Fit(Cdata);
   Cdata->plotOn(Cframe,Binning(nbins));
   FitModel.Plot(Cframe);
@@ -92,8 +94,39 @@ void FitLb(string filename, string Sfilename, string Bfilename, string branchnam
   plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+".pdf").c_str());
+/*S-weight the given ntuple****************************************************/
+  if(doSweight)
+  {
+    using namespace RooStats;
+    string trailer = "_Sweighted.root";
+    string outputName = filename.substr(0, filename.size() - 5) + trailer;
+    TFile* outputFile = TFile::Open(outputName.c_str(),"RECREATE");
+    outputFile->cd();
+    TTree* newtree = tree->CloneTree(0);
+    cout << "copied the tree" << endl;
+    RooStats::SPlot* sData = FitModel.GetsPlot(RooArgList(NLb,NBs));
+    sData->GetName(); // Just to prevent compiler warning
+    float Nsig_sw; newtree->Branch("Nsig_sw", &Nsig_sw,"Nsig_sw/F");
+    float Nbkg_sw; newtree->Branch("Nbkg_sw", &Nbkg_sw,"Nbkg_sw/F");
+    float L_Nsig;  newtree->Branch("L_Nsig",  &L_Nsig, "L_Nsig/F" );
+    float L_Nbkg;  newtree->Branch("L_Nbkg",  &L_Nbkg, "L_Nbkg/F" );
+    for (int i = 0; i < Cdata->numEntries(); i++)
+    {
+      tree->GetEntry(i);
+      const RooArgSet* row = Cdata->get(i);
+      Nsig_sw =  row->getRealValue("LbN_sw");
+      L_Nsig  =  row->getRealValue("L_LbN" );
+      Nbkg_sw =  row->getRealValue("BsN_sw");
+      L_Nbkg  =  row->getRealValue("L_BsN" );
+      newtree->Fill();
+      if((i%1000)==0) cout << i << "/" << Cdata->numEntries() << endl;
+    }
+    cout << "Done" << endl;
+    newtree->Write();
+    outputFile->Close();
+    cout << "Written to " << outputFile->GetName() << endl;
+  }
 }
-
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
@@ -103,21 +136,22 @@ int main(int argc, char* argv[])
   double xlow, xup;
   int nbins;
   desc.add_options()
-    ("help,H"  ,                                                                             "produce help message")
-    ("blurb", value<std::string>(&blurb), "blurb text")
-    ("pulls,P" ,                                                                             "plot with pulls"     )
-    ("file,F"  , value<string>(&file  )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"           )
-    ("Sfile"   , value<string>(&sfile )->default_value("ntuples/LbphiKp_MC_mvaVars.root"  ), "signal MC file"      )
-//    ("Bfile"   , value<string>(&bfile )->default_value("ntuples/BsphiKK_MC_mvaVars.root"  ), "background MC file"  )
-    ("branch,B", value<string>(&branch)->default_value("phiKpM"                           ), "branch to plot"      )
-    ("model,M" , value<string>(&model )->default_value("Crystal Ball + 2 Gaussians"       ), "model to use in fit" )
-    ("cuts,C"  , value<string>(&cuts  )->default_value("KK_M<1800"                        ), "optional cuts"       )
-    ("title,T" , value<string>(&xtitle)->default_value("#it{m}(#it{#phi Kp})"             ), "x-axis title"        )
-    ("unit,U"  , value<string>(&unit  )->default_value("MeV/#it{c}^{2}"                   ), "unit"                )
-    ("plot,O"  , value<string>(&plot  )->default_value("plottedbranch"                    ), "output plot filename")
-    ("upper,u" , value<double>(&xup   )->default_value(6000                               ), "branch upper limit"  )
-    ("lower,l" , value<double>(&xlow  )->default_value(5500                               ), "branch lower limit"  )
-    ("bins,b"  , value<int   >(&nbins )->default_value(50                                 ), "number of bins"      )
+    ("help,H"  ,                                                                             "produce help message"  )
+    ("sweight" ,                                                                             "apply sweights to data")
+    ("pulls,P" ,                                                                             "plot with pulls"       )
+    ("blurb"   , value<string>(&blurb )                                                    , "blurb text"            )
+    ("file,F"  , value<string>(&file  )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"             )
+    ("Sfile"   , value<string>(&sfile )->default_value("ntuples/LbphiKp_MC_mvaVars.root"  ), "signal MC file"        )
+    ("Bfile"   , value<string>(&bfile )->default_value("ntuples/BsphiKK_MC_mvaVars.root"  ), "background MC file"    )
+    ("branch,B", value<string>(&branch)->default_value("phiKpM"                           ), "branch to plot"        )
+    ("model,M" , value<string>(&model )->default_value("Crystal Ball + 2 Gaussians"       ), "model to use in fit"   )
+    ("cuts,C"  , value<string>(&cuts  )->default_value("KK_M<1800"                        ), "optional cuts"         )
+    ("title,T" , value<string>(&xtitle)->default_value("#it{m}(#it{#phi Kp})"             ), "x-axis title"          )
+    ("unit,U"  , value<string>(&unit  )->default_value("MeV/#it{c}^{2}"                   ), "unit"                  )
+    ("plot,O"  , value<string>(&plot  )->default_value("plottedbranch"                    ), "output plot filename"  )
+    ("upper,u" , value<double>(&xup   )->default_value(6000                               ), "branch upper limit"    )
+    ("lower,l" , value<double>(&xlow  )->default_value(5500                               ), "branch lower limit"    )
+    ("bins,b"  , value<int   >(&nbins )->default_value(50                                 ), "number of bins"        )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -128,6 +162,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   cout << "Entering main function" << endl;
-  FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),blurb);
+  FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),blurb,vmap.count("sweight"));
   return 0;
 }
+
