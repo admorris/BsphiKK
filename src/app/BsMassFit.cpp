@@ -341,7 +341,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     }
     table.Update(resname+Nsigpar.safename()+"twosigma"  ,"N",Nsigtwosigma  ,Nsigtwosigmaerr  );
     table.Update(resname+Nsigpar.safename()+"threesigma","N",Nsigthreesigma,Nsigthreesigmaerr);
-    table.Update(resname+Nbkgpar.safename()+"twosigma"  ,"N",Nbkgtwosigma  ,Nbkgtwosigmaerr  );
+    table.Update(resname+Nbkgpar.safename()+"twosigma"  ,"N",Nbkgtwosigma  ,Nbkgtwosigmaerr  );	
     table.Update(resname+Nbkgpar.safename()+"threesigma","N",Nbkgthreesigma,Nbkgthreesigmaerr);
     table.Save();
     cout << "Results saved to " << DBfilename << endl;
@@ -364,10 +364,10 @@ int main(int argc, char* argv[])
   int drawregion;
   desc.add_options()
     ("help,H"      ,                                                                             "produce help message"           )
-    ("blurb", value<string>(&blurb), "blurb text")
     ("sweight,W"   ,                                                                             "apply sweights to data"         )
     ("pulls,P"     ,                                                                             "plot with pulls"                )
     ("logy"        ,                                                                             "log y scale"                    )
+    ("blurb"       , value<string>(&blurb)                                                     , "blurb text"                     )
     ("draw-region" , value<int>(&drawregion   )->default_value(0                              ), "draw lines at ±Nσ"              )
     ("MCfile,M"    , value<string>(&MCfile    )->default_value("ntuples/BsphiKK_MC_mva.root"  ), "Monte Carlo file"               )
     ("CDfile,R"    , value<string>(&CDfile    )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"            )
