@@ -119,6 +119,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
   plotter.SetTitle(xtitle,unit);
   TCanvas* canv = plotter.Draw("E1");
   frame->SetMaximum(frame->GetMaximum()*1.3);
+  frame->SetMinimum(0);
   if(overlay != "")
   {
     TH1D* overlayframe = MakeBranchPlot(overlay, branchname, cuts, weight, xlow, xup, nbins);
