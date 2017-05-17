@@ -2,8 +2,8 @@
 source cuts.sh
 cd ..
 kaons=("Kminus0" "Kplus0")
-Lbwindow=60
-Bdwindow=60
+#Lbwindow=50 # by default get these from cuts.sh
+#Bdwindow=50 # uncomment if you want to test the effect of different window sizes
 Lbmasses=("phiKpluspbarM" "phiKminuspM")
 Bdmasses=("phiKpluspiminusM" "phiKminuspiplusM")
 Lbdata="--Sfile ntuples/BsphiKK_MC_mvaVars.root --Bfile ntuples/LbphiKp_MC_mvaVars.root --cuts BCON_KK_M<1800"
