@@ -13,20 +13,22 @@
 #include "GetTree.h"
 #include "CutEff.h"
 #include "substitute.h"
-void ROCcurve(std::string Sfilename, std::string Bfilename, double xmin, double xmax, double ymin, double ymax, std::string expression, double varmin, double varmax, std::string cuts, std::string weight, std::string blurbtext, int nsteps, std::string plotname, std::string comparison)
+void ROCcurve(std::string Sfilename, std::string Bfilename, double xmin, double xmax, double ymin, double ymax, std::string expression, double varmin, double varmax, std::string cuts, std::string weight, std::string blurbtext, int nsteps, std::string plotname, std::string comparison, double dsigeff, double dbkgrej)
 {
   TTree* Stree = GetTree(Sfilename);
   TTree* Btree = GetTree(Bfilename);
   std::vector<double> sigeff;
   std::vector<double> bkgrej;
+  std::vector<double> varvals; // need this later
   for(double var = varmin; var <= varmax+0.0001; var+=(varmax-varmin)/(double)nsteps)
   {
+    varvals.push_back(var);
     std::string cut = substitute(expression, "{}", std::to_string(var));
     std::cout << "\nApplying cut " << cut << "\n";
     sigeff.push_back(CutEff(Stree, cuts, cut).GetEff());
     bkgrej.push_back(1-CutEff(Btree, cuts, cut).GetEff());
   }
-  assert(sigeff.size() == bkgrej.size());
+  assert(sigeff.size() == bkgrej.size() && sigeff.size() == varvals.size());
   TCanvas canv;
   canv.SetMargin(0.1,0.02,0.11,0.02);
   // Set up the axes for drawing
@@ -48,8 +50,8 @@ void ROCcurve(std::string Sfilename, std::string Bfilename, double xmin, double 
   dummyaxes.Draw("AP");
   Xaxis->SetRangeUser(xmin,xmax);
   Yaxis->SetRangeUser(ymin,ymax);
-  TLine x90(0.9,ymin,0.9,ymax), y90(xmin,0.9,xmax,0.9);
-  for(TLine* line: {&x90, &y90,})
+  TLine dbkgrejline(dbkgrej,ymin,dbkgrej,ymax), dsigeffline(xmin,dsigeff,xmax,dsigeff);
+  for(TLine* line: {&dbkgrejline, &dsigeffline,})
   {
     if(line->GetX1()>=xmin && line->GetX2()<=xmax && line->GetY1()>=ymin && line->GetY2()<=ymax)
     {
@@ -84,13 +86,22 @@ void ROCcurve(std::string Sfilename, std::string Bfilename, double xmin, double 
     blurb.DrawLatex(xmin+0.05*(xmax-xmin),ymin+0.15*(ymax-ymin),blurbtext.c_str());
   }
   canv.SaveAs((plotname+".pdf").c_str());
+  // Print cuts for desired signal eff. and background rej.
+  TGraph sigeff_graph(varvals.size(),sigeff.data(),varvals.data());
+  TGraph bkgrej_graph(varvals.size(),bkgrej.data(),varvals.data());
+  TGraph sigeff_inv_graph(varvals.size(),varvals.data(),sigeff.data());
+  TGraph bkgrej_inv_graph(varvals.size(),varvals.data(),bkgrej.data());
+  double sigeffcut = sigeff_graph.Eval(dsigeff);
+  double bkgrejcut = bkgrej_graph.Eval(dsigeff);
+  std::cout << "For " << dsigeff*100 << "% signal efficiency, cut at "    << sigeffcut << ". The background rejection will be " << bkgrej_inv_graph.Eval(sigeffcut)*100 << "%\n"
+            << "For " << dbkgrej*100 << "% background rejection, cut at " << bkgrejcut << ". The signal efficiency will be "    << sigeff_inv_graph.Eval(bkgrejcut)*100 << "%" << std::endl;
 }
 int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
   std::string Sfile, Bfile, cuts, weight, expr, blurb, plot, comp;
-  double xmin, xmax, ymin, ymax, varmin, varmax;
+  double xmin, xmax, ymin, ymax, varmin, varmax, dsigeff, dbkgrej;
   int nsamples;
   desc.add_options()
     ("help,H" ,                                                                              "produce help message"                                            )
@@ -108,6 +119,8 @@ int main(int argc, char* argv[])
     ("xmin"   , value<double     >(&xmin    )->default_value(0.0                          ), "x axis lower limit"                                              )
     ("ymax"   , value<double     >(&ymax    )->default_value(1.0                          ), "y axis upper limit"                                              )
     ("ymin"   , value<double     >(&ymin    )->default_value(0.0                          ), "y axis lower limit"                                              )
+    ("dsigeff", value<double     >(&dsigeff )->default_value(0.9                          ), "desired signal efficiency"                                       )
+    ("dbkgreg", value<double     >(&dbkgrej )->default_value(0.9                          ), "desired background rejection"                                    )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -117,6 +130,6 @@ int main(int argc, char* argv[])
     std::cout << desc << std::endl;
     return 1;
   }
-  ROCcurve(Sfile, Bfile, xmin, xmax, ymin, ymax, expr, varmin, varmax, cuts, weight, blurb, nsamples, plot, comp);
+  ROCcurve(Sfile, Bfile, xmin, xmax, ymin, ymax, expr, varmin, varmax, cuts, weight, blurb, nsamples, plot, comp, dsigeff, dbkgrej);
   return 0;
 }
