@@ -2,10 +2,10 @@
 Bsmass="5366.77"
 Bdmass="5279.58"
 Kstmass="891.66"
-Bdwindow="60"
+Bdwindow="50"
 Kstwindow="150"
 Lbmass="5619.5"
-Lbwindow="60"
+Lbwindow="50"
 Lcmass="2286.46"
 Lcwindow="24"
 Dsmass="1968.3"
@@ -52,9 +52,11 @@ misIDBKGCATcut="(B_s0_BKGCAT==30)"
 #Phi mass window cut
 phiMcut="abs(BCON_phi_M-${phimass})<${phiwindow}"
 #phi K* veto
-phikstveto="(abs(phiKpiM-${Bdmass})>${Bdwindow}||(abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
+phikstcutval="0.4"
+phikstveto="(abs(phiKpluspiminusM-${Bdmass})>${Bdwindow}||(abs(phiKpluspiminusM-${Bdmass})<${Bdwindow}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>${phikstcutval}))&&(abs(phiKminuspiplusM-${Bdmass})>${Bdwindow}||(abs(phiKminuspiplusM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>${phikstcutval}))"
 #Lb to phi K p veto
-LbphiKpveto="(abs(phiKpluspbarM-${Lbmass})>${Lbwindow}||(abs(phiKpluspbarM-${Lbmass})<${Lbwindow}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.5))&&(abs(phiKminuspM-${Lbmass})>${Lbwindow}||(abs(phiKminuspM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.5))"
+LbphiKpcutval="0.5"
+LbphiKpveto="(abs(phiKpluspbarM-${Lbmass})>${Lbwindow}||(abs(phiKpluspbarM-${Lbmass})<${Lbwindow}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${LbphiKpcutval}))&&(abs(phiKminuspM-${Lbmass})>${Lbwindow}||(abs(phiKminuspM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${LbphiKpcutval}))"
 #Lc to phi p veto
 Lcphipveto="(abs(phipM-${Lcmass})>${Lcwindow}||(abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(abs(phipbarM-${Lcmass})>${Lcwindow}||(abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
 #D to kaons veto
