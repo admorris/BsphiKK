@@ -35,8 +35,8 @@ void DrawGraph(string name, TGraphErrors* graph)
   graph = new TGraphErrors(*graph);
   delete oldgraph;
   float textsize = 0.055;
-  graph->SetMinimum(0);
-  graph->SetMaximum(100);
+//  graph->SetMinimum(0);
+//  graph->SetMaximum(100);
   graph->SetTitle("");
   graph->GetXaxis()->SetTitle("#it{m}(#it{K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]");
   graph->GetYaxis()->SetTitle("Efficiency [%]");
