@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
     std::cout << desc << std::endl;
     return 1;
   }
-  std::cout << "Entering main function" << std::endl;
+  
   PlotMoments(MCfile, CDfile, MCmass, CDmass, MCangle, CDangle, xtitle, unit, plot, MCcuts, CDcuts, MCweight, CDweight, xlow, xup, nbins, N,blurb);
   return 0;
 }

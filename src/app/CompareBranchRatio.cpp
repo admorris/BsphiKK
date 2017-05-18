@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     std::cout << desc << std::endl;
     return 1;
   }
-  std::cout << "Entering main function" << std::endl;
+  
   CompareBranchRatio(Dfile,Nfile,Dbranch,Nbranch,xtitle,unit,plot,Dcuts,Ncuts,Dweight,Nweight,xlow,xup,nbins,blurb);
   return 0;
 }

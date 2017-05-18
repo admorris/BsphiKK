@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
+  
   FitLb(file,sfile,bfile,branch,model,xtitle,unit,plot,cuts,xlow,xup,nbins,vmap.count("pulls"),blurb,vmap.count("sweight"), resname, dbf);
   return 0;
 }

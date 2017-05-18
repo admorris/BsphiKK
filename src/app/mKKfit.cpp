@@ -328,7 +328,7 @@ int main(int argc, char* argv[])
     cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
+  
   mKKfit(file,branch,cuts,weight,xtitle,unit,plot,xlow,xup,yup,nbins,vmap.count("conv"),vmap.count("fitacc"),vmap.count("fitnonres"),vmap.count("fitfzero"),vmap.count("fitftwop"),vmap.count("dontfitphi"),blurb);
   return 0;
 }

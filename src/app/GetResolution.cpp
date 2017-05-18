@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
     partic.push_back("Kplus0");
     partic.push_back("Kminus0");
   }
-  cout << "Entering main function" << endl;
+  
   GetResolution(file,partic,branch,cuts,xtitle,unit,plot,xlow,xup,nbins,blurb);
   return 0;
 }

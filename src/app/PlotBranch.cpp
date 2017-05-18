@@ -17,18 +17,15 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
   if(unitarea) frame->Scale(1.0/frame->Integral());
   string histname = plotname.find_last_of("/") == string::npos? plotname : plotname.substr(plotname.find_last_of("/")+1);
-  std::cout << histname << std::endl;
   frame->SetName(histname.c_str());
   frame->SetMaximum(frame->GetMaximum()*1.3);
   frame->SetMinimum(0);
   plotmaker<TH1> plotter(frame);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(xtitle, unit);
-  std::cout << "Drawing" << std::endl;
   TCanvas* plot = plotter.Draw("E1");
   if(overlayfilename!="")
   {
-    std::cout << "Drawing overlay" << std::endl;
     TH1D* overlay = MakeBranchPlot(overlayfilename, branchname, cuts, weight, xlow, xup, nbins);
     if(scale>0) overlay->Scale(scale);
     else overlay->Scale(frame->Integral()/overlay->Integral());
@@ -90,7 +87,7 @@ int main(int argc, char* argv[])
     cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
+  
   PlotBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("root"),vmap.count("lineat"),lineat,vmap.count("unitarea"),blurb);
   return 0;
 }

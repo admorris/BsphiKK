@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
+  
   FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,vmap.count("pulls"),resname,dbf,blurb);
   return 0;
 }

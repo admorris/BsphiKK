@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
     std::cout << desc << std::endl;
     return 1;
   }
-  std::cout << "Entering main function" << std::endl;
+  
   CompareBranch(MCfile,CDfile,MCbranch,CDbranch,xtitle,unit,plot,MCcuts,CDcuts,MCweight,CDweight,xlow,xup,nbins,vmap.count("lineat"),lineat,blurb);
   return 0;
 }
