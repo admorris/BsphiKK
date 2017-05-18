@@ -3,9 +3,9 @@
 cd ../mva
 rm *.d *.so *.pcm
 cd -
-./trainmva.sh | tee log/trainmva.log
-./applymva.sh | tee log/applymva.log
-./mvagetoptcut.sh | tee log/mvagetoptcut.log
-./mvacut.sh | tee log/mvacut.log
+./trainmva.sh 2>&1| tee log/trainmva.log
+./applymva.sh 2>&1| tee log/applymva.log
+./mvagetoptcut.sh 2>&1| tee log/mvagetoptcut.log
+./mvacut.sh 2>&1| tee log/mvacut.log
 
 

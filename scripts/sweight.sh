@@ -3,9 +3,9 @@ table=../scripts/tables/mKKcutResults.csv
 cd ../ntuples/
 modes=(BsphiKK_data BsphiKK_MC)
 for mode in ${modes[@]}; do
-  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050" ${mode}_1050_mvaVars_vetoes.root | tee log_${mode}_1050.tmp &
-  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M<1800" ${mode}_1800_mvaVars_vetoes.root | tee log_${mode}_1800.tmp &
-  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050&&BCON_KK_M<1800" ${mode}_1050_1800_mvaVars_vetoes.root | tee log_${mode}_1050_1800.tmp &
+  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050" ${mode}_1050_mvaVars_vetoes.root 2>&1| tee log_${mode}_1050.tmp &
+  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M<1800" ${mode}_1800_mvaVars_vetoes.root 2>&1| tee log_${mode}_1800.tmp &
+  cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050&&BCON_KK_M<1800" ${mode}_1050_1800_mvaVars_vetoes.root 2>&1| tee log_${mode}_1050_1800.tmp &
 done
 wait
 for mode in ${modes[@]}; do

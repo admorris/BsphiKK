@@ -2,7 +2,7 @@
 branch='mlp'
 unit='none'
 title='MLP~output'
-range='--lower 0 --upper 1'
+range='--lower 0.8 --upper 1'
 CDfile="BsphiKK_MC_mva.root"
 MCfile="BsphiKK_data_mva.root"
 plotname="../latex/figs/mvaOutput_${branch}"
@@ -25,6 +25,6 @@ CDfile="BsphiKK_data_mva_Sweighted.root"
      --unit ${unit} \
      --plot $plotname \
      ${range} \
-     --bins 100
+     --bins 20
 
 

@@ -3,15 +3,16 @@
 ## Please run all scripts from within the scripts folder
 ##
 ## Get DaVinci output
-#./getoutputdata | tee log/getoutputdata.log
-#./merge.sh | tee log/merge.log
-#./sideband.sh | tee log/sideband.log
+#./getoutputdata 2>&1| tee log/getoutputdata.log
+#./merge.sh 2>&1| tee log/merge.log
+#./sideband.sh 2>&1| tee log/sideband.log
 ./SELECTION.sh
 ./EFFICIENCIES.sh
 ./SELECTION_PLOTS.sh
 ## Get input parameters for angular fit
-./doBsmassfit.sh | tee log/Bsmassfit.log
-./plotmoments.sh | tee log/plotmoments.log
-./angacc.sh | tee log/angacc.log
-
+./fitLb.sh 2>&1| tee log/fitLb.log
+./doBsmassfit.sh 2>&1| tee log/Bsmassfit.log
+./plotmoments.sh 2>&1| tee log/plotmoments.log
+./angacc.sh 2>&1| tee log/angacc.log
+./bkgparam.sh 2>&1| tee log/bkgparam.sh
 
