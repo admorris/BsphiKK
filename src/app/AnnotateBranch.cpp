@@ -140,7 +140,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     {
       line  = &(particles[i]->line);
       label = &(particles[i]->label);
-      cout << "Labelling particle at " << line->GetX1() << " MeV" << endl;
+      cout << "Labelling particle " << label->GetTitle() << " at " << line->GetX1() << " MeV" << endl;
       // Find the right bin for the line
       bin=0;
       for(int j = 1; j < nbins && frame->GetBinLowEdge(j+1) < line->GetX1(); j++)
@@ -150,7 +150,6 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
       // Check if the particle is in the range of the plot, and the line would be big enough
       if(line->GetX1()>xlow && line->GetX1()<xup && frame->GetBinContent(bin)/frame->GetMaximum() > 0.05)
       {
-        cout << "Bin " << bin << endl;
         // Scale up the line
         line->SetY2(line->GetY2()*frame->GetBinContent(bin));
         line->Draw();
@@ -159,10 +158,6 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
         double ys[] = {frame->GetBinContent(TMath::Abs(bin-1)),frame->GetBinContent(bin),frame->GetBinContent(bin+1)};
         label->SetY(label->GetY()*(*max_element(ys,ys+3))+0.05*frame->GetMaximum()+frame->GetBinErrorUp(bin));
         label->Draw();
-      }
-      else
-      {
-        cout << "Out of range" << endl;
       }
     }
   }
@@ -199,7 +194,7 @@ int main(int argc, char* argv[])
     cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
+  
   AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,blurb);
   return 0;
 }
