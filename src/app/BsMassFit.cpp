@@ -32,6 +32,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   using namespace RooFit;
   cout << "Fitting to the branch " << branchtofit << endl;
   RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5150,5600);
+  mass.setBins(nbins);
   // Need to cut the imported trees to the fit range if sweights are being applied later
   if(doSweight)
   {
@@ -53,6 +54,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   //int builtinstyles = 3;
   int linecolors[] = {8, 28, 1};
   int linestyles[] = {1,  2, 5};
+  vector<string> pkgbkgnames = {"K^{+} K^{-} \\pi^{0}","\\phi K^{*}","\\phi K p"};
   //int builtinstyles = sizeof(linecolors)/sizeof(int);
   assert(sizeof(linecolors)==sizeof(linestyles));
   unsigned int npkbkgs = backgrounds.size();
@@ -231,6 +233,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   }
   CDplotter->SetBlurb(blurb);
   CDplotter->SetTitle("#it{m}(#it{#phi K^{#plus}K^{#minus}})", "MeV/#it{c}^{2}");
+  CDplotter->SetMinimum(0.1);
   CDplotter->SetLogy(logy);
   TCanvas* canv = CDplotter->Draw();
 /*Output S and B for MC optimisation*******************************************/
@@ -239,11 +242,8 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   cout << "The mass resolution (σ) in Monte Carlo is: " << resolution << " MeV/c^2" << endl;
   RooAbsPdf* sigmod = SigMod->GetPDF();
   RooAbsPdf* bkgmod = BkgMod->GetPDF();
-  double Nsigtwosigma   , Nsigtwosigmaerr
-       , Nsigthreesigma , Nsigthreesigmaerr
-       , Nbkgtwosigma   , Nbkgtwosigmaerr
-       , Nbkgthreesigma , Nbkgthreesigmaerr
-       ;
+  std::pair<double,double> Nsigtwosigma, Nsigthreesigma, Nbkgtwosigma, Nbkgthreesigma;
+  std::vector<std::pair<double,double>> Npkgtwosigma, Npkgthreesigma;
   for(int window = 2; window <= 3; window++)
   {
     cout << "Integrating fitted data PDF over μ±" << window << "σ" << endl;
@@ -257,24 +257,26 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
          ;
     if(window == 2)
     {
-      Nsigtwosigma    = tempNsig;
-      Nsigtwosigmaerr = tempNsigerr;
-      Nbkgtwosigma    = tempNbkg;
-      Nbkgtwosigmaerr = tempNbkgerr;
+      Nsigtwosigma    = {tempNsig,tempNsigerr};
+      Nbkgtwosigma    = {tempNbkg,tempNbkgerr};
     }
     else if(window == 3)
     {
-      Nsigthreesigma    = tempNsig;
-      Nsigthreesigmaerr = tempNsigerr;
-      Nbkgthreesigma    = tempNbkg;
-      Nbkgthreesigmaerr = tempNbkgerr;
+      Nsigthreesigma    = {tempNsig,tempNsigerr};
+      Nbkgthreesigma    = {tempNbkg,tempNbkgerr};
     }
     cout << "S:\t" << tempNsig << "±" << tempNsigerr << endl;
     cout << "B:\t" << tempNbkg << "±" << tempNbkgerr << endl;
     for(unsigned int i = 0; i < npkbkgs; i++)
     {
       RooAbsReal* pkgmodint = PkgMod[i]->GetPDF()->createIntegral(mass,NormSet(mass),Range((std::to_string(window)+"sigma").c_str()));
-      cout << "B" << i << ":\t" << pkgmodint->getVal()*PkgMod[i]->GetValue("N") << endl;
+      double tempNpkg    = pkgmodint->getVal()*PkgMod[i]->GetValue("N");
+      double tempNpkgerr = pkgmodint->getVal()*PkgMod[i]->GetError("N");
+      cout << "B" << i << ":\t" << tempNpkg << "±" << tempNpkgerr << endl;
+      if(window == 2)
+        Npkgtwosigma.push_back({tempNpkg,tempNpkgerr});
+      else if(window == 3)
+        Npkgthreesigma.push_back({tempNpkg,tempNpkgerr});
     }
   }
   if(drawregion!=0)
@@ -337,6 +339,15 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   pars.push_back(parameter("mean"  ,"\\mu"     ,SigMod));
   parameter Nsigpar("N","N_\\text{sig}",SigMod); pars.push_back(Nsigpar);
   parameter Nbkgpar("N","N_\\text{bkg}",BkgMod); pars.push_back(Nbkgpar);
+  vector<parameter> Npkgpars;
+  int pkgbkgcounter = 0;
+  for(auto Mod : PkgMod)
+  {
+    parameter Npkgpar("N","N_\\text{"+pkgbkgnames[pkgbkgcounter]+"}",Mod);
+    Npkgpars.push_back(Npkgpar);
+    pars.push_back(Npkgpar);
+    pkgbkgcounter++;
+  }
 /******************************************************************************/
   if(resname!="")
   {
@@ -345,10 +356,15 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     {
       table.Update(resname+par.safename(),"N",par.value,par.error);
     }
-    table.Update(resname+Nsigpar.safename()+"twosigma"  ,"N",Nsigtwosigma  ,Nsigtwosigmaerr  );
-    table.Update(resname+Nsigpar.safename()+"threesigma","N",Nsigthreesigma,Nsigthreesigmaerr);
-    table.Update(resname+Nbkgpar.safename()+"twosigma"  ,"N",Nbkgtwosigma  ,Nbkgtwosigmaerr  );	
-    table.Update(resname+Nbkgpar.safename()+"threesigma","N",Nbkgthreesigma,Nbkgthreesigmaerr);
+    table.Update(resname+Nsigpar.safename()+"twosigma"  ,"N",Nsigtwosigma.first  ,Nsigtwosigma.second  );
+    table.Update(resname+Nsigpar.safename()+"threesigma","N",Nsigthreesigma.first,Nsigthreesigma.second);
+    table.Update(resname+Nbkgpar.safename()+"twosigma"  ,"N",Nbkgtwosigma.first  ,Nbkgtwosigma.second  );
+    table.Update(resname+Nbkgpar.safename()+"threesigma","N",Nbkgthreesigma.first,Nbkgthreesigma.second);
+    for(unsigned i = 0; i < Npkgpars.size(); i++)
+    {
+      table.Update(resname+Npkgpars[i].safename()+"twosigma"  ,"N",Npkgtwosigma[i].first  ,Npkgtwosigma[i].second  );
+      table.Update(resname+Npkgpars[i].safename()+"threesigma","N",Npkgthreesigma[i].first,Npkgthreesigma[i].second);
+    }
     table.Save();
     cout << "Results saved to " << DBfilename << endl;
   }
