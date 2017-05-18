@@ -3,21 +3,21 @@ branch='mlp'
 unit='none'
 title='MLP~output'
 range='--lower 0.8 --upper 1'
-CDfile="BsphiKK_MC_mva.root"
-MCfile="BsphiKK_data_mva.root"
+MCfile="BsphiKK_MC_mva.root"
+CDfile="BsphiKK_data_mva.root"
 plotname="../latex/figs/mvaOutput_${branch}"
 cd ../ntuples
 ../bin/BsMassFit \
-    -M $CDfile \
-    -R $MCfile \
+    -M $MCfile \
+    -R $CDfile \
     -O tmp \
     -N B_s0_LOKI_Mass \
     --sweight
 rm tmp*
 CDfile="BsphiKK_data_mva_Sweighted.root"
 ../bin/CompareBranch \
-     --CDfile $CDfile \
      --MCfile $MCfile \
+     --CDfile $CDfile \
      --CDweight Nsig_sw \
      --MCbranch ${branch} \
      --CDbranch ${branch} \
