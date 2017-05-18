@@ -32,6 +32,12 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   using namespace RooFit;
   cout << "Fitting to the branch " << branchtofit << endl;
   RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5150,5600);
+  // Need to cut the imported trees to the fit range if sweights are being applied later
+  if(doSweight)
+  {
+    if(cuts != "") cuts = "(" + cuts + ")&&";
+    cuts += branchtofit + ">" + std::to_string(mass.getMin()) + "&&" + branchtofit + "<" + std::to_string(mass.getMax());
+  }
 /*Set up the fitter************************************************************/
   MassFitter phiKKFitter(&mass);
   RooRealVar* Nsig  = new RooRealVar("N","Number of signal events",4500,0,120000);
