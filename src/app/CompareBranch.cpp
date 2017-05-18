@@ -29,14 +29,14 @@ void CompareBranch(std::string MCfilename, std::string CDfilename, std::string M
   plotter.SetTitle(xtitle, unit);
   TCanvas* plot = plotter.Draw("HIST");
   CDhist->Draw("sameE1");
-  TLine* cutvalline;
+  TLine cutvalline;
   if(drawline)
   {
-    cutvalline = new TLine(lineat,0,lineat,MChist->GetMaximum());
-    cutvalline->SetLineStyle(2);
-    cutvalline->SetLineColor(2);
+    cutvalline = TLine(lineat,0,lineat,MChist->GetMaximum());
+    cutvalline.SetLineStyle(2);
+    cutvalline.SetLineColor(2);
+    cutvalline.Draw();
   }
-  cutvalline->Draw();
   plot->SaveAs((plotname+".pdf").c_str());
 }
 

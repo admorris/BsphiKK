@@ -17,15 +17,18 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
   if(unitarea) frame->Scale(1.0/frame->Integral());
   string histname = plotname.find_last_of("/") == string::npos? plotname : plotname.substr(plotname.find_last_of("/")+1);
+  std::cout << histname << std::endl;
   frame->SetName(histname.c_str());
   frame->SetMaximum(frame->GetMaximum()*1.3);
   frame->SetMinimum(0);
   plotmaker<TH1> plotter(frame);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(xtitle, unit);
+  std::cout << "Drawing" << std::endl;
   TCanvas* plot = plotter.Draw("E1");
   if(overlayfilename!="")
   {
+    std::cout << "Drawing overlay" << std::endl;
     TH1D* overlay = MakeBranchPlot(overlayfilename, branchname, cuts, weight, xlow, xup, nbins);
     if(scale>0) overlay->Scale(scale);
     else overlay->Scale(frame->Integral()/overlay->Integral());
@@ -35,14 +38,14 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
     overlay->Draw("same");
     frame->Draw("E1 same");
   }
-  TLine* cutvalline;
+  TLine cutvalline;
   if(drawline)
   {
-    cutvalline = new TLine(lineat,0,lineat,frame->GetMaximum());
-    cutvalline->SetLineStyle(2);
-    cutvalline->SetLineColor(2);
+    cutvalline = TLine(lineat,0,lineat,frame->GetMaximum());
+    cutvalline.SetLineStyle(2);
+    cutvalline.SetLineColor(2);
+    cutvalline.Draw();
   }
-  cutvalline->Draw();
   plot->SaveAs((plotname+".pdf").c_str());
   if(saveasrootfile)
   {
@@ -51,7 +54,6 @@ void PlotBranch(string filename, string branchname, string xtitle, string unit, 
     plot->Write();
     file->Close();
   }
-  delete cutvalline;
 }
 
 int main(int argc, char* argv[])
