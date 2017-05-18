@@ -12,15 +12,15 @@ using namespace std;
 void GetVetoEff(string filename, bool save, string DBfilename)
 {
   cout << "Please make sure these cuts match the ones in cut.sh" << endl;
-  string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS)";
+  string trigger = "(B_s0_L0HadronDecision_TOS||B_s0_L0Global_TIS)&&B_s0_Hlt1TrackAllL0Decision_TOS&&(B_s0_Hlt2Topo3BodyBBDTDecision_TOS||B_s0_Hlt2Topo4BodyBBDTDecision_TOS)&&BCON_KK_M<1800";
   Cut_t cuts[] =
   {
-    Cut_t("BdPhiKstar","TMath::Abs(phiKpiM-5279.58)>60||(TMath::Abs(phiKpiM-5279.58)<50&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi)")
-  , Cut_t("LbPhiKp","TMath::Abs(phiKpM-5619.5)>60||(TMath::Abs(phiKpM-5619.5)<60&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp)")
-  , Cut_t("LcPhip","TMath::Abs(phipM-2286.46)>24||(TMath::Abs(phipM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&TMath::Abs(phipbarM-2286.46)>24||(TMath::Abs(phipbarM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp) ")
-  , Cut_t("DPhiK","TMath::Abs(phiKplusM-1968.3)>24&&TMath::Abs(phiKminusM-1968.3)>24")
-  , Cut_t("DPhipi","TMath::Abs(phipiplusM-1869.61)>24&&TMath::Abs(phipiminusM-1869.61)>24")
-  , Cut_t("DsPhipi","TMath::Abs(phipiplusM-1968.3)>24&&TMath::Abs(phipiminusM-1968.3)>24")
+    Cut_t("BdPhiKstar","(abs(phiKpluspiminusM-5279.58)>50||(abs(phiKpluspiminusM-5279.58)<50&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>0.4))&&(abs(phiKminuspiplusM-5279.58)>50||(abs(phiKminuspiplusM-5279.58)<50&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>0.4))")
+  , Cut_t("LbPhiKp","(abs(phiKpluspbarM-5619.5)>50||(abs(phiKpluspbarM-5619.5)<50&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>0.5))&&(abs(phiKminuspM-5619.5)>50||(abs(phiKminuspM-5619.5)<50&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>0.5))")
+  , Cut_t("LcPhip","abs(phipM-2286.46)>24||(abs(phipM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp)&&abs(phipbarM-2286.46)>24||(abs(phipbarM-2286.46)<24&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp) ")
+  , Cut_t("DPhiK","abs(phiKplusM-1968.3)>24&&abs(phiKminusM-1968.3)>24")
+  , Cut_t("DPhipi","abs(phipiplusM-1869.61)>24&&abs(phipiminusM-1869.61)>24")
+  , Cut_t("DsPhipi","abs(phipiplusM-1968.3)>24&&abs(phipiminusM-1968.3)>24")
   };
   string totalcut = "B_s0_M>0";// Something true for all events so the others can be appended with &&
   const unsigned int n = sizeof(cuts)/sizeof(Cut_t);

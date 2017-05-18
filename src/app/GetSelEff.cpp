@@ -30,6 +30,7 @@ void GetSelEff(string filename, bool save, string DBfilename)
   , Cut_t("DauIPchi2","phi_1020_IPCHI2_OWNPV>16&&KK_IPCHI2_OWNPV>16")
   , Cut_t("KKVtxChi2","KK_ENDVERTEX_CHI2<25")
   , Cut_t("StdTightKaons","Kminus0_PIDK>0&&Kplus0_PIDK>0")
+  , Cut_t("KaonIPCHI2","Kminus_IPCHI2_OWNPV>16&&Kplus_IPCHI2_OWNPV>16")
   };
   string totalcut = "B_s0_M>0";// Something true for all events so the others can be appended with &&
   const unsigned int n = sizeof(cuts)/sizeof(Cut_t);
