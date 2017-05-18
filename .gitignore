@@ -19,6 +19,14 @@ fits/toystudies/*
 fits/*.xml
 fits/*.root
 fits/RFjobconfig.sh
+fits/build*.e*
+fits/build*.o*
+fits/build*.pe*
+fits/build*.pe*
+fits/j_*.e*
+fits/j_*.o*
+fits/j_*.pe*
+fits/j_*.po*
 # TMVA stuff
 mva/.__afs*
 mva/TMVA*root
