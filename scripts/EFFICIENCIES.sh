@@ -3,6 +3,6 @@
 ./trigeff.sh
 ./seleff.sh
 ./vetoeff.sh 2>&1| tee log/vetoeff.log
-./plotttrigeff.sh
+./plotttrigeff.sh 2>&1| tee log/plotttrigeff.log
 
 
