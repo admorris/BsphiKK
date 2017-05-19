@@ -23,7 +23,7 @@
 #include "GetTree.h"
 #include "GetData.h"
 #include "ResultDB.h"
-void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb)
+void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb, double xmin, double xmax)
 {
   int nbins = 50;
   using namespace std;
@@ -31,7 +31,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   // Open the input file and get the tree
   using namespace RooFit;
   cout << "Fitting to the branch " << branchtofit << endl;
-  RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5150,5600);
+  RooRealVar mass(branchtofit.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",xmin,xmax);
   mass.setBins(nbins);
   // Need to cut the imported trees to the fit range if sweights are being applied later
   if(doSweight)
@@ -108,7 +108,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         }
         else
         {
-          PBmass = new RooRealVar(PBbranch.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",5000,5600);
+          PBmass = new RooRealVar(PBbranch.c_str(),"#it{m}(#it{#phi K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]",xmin,xmax);
           PBdata = GetData(name,PBfilename,"",PBmass);
           PBFitter = new MassFitter(PBmass);
           Component* PBMod = PBFitter->AddComponent(("temp"+name).c_str(),shapename);
@@ -383,6 +383,7 @@ int main(int argc, char* argv[])
   string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf, blurb;
   vector<string> pkbkgs, yopts;
   vector<double> yields;
+  double xmin, xmax;
   int drawregion;
   desc.add_options()
     ("help,H"      ,                                                                             "produce help message"           )
@@ -403,6 +404,8 @@ int main(int argc, char* argv[])
     ("yopts"       , value<vector<string>>(&yopts )->multitoken(                              ), "BG yield options: abs, rel, flo")
     ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"               ), "output file"                    )
     ("save-results", value<string>(&resname   )->default_value(""                             ), "name to save results as"        )
+    ("xmin"        , value<double>(&xmin      )->default_value(5150                           ), "lower bound of fit range"       )
+    ("xmax"        , value<double>(&xmax      )->default_value(5600                           ), "lower bound of fit range"       )
   ;
   variables_map vmap;
   store(parse_command_line(argc, argv, desc), vmap);
@@ -412,7 +415,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf,blurb);
+  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf, blurb, xmin, xmax);
   return 0;
 }
 

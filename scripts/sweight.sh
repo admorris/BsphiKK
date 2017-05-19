@@ -2,6 +2,7 @@
 table=../scripts/tables/mKKcutResults.csv
 cd ../ntuples/
 modes=(BsphiKK_data BsphiKK_MC)
+fitrange="--xmin 5250 --xmax 5500"
 for mode in ${modes[@]}; do
   cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M>1050" ${mode}_1050_mvaVars_vetoes.root 2>&1| tee log_${mode}_1050.tmp &
   cutapplier ${mode}_mvaVars_vetoes.root DecayTree "BCON_KK_M<1800" ${mode}_1800_mvaVars_vetoes.root 2>&1| tee log_${mode}_1800.tmp &
@@ -25,7 +26,7 @@ table=../scripts/tables/MassFits.csv
     -R ../ntuples/BsphiKK_data_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit \
     -N B_s0_LOKI_Mass \
-    --sweight \
+    --sweight $fitrange \
     --pulls \
     --save-results initialmassfit \
     --output-file ${table}
@@ -34,7 +35,7 @@ table=../scripts/tables/MassFits.csv
     -R ../ntuples/BsphiKK_data_1050_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit1050 \
     -N B_s0_LOKI_Mass \
-    --sweight \
+    --sweight $fitrange \
     --pulls \
     --save-results initialmassfitA \
     --output-file ${table}
@@ -43,7 +44,7 @@ table=../scripts/tables/MassFits.csv
     -R ../ntuples/BsphiKK_data_1800_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit1800 \
     -N B_s0_LOKI_Mass \
-    --sweight \
+    --sweight $fitrange \
     --pulls \
     --save-results initialmassfitB \
     --output-file ${table}
@@ -52,7 +53,8 @@ table=../scripts/tables/MassFits.csv
     -R ../ntuples/BsphiKK_data_1050_1800_mvaVars_vetoes.root \
     -O ../latex/figs/initialmassfit10501800 \
     -N B_s0_LOKI_Mass \
-    --sweight \
+    --sweight $fitrange \
+    --draw-region 3 \
     --pulls \
     --save-results initialmassfitAB \
     --output-file ${table}
