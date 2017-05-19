@@ -23,6 +23,7 @@
 #include "GetTree.h"
 #include "GetData.h"
 #include "ResultDB.h"
+#include "datum.h"
 void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb, double xmin, double xmax)
 {
   int nbins = 50;
@@ -201,13 +202,13 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   RooDataSet CDdata("CDdata","",RooArgSet(mass),RooFit::Import(*CDtree));
   RooPlot* CDframe = mass.frame();
   CDdata.plotOn(CDframe,Binning(nbins));
-  double resolution = 0, f1, f2, s1, s2, s3;
-  f1 = SigMod->GetValue("fgaus1");
-  f2 = SigMod->GetValue("fgaus2");
-  s1 = SigMod->GetValue("sigma1");
-  s2 = SigMod->GetValue("sigma2");
-  s3 = SigMod->GetValue("sigma3");
-  resolution = sqrt(f1*s1*s1 + (1-f1)*(f2*s2*s2 + (1-f2)*s3*s3));
+  datum resolution, f1, f2, s1, s2, s3;
+  f1 = {SigMod->GetValue("fgaus1"), SigMod->GetError("fgaus1")};
+  f2 = {SigMod->GetValue("fgaus2"), SigMod->GetError("fgaus2")};
+  s1 = {SigMod->GetValue("sigma1"), SigMod->GetError("sigma1")};
+  s2 = {SigMod->GetValue("sigma2"), SigMod->GetError("sigma2")};
+  s3 = {SigMod->GetValue("sigma3"), SigMod->GetError("sigma3")};
+  resolution = sqrt(f1*s1*s1 + (1.-f1)*(f2*s2*s2 + (1.-f2)*s3*s3));
   // Free up the resolution scale factor
   SigMod->SetRange("scalef",0.9,1.1);
   SigMod->FloatPar("scalef");
@@ -247,7 +248,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   for(int window = 2; window <= 3; window++)
   {
     cout << "Integrating fitted data PDF over μ±" << window << "σ" << endl;
-    mass.setRange((std::to_string(window)+"sigma").c_str(),mean-window*resolution,mean+window*resolution);
+    mass.setRange((std::to_string(window)+"sigma").c_str(),mean-window*resolution.val(),mean+window*resolution.val());
     RooAbsReal* sigmodint = sigmod->createIntegral(mass,NormSet(mass),Range((std::to_string(window)+"sigma").c_str()));
     RooAbsReal* bkgmodint = bkgmod->createIntegral(mass,NormSet(mass),Range((std::to_string(window)+"sigma").c_str()));
     double tempNsig    = sigmodint->getVal()*Nsig->getVal()
@@ -283,8 +284,8 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   {
     cout << "Drawing lines" << endl;
 //    canv->cd(0);
-    TLine* hiline = new TLine(mean+drawregion*resolution,0,mean+drawregion*resolution,CDframe->GetMaximum());
-    TLine* loline = new TLine(mean-drawregion*resolution,0,mean-drawregion*resolution,CDframe->GetMaximum());
+    TLine* hiline = new TLine(mean+drawregion*resolution.val(),0,mean+drawregion*resolution.val(),CDframe->GetMaximum());
+    TLine* loline = new TLine(mean-drawregion*resolution.val(),0,mean-drawregion*resolution.val(),CDframe->GetMaximum());
 //    hiline->SetLineColor(2);
 //    loline->SetLineColor(2);
     hiline->SetLineStyle(2);
