@@ -12,6 +12,7 @@
 ## Get input parameters for angular fit
 ./fitLb.sh 2>&1| tee log/fitLb.log
 ./doBsmassfit.sh 2>&1| tee log/Bsmassfit.log
+./getsigfrac.sh 2>&1| tee log/getsigfrac.log
 ./plotmoments.sh 2>&1| tee log/plotmoments.log
 ./angacc.sh 2>&1| tee log/angacc.log
 ./bkgparam.sh 2>&1| tee log/bkgparam.log
