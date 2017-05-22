@@ -2,7 +2,7 @@ pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
 pdf/signal/moments_acceptanceTOS.xml
 pdf/background/Bs2PhiKK.xml
-pdf/background/combinatorial_moments.xml
+pdf/background/combinatorial_nomva_moments.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/data_mva.xml
@@ -20,8 +20,8 @@ parameterset/amplitudes/phi1680_float.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-parameterset/backgrounds/combinatorial_fixed.xml
-parameterset/backgrounds/combphi1020_fixed.xml
+parameterset/backgrounds/combinatorial_hist.xml
+
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 output/lowrange.xml
