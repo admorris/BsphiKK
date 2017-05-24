@@ -9,7 +9,7 @@ then
 	\begin{document}
 	\begin{eqnarray*}
 	EOF
-	math -noprompt -run "<< $1" | sed 's/\\left\\left/\\left/g' | sed 's/\\right\\right/\\right/g' >> $filename.tex
+	math -noprompt -run "<< $1" | sed 's/\\left\\left/\\left/g' | sed 's/\\right\\right/\\right/g' | tee -a $filename.tex
 	cat <<-EOF >> $filename.tex
 	\end{eqnarray*}
 	\end{document}

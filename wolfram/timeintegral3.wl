@@ -11,7 +11,9 @@ $Assumptions = \
  && Subscript[\[CapitalGamma],tot] > 0 && Element[Subscript[\[CapitalGamma],tot],Reals] \
  && Element[\[Lambda],Complexes] \
  && Element[t,Reals] && t > 0 \
- && Element[B,Reals] && B > 0
+ && Element[b,Reals] && b > 0 \
+ && Element[n,Reals] && n > 0 \
+ && Element[Subscript[t,0],Reals] && Subscript[t,0] > 0
 (*Print[TeXForm[$Assumptions]]*)
 (*OverBar[A][0] = Conjugate[A[0]]*)
 (*
@@ -55,7 +57,7 @@ Print["\\\\"]
 Print["\\bar{\\Gamma}(t) &=&",TeXForm[DecayRateBar[t]]]
 Print["\\\\"]
 
-tlow := x
+tlow := Subscript[t,0]
 timeintegral = Integrate[DecayRate[t] + DecayRateBar[t],{t,tlow,\[Infinity]}]
 Print["\\int^{\\infty}_{",tlow,"} \\Gamma(t) + \\bar{\\Gamma}(t) dt &=&",TeXForm[Refine[timeintegral]]]
 Print["\\\\"]
@@ -65,8 +67,10 @@ timeintegral = Integrate[DecayRate[t] + DecayRateBar[t],{t,tlow,\[Infinity]}]
 Print["\\int^{\\infty}_{",tlow,"} \\Gamma(t) + \\bar{\\Gamma}(t) dt &=&",TeXForm[Refine[timeintegral]]]
 Print["\\\\"]
 
-timeintegral = Integrate[(DecayRate[t] + DecayRateBar[t]) Erf[B t],{t,tlow,\[Infinity]}]
-Print["\\int^{\\infty}_{",tlow,"} \\left(\\Gamma(t) + \\bar{\\Gamma}(t)\\right) \\text{erf}(B t) dt &=&",TeXForm[Refine[timeintegral]]]
+Acceptance[t_] = (((b (t - Subscript[t,0]))^n) / (1 + (b (t - Subscript[t,0]))^n)) HeavisideTheta[t - Subscript[t,0]]
+timeintegral = Integrate[(DecayRate[t] + DecayRateBar[t]) Acceptance[t],{t,tlow,\[Infinity]}]
+Print["\\varepsilon(t) &=&",Acceptance[t]]
+Print["\\int^{\\infty}_{",tlow,"} \\left(\\Gamma(t) + \\bar{\\Gamma}(t)\\right) \\varepsilon(t) dt &=&",TeXForm[Refine[timeintegral]]]
 Print["\\\\"]
 
 Exit[]
