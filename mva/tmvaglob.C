@@ -1,9 +1,10 @@
 // global TMVA style settings
-#ifndef TMVA_TMVAGLOB
-#define TMVA_TMVAGLOB
+#ifndef TMVA_TMVAGLOB_LOCAL
+#define TMVA_TMVAGLOB_LOCAL
 
 #include <iostream>
 
+#include "TClass.h"
 #include "TPad.h"
 #include "TCanvas.h"
 #include "TColor.h"
@@ -240,10 +241,6 @@ namespace TMVAGlob {
             c->Print(epsName);
          } 
          else {
-            cout << "--- --------------------------------------------------------------------" << endl;
-            cout << "--- If you want to save the image as eps, gif or png, please comment out " << endl;
-            cout << "--- the corresponding lines (line no. 239-241) in tmvaglob.C" << endl;
-            cout << "--- --------------------------------------------------------------------" << endl;
             c->Print(epsName);
             c->Print(pngName);
             c->Print(pdfName);

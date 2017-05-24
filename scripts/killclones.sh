@@ -16,4 +16,4 @@ for file in $(ls killclones_*.log)
   cat $file
   rm $file
 }
-exit 0
+

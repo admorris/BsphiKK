@@ -16,6 +16,5 @@ bin/AngularAcceptance_AdaptiveHist ${selfile}_foracceptance.root ${genfile}_fora
 #bin/AddBranches_Acceptance Acceptance.root ntuples/BsphiKK_MC_mvacut.root ntuples/BsphiKK_MC_mvacut_acc_weights.root
 #bin/AddBranches_Acceptance Acceptance.root ntuples/BsphiKK_data_mvacut.root ntuples/BsphiKK_data_mvacut_acc_weights.root
 source eos.sh
-cp -v Acceptance.root ${nTuples_dir}
-exit 0
+xrdcp --verbose --force Acceptance.root ${nTuples_dir}
 

@@ -68,5 +68,5 @@ cd ../ntuples
     -l 1050 \
     -u 1800 \
     -b 15
-exit 0
+
 

@@ -16,7 +16,7 @@
 #include "GetTree.h"
 #include "ResultDB.h"
 
-void FitBranch(std::string filename, std::string branchname, std::vector<std::string> model, std::string xtitle, std::string unit, std::string plotname, std::string cuts, std::string weight, double xlow, double xup, int nbins, bool drawpulls, std::string resname, std::string DBfilename,bool noblurb)
+void FitBranch(std::string filename, std::string branchname, std::vector<std::string> model, std::string xtitle, std::string unit, std::string plotname, std::string cuts, std::string weight, double xlow, double xup, int nbins, bool drawpulls, std::string resname, std::string DBfilename,std::string blurb)
 {
   TFile* file = TFile::Open(filename.c_str());
   TTree* tree = GetTree(file,cuts);
@@ -48,20 +48,20 @@ void FitBranch(std::string filename, std::string branchname, std::vector<std::st
   data->plotOn(frame,Binning(nbins));
   FitModel.Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
-  plotmaker* plotter;
+  plotmaker<RooPlot>* plotter;
   if(drawpulls)
   {
     RooHist* pullhist = frame->pullHist();
     RooPlot* pullframe = x->frame(Title("Pull"));
     pullframe->addPlotable(pullhist,"B");
-    plotter = new plotmaker(frame);
+    plotter = new plotmaker<RooPlot>(frame);
     plotter->SetPullPlot(pullframe);
   }
   else
   {
-    plotter = new plotmaker(frame);
+    plotter = new plotmaker<RooPlot>(frame);
   }
-  if(noblurb) plotter->SetBlurb("");
+  plotter->SetBlurb(blurb);
   plotter->SetTitle(xtitle, unit);
   plotter->Draw()->SaveAs((plotname+".pdf").c_str());
   std::vector<parameter> pars;
@@ -98,13 +98,13 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  std::string file, branch, cuts, xtitle, unit, plot, weight, dbf, resname;
+  std::string file, branch, cuts, xtitle, unit, plot, weight, dbf, resname, blurb;
   std::vector<std::string> model;
   double xlow, xup;
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                                      "produce help message"                  )
-    ("noblurb" ,                                                                                      "no blurb"                              )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("pulls,P" ,                                                                                      "plot with pulls"                       )
     ("file,F"  , value<std::string>(&file  )->default_value("ntuples/BsphiKK_data_mva.root"        ), "data file"                             )
     ("branch,B", value<std::string>(&branch)->default_value("B_s0_LOKI_Mass"                       ), "branch to plot"                        )
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
-  FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,vmap.count("pulls"),resname,dbf,vmap.count("noblurb"));
+  
+  FitBranch(file,branch,model,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,vmap.count("pulls"),resname,dbf,blurb);
   return 0;
 }

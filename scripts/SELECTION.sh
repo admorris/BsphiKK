@@ -1,13 +1,12 @@
 #!/bin/bash
 ## Cut-based selection
-./docuts.sh | tee log/docuts.log
-./addBranches.sh | tee log/addBranches.log
-./addBranches_Gen.sh | tee log/addBranches_Gen.log
-./dovetoes.sh | tee log/dovetoes.log
-./sweight.sh | tee log/sweight.log
+./docuts.sh 2>&1| tee log/docuts.log
+./addBranches.sh 2>&1| tee log/addBranches.log
+./addBranches_Gen.sh 2>&1| tee log/addBranches_Gen.log
+./dovetoes.sh 2>&1| tee log/dovetoes.log
+./sweight.sh 2>&1| tee log/sweight.log
 ./MVA.sh
-./killclones.sh | tee log/killclones.log
+./killclones.sh 2>&1| tee log/killclones.log
 source eos.sh
-cp -v ../ntuples/*mvacut*.root ../ntuples/*Gen*mvaVars* ${nTuples_dir}/ntuples/
-exit 0
+xrdcp --verbose --force ../ntuples/*mva.root ../ntuples/*mvacut*.root ../ntuples/*Gen*mvaVars* ${nTuples_dir}/ntuples/
 

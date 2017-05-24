@@ -75,6 +75,7 @@ void PlotAngAcc(std::string filename, std::string trailer)
     AccData.GetXaxis()->SetLabelFont(132);
     AccData.GetYaxis()->SetLabelFont(132);
     AccData.GetYaxis()->CenterTitle();
+    /*
     double _blurbx        = 0.75;
     double _blurby        = 0.80;
     std::string _blurbtext     = "#splitline{LHCb}{#scale[0.75]{Preliminary}}";
@@ -85,6 +86,7 @@ void PlotAngAcc(std::string filename, std::string trailer)
     _blurb.SetTextAlign(11);
     _blurb.SetTextSize(0.07);
     _blurb.Draw();
+    */
     std::string plotfilename = "acceptance_"+varname[i]+"_proj";
     if(trailer != "") plotfilename += "_" + trailer;
     canv1d.SaveAs((plotfilename+".pdf").c_str());

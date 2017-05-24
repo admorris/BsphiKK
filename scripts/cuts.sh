@@ -1,10 +1,11 @@
 #!/bin/bash
+Bsmass="5366.77"
 Bdmass="5279.58"
 Kstmass="891.66"
-Bdwindow="60" # Try 60
+Bdwindow="50"
 Kstwindow="150"
 Lbmass="5619.5"
-Lbwindow="60" # Try 60
+Lbwindow="50"
 Lcmass="2286.46"
 Lcwindow="24"
 Dsmass="1968.3"
@@ -24,9 +25,9 @@ ghstcut="Kminus_TRACK_GhostProb<0.3&&Kplus_TRACK_GhostProb<0.3&&Kminus0_TRACK_Gh
 trackisMuoncut="Kminus_isMuon==0&&Kplus_isMuon==0&&Kminus0_isMuon==0&&Kplus0_isMuon==0"
 #Kaon PT>500 (as in PhiRhoLine) to all Kaons
 KpTcut="Kminus_PT>500&&Kplus_PT>500&&Kminus0_PT>500&&Kplus0_PT>500"
-#Phi mass window cut
-phiMcut="TMath::Abs(phi_1020_LOKI_Mass-${phimass})<${phiwindow}"
 ## Symmetrise the stripping cuts
+#kaon IP chi2 cuts
+KaonIPCHI2cut="Kminus_IPCHI2_OWNPV>16&&Kplus_IPCHI2_OWNPV>16"
 #phi and rho IP chi2 cuts
 phiIPCHI2cut="phi_1020_IPCHI2_OWNPV>16"
 KKIPCHI2cut="KK_IPCHI2_OWNPV>16"
@@ -35,7 +36,6 @@ KKEVCHI2cut="KK_ENDVERTEX_CHI2<25"
 # stdtightkaons
 StdTightKaons="Kminus0_PIDK>0&&Kplus0_PIDK>0"
 #Bs mass window cut
-BsMcut="B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5600"
 sidebandcut="B_s0_LOKI_Mass>5500"
 #Bs flight distance chi-squared cut
 BsFDCHI2cut="B_s0_FDCHI2_OWNPV>250"
@@ -49,10 +49,19 @@ KpPIDcut="Kplus_ProbNNk*(1-Kplus_ProbNNp)>${KpPIDval}&&Kminus_ProbNNk*(1-Kminus_
 signalBKGCATcut="(B_s0_BKGCAT<20||B_s0_BKGCAT==50)"
 misIDBKGCATcut="(B_s0_BKGCAT==30)"
 ###############################################################################
-phikstveto="(TMath::Abs(phiKpiM-${Bdmass})>${Bdwindow}||(TMath::Abs(phiKpiM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNpi&&Kminus0_ProbNNk>Kminus0_ProbNNpi))"
-LbphiKpveto="(TMath::Abs(phiKpM-${Lbmass})>${Lbwindow}||(TMath::Abs(phiKpM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
-Lcphipveto="(TMath::Abs(phipM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(TMath::Abs(phipbarM-${Lcmass})>${Lcwindow}||(TMath::Abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
-DtoKaonsveto="TMath::Abs(phiKplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phiKminusM-${Dsmass})>${Dswindow}"
-Dtophipiveto="TMath::Abs(phipiplusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiminusM-${Ddmass})>${Ddwindow}&&TMath::Abs(phipiplusM-${Dsmass})>${Dswindow}&&TMath::Abs(phipiminusM-${Dsmass})>${Dswindow}"
+#Phi mass window cut
+phiMcut="abs(BCON_phi_M-${phimass})<${phiwindow}"
+#phi K* veto
+phikstcutval="0.4"
+phikstveto="(abs(phiKpluspiminusM-${Bdmass})>${Bdwindow}||(abs(phiKpluspiminusM-${Bdmass})<${Bdwindow}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNpi)>${phikstcutval}))&&(abs(phiKminuspiplusM-${Bdmass})>${Bdwindow}||(abs(phiKminuspiplusM-${Bdmass})<${Bdwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNpi)>${phikstcutval}))"
+#Lb to phi K p veto
+LbphiKpcutval="0.5"
+LbphiKpveto="(abs(phiKpluspbarM-${Lbmass})>${Lbwindow}||(abs(phiKpluspbarM-${Lbmass})<${Lbwindow}&&Kminus0_ProbNNk*(1-Kminus0_ProbNNp)>${LbphiKpcutval}))&&(abs(phiKminuspM-${Lbmass})>${Lbwindow}||(abs(phiKminuspM-${Lbmass})<${Lbwindow}&&Kplus0_ProbNNk*(1-Kplus0_ProbNNp)>${LbphiKpcutval}))"
+#Lc to phi p veto
+Lcphipveto="(abs(phipM-${Lcmass})>${Lcwindow}||(abs(phipM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))&&(abs(phipbarM-${Lcmass})>${Lcwindow}||(abs(phipbarM-${Lcmass})<${Lcwindow}&&Kplus0_ProbNNk>Kplus0_ProbNNp&&Kminus0_ProbNNk>Kminus0_ProbNNp))"
+#D to kaons veto
+DtoKaonsveto="abs(phiKplusM-${Dsmass})>${Dswindow}&&abs(phiKminusM-${Dsmass})>${Dswindow}"
+#D to phi pi veto
+Dtophipiveto="abs(phipiplusM-${Ddmass})>${Ddwindow}&&abs(phipiminusM-${Ddmass})>${Ddwindow}&&abs(phipiplusM-${Dsmass})>${Dswindow}&&abs(phipiminusM-${Dsmass})>${Dswindow}"
 vetoes=($phikstveto $LbphiKpveto $Lcphipveto $DtoKaonsveto $Dtophipiveto)
 

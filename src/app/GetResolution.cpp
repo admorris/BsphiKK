@@ -22,7 +22,7 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-void GetResolution(string filename, vector<string> particlename, string branchname, string cuts, string xtitle, string unit, string plotname, double xlow, double xup, int nbins, bool noblurb)
+void GetResolution(string filename, vector<string> particlename, string branchname, string cuts, string xtitle, string unit, string plotname, double xlow, double xup, int nbins,std::string blurb)
 {
 /*Input***********************************************************************/
   TFile* file = TFile::Open(filename.c_str());
@@ -87,8 +87,8 @@ void GetResolution(string filename, vector<string> particlename, string branchna
 //  model->plotOn(frame);
   ResFit->Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
-  plotmaker plotter(frame);
-  if(noblurb) plotter.SetBlurb("");
+  plotmaker<RooPlot> plotter(frame);
+  plotter.SetBlurb(blurb);
   plotter.SetTitle(("#Delta"+xtitle), unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
 //  TCanvas can;
@@ -115,7 +115,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   cout << "Plotting" << endl;
   data->plotOn(frame,(Binning(nbins)));
   PhiFit->Plot(frame);
-  plotmaker plotter2(frame);
+  plotmaker<RooPlot> plotter2(frame);
   plotter2.SetTitle((xtitle), unit);
   plotter2.Draw()->SaveAs((plotname+"_fit.pdf").c_str());
 */
@@ -126,13 +126,13 @@ int main(int argc, char* argv[])
   using namespace boost::program_options;
   using std::string;
   options_description desc("Allowed options",120);
-  string file, branch, cuts, xtitle, unit, plot, weight;
+  string file, branch, cuts, xtitle, unit, plot, weight, blurb;
   vector<string> partic;
   double xlow, xup;
   int nbins;
   desc.add_options()
     ("help,H"    ,                                                                                     "produce help message"                  )
-    ("noblurb"   ,                                                                                     "no blurb"                              )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("file,F"    , value<string         >(&file  )->default_value("ntuples/BsphiKK_MC_mvacut.root"  ), "data ntuple"                           )
     ("particle,P", value<vector<string> >(&partic)->multitoken()                                     , "list particles to sum"                 )
     ("branch,B"  , value<string         >(&branch)->default_value("KK_M"                            ), "mass branch to compare to"             )
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
     partic.push_back("Kplus0");
     partic.push_back("Kminus0");
   }
-  cout << "Entering main function" << endl;
-  GetResolution(file,partic,branch,cuts,xtitle,unit,plot,xlow,xup,nbins,vmap.count("noblurb"));
+  
+  GetResolution(file,partic,branch,cuts,xtitle,unit,plot,xlow,xup,nbins,blurb);
   return 0;
 }

@@ -26,5 +26,5 @@ do
       -b 50 ${extra}
   done
 done
-exit 0
+
 

@@ -35,8 +35,8 @@ void DrawGraph(string name, TGraphErrors* graph)
   graph = new TGraphErrors(*graph);
   delete oldgraph;
   float textsize = 0.055;
-  graph->SetMinimum(0);
-  graph->SetMaximum(100);
+//  graph->SetMinimum(0);
+//  graph->SetMaximum(100);
   graph->SetTitle("");
   graph->GetXaxis()->SetTitle("#it{m}(#it{K^{#plus}K^{#minus}}) [MeV/#it{c}^{2}]");
   graph->GetYaxis()->SetTitle("Efficiency [%]");
@@ -55,6 +55,7 @@ void DrawGraph(string name, TGraphErrors* graph)
   graph->GetXaxis()->SetLabelFont(132);
   graph->GetYaxis()->SetLabelFont(132);
   graph->GetYaxis()->CenterTitle();
+  /*
   double _blurbx        = 0.75;
   double _blurby        = 0.80;
   string _blurbtext     = "#splitline{LHCb}{#scale[0.75]{Preliminary}}";
@@ -65,6 +66,7 @@ void DrawGraph(string name, TGraphErrors* graph)
   _blurb->SetTextAlign(11);
   _blurb->SetTextSize(0.07);
   _blurb->Draw();
+  */
   canvas->SaveAs((name+".pdf").c_str());
   canvas->Write();
 }

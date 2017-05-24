@@ -30,5 +30,5 @@ do
     --title ${titles[i]} \
     ${ranges[i]}
 done
-exit 0
+
 

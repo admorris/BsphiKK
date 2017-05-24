@@ -13,13 +13,13 @@ do
   ../bin/CompareBranch \
        --CDfile $file \
        --MCfile $MCfile \
-       --CDweight \"Nsig_sw\" \
-       --MCbranch \"${branches[i]}\" \
-       --CDbranch \"${branches[i]}\" \
-       --title \"${titles[i]}\" \
-       --unit \"${units[i]}\" \
-       --plot \"$plotname\" \
+       --CDweight Nsig_sw \
+       --MCbranch ${branches[i]} \
+       --CDbranch ${branches[i]} \
+       --title ${titles[i]} \
+       --unit ${units[i]} \
+       --plot $plotname \
        ${ranges[i]}
 done
-exit 0
+
 

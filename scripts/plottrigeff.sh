@@ -6,5 +6,5 @@ do
 ../bin/PlotTrigEff ${nTuples_dir}${mode}_nocut.root ../latex/figs/$mode
 mv TrigEffPlots.root ../${mode}_TrigEffPlots.root
 done
-exit 0
+
 

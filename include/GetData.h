@@ -15,9 +15,13 @@ RooHistPdf* GetDataHist(string name, string filename, string cuts, RooRealVar* m
   RooDataHist* hist = new RooDataHist((name+"hist").c_str(),"",*massvar,*data);
   return new RooHistPdf("shape","",*massvar,*hist);
 }
+RooDataSet* GetData(string name, TTree* tree, RooRealVar* massvar)
+{
+  return new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));
+}
 RooDataSet* GetData(string name, string filename, string cuts, RooRealVar* massvar)
 {
   TTree* tree = GetTree(filename,cuts);
-  return new RooDataSet((name+"data").c_str(),"",*massvar,RooFit::Import(*tree));
+  return GetData(name, tree, massvar);
 }
 

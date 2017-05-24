@@ -1,4 +1,5 @@
-#!/bin/bash
+##!/bin/bash
+source peakingbackgrounds.sh
 cd ../ntuples/
 table=../scripts/tables/MassFits.csv
 ../bin/BsMassFit \
@@ -8,7 +9,8 @@ table=../scripts/tables/MassFits.csv
     -N B_s0_LOKI_Mass \
     --pulls \
     --save-results Bsmassfitmvacut \
-    --output-file ${table} 
+    --sweight \
+    --output-file ${table}
 ranges=(1045 1080 1200 1350 1450 1550 1650 1800)
 for range in ${ranges[@]}
 do
@@ -29,6 +31,15 @@ cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" Bsphi
     -N B_s0_LOKI_Mass \
     --pulls \
     --sweight
+../bin/BsMassFit \
+    -M BsphiKK_MC_mvacut.root \
+    -R BsphiKK_data_mvacut.root \
+    -C "BCON_KK_M<1050" \
+    -O ../latex/figs/Bsmassfit_below1050_mvacut \
+    -N B_s0_LOKI_Mass \
+    --pulls \
+    --save-results Bsmassfitmvacutlow \
+    --output-file ${table}
 ../bin/BsMassFit \
     -M BsphiKK_MC_mvacut.root \
     -R BsphiKK_data_mvacut.root \
@@ -58,10 +69,9 @@ cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" Bsphi
     --draw-region 2 \
     --save-results BsmassfitmvacutpkgbkgsB \
     --output-file ${table} \
-    --backgrounds f1420_Bs0_branches.root/HISTPDF BdphiKst_MC_mvacut.root LbphiKp_MC_mvacut.root \
-    --yields 0 0.02 475 \
-    --yopts flo flo flo \
-    --logy
+    --backgrounds f1420_Bs0_branches.root/HISTPDF BdphiKst_MC_mvacut.root LbphiKp_MC_mva.root/HISTPDF \
+    --yields 200 $NExpBdPhiKst $NExpLbPhiKp \
+    --yopts flo abs abs --logy
 ../bin/BsMassFit \
     -M BsphiKK_MC_mvacut.root \
     -R BsphiKK_data_mvacut.root \
@@ -72,5 +82,5 @@ cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" Bsphi
     --save-results BsmassfitmvacutAB \
     --output-file ${table}
 ../bin/ExportResults ${table} ../latex/results/MassFits.tex
-exit 0
+
 

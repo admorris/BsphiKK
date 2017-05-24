@@ -1,2 +1,2 @@
 <ConfigurationParameter>combinatorial_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial.root</ConfigurationParameter>
-<ConfigurationParameter>combinatorialphi1020_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial.root</ConfigurationParameter>
+<ConfigurationParameter>combinatorial_HistFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/background_mKKhist.root</ConfigurationParameter>

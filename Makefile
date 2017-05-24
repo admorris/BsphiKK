@@ -92,4 +92,5 @@ clean :
 	$(RM) $(OUTPUT)
 	make -C $(COMMONDIR) clean
 	make -C $(CLONEDIR) clean
+	make -C $(ERFDIR) clean
 

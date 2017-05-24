@@ -14,7 +14,7 @@
 using std::string;
 using std::cout;
 using std::endl;
-void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale, bool noblurb)
+void AnnotateBranch(string filename, string branchname, string xtitle, string unit, string plotname, string cuts, string weight, double xlow, double xup, int nbins, string overlay, double scale,std::string blurb)
 {
   using namespace std;
   TH1D* frame = MakeBranchPlot(filename, branchname, cuts, weight, xlow, xup, nbins);
@@ -113,12 +113,13 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     cout << "No stored list of resonances for branch name " << branchname << endl;
     go=false;
   }
-  plotmaker plotter(frame);
-  if(noblurb) plotter.SetBlurb("");
+  plotmaker<TH1> plotter(frame);
+  plotter.SetBlurb(blurb);
 //  frame->SetDrawOption("E1");
   plotter.SetTitle(xtitle,unit);
   TCanvas* canv = plotter.Draw("E1");
   frame->SetMaximum(frame->GetMaximum()*1.3);
+  frame->SetMinimum(0);
   if(overlay != "")
   {
     TH1D* overlayframe = MakeBranchPlot(overlay, branchname, cuts, weight, xlow, xup, nbins);
@@ -139,7 +140,7 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
     {
       line  = &(particles[i]->line);
       label = &(particles[i]->label);
-      cout << "Labelling particle at " << line->GetX1() << " MeV" << endl;
+      cout << "Labelling particle " << label->GetTitle() << " at " << line->GetX1() << " MeV" << endl;
       // Find the right bin for the line
       bin=0;
       for(int j = 1; j < nbins && frame->GetBinLowEdge(j+1) < line->GetX1(); j++)
@@ -149,7 +150,6 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
       // Check if the particle is in the range of the plot, and the line would be big enough
       if(line->GetX1()>xlow && line->GetX1()<xup && frame->GetBinContent(bin)/frame->GetMaximum() > 0.05)
       {
-        cout << "Bin " << bin << endl;
         // Scale up the line
         line->SetY2(line->GetY2()*frame->GetBinContent(bin));
         line->Draw();
@@ -159,10 +159,6 @@ void AnnotateBranch(string filename, string branchname, string xtitle, string un
         label->SetY(label->GetY()*(*max_element(ys,ys+3))+0.05*frame->GetMaximum()+frame->GetBinErrorUp(bin));
         label->Draw();
       }
-      else
-      {
-        cout << "Out of range" << endl;
-      }
     }
   }
   canv->SaveAs((plotname+".pdf").c_str());
@@ -171,12 +167,12 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  string file, branch, cuts, xtitle, unit, plot, weight, overlay;
+  string file, branch, cuts, xtitle, unit, plot, weight, overlay, blurb;
   double xlow, xup, scale;
   int nbins;
   desc.add_options()
     ("help,H"  ,                                                                              "produce help message"                )
-    ("noblurb" ,                                                                              "no blurb"                            )
+    ("blurb", value<string>(&blurb), "blurb text")
     ("file,F"  , value<string>(&file   )->default_value("ntuples/BsphiKK_data_mvaVars.root"), "data file"                           )
     ("branch,B", value<string>(&branch )->default_value("KK_M"                             ), "branch to plot"                      )
     ("weight,W", value<string>(&weight )->default_value(""                                 ), "weighting variable"                  )
@@ -198,7 +194,7 @@ int main(int argc, char* argv[])
     cout << desc << endl;
     return 1;
   }
-  cout << "Entering main function" << endl;
-  AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,vmap.count("noblurb"));
+  
+  AnnotateBranch(file,branch,xtitle,unit,plot,cuts,weight,xlow,xup,nbins,overlay,scale,blurb);
   return 0;
 }

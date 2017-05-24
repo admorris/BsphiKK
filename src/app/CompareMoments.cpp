@@ -12,7 +12,7 @@
 #include "plotmaker.h"
 #include "LegendreMomentPlot.h"
 
-void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCmassname, std::string CDmassname, std::string MCanglename, std::string CDanglename, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, int max_order, bool noblurb)
+void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCmassname, std::string CDmassname, std::string MCanglename, std::string CDanglename, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, int max_order,std::string blurb)
 {
   TCanvas allplots("allplots","",1200,1200);
   auto CDtree = std::unique_ptr<TTree>(GetTree(CDfilename,CDcuts));
@@ -36,8 +36,8 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
     residualplot.SetFillColor(kBlack);
     for(int ibin = 1; ibin < nbins+1; ibin++) // Turn residuals into pulls (I think)
       residualplot.SetBinContent(ibin,residualplot.GetBinContent(ibin)/CDplots[order].hist.GetBinError(ibin));
-    plotmaker plot(&CDplots[order].hist);
-    if(noblurb) plot.SetBlurb("");
+    plotmaker<TH1> plot(&CDplots[order].hist);
+    plot.SetBlurb(blurb);
     plot.SetPullPlot(&residualplot);
     plot.SetTitle(xtitle,unit);
     TCanvas* canvas = plot.Draw("hist B");
@@ -62,12 +62,12 @@ int main(int argc, char* argv[])
 {
   using namespace boost::program_options;
   options_description desc("Allowed options",120);
-  std::string MCfile, CDfile, MCmass, CDmass, MCangle, CDangle, MCcuts, CDcuts, xtitle, unit, plot, MCweight, CDweight;
+  std::string MCfile, CDfile, MCmass, CDmass, MCangle, CDangle, MCcuts, CDcuts, xtitle, unit, plot, MCweight, CDweight, blurb;
   double xlow, xup;
   int nbins, N;
   desc.add_options()
     ("help"    ,                                                                                "produce help message"             )
-    ("noblurb" ,                                                                                "no blurb"                         )
+    ("blurb", value<std::string>(&blurb), "blurb text")
     ("MCfile"  , value<std::string>(&MCfile  )->default_value("toys.root"                    ), "Monte Carlo file"                 )
     ("CDfile"  , value<std::string>(&CDfile  )->default_value("ntuples/BsphiKK_data_mva.root"), "collision data file"              )
     ("MCmass"  , value<std::string>(&MCmass  )->default_value("mKK"                          ), "Monte Carlo mass branch"          )
@@ -94,8 +94,8 @@ int main(int argc, char* argv[])
     std::cout << desc << std::endl;
     return 1;
   }
-  std::cout << "Entering main function" << std::endl;
-  PlotMoments(MCfile, CDfile, MCmass, CDmass, MCangle, CDangle, xtitle, unit, plot, MCcuts, CDcuts, MCweight, CDweight, xlow, xup, nbins, N,vmap.count("noblurb"));
+  
+  PlotMoments(MCfile, CDfile, MCmass, CDmass, MCangle, CDangle, xtitle, unit, plot, MCcuts, CDcuts, MCweight, CDweight, xlow, xup, nbins, N,blurb);
   return 0;
 }
 

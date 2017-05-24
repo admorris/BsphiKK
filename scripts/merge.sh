@@ -16,5 +16,5 @@ hadd -f LbphiKp_MC_nocut.root BsphiKK_476_noPID.root BsphiKK_477_noPID.root &
 hadd -f BsphiKK_data_nocut.root BsphiKK_478_noPID.root BsphiKK_479_noPID.root BsphiKK_480_noPID.root BsphiKK_481_noPID.root BsphiKK_483_noPID.root BsphiKK_484_noPID.root &
 wait
 cd -
-exit 0
+
 

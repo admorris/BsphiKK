@@ -41,5 +41,5 @@ done
 #root -l -q -b "cuteff.C+(\"BsphiKK_data_mvaVars\",\"Phi_angle\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${vetoes[4]}\",\"testphisktveto_data4_Phi_angle\")"
 #root -l -q -b "cuteff.C+(\"BsphiKK_data_mvaVars\",\"cos_theta1\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${vetoes[4]}\",\"testphisktveto_data4_costheta1\")"
 #root -l -q -b "cuteff.C+(\"BsphiKK_data_mvaVars\",\"cos_theta2\",\"B_s0_LOKI_Mass>5200&&B_s0_LOKI_Mass<5550\",\"${vetoes[4]}\",\"testphisktveto_data4_costheta2\")"
-exit 0
+
 

@@ -2,7 +2,7 @@
 ## Efficiencies
 ./trigeff.sh
 ./seleff.sh
-./vetoeff.sh | tee log/vetoeff.log
-./plotttrigeff.sh
-exit 0
+./vetoeff.sh 2>&1| tee log/vetoeff.log
+./plotttrigeff.sh 2>&1| tee log/plotttrigeff.log
+
 

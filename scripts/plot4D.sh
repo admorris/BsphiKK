@@ -46,5 +46,5 @@ cd ../ntuples
     -l -1 \
     -u 1 \
     -b 15
-exit 0
+
 
