@@ -18,6 +18,10 @@ do
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		# Perform the fit
 		logfile=RapidFitOutput-$(date +"%Y%m%d_%H%M%S").log
+		if [[ ${NSLOTS} ]]
+		then
+			nThreadsFlag="--OverrideXML /RapidFit/FitFunction/Threads ${NSLOTS}"
+		fi
 		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 $3 2>&1| tee ${logfile}
 		# Deal with the output
 		$currentdir/scripts/mergeprojections.sh 2>&1| tee -a ${logfile}
