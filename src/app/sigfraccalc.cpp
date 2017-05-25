@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 	else if (f.val() < 0.9)
 		std::cerr << "Warning: fraction is below 90%. This seems unlikely." << std::endl;
 	// Write the XML file
-	std::ofstream XML("signal_fraction_" + std::to_string(m) + "_fixed.xml");
+	std::ofstream XML("signal_fraction_" + std::to_string(m) + "_fixed.xml", std::ios::out);
 	XML << "# S: " << S << "\n"
 	    << "# B: " << B << "\n"
 	    << "<PhysicsParameter>\n"
