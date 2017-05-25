@@ -10,10 +10,6 @@
 #$ -notify
 trap 'exit 99' sigusr1 sigusr2 sigterm
 destination="/exports/csce/datastore/ph/groups/PPE/lhcb/users/admorris/BsphiKK/fits/"
-fitfolders=(toystudies mcfits datafits)
-for folder in ${fitfolders[@]}
-do
-	mkdir -p ${destination}/${folder}
-	rsync -rlp ${folder} ${destination}
-done
-
+folder=results
+mkdir -p ${destination}/${folder}
+rsync -rlp ${folder} ${destination}

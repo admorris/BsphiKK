@@ -4,13 +4,13 @@ make -C modules -j
 currentdir=$(pwd)
 if [ "$1" == "" ]
 then
-	fitfolders=(toystudies mcfits/phasespace mcfits/pwave datafits)
+	fitfolders=($(find src -mindepth 1 -type d | sed 's/src\///g'))
 else
 	fitfolders=($1)
 fi
 for folder in ${fitfolders[@]}
 do
-	cd $currentdir/$folder
+	cd $currentdir/results/$folder
 	for file in $(ls *$2*xml)
 	do
 		# Move to the right folder
