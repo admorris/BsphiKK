@@ -17,11 +17,13 @@ do
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		# Perform the fit
-		fitting --OverrideXML /RapidFit/FitFunction/Threads $(nproc) -f ../${file} --generateToyXML --MultiDimChi2 $3 | tee RapidFitOutput-$(date +"%Y%m%d_%H%M%S").log
+		logfile=RapidFitOutput-$(date +"%Y%m%d_%H%M%S").log
+		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 $3 2>&1| tee ${logfile}
 		# Deal with the output
-		$currentdir/output/mergeprojections.sh
-		$currentdir/output/compareresult.sh
-		#$currentdir/output/comparemoments.sh
+		$currentdir/scripts/mergeprojections.sh 2>&1| tee -a ${logfile}
+		$currentdir/scripts/compareresult.sh 2>&1| tee -a ${logfile}
+		$currentdir/scripts/comparemoments.sh 2>&1| tee -a ${logfile}
+		$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a ${logfile}
 		cd ..
 	done
 done

@@ -2,7 +2,7 @@ ASSEMBLE = ./assemble.sh
 
 SRCDIR = ../src/
 SRCEXT = list
-XMLDIR = ../
+XMLDIR = ../results/
 
 
 SRCS := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')

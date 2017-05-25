@@ -38,12 +38,12 @@ do
 		cd FitResult_$(echo $file | sed 's/\.xml//g')
 		# Perform the fit
 		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S").log
-		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 $3 | tee \${logfile}
+		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 $3 2>&1| tee \${logfile}
 		# Deal with the output
-		$currentdir/output/mergeprojections.sh | tee -a \${logfile}
-		$currentdir/output/compareresult.sh | tee -a \${logfile}
-		$currentdir/output/comparemoments.sh | tee -a \${logfile}
-		$currentdir/output/calculatefitfractions.sh | tee -a \${logfile}
+		$currentdir/scripts/mergeprojections.sh 2>&1| tee -a \${logfile}
+		$currentdir/scripts/compareresult.sh 2>&1| tee -a \${logfile}
+		$currentdir/scripts/comparemoments.sh 2>&1| tee -a \${logfile}
+		$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a \${logfile}
 		EOF
 		# Submit the jobs
 		qsub ${submission_script}
