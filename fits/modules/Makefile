@@ -12,12 +12,12 @@ DIRS := $(patsubst $(SRCDIR)%, $(XMLDIR)%, $(shell find $(SRCDIR) -mindepth 1 -t
 all : $(XMLS) Makefile
 
 .SECONDEXPANSION:
-$(XMLDIR)%.xml : $(SRCDIR)%.$(SRCEXT) $$(shell echo `< $$(SRCDIR)%.$$(SRCEXT)`) dirs
+$(XMLDIR)%.xml : $(SRCDIR)%.$(SRCEXT) $$(shell echo `< $$(SRCDIR)%.$$(SRCEXT)`) | $(DIRS)
 	@echo "Building $@"
 	@$(ASSEMBLE) `< $<` > $@
 
-dirs :
-	@mkdir -p $(DIRS)
+$(DIRS) :
+	mkdir -p $@
 
 clean :
 	@rm -rf $(XMLS)
