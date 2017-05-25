@@ -18,7 +18,7 @@ TGraphErrors graph(n,x,y,xe,ye);
 graph.SetMarkerStyle(20);
 graph.Draw("AP");
 
-TF1 fun("fun",Form("x>%f?pow([0]*TMath::Abs((x-%f)),0.5):0",x[0],x[0]));
+TF1 fun("fun",Form("x>%f?pow([0]*abs((x-%f)),0.5):0",x[0],x[0]));
 fun.SetLineStyle(2);
 fun.SetLineColor(2);
 fun.SetParameters(1,333);
