@@ -1,16 +1,16 @@
 #!/bin/bash
 # Usage: runall.sh [<folder>] [<pattern to match>]  [<extra RapidFit options>]
-make -C modules -j
+make -C modules -j || exit 1
 currentdir=$(pwd)
 if [ "$1" == "" ]
 then
-	fitfolders=($(find src -mindepth 1 -type d | sed 's/src\///g'))
+	fitfolders=($(find src -mindepth 1 -type d | sed 's/src/results/g'))
 else
 	fitfolders=($1)
 fi
 for folder in ${fitfolders[@]}
 do
-	cd $currentdir/results/$folder
+	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
 	do
 		# Move to the right folder

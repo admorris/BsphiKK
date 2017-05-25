@@ -1,17 +1,17 @@
 #!/bin/bash
 # Usage: submitall.sh [<folder>] [<pattern to match>] [<extra RapidFit options>]
 source RFjobconfig.sh
-make -C modules -j$(nproc)
+make -C modules -j$(nproc) || exit 1
 currentdir=$(pwd)
 if [ "$1" == "" ]
 then
-	fitfolders=($(find src -mindepth 1 -type d | sed 's/src\///g'))
+	fitfolders=($(find src -mindepth 1 -type d | sed 's/src/results/g'))
 else
 	fitfolders=($1)
 fi
 for folder in ${fitfolders[@]}
 do
-	cd $currentdir/results/$folder
+	cd $currentdir/$folder
 	for file in $(ls *$2*xml)
 	do
 		submission_script=$(echo "submit_$file" | sed 's/xml/sh/')
