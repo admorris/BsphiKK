@@ -17,13 +17,10 @@ parameterset/resonances/phi1020_float_mass.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
-parameterset/barrierfactorradii_float.xml
+parameterset/barrierfactorradii_floatKK.xml
 parameterset/backgrounds/combinatorial_hist.xml
 phasespaceboundary/mKK_BCON_1080.xml
 phasespaceboundary/angles_BCON.xml
 output/fullrange.xml
-output/phi.xml
-output/ctheta_1.xml
-output/ctheta_2.xml
 parameterset/thraccscale_fixed.xml
 phasespaceboundary/TOS.xml
