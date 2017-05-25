@@ -17,7 +17,7 @@ parameterset/resonances/phi1020_float_mass.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
-parameterset/barrierfactorradii_fixed_EvtGen.xml
+parameterset/barrierfactorradii_float.xml
 parameterset/backgrounds/combinatorial_hist.xml
 phasespaceboundary/mKK_BCON_1080.xml
 phasespaceboundary/angles_BCON.xml
