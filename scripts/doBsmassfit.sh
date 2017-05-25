@@ -21,7 +21,9 @@ cutapplier BsphiKK_data_mvacut.root DecayTree "BCON_KK_M<$range" BsphiKK_data_mv
     -O ../latex/figs/Bsmassfit_mvacut_$range \
     -N B_s0_LOKI_Mass \
     --pulls \
-    --sweight
+    --sweight \
+    --save-results Bsmassfitmvacut \
+    --output-file ../scripts/tables/Bsmassfit_${range}.csv
 done
 cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" BsphiKK_data_mvacut_phirange.root
 ../bin/BsMassFit \
