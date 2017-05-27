@@ -20,5 +20,5 @@ $(DIRS) :
 	mkdir -p $@
 
 clean :
-	@rm -rf $(XMLS)
+	@for dir in $(DIRS); do rm -f $${dir}/*.xml; done
 
