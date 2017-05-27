@@ -1,0 +1,16 @@
+<PhysicsParameter>
+	<Name>BsBFradius</Name>
+	<Value>1.0</Value>
+	<Minimum>0.1</Minimum>
+	<Maximum>10.0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>GeV^-1</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>KKBFradius</Name>
+	<Value>3.0</Value>
+	<Minimum>0.1</Minimum>
+	<Maximum>10.0</Maximum>
+	<Type>Float</Type>
+	<Unit>GeV^-1</Unit>
+</PhysicsParameter>
