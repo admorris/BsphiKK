@@ -18,10 +18,13 @@ int main (int argc, char const* argv[])
 	std::string file = "ntuples/BsphiKK_MC_mvacut.root";
 	std::string branch = "B_s0_TAU*1000";
 	std::string weight = "exp(B_s0_TAU/0.00151)";
-	std::vector<func_info> functions = {{"power_law","1-1/(1+([1]*(x-[2]))^2)","1 #minus #frac{1}{1 + (#it{b} (#it{t} #minus #it{t}_{0}))^{2}}"},
-	                                    {"erf","std::erf([1]*(x-[2]))","erf[#it{b} (#it{t} #minus #it{t}_{0})]"},
-	                                    {"tanh","std::tanh([1]*(x-[2]))","tanh[#it{b} (#it{t} #minus #it{t}_{0})]"},
-	                                    {"atan","std::atan([1]*(x-[2]))*2/TMath::Pi()","#frac{2}{#it{#pi}}tan^{#minus1}[#it{b} (#it{t} #minus #it{t}_{0})]"}};
+	std::vector<func_info> functions
+	{
+		{"power_law","1-1/(1+([1]*(x-[2]))^2)","1 #minus #frac{1}{1 + (#it{b} (#it{t} #minus #it{t}_{0}))^{2}}"},
+		{"erf","std::erf([1]*(x-[2]))","erf[#it{b} (#it{t} #minus #it{t}_{0})]"},
+		{"tanh","std::tanh([1]*(x-[2]))","tanh[#it{b} (#it{t} #minus #it{t}_{0})]"},
+		{"atan","std::atan([1]*(x-[2]))*2/TMath::Pi()","#frac{2}{#it{#pi}}tan^{#minus1}[#it{b} (#it{t} #minus #it{t}_{0})]"}
+	};
 	double tlow = 0;
 	double thi = 10;
 	int nbins = 50;
