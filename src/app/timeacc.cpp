@@ -6,6 +6,7 @@
 #include "TLine.h"
 #include "plotmaker.h"
 #include "MakeBranchPlot.h"
+#include "ResultDB.h"
 #define hbar 6.582119514e-4 // eV ps
 struct func_info
 {
@@ -20,7 +21,7 @@ int main (int argc, char const* argv[])
 	std::string weight = "exp(B_s0_TAU/0.00151)";
 	std::vector<func_info> functions
 	{
-		{"power_law","1-1/(1+([1]*(x-[2]))^2)","1 #minus #frac{1}{1 + (#it{b} (#it{t} #minus #it{t}_{0}))^{2}}"},
+		{"power_law","1-1/(1+([1]*(x-[2]))^2)","1 #minus #frac{1}{1 + (#it{b} [#it{t} #minus #it{t}_{0})]^{2}}"},
 		{"erf","std::erf([1]*(x-[2]))","erf[#it{b} (#it{t} #minus #it{t}_{0})]"},
 		{"tanh","std::tanh([1]*(x-[2]))","tanh[#it{b} (#it{t} #minus #it{t}_{0})]"},
 		{"atan","std::atan([1]*(x-[2]))*2/TMath::Pi()","#frac{2}{#it{#pi}}tan^{#minus1}[#it{b} (#it{t} #minus #it{t}_{0})]"}
@@ -69,7 +70,7 @@ int main (int argc, char const* argv[])
 		// Draw some information
 		TLatex blurb;
 		blurb.DrawLatex(2,0.6,("#font[132]{#it{#varepsilon}(#it{t}) = "+function.latex+"}").c_str());
-		blurb.DrawLatex(2,0.3,("#font[132]{#it{#varepsilon}(#it{t}) = 0.5 at #it{t} = " + std::to_string(thalf) + " ps}").c_str());
+		blurb.DrawLatex(2,0.3,("#font[132]{#it{#varepsilon}(#it{t}) = 0.5 at #it{t} = " + rdb::tostring(rdb::roundDP(thalf,2),2) + " ps}").c_str());
 		// Save the plot
 		canv->SaveAs(("timeacc_"+function.name+".pdf").c_str());
 	}
