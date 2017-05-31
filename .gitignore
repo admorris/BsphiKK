@@ -13,9 +13,7 @@ scripts/tables
 fits/*/Foam-*.root
 fits/*/RapidFitOutput*/*
 fits/*/*/RapidFitOutput*/*
-fits/datafits/*
-fits/mcfits/*
-fits/toystudies/*
+fits/results/*
 fits/*.xml
 fits/*.root
 fits/RFjobconfig.sh

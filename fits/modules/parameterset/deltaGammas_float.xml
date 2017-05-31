@@ -1,8 +1,0 @@
-<PhysicsParameter>
-	<Name>dGsGs</Name>
-	<Value>0.1795</Value>
-	<Type>Float</Type>
-	<Minimum>0.15</Minimum>
-	<Maximum>0.21</Maximum>
-	<Unit>Unitless</Unit>
-</PhysicsParameter>

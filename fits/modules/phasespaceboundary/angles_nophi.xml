@@ -1,0 +1,14 @@
+<Observable>
+	<Name>ctheta_1</Name>
+	<TF1>cos_theta1</TF1>
+	<Minimum>-1.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Unit>Unitless</Unit>
+</Observable>
+<Observable>
+	<Name>ctheta_2</Name>
+	<TF1>cos_theta2</TF1>
+	<Minimum>-1.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Unit>Unitless</Unit>
+</Observable>

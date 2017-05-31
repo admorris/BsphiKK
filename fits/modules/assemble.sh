@@ -79,6 +79,8 @@ declare -a unitarityconstraints
 declare minimiser
 # <FitFunction> with optional weight variable
 declare -a fitfunction
+# whether or not we can distinguish between transverse polarisations
+usephi=0
 # read the arguments into arrays
 for arg in "$@"
 do
@@ -102,6 +104,10 @@ do
 		elif [[ $arg == *"phasespaceboundary/"* ]]
 		then
 			phasespaceboundary+=("$arg")
+			if [[ $(grep -c "phi" $arg) -gt 0 ]]
+			then
+				usephi=1
+			fi
 		elif [[ $arg == *"parameterset/"* ]]
 		then
 			parameterset+=("$arg")
@@ -115,7 +121,7 @@ do
 			elif [[ $arg == *"amplitudes/"* ]]
 			then
 				particle=$(getparticlename $arg amplitudes)
-				if [[ $(grep -c "Aperpsq" $arg) -gt 0 ]]
+				if [[ $(grep -c "Aplussq" $arg) -gt 0 ]]
 				then
 					unitarityconstraints+=("${particle}")
 				fi
@@ -366,10 +372,10 @@ then
 	do
 		parsefile $file 3
 	done
-	if [[ ${#unitarityconstraints[@]} -gt 0 ]]
+	if [[ ${#unitarityconstraints[@]} -gt 0 && ${usephi} -eq 1 ]]
 	then
 		echo "			<ExternalConstraint>"
-		echo "				<Name>UNITARITY;${unitarityconstraints[@]};_Aperpsq _Azerosq</Name>"
+		echo "				<Name>UNITARITY;${unitarityconstraints[@]};_Azerosq _Aplussq</Name>"
 		echo "				<Value>1.0</Value> # Sum of params must be less than Value"
 		echo "				<Error>0.00001</Error> # NLL penalised by the amount (Amount above Value)^2 / Error^2"
 		echo "			</ExternalConstraint>"

@@ -1,5 +1,5 @@
 <Name>mKK</Name>
-<FixedIntegrationPoints>1000</FixedIntegrationPoints>
+<FixedIntegrationPoints>10000</FixedIntegrationPoints>
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>85</PDFpoints>
 <DrawPull>True</DrawPull>

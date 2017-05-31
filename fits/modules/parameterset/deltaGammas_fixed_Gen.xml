@@ -19,7 +19,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>tlow</Name>
-	<Value>0.832023</Value>
+	<Value>0</Value>
 	<Type>Fixed</Type>
 	<Unit>ps</Unit>
 </PhysicsParameter>
