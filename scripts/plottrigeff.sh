@@ -7,4 +7,3 @@ do
 mv TrigEffPlots.root ../${mode}_TrigEffPlots.root
 done
 
-
