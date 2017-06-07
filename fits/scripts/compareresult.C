@@ -7,10 +7,15 @@ struct phiphiresult
   std::pair<double,double> Az;
   std::pair<double,double> dp;
 };
-void compareresult(std::pair<double,double> newAp, std::pair<double,double> newAz, std::pair<double,double> newdp)
+void compareresult(std::pair<double,double> Aplussq, std::pair<double,double> deltaplus, std::pair<double,double> Azerosq, std::pair<double,double> deltaminus)
 {
   std::vector<phiphiresult> results;
-  results.push_back(phiphiresult("This fit",newAp,newAz,newdp));
+  std::complex<double> Aplus, Aminus, Aperp, Apara;
+  Aplus = std::polar(std::sqrt(Aplussq.first),deltaplus.first);
+  Aminus = std::polar(std::sqrt(1. - Aplussq.first - Azerosq.first),deltaminus.first);
+  Apara = (Aplus + Aminus) / std::sqrt(2.);
+  Aperp = (Aplus - Aminus) / std::sqrt(2.);
+  results.push_back(phiphiresult("This fit",{std::pow(std::abs(Aperp),2),0.0},Azerosq,{std::arg(Apara),0.0}));
   results.push_back(phiphiresult("LHCb Run 1",{0.305,0.013},{0.364,0.013},{2.54,0.07}));
   results.push_back(phiphiresult("LHCb 2011", {0.291,0.024},{0.365,0.024},{2.58,0.12}));
   results.push_back(phiphiresult("CDF and MC",{0.365,0.041},{0.348,0.043},{2.71,0.26}));
@@ -33,6 +38,9 @@ void compareresult(std::pair<double,double> newAp, std::pair<double,double> newA
   TLine line;
   line.SetLineStyle(3);
   line.SetLineWidth(2);
+  TLine redline;
+  redline.SetLineStyle(kDotted);
+  redline.SetLineColor(kRed);
   for(auto& graph: graphs)
   {
     TCanvas can;
@@ -61,6 +69,14 @@ void compareresult(std::pair<double,double> newAp, std::pair<double,double> newA
       if(j<results.size())
         line.DrawLineNDC(can.GetLeftMargin(),can.GetBottomMargin()+j*scale,1-can.GetRightMargin(),can.GetBottomMargin()+j*scale);
     }
+    double x(0), y(0);
+    if(graph.GetPoint(1,x,y) != -1)
+    {
+      std::cout << "Drawing vertical line at " << x << std::endl;
+      redline.DrawLine(x,graph.GetMinimum(),x,graph.GetMaximum());
+    }
+    else
+      std::cout << "Problem getting point 0 on graph" << std::endl;
     can.SaveAs((graphnames[i]+".pdf").c_str());
   }
 }

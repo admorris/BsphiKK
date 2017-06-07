@@ -14,10 +14,11 @@ then
   echo "Can't find a RapidFitOutput dir. Please provide it as an argument."
   exit 0
 fi
-APperp=$(parse "phi1020\\\_Aperpsq")
+APplus=$(parse "phi1020\\\_Aplussq")
 APzero=$(parse "phi1020\\\_Azerosq")
-deltaPpara=$(parse "phi1020\\\_deltapara")
+deltaPplus=$(parse "phi1020\\\_deltplus")
+deltaPminus=$(parse "phi1020\\\_deltaminus")
 reldir=$(echo $0 | sed s'/\/[^\/]*sh//')
-root -q -b -l "$reldir/compareresult.C({$APperp},{$APzero},{$deltaPpara})"
+root -q -b -l "$reldir/compareresult.C({$APplus},{$deltaPplus},{$APzero},{$deltaPminus})"
 mv Aperpsq.pdf Azerosq.pdf deltapara.pdf $recentdir
 
