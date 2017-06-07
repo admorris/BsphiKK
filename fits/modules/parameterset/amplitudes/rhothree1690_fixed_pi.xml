@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>rhothree1690_Aperpsq</Name>
+	<Name>rhothree1690_Aplussq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
@@ -15,7 +15,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>rhothree1690_deltaperp</Name>
+	<Name>rhothree1690_deltaplus</Name>
 	<Value>3.14159</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
@@ -31,7 +31,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>rhothree1690_deltapara</Name>
+	<Name>rhothree1690_deltaminus</Name>
 	<Value>3.14159</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>

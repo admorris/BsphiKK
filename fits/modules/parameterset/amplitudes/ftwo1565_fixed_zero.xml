@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>ftwo1565_Aperpsq</Name>
+	<Name>ftwo1565_Aplussq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
@@ -15,7 +15,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1565_deltaperp</Name>
+	<Name>ftwo1565_deltaplus</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
@@ -31,7 +31,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1565_deltapara</Name>
+	<Name>ftwo1565_deltaminus</Name>
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>

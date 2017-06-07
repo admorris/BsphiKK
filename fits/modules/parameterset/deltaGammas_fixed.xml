@@ -1,19 +1,13 @@
 # Stuff used in the time integral
-#   Γs = 0.661356 ps^-1
-#   ΓH = 0.601993 ps^-1
-#   ΓL = 0.720718 ps^-1
-#  ΔΓs = 0.118725 ps^-1
-# ΔΓ/Γ = 0.17952
-# ε(0.832023 ps) = 0.5
 <PhysicsParameter>
 	<Name>GL</Name>
-	<Value>0.720718</Value>
+	<Value>1.405000</Value>
 	<Type>Fixed</Type>
 	<Unit>ps^-1</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>GH</Name>
-	<Value>0.601993</Value>
+	<Value>1.661000</Value>
 	<Type>Fixed</Type>
 	<Unit>ps^-1</Unit>
 </PhysicsParameter>

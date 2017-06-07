@@ -1,30 +1,46 @@
+# Sean
+# |A⊥| = 0.305+-0.013
+# |A0| = 0.364+-0.012
+#  δ⊥  = 2.67+-0.23
+#  δ‖  = 2.54+-0.07
+# $ ./basis bkd `echo "sqrt(1-0.305-0.364)" | bc -l` 2.54 0.305 2.67
+# Input:  A‖ = 0.575326 × Exp(i × 2.54)     A⊥ = 0.305 × Exp(i × 2.67)
+# Output: A+ = 0.621294 × Exp(i × 2.58501)  A− = 0.194984 × Exp(i × 2.39612)
 <PhysicsParameter>
-	<Name>phi1020_Aperpsq</Name>
-	<Value>0.305</Value> # 0.305 Sean
+	<Name>phi1020_Aplussq</Name>
+	<Value>0.386</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_Azerosq</Name>
-	<Value>0.364</Value> # 0.364 Sean
+	<Value>0.364</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltaperp</Name>
-	<Value>2.67</Value> # 2.67 Sean
+	<Name>phi1020_deltaplus</Name>
+	<Value>2.59</Value>
+	<Minimum>2.19</Minimum>
+	<Maximum>2.99</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_deltazero</Name>
-	<Value>0.0</Value> # Fix 0
+	<Value>0.0</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltapara</Name>
-	<Value>2.54</Value> # 2.54 Sean
+	<Name>phi1020_deltaminus</Name>
+	<Value>2.40</Value>
+	<Minimum>2.00</Minimum>
+	<Maximum>2.80</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
