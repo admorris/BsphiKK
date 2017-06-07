@@ -1,22 +1,29 @@
-// Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
-// βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
-//  0  1  0.536  2.71  0.590  0.0  0.604  2.39
+# Bs_phiphi=CDFAmp,DecProdCut,hpt400.dec
+# βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
+#  0  1  0.536  2.71  0.590  0.0  0.604  2.39
+# $ ./basis bkd 0.536 2.71 0.604  2.39
+# Input:	A‖ = 0.536 × Exp(i × 2.71)	 A⊥ = 0.604 × Exp(i × 2.39)
+# Output:	A+ = 0.795842 × Exp(i × 2.54037)	 A− = 0.136919 × Exp(i × -1.80834)
 <PhysicsParameter>
-	<Name>phi1020_Aperpsq</Name>
-	<Value>0.364</Value>
+	<Name>phi1020_Aplussq</Name>
+	<Value>0.633</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1020_Azerosq</Name>
 	<Value>0.348</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltaperp</Name>
-	<Value>2.39</Value>
-	<Type>Fixed</Type>
+	<Name>phi1020_deltaplus</Name>
+	<Value>2.54</Value>
+	<Type>Fixed</Type>  # Can't fit this with an untagged analysis
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -26,8 +33,10 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltapara</Name>
-	<Value>2.71</Value>
+	<Name>phi1020_deltaminus</Name>
+	<Value>-1.81</Value>
+	<Minimum>-3.2</Minimum>
+	<Maximum>3.2</Maximum>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

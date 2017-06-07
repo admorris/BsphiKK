@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>atwo1700_Aperpsq</Name>
+	<Name>atwo1700_Aplussq</Name>
 	<Value>0.333</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
@@ -15,7 +15,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1700_deltaperp</Name>
+	<Name>atwo1700_deltaplus</Name>
 	<Value>3.14159</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
@@ -31,7 +31,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>atwo1700_deltapara</Name>
+	<Name>atwo1700_deltaminus</Name>
 	<Value>3.14159</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>

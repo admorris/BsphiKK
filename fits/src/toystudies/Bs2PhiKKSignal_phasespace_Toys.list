@@ -3,7 +3,6 @@ parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
-parameterset/resonances/phi1020_fixed.xml
 parameterset/fractions/nonres_fixed.xml
 parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_1800.xml
@@ -12,5 +11,3 @@ output/fullrange.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
-parameterset/thraccscale_fixed.xml
-phasespaceboundary/TOS.xml

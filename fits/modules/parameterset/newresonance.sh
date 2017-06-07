@@ -7,7 +7,12 @@ width=$3
 echo "<PhysicsParameter>"
 echo "	<Name>${name}_mass</Name>"
 echo "	<Value>${mass}</Value>"
-echo "	<Minimum>0.930</Minimum>"
+if [ `echo "$mass<0.988" | bc -l` -eq 1 ]
+then
+	echo "	<Minimum>0.930</Minimum>"
+else
+	echo "	<Minimum>0.988</Minimum>"
+fi
 echo "	<Maximum>2.0</Maximum>"
 echo "	<Type>Float</Type>#Please don't float this without Gaussian constraints!"
 echo "	<Unit>GeV</Unit>"
