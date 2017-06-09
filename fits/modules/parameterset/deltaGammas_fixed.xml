@@ -1,13 +1,13 @@
 # Stuff used in the time integral
 <PhysicsParameter>
 	<Name>GL</Name>
-	<Value>1.405000</Value>
+	<Value>0.711743772</Value> # 1/1.405
 	<Type>Fixed</Type>
 	<Unit>ps^-1</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>GH</Name>
-	<Value>1.661000</Value>
+	<Value>0.60204696</Value> # 1/1.661
 	<Type>Fixed</Type>
 	<Unit>ps^-1</Unit>
 </PhysicsParameter>
