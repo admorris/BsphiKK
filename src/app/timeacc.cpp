@@ -18,7 +18,7 @@ int main (int argc, char const* argv[])
 	(void)argc; (void)argv;
 	std::string file = "ntuples/BsphiKK_MC_mvacut.root";
 	std::string branch = "B_s0_TAU*1000";
-	std::string weight = "exp(B_s0_TAU/0.00151)";
+	std::string weight = "exp(B_s0_TAU/0.001512)";
 	std::vector<func_info> functions
 	{
 		{"power_law","1-1/(1+([1]*(x-[2]))^2)","1 #minus #frac{1}{1 + (#it{b} [#it{t} #minus #it{t}_{0})]^{2}}"},
