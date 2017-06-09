@@ -4,10 +4,10 @@ pdf/signal/moments_acceptanceTOS.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
-parameterset/thraccscale_fixed.xml
 parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
+parameterset/thraccscale_fixed.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
