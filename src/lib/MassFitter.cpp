@@ -361,6 +361,25 @@ RooFitResult* MassFitter::Fit(RooDataSet* data)
   SetData(data);
   return Fit();
 }
+RooFitResult* MassFitter::ConstrainedFit(RooDataSet* data, RooRealVar* constr_var, RooAbsReal& mean, RooAbsReal& sigma)
+{
+  if(!_haspdf)
+    assemble();
+  cout << "Saving passed RooDataSet in object." << endl;
+  SetData(data);
+  return ConstrainedFit(constr_var, mean, sigma);
+}
+RooFitResult* MassFitter::ConstrainedFit(RooRealVar* constr_var, RooAbsReal& mean, RooAbsReal& sigma)
+{
+  if(!_haspdf)
+    assemble();
+  RooGaussian* constraint = new RooGaussian("constraint","constraint",*constr_var,mean,sigma);
+  RooProdPdf* _pdf_c = new RooProdPdf("pdf_c","pdf_c",RooArgSet(*_pdf,*constraint));
+  if(_hasdata)
+    return _weighted ? _pdf_c->fitTo(*_data,SumW2Error(kTRUE),Extended(),Constrain(*constr_var)) : _pdf_c->fitTo(*_data,Extended(),Constrain(*constr_var));
+  else
+    throw runtime_error("Attempting to fit without a DataSet.");
+}
 /******************************************************************************/
 void MassFitter::Plot(RooPlot* frame)
 {

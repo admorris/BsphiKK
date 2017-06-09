@@ -102,6 +102,8 @@ class MassFitter
     // Command functions
     RooFitResult*       Fit();
     RooFitResult*       Fit(RooDataSet*);
+    RooFitResult*       ConstrainedFit(RooDataSet*, RooRealVar*, RooAbsReal&, RooAbsReal&);
+    RooFitResult*       ConstrainedFit(RooRealVar*, RooAbsReal&, RooAbsReal&);
     void                Plot(RooPlot*);
     SPlot*              GetsPlot(RooRealVar*,RooRealVar*);
     SPlot*              GetsPlot(RooArgList);
