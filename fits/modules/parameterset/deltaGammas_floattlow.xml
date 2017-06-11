@@ -1,0 +1,21 @@
+# Stuff used in the time integral
+<PhysicsParameter>
+	<Name>GL</Name>
+	<Value>0.711743772</Value> # 1/1.405
+	<Type>Fixed</Type>
+	<Unit>ps^-1</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>GH</Name>
+	<Value>0.60204696</Value> # 1/1.661
+	<Type>Fixed</Type>
+	<Unit>ps^-1</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>tlow</Name>
+	<Value>0.832023</Value>
+	<Minimum>2.0</Minimum>
+	<Maximum>0.0</Maximum>
+	<Type>Float</Type>
+	<Unit>ps</Unit>
+</PhysicsParameter>
