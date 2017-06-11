@@ -1,7 +1,9 @@
 <PhysicsParameter>
 	<Name>fzero980_mass</Name>
 	<Value>0.9399</Value> # LHCb 0.939±0.0063 GeV
-	<Type>Fixed</Type>
+	<Minimum>0.9</Minimum>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -13,6 +15,8 @@
 <PhysicsParameter>
 	<Name>fzero980_Rg</Name>
 	<Value>3.0</Value> # 3.0±0.3
-	<Type>Fixed</Type>
+	<Minimum>1.0</Minimum>
+	<Maximum>5.0</Maximum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

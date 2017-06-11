@@ -1,9 +1,9 @@
-# shape: spin-1 BW
+# shape: spin-2 BW
 # style: 9
 # width: 2
-# colour: 6
+# colour: 28
 <PhysicsParameter>
-	<Name>phi1020_fraction</Name>
+	<Name>ftwop1525LHCb_fraction</Name>
 	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>

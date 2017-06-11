@@ -1,14 +1,12 @@
 pdf/signal/Bs2PhiKK.xml
-pdf/signal/moments_acceptanceTOS.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
-parameterset/thraccscale_fixed_TOS.xml
-parameterset/deltaGammas_fixed.xml
-parameterset/barrierfactorradii_fixed_EvtGen.xml
+parameterset/deltaGammas_fixed_Gen.xml
+parameterset/barrierfactorradii_floatKK.xml
 phasespaceboundary/mKK_1080.xml
 phasespaceboundary/angles.xml
 output/lowrange_MC.xml
@@ -16,4 +14,3 @@ output/phirange_MC.xml
 output/phi.xml
 output/ctheta_1.xml
 output/ctheta_2.xml
-phasespaceboundary/TOS.xml

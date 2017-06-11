@@ -1,9 +1,9 @@
-# shape: spin-1 BW
-# style: 9
-# width: 2
-# colour: 6
+# shape: spin-0 BW
+# style: 1
+# width: 1
+# colour: 1
 <PhysicsParameter>
-	<Name>phi1020_fraction</Name>
+	<Name>azero1450_fraction</Name>
 	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>

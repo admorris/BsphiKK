@@ -1,6 +1,6 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
-pdf/signal/moments_acceptanceTIS.xml
+pdf/signal/moments_acceptanceTOS.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/phasespace_MC_truth.xml
