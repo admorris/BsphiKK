@@ -22,5 +22,5 @@ parameterset/backgrounds/combinatorial_hist.xml
 phasespaceboundary/mKK_BCON_1080.xml
 phasespaceboundary/angles_BCON.xml
 output/fullrange.xml
-parameterset/thraccscale_fixed.xml
+parameterset/thraccscale_fixed_TOS.xml
 phasespaceboundary/TOS.xml
