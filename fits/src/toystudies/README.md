@@ -3,6 +3,8 @@
 These studies are designed to test the self-consistency of the PDF: can it find the values used to generate a dataset from itself?
 Discrepancies indicate bugs which must be ironed out if the results are ever to be trusted.
 
+Toy studies can be used to tell you which parameters the PDF is sensitive to, what statistical uncertainty to expect, given a sample size, and whether there are any corellations.
+
 ## Modularity of the signal PDF
 
 I like to think of the PDF in 'modules' which can be switched on or off in the XML.

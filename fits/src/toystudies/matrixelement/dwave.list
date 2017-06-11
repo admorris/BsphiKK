@@ -1,0 +1,16 @@
+pdf/signal/Bs2PhiKK.xml
+minimiser/minuit2.xml
+fitfunction/default.xml
+dataset/toys.xml
+parameterset/resonances/ftwop1525LHCb_float.xml
+parameterset/amplitudes/ftwop1525LHCb_float.xml
+parameterset/fractions/ftwop1525LHCb_fixed.xml
+parameterset/deltaGammas_fixed_Gen.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
+phasespaceboundary/mKK_1080.xml
+phasespaceboundary/angles.xml
+output/lowrange_MC.xml
+output/phirange_MC.xml
+output/phi.xml
+output/ctheta_1.xml
+output/ctheta_2.xml
