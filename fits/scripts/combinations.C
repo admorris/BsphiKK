@@ -38,7 +38,7 @@ void printsource(std::vector<std::string> resonances)
 		else if(res == "phi1020")
 		{
 			file << "parameterset/fractions/phi1020_fixed.xml\n";
-			file << "parameterset/resonances/phi1020_floatmass.xml\n";
+			file << "parameterset/resonances/phi1020_float_mass.xml\n";
 			file << "parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml\n";
 		}
 		else
