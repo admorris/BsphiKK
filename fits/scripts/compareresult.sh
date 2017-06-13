@@ -1,7 +1,7 @@
 #!/bin/bash
 function parse()
 {
-  grep "$1" $recentdir/MinimalTable.tex | sed 's/^.*&\s*//' | sed 's/\\\\//' | sed 's/\\pm/,/' | sed 's/\s//g'
+  grep "$1" $recentdir/SimpleTable.tex | sed 's/^[^&]*&\s*//' | sed 's/\s*&.*\\\\//' | sed 's/\\pm/,/' | sed 's/\s//g'
 }
 if [ "$1" == "" ]
 then
@@ -16,7 +16,7 @@ then
 fi
 APplus=$(parse "phi1020\\\_Aplussq")
 APzero=$(parse "phi1020\\\_Azerosq")
-deltaPplus=$(parse "phi1020\\\_deltplus")
+deltaPplus=$(parse "phi1020\\\_deltaplus")
 deltaPminus=$(parse "phi1020\\\_deltaminus")
 reldir=$(echo $0 | sed s'/\/[^\/]*sh//')
 root -q -b -l "$reldir/compareresult.C({$APplus},{$deltaPplus},{$APzero},{$deltaPminus})"
