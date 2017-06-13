@@ -1,0 +1,7 @@
+<Observable>
+	<Name>mKK</Name>
+	<TF1>KK_M/1000</TF1>
+	<Minimum>0.9874</Minimum>
+	<Maximum>1.080</Maximum>
+	<Unit>GeV</Unit>
+</Observable>

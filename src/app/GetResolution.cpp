@@ -26,6 +26,7 @@ void GetResolution(string filename, vector<string> particlename, string branchna
 {
 /*Input***********************************************************************/
   TFile* file = TFile::Open(filename.c_str());
+  std::cout << cuts << std::endl;
   TTree* tree = GetTree(file,cuts);
 /*Construct resolution********************************************************/
   // KK_TRUEP branches are identical to B_s0_TRUEP (bug?)
@@ -38,15 +39,15 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   double TRUEP_Z[n];
   for(int i = 0; i < n; i++)
   {
-     tree->SetBranchAddress((particlename[i]+"_TRUEP_E").c_str(),&TRUEP_E[i]);
-     tree->SetBranchAddress((particlename[i]+"_TRUEP_X").c_str(),&TRUEP_X[i]);
-     tree->SetBranchAddress((particlename[i]+"_TRUEP_Y").c_str(),&TRUEP_Y[i]);
-     tree->SetBranchAddress((particlename[i]+"_TRUEP_Z").c_str(),&TRUEP_Z[i]);
+    tree->SetBranchAddress((particlename[i]+"_TRUEP_E").c_str(),&TRUEP_E[i]);
+    tree->SetBranchAddress((particlename[i]+"_TRUEP_X").c_str(),&TRUEP_X[i]);
+    tree->SetBranchAddress((particlename[i]+"_TRUEP_Y").c_str(),&TRUEP_Y[i]);
+    tree->SetBranchAddress((particlename[i]+"_TRUEP_Z").c_str(),&TRUEP_Z[i]);
   }
   double SIMMASS; tree->SetBranchAddress(branchname.c_str(),&SIMMASS);
   // Output tree and branches
   TTree* newtree = new TTree();
-  double res ; newtree->Branch("res" ,&res ,"res/D" );
+  double res; newtree->Branch("res" ,&res ,"res/D" );
   double TRUEMASS; newtree->Branch("TRUEMASS",&TRUEMASS,"TRUEMASS/D");
   newtree->Branch("SIMMASS",&SIMMASS,"SIMMASS/D");
   cout << "Constructing resolution for " << n << "-body invariant mass" << endl;
@@ -70,10 +71,6 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   RooDataSet* data;
   cout << "Importing tree" << endl;
   data = new RooDataSet("data","",RooArgSet(*x),Import(*newtree));
-//  RooRealVar mean("mean","",0,-10,10);
-//  RooRealVar sigma("sigma","mass resolution",20,0,100);
-//  RooGaussian* model = new RooGaussian("model","",*x,mean,sigma);
-//  model->fitTo(*data);
   MassFitter* ResFit = new MassFitter(x);
   Component* ResMod = ResFit->AddComponent("Resolution","Single Gaussian");
   ResMod->SetRange("mean",-10,10);
@@ -84,41 +81,12 @@ void GetResolution(string filename, vector<string> particlename, string branchna
   RooPlot* frame = x->frame();
   cout << "Plotting" << endl;
   data->plotOn(frame,Binning(nbins));
-//  model->plotOn(frame);
   ResFit->Plot(frame);
   frame->SetMaximum(frame->GetMaximum()*1.3);
   plotmaker<RooPlot> plotter(frame);
   plotter.SetBlurb(blurb);
   plotter.SetTitle(("#Delta"+xtitle), unit);
   plotter.Draw()->SaveAs((plotname+".pdf").c_str());
-//  TCanvas can;
-//  newtree->Draw("res:TRUEMASS");
-//  can.SaveAs((plotname+"_2Dscatter.pdf").c_str());
-/*Do convolved fit************************************************************/
-/*
-  RooRealVar* m = new RooRealVar(branchname.c_str(),xtitle.c_str(),493*2,1080);
-  cout << "Importing tree" << endl;
-  data = new RooDataSet("data","",RooArgSet(*m),Import(*tree));
-  MassFitter* PhiFit = new MassFitter(m);
-//  Component* PhiMod = PhiFit->AddComponent("phi","Voigtian");
-//  Component* PhiMod = PhiFit->AddComponent("phi","BW(X)Gauss");
-  Component* PhiMod = PhiFit->AddComponent("phi","RBW(X)Gauss");
-  PhiMod->FixValue("mean",1019.461);
-  PhiMod->FixValue("width",4.266);
-  PhiMod->SetRange("sigma1",0,10);
-  double s1 = ResMod->GetValue("sigma1");
-  double s2 = ResMod->GetValue("sigma2");
-  double f1 = ResMod->GetValue("fgaus1");
-  PhiMod->SetValue("sigma1",f1*s1+(1-f1)*s2);
-  PhiFit->Fit(data);
-  frame = m->frame();
-  cout << "Plotting" << endl;
-  data->plotOn(frame,(Binning(nbins)));
-  PhiFit->Plot(frame);
-  plotmaker<RooPlot> plotter2(frame);
-  plotter2.SetTitle((xtitle), unit);
-  plotter2.Draw()->SaveAs((plotname+"_fit.pdf").c_str());
-*/
 }
 /*Main function***************************************************************/
 int main(int argc, char* argv[])
@@ -152,7 +120,6 @@ int main(int argc, char* argv[])
     cout << desc << endl;
     return 1;
   }
-//  partic = vmap["particle"].as<vector<string>>();
   if(partic.size() == 0)
   {
     partic.push_back("Kplus0");

@@ -62,7 +62,7 @@ LIBS      := $(patsubst $(SRCDIR)/$(LIBSRCDIR)/%.$(SRCEXT), $(LIBDIR)/lib%.$(LIB
 BINS      := $(patsubst $(SRCDIR)/$(BINSRCDIR)/%.$(SRCEXT), $(BINDIR)/%, $(BINSRCS))
 
 # Compiler flags
-CXXFLAGS          = -Wall -fPIC -I$(HDRDIR) $(COMCXXFLAGS) $(CLONECXXFLAGS) $(ERFCXXFLAGS) $(ROOTCFLAGS)
+CXXFLAGS          = -Wall -fPIC -I$(HDRDIR) $(COMCXXFLAGS) $(CLONECXXFLAGS) $(ERFCXXFLAGS) $(ROOTCFLAGS) --std=c++1y
 LOCAL_LIBFLAGS    = -L$(LIBDIR) $(patsubst $(LIBDIR)/lib%.$(LIBEXT), -l%, $(LIBS)) -Wl,-rpath,$(PWD)/$(LIBDIR)
 EXTERNAL_LIBFLAGS = $(COMLIBFLAGS) $(CLONELIBFLAGS) $(ROOTLIBFLAGS) $(EXTRA_LIBFLAGS) $(ERFLIBFLAGS)
 LIBFLAGS          = -Wl,--no-undefined -Wl,--no-allow-shlib-undefined $(LOCAL_LIBFLAGS) $(EXTERNAL_LIBFLAGS)

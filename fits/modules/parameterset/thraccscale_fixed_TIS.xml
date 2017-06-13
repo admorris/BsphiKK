@@ -1,0 +1,12 @@
+<PhysicsParameter>
+	<Name>thraccscale0</Name>
+	<Value>291</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV^{-1}</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>thraccscale1</Name>
+	<Value>264</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV^{-1}</Unit>
+</PhysicsParameter>

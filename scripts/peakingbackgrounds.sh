@@ -12,7 +12,7 @@ function expectedyield()
 # External stuff
 BFBsPhiPhi="0.0000184"
 BFBdPhiKst="0.00001"
-BFLbPhiKp=$(echo "$BFBsPhiPhi*0.000317/0.00197" | bc -l) # BF(Bs→ϕϕ) * BF(Λb→J/ψKp) / BF(Bs→J/ψϕ)
+BFLbPhiKp=$(echo "$BFBsPhiPhi*0.000317/0.0011" | bc -l) # BF(Bs→ϕϕ) * BF(Λb→J/ψKp) / BF(Bs→J/ψϕ)
 BFPhiKK="0.489"
 BFKstKpi="0.66666666667"
 fdfs=$(echo "1/0.259" | bc -l)
@@ -37,4 +37,7 @@ NExpLbPhiKp=$(echo "$NLbData * $NSelLbPhiKp/$NLbMC" | bc -l)
 echo "Number of expected B⁰→ϕK* events: $NExpBdPhiKst"
 echo "Number of guessed  Λb→ϕKp events: $NExpLbPhiKpguess"
 echo "Number of expected Λb→ϕKp events: $NExpLbPhiKp"
+
+echo "Calculating with errors. Make sure the central values are the same, otherwise update the numbers."
+../bin/estimatepeakingbackgrounds
 

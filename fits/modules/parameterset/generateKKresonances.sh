@@ -20,6 +20,8 @@ function newKK()
 	sed -i 's/<Type>Float<\/Type> #phase/<Type>Fixed<\/Type> #phase/' amplitudes/${name}_fixed_zero.xml
 	sed -i 's/<Type>Float<\/Type> #phase/<Type>Fixed<\/Type> #phase/' amplitudes/${name}_fixed_pi.xml
 	./newfraction.sh ${name} ${spin} "BW" > fractions/${name}_float.xml
+	cp fractions/${name}_float.xml fractions/${name}_fixed.xml
+	sed -i 's/<Type>Float<\/Type>/<Type>Fixed<\/Type>/' fractions/${name}_fixed.xml
 	if [ "${spin}" == "0" ]
 	then
 		./newfraction.sh ${name} ${spin} "SP" > fractions/${name}_spline_float.xml

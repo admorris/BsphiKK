@@ -1,0 +1,17 @@
+# Stuff used in the time integral
+<PhysicsParameter>
+	<Name>GL</Name>
+	<Value>0.711743772</Value> # 1/1.405
+	<Minimum>0.5</Minimum>
+	<Maximum>0.8</Maximum>
+	<Type>Float</Type>
+	<Unit>ps^-1</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>GH</Name>
+	<Value>0.60204696</Value> # 1/1.661
+	<Minimum>0.5</Minimum>
+	<Maximum>0.8</Maximum>
+	<Type>Fixed</Type> # PDF is only sensitive to the width splitting
+	<Unit>ps^-1</Unit>
+</PhysicsParameter>

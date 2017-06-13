@@ -13,6 +13,7 @@
 // RooFit headers
 #include "RooAbsPdf.h"
 #include "RooRealVar.h"
+#include "RooConstVar.h"
 #include "RooDataHist.h"
 #include "RooHistPdf.h"
 // RooStats headers
@@ -24,7 +25,7 @@
 #include "GetData.h"
 #include "ResultDB.h"
 #include "datum.h"
-void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb, double xmin, double xmax)
+void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string BackgroundModel, bool doSweight, string branchtofit, string plotfilename, bool drawpulls, int drawregion, string cuts, vector<string> backgrounds, vector<double> yields, vector<double> yielderrors,bool logy,vector<string> yopts, string resname, string DBfilename,std::string blurb, double xmin, double xmax)
 {
   int nbins = 50;
   using namespace std;
@@ -60,6 +61,10 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   assert(sizeof(linecolors)==sizeof(linestyles));
   unsigned int npkbkgs = backgrounds.size();
   vector<Component*> PkgMod;
+  bool constrain = false;
+  RooConstVar constraint_mean;
+  RooConstVar constraint_sigma;
+  RooRealVar* to_constrain;
 /*Peaking background fit*******************************************************/
   if(npkbkgs == yields.size() && npkbkgs > 0)
   {
@@ -86,6 +91,15 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         char formula[20];
         sprintf(formula,"@0*%f",N);
         yield = new RooFormulaVar("N",formula,RooArgList(*Nsig));
+      }
+      else if(yopt == "abscon")
+      {
+        constrain = true;
+        double E = yielderrors[i];
+        yield = new RooRealVar("N", "", N, N-5*E, N+5*E);
+        to_constrain = static_cast<RooRealVar*>(yield);
+        constraint_mean = RooConst(N);
+        constraint_sigma = RooConst(E);
       }
       else
       {
@@ -216,7 +230,10 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   SigMod->SetValue("mean",5366.77);
   SigMod->FloatPar("mean");
   // Do the fit and plot the result
-  phiKKFitter.Fit(&CDdata);
+  if(constrain)
+    phiKKFitter.ConstrainedFit(&CDdata,to_constrain,constraint_mean,constraint_sigma);
+  else
+    phiKKFitter.Fit(&CDdata);
   resolution *= SigMod->GetValue("scalef");
   phiKKFitter.Plot(CDframe);
   plotmaker<RooPlot>* CDplotter;
@@ -361,6 +378,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     table.Update(resname+Nsigpar.safename()+"threesigma","N",Nsigthreesigma.first,Nsigthreesigma.second);
     table.Update(resname+Nbkgpar.safename()+"twosigma"  ,"N",Nbkgtwosigma.first  ,Nbkgtwosigma.second  );
     table.Update(resname+Nbkgpar.safename()+"threesigma","N",Nbkgthreesigma.first,Nbkgthreesigma.second);
+    table.Update(resname+Nbkgpar.safename()+"resolution","N",resolution.val()    ,resolution.err()     );
     for(unsigned i = 0; i < Npkgpars.size(); i++)
     {
       table.Update(resname+Npkgpars[i].safename()+"twosigma"  ,"N",Npkgtwosigma[i].first  ,Npkgtwosigma[i].second  );
@@ -383,7 +401,7 @@ int main(int argc, char* argv[])
   options_description desc("Allowed options",120);
   string MCfile, CDfile, sigPDF, bkgPDF, plotname, branchname, cuts, resname, dbf, blurb;
   vector<string> pkbkgs, yopts;
-  vector<double> yields;
+  vector<double> yields, yielde;
   double xmin, xmax;
   int drawregion;
   desc.add_options()
@@ -402,6 +420,7 @@ int main(int argc, char* argv[])
     ("cuts,C"      , value<string>(&cuts      )->default_value(""                             ), "optional cuts"                  )
     ("backgrounds" , value<vector<string>>(&pkbkgs)->multitoken(                              ), "peaking background MC files"    )
     ("yields"      , value<vector<double>>(&yields)->multitoken(                              ), "background yields"              )
+    ("yielderrors" , value<vector<double>>(&yielde)->multitoken(                              ), "background yield errors"        )
     ("yopts"       , value<vector<string>>(&yopts )->multitoken(                              ), "BG yield options: abs, rel, flo")
     ("output-file" , value<string>(&dbf       )->default_value("FitResults.csv"               ), "output file"                    )
     ("save-results", value<string>(&resname   )->default_value(""                             ), "name to save results as"        )
@@ -416,7 +435,7 @@ int main(int argc, char* argv[])
     std::cout << desc << endl;
     return 1;
   }
-  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, vmap.count("logy"), yopts, resname, dbf, blurb, xmin, xmax);
+  BsMassFit(MCfile, CDfile, sigPDF, bkgPDF, vmap.count("sweight"), branchname, plotname, vmap.count("pulls"), drawregion, cuts, pkbkgs, yields, yielde, vmap.count("logy"), yopts, resname, dbf, blurb, xmin, xmax);
   return 0;
 }
 

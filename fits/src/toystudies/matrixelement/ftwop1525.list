@@ -1,10 +1,12 @@
 pdf/signal/Bs2PhiKK.xml
-parameterset/barrierfactorradii_fixed_EvtGen.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
-parameterset/fractions/nonres_fixed.xml
+parameterset/resonances/ftwop1525LHCb_float.xml
+parameterset/amplitudes/ftwop1525LHCb_float_onephase.xml
+parameterset/fractions/ftwop1525LHCb_fixed.xml
 parameterset/deltaGammas_fixed.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_1800.xml
 phasespaceboundary/angles.xml
 output/fullrange.xml

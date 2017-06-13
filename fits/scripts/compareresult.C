@@ -11,8 +11,8 @@ void compareresult(std::pair<double,double> Aplussq, std::pair<double,double> de
 {
   std::vector<phiphiresult> results;
   std::complex<double> Aplus, Aminus, Aperp, Apara;
-  Aplus = std::polar(std::sqrt(Aplussq.first),deltaplus.first);
-  Aminus = std::polar(std::sqrt(1. - Aplussq.first - Azerosq.first),deltaminus.first);
+  Aplus = std::polar<double>(std::sqrt(Aplussq.first),deltaplus.first);
+  Aminus = std::polar<double>(std::sqrt(1. - Aplussq.first - Azerosq.first),deltaminus.first);
   Apara = (Aplus + Aminus) / std::sqrt(2.);
   Aperp = (Aplus - Aminus) / std::sqrt(2.);
   results.push_back(phiphiresult("This fit",{std::pow(std::abs(Aperp),2),0.0},Azerosq,{std::arg(Apara),0.0}));

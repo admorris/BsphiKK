@@ -1,0 +1,12 @@
+# shape: spin-2 BW
+# style: 9
+# width: 2
+# colour: 28
+<PhysicsParameter>
+	<Name>ftwop1525_fraction</Name>
+	<Value>0.01</Value>
+	<Minimum>0.0</Minimum>
+	<Maximum>10.0</Maximum>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
