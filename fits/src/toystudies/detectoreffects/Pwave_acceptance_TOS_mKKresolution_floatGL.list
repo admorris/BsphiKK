@@ -8,7 +8,7 @@ parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
-parameterset/deltaGammas_floatGLGH.xml
+parameterset/deltaGammas_float.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_1080.xml

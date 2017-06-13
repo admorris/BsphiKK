@@ -5,7 +5,7 @@ dataset/toys.xml
 parameterset/resonances/fzero980_float.xml
 parameterset/amplitudes/fzero980_fixed_zero.xml
 parameterset/fractions/fzero980_fixed.xml
-parameterset/deltaGammas_fixed_Gen.xml
+parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_1080.xml
 phasespaceboundary/angles.xml

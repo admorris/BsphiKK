@@ -11,9 +11,3 @@
 	<Type>Fixed</Type>
 	<Unit>ps^-1</Unit>
 </PhysicsParameter>
-<PhysicsParameter>
-	<Name>tlow</Name>
-	<Value>0.832023</Value>
-	<Type>Fixed</Type>
-	<Unit>ps</Unit>
-</PhysicsParameter>
