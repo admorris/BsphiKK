@@ -41,10 +41,16 @@ void printsource(std::vector<std::string> resonances)
 			file << "parameterset/resonances/phi1020_float_mass.xml\n";
 			file << "parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml\n";
 		}
+		else if(res == "ftwop1525LHCb")
+		{
+			file << "parameterset/fractions/ftwop1525LHCb_float.xml\n";
+			file << "parameterset/resonances/ftwop1525LHCb_float.xml\n";
+			file << "parameterset/amplitudes/ftwop1525LHCb_fixed_zero.xml\n";
+		}
 		else
 		{
 			file << "parameterset/fractions/"+res+"_float.xml\n";
-			file << "parameterset/resonances/"+res+"_float.xml\n";
+			file << "parameterset/resonances/"+res+"_fixed.xml\n";
 			file << "parameterset/amplitudes/"+res+"_float.xml\n";
 		}
 	}
@@ -73,7 +79,7 @@ int main()
 			{
 				std::vector<std::string> resonances {};
 				int nres = 0;
-				int nfps = 11; // nonres = 1 size, f0(980) = 1 phase, ϕ(1020) = 2 amp + 2 phase, f2´(1525) = 1 size + 2 amp + 3 phases
+				int nfps = 11; // nonres = 1 size, f0(980) = 1 phase, ϕ(1020) = 2 amp + 2 phase + mass, f2´(1525) = 1 size + 2 amp + mass + width
 				for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), pwave1, swave2})
 					if(res != "")
 					{
