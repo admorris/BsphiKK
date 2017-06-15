@@ -29,23 +29,18 @@ void printsource(std::vector<std::string> resonances)
 	{
 		if(res == "nonres")
 			file << "parameterset/fractions/nonres_float.xml\n";
-		else if(res == "fzero980")
-		{
-			file << "parameterset/fractions/fzero980_float.xml\n";
-			file << "parameterset/resonances/fzero980_fixed.xml\n";
-			file << "parameterset/amplitudes/fzero980_float.xml\n";
-		}
 		else if(res == "phi1020")
 		{
-			file << "parameterset/fractions/phi1020_fixed.xml\n";
-			file << "parameterset/resonances/phi1020_float_mass.xml\n";
-			file << "parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml\n";
+			file << "parameterset/fractions/"+res+"_fixed.xml\n";
+			file << "parameterset/resonances/"+res+"_float_mass.xml\n";
+			file << "parameterset/amplitudes/"+res+"_float_LHCbAmp_onephase.xml\n";
 		}
-		else if(res == "ftwop1525LHCb")
+		else if(res == "ftwop1525LHCb" || res == "ftwop1525")
 		{
-			file << "parameterset/fractions/ftwop1525LHCb_float.xml\n";
-			file << "parameterset/resonances/ftwop1525LHCb_float.xml\n";
-			file << "parameterset/amplitudes/ftwop1525LHCb_fixed_zero.xml\n";
+			file << "parameterset/fractions/"+res+"_float.xml\n";
+			file << "parameterset/resonances/"+res+"_float.xml\n";
+			file << "parameterset/amplitudes/"+res+"_fixed_zero.xml\n";
+			file << "constraintfunction/"+res+"_constraint.xml\n";
 		}
 		else
 		{
