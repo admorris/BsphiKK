@@ -12,8 +12,9 @@ parameterset/fractions/fzero980_float.xml
 parameterset/resonances/fzero980_fixed.xml
 parameterset/amplitudes/fzero980_float.xml
 parameterset/fractions/phi1020_fixed.xml
-parameterset/resonances/phi1020_float_mass.xml
+parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
+constraintfunction/phi1020_constraint.xml
 parameterset/fractions/fzero1370LHCb_float.xml
 parameterset/resonances/fzero1370LHCb_fixed.xml
 parameterset/amplitudes/fzero1370LHCb_float.xml

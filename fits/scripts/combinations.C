@@ -32,8 +32,9 @@ void printsource(std::vector<std::string> resonances)
 		else if(res == "phi1020")
 		{
 			file << "parameterset/fractions/"+res+"_fixed.xml\n";
-			file << "parameterset/resonances/"+res+"_float_mass.xml\n";
+			file << "parameterset/resonances/"+res+"_float.xml\n";
 			file << "parameterset/amplitudes/"+res+"_float_LHCbAmp_onephase.xml\n";
+			file << "constraintfunction/"+res+"_constraint.xml\n";
 		}
 		else if(res == "ftwop1525LHCb" || res == "ftwop1525")
 		{
