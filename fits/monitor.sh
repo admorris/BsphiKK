@@ -1,2 +1,2 @@
 #!/bin/bash
-tail -f $(find . -name "*.o$1")
+tail -n 120 -f $(find . -name "*.o$1")
