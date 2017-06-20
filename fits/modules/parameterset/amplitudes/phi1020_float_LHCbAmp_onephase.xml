@@ -39,8 +39,8 @@
 <PhysicsParameter>
 	<Name>phi1020_deltaminus</Name>
 	<Value>2.40</Value>
-	<Minimum>2.00</Minimum>
-	<Maximum>2.80</Maximum>
+	<Minimum>1.80</Minimum>
+	<Maximum>3.00</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
