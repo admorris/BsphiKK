@@ -7,4 +7,4 @@
 <DataBins>41</DataBins> # 980-1800 20 MeV/bin
 <UseSpline>False</UseSpline>
 <NoLegend>False</NoLegend>
-<Ymax>200</Ymax>
+<Ymax>120</Ymax>

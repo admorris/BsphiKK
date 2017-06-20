@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_Aplussq</Name>
-	<Value>0.333</Value>
+	<Value>0.125</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
 	<Type>Float</Type>
@@ -8,7 +8,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_Azerosq</Name>
-	<Value>0.333</Value>
+	<Value>0.750</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
 	<Type>Float</Type>
