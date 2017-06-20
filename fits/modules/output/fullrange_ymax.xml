@@ -6,5 +6,5 @@
 <CalcChi2>True</CalcChi2>
 <DataBins>41</DataBins> # 980-1800 20 MeV/bin
 <UseSpline>False</UseSpline>
-<NoLegend>False</NoLegend>
-<Ymax>120</Ymax>
+<NoLegend>True</NoLegend>
+<Ymax>80</Ymax>

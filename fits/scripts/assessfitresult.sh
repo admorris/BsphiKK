@@ -28,16 +28,18 @@ printf '%-70s & %-6s & %-6s & %-6s & %-6s & %23s & %-13s & %-20s & %-18s \\\\ %%
 for folder in $(ls | grep FitResult)
 do
 	cd $cwd/$folder
-	file=$(ls RapidFitOutput-*.log | tail -1)
-	chisq=$(getnumbers "Chi\^2\/ndof " $file 4 | tr '\n' ' ')
-	nll=$(getnumber "NLL" $file)
-	aic=$(getnumber "AIC" $file)
-	bic=$(getnumber "BIC" $file)
-	phifrac=$(getnumber   "1phi1020" $file)
-	ftwopfrac=$(getnumber "1ftwop1525LHCb" $file)
-	ftwopfL=$(getnumber   "ftwop1525LHCb\_Azerosq" $file)
-	status=$(getnumber "Status" $file | tail -1)
-	#echo "${folder/FitResult_/} & ${status} & ${nll} & ${aic} & ${bic} & ${chisq} & ${phifrac} & ${ftwopfrac} & ${ftwopfL} \\\\"
-	printf '%-70s & %6d & %6.1f & %6.1f & %6.1f & %5.3f %5.3f %5.3f %5.3f & %13.3f & %20.3f & %18.3f \\\\ %% %-20s \n' ${folder/FitResult_/} ${status} ${nll} ${aic} ${bic} ${chisq} ${phifrac} ${ftwopfrac} ${ftwopfL} "$(paramsatlimit $file)"
+	for file in $(ls | grep "RapidFitOutput-.*\.log" | tail -1)
+	do
+		chisq=$(getnumbers "Chi\^2\/ndof " $file 4 | tr '\n' ' ')
+		nll=$(getnumber "NLL" $file)
+		aic=$(getnumber "AIC" $file)
+		bic=$(getnumber "BIC" $file)
+		phifrac=$(getnumber   "1phi1020" $file)
+		ftwopfrac=$(getnumber "1ftwop1525LHCb" $file)
+		ftwopfL=$(getnumber   "ftwop1525LHCb\_Azerosq" $file)
+		status=$(getnumber "Status" $file | tail -1)
+		#echo "${folder/FitResult_/} & ${status} & ${nll} & ${aic} & ${bic} & ${chisq} & ${phifrac} & ${ftwopfrac} & ${ftwopfL} \\\\"
+		printf '%-70s & %6d & %6.1f & %6.1f & %6.1f & %5.3f %5.3f %5.3f %5.3f & %13.3f & %20.3f & %18.3f \\\\ %% %-20s \n' ${folder/FitResult_/} ${status} ${nll} ${aic} ${bic} ${chisq} ${phifrac} ${ftwopfrac} ${ftwopfL} "$(paramsatlimit $file)"
+	done
 done
 

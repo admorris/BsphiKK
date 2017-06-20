@@ -8,7 +8,7 @@
 # Output: A+ = 0.621294 × Exp(i × 2.58501)  A− = 0.194984 × Exp(i × 2.39612)
 <PhysicsParameter>
 	<Name>phi1020_Aplussq</Name>
-	<Value>0.386</Value>
+	<Value>0.621</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Fixed</Type>
