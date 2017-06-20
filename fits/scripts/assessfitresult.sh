@@ -5,7 +5,7 @@ function getnumber() # return a number from something of the form "<string>:<whi
 }
 cd $1
 cwd=$(pwd)
-echo "folder & fit status & NLL & AIC & BIC & Chi^2 & \$ \\phi \\phi\$ fraction & \$\\phi f_2^\\prime\$ fraction & \$f_2^\\prime\$ \$f_L\$\\\\"
+printf '%-70s & %-6s & %-12s & %-12s & %-12s & %-12s & %-20s & %-28s & %-20s \\\\\n' "folder" "status" "NLL" "AIC" "BIC" "Chi^2" "\$\\phi\\phi\$ fraction" "\$\\phi f_2^\\prime\$ fraction" "\$f_2^\\prime\$ \$f_L\$"
 for folder in $(ls | grep FitResult)
 do
 	cd $cwd/$folder
@@ -18,6 +18,7 @@ do
 	ftwopfrac=$(getnumber "1ftwop1525LHCb(2,BW)           " $file)
 	ftwopfL=$(getnumber   "ftwop1525LHCb\_Azerosq     " $file)
 	status=$(getnumber "Status" $file | tail -1)
-	echo "${folder} & ${status} & ${nll} & ${aic} & ${bic} & ${chisq} & ${phifrac} & ${ftwopfrac} & ${ftwopfL} \\\\"
+	#echo "${folder/FitResult_/} & ${status} & ${nll} & ${aic} & ${bic} & ${chisq} & ${phifrac} & ${ftwopfrac} & ${ftwopfL} \\\\"
+	printf '%-70s & %-6s & %-12s & %-12s & %-12s & %-12s & %-20s & %-28s & %-20s \\\\\n' ${folder/FitResult_/} ${status} ${nll} ${aic} ${bic} "${chisq}" ${phifrac} ${ftwopfrac} ${ftwopfL}
 done
 
