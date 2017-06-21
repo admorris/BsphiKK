@@ -71,31 +71,33 @@ int main()
 	std::cout << "ID \t# res\t# free params" << std::endl;
 	for(const std::string& swave1 : {"", "fzero1370LHCb", "fzero1500LHCb"})
 		for(const std::string& pwave1 : {"", "phi1680"})
-			for(const std::string& swave2 : {"", "fzero1710"})
-			{
-				std::vector<std::string> resonances {};
-				int nres = 0;
-				int nfps = 11; // nonres = 1 size, f0(980) = 1 phase, ϕ(1020) = 2 amp + 2 phase + mass, f2´(1525) = 1 size + 2 amp + mass + width
-				for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), pwave1, swave2})
-					if(res != "")
+			for(const std::string& dwave1 : {"", "ftwo1640"})
+				for(const std::string& swave2 : {"", "fzero1710"})
+					for(const std::string& dwave2 : {"", "ftwo1750"})
 					{
-						nres++;
-						resonances.push_back(res);
+						std::vector<std::string> resonances {};
+						int nres = 0;
+						int nfps = 11; // nonres = 1 size, f0(980) = 1 phase, ϕ(1020) = 2 amp + 2 phase + mass, f2´(1525) = 1 size + 2 amp + mass + width
+						for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), dwave1, pwave1, swave2, dwave2})
+							if(res != "")
+							{
+								nres++;
+								resonances.push_back(res);
+							}
+						for(const auto& comp: {swave1, swave2})
+							if(comp != "")
+								nfps += 2; // 1 size + 1 phase
+						for(const auto& comp: {pwave1, dwave1, dwave2})
+							if(comp != "")
+								nfps += 6; // 1 size + 2 amp + 3 phases
+						ncomb++;
+						std::cout << ncomb << "\t" << nres << "\t" << nfps << "\t";
+						for(const std::string& res: resonances)
+							if(res != "")
+								std::cout << res + " ";
+						std::cout << std::endl;
+						printsource(resonances);
 					}
-				if(swave1 != "")
-					nfps += 2; // 1 size + 1 phase
-				if(swave2 != "")
-					nfps += 2; // 1 size + 1 phase
-				if(pwave1 != "")
-					nfps += 6; // 1 size + 2 amp + 3 phases
-				ncomb++;
-				std::cout << ncomb << "\t" << nres << "\t" << nfps << "\t";
-				for(const std::string& res: resonances)
-					if(res != "")
-						std::cout << res + " ";
-				std::cout << std::endl;
-				printsource(resonances);
-			}
 	return 0;
 }
 void combinations()
