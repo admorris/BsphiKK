@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-void printsource(std::vector<std::string> resonances)
+void printsource(std::vector<std::string> resonances, bool phi)
 {
 	// Construct the filename
 	std::string filename {""};
@@ -33,14 +33,17 @@ void printsource(std::vector<std::string> resonances)
 		{
 			file << "parameterset/fractions/"+res+"_fixed.xml\n";
 			file << "parameterset/resonances/"+res+"_float.xml\n";
-			file << "parameterset/amplitudes/"+res+"_float_LHCbAmp_onephase.xml\n";
+			if(phi)
+				file << "parameterset/amplitudes/"+res+"_float_LHCbAmp_onephase.xml\n";
+			else
+				file << "parameterset/amplitudes/"+res+"_float_LHCbAmp.xml\n";
 			file << "constraintfunction/"+res+"_constraint.xml\n";
 		}
 		else if(res == "ftwop1525LHCb" || res == "ftwop1525")
 		{
 			file << "parameterset/fractions/"+res+"_float.xml\n";
 			file << "parameterset/resonances/"+res+"_float.xml\n";
-			file << "parameterset/amplitudes/"+res+"_fixed_zero.xml\n";
+			file << "parameterset/amplitudes/"+res+"_float.xml\n";
 			file << "constraintfunction/"+res+"_constraint.xml\n";
 		}
 		else
@@ -57,18 +60,22 @@ void printsource(std::vector<std::string> resonances)
 	file << "parameterset/signal_fraction_1800_fixed.xml\n";
 	file << "parameterset/backgrounds/combinatorial_hist.xml\n";
 	file << "phasespaceboundary/mKK_BCON_1800.xml\n";
-	file << "phasespaceboundary/angles_BCON.xml\n";
+	if(phi)
+		file << "phasespaceboundary/angles_BCON.xml\n";
+	else
+		file << "phasespaceboundary/angles_BCON_nophi.xml\n";
 	file << "output/lowrange.xml\n";
 	file << "output/fullrange_ymax.xml\n";
-	file << "output/phi.xml\n";
+	if(phi)
+		file << "output/phi.xml\n";
 	file << "output/ctheta_1.xml\n";
 	file << "output/ctheta_2.xml\n";
 	file << "phasespaceboundary/TOS.xml\n";
 }
-int main()
+void combinations(bool phi = true)
 {
 	int ncomb = 0;
-	std::cout << "ID \t# res\t# free params" << std::endl;
+	std::cout << "ID \t# res\t# free params\n";
 	for(const std::string& swave1 : {"", "fzero1370LHCb", "fzero1500LHCb"})
 		for(const std::string& pwave1 : {"", "phi1680"})
 			for(const std::string& dwave1 : {"", "ftwo1640"})
@@ -77,7 +84,11 @@ int main()
 					{
 						std::vector<std::string> resonances {};
 						int nres = 0;
-						int nfps = 11; // nonres = 1 size, f0(980) = 1 phase, ϕ(1020) = 2 amp + 2 phase + mass, f2´(1525) = 1 size + 2 amp + mass + width
+						int nfps;
+						if(phi)
+							nfps = 12; // nonres = 1 size, f0(980) = 1 size + 1 phase, ϕ(1020) = 2 amp + 2 phase + mass, f2´(1525) = 1 size + 2 amp + mass + width
+						else
+							nfps = 9; // 3 less
 						for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), dwave1, pwave1, swave2, dwave2})
 							if(res != "")
 							{
@@ -89,19 +100,19 @@ int main()
 								nfps += 2; // 1 size + 1 phase
 						for(const auto& comp: {pwave1, dwave1, dwave2})
 							if(comp != "")
-								nfps += 6; // 1 size + 2 amp + 3 phases
+							{
+								if(phi)
+									nfps += 6; // 1 size + 2 amp + 3 phases
+								else
+									nfps += 4; // 1 size + 1 amp + 2 phases
+							}
 						ncomb++;
 						std::cout << ncomb << "\t" << nres << "\t" << nfps << "\t";
 						for(const std::string& res: resonances)
 							if(res != "")
 								std::cout << res + " ";
 						std::cout << std::endl;
-						printsource(resonances);
+						printsource(resonances, phi);
 					}
-	return 0;
-}
-void combinations()
-{
-	main();
 }
 
