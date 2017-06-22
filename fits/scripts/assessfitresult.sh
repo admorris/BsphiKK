@@ -1,8 +1,8 @@
 #!/bin/bash
 function getnumber() # return a number from something of the form "<string>:<whitespace><float>"
 {
-	returnval=$(grep "$1\s*:" $2 | sed "s/.*${1}\s*:\s*//" | sed -r 's/([0-9\.e\-\+]*).*/\1/' | tail -1)
-	if [[ -z $returnval || $returnval == *"e"* ]]
+	returnval=$(grep "$1\s*:" $2 | sed "s/.*${1}\s*:\s*//" | sed -r 's/([-0-9\.e\+]*).*/\1/' | tail -1)
+	if [[ -z $returnval || $returnval == *"e-"* ]]
 	then
 		returnval="0"
 	fi
@@ -28,7 +28,7 @@ function parseparticlenames()
 }
 cd $1
 cwd=$(pwd)
-printf '%-80s | %-6s | %-6s | %-6s | %-6s | %24s | %-5s | %-5s | %-5s | %-7s | %-4s | %-6s | %% Parameters at limit\n' "folder" "status" "NLL" "AIC" "BIC" "Projection χ^2/ndof" "NR f" "f0 f" "phi f" "phi F_0" "f2' f" "f2' F_0"
+printf '%-80s | %-7s | %-7s | %-7s | %-7s | %24s | %-5s | %-5s | %-5s | %-7s | %-4s | %-6s | %% Parameters at limit\n' "folder" "status" "NLL" "AIC" "BIC" "Projection χ^2/ndof" "NR f" "f0 f" "phi f" "phi F_0" "f2' f" "f2' F_0"
 for folder in $(ls | grep FitResult)
 do
 	cd $cwd/$folder
@@ -45,7 +45,7 @@ do
 		ftwopfrac=$(getnumber "1ftwop1525LHCb" $file)
 		ftwopfL=$(getnumber   "ftwop1525LHCb\_Azerosq" $file)
 		status=$(getnumber "Status" $file | tail -1)
-		printf '%-80s | %6d | %6.1f | %6.1f | %6.1f | %5.3f %5.3f %5.3f %5.3f | %5.3f | %5.3f | %5.3f | %7.3f | %5.3f | %7.3f | ' \
+		printf '%-80s | %7d | %7.1f | %7.1f | %7.1f | %5.3f %5.3f %5.3f %5.3f | %5.3f | %5.3f | %5.3f | %7.3f | %5.3f | %7.3f | ' \
 		"$(parseparticlenames ${folder/FitResult_/})" ${status} ${nll} ${aic} ${bic} ${chisq} ${NRfrac} ${fzfrac} ${phifrac} ${phifL} ${ftwopfrac} ${ftwopfL}
 		echo $(parseparticlenames "$(paramsatlimit $file)")
 	done
