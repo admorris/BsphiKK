@@ -119,10 +119,15 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         {
           PBmass = &mass;
           PBdata = GetData(name,PBfilename,"",PBmass);
-          RooRealVar* zero  = new RooRealVar(("zero"+std::to_string(i)).c_str(),"Gaussian mean",0);
+          RooRealVar* zero  = new RooRealVar(("Res_zero"+std::to_string(i)).c_str(),"Gaussian mean",0);
           RooRealVar* sigma = new RooRealVar(("Res_sigma"+std::to_string(i)).c_str(),"Detector resolution",18);
           RooGaussian* resolutionfunction = new RooGaussian(("resolution"+std::to_string(i)).c_str(),"Resolution function",*PBmass,*zero,*sigma);
-          PDFtoPlot = new RooFFTConvPdf(("PB"+std::to_string(i)+"PDF").c_str(),"",*PBmass,*resolutionfunction,*GetDataHist(name,PBfilename,"",PBmass));
+          RooHistPdf* histpdf = GetDataHist(name+"hist",PBfilename,"",PBmass);
+          PBmass->setBins(10000,"cache");
+          RooFFTConvPdf* convpdf = new RooFFTConvPdf("shape","",*PBmass,*histpdf,*resolutionfunction);
+          convpdf->setBufferStrategy(RooFFTConvPdf::Flat);
+          convpdf->setBufferFraction(0.2);
+          PDFtoPlot = convpdf;
           comp = phiKKFitter.AddComponent(name,PDFtoPlot,yield);
           comp->SetStyle(kSolid);
         }
