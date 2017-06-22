@@ -161,7 +161,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       PDFtoPlot->plotOn(PBframe,LineStyle(kSolid),LineColor(kRed));
       cout << "Plotting peaking background" << endl;
       plotmaker<RooPlot>* PBplotter;
-      if(drawpulls)
+      if(drawpulls && PBbranch!="HISTPDF")
       {
         RooHist* pullhist = PBframe->pullHist();
         RooPlot* pullframe = PBmass->frame(Title("Pull"));
