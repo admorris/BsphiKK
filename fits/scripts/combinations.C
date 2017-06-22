@@ -76,7 +76,7 @@ void combinations(bool phi = true)
 {
 	int ncomb = 0;
 	std::cout << "ID \t# res\t# free params\n";
-	for(const std::string& swave1 : {"", "fzero1370LHCb", "fzero1500LHCb"})
+	for(const std::string& swave1 : {""/*, "fzero1370LHCb", "fzero1500LHCb"*/})
 		for(const std::string& pwave1 : {"", "phi1680"})
 			for(const std::string& dwave1 : {"", "ftwo1640"})
 				for(const std::string& swave2 : {"", "fzero1710"})
