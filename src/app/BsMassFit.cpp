@@ -111,10 +111,10 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       if(doSweight && yopt != "flo") sWarning = true;
       string shapename = "Crystal Ball + 1 Gaussian";
       Component* comp;
+      // Different branch name and range
+      string PBbranch = backgrounds[i].substr(cbnpos+1);
       if(cbnpos != string::npos)
       {
-        // Different branch name and range
-        string PBbranch = backgrounds[i].substr(cbnpos+1);
         if(PBbranch=="HISTPDF")
         {
           PBmass = &mass;
