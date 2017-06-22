@@ -16,6 +16,8 @@
 #include "RooConstVar.h"
 #include "RooDataHist.h"
 #include "RooHistPdf.h"
+#include "RooGaussian.h"
+#include "RooFFTConvPdf.h"
 // RooStats headers
 #include "RooStats/SPlot.h"
 // Custom headers
@@ -117,7 +119,10 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         {
           PBmass = &mass;
           PBdata = GetData(name,PBfilename,"",PBmass);
-          PDFtoPlot = GetDataHist(name,PBfilename,"",PBmass);
+          RooRealVar* zero  = new RooRealVar(("zero"+std::to_string(i)).c_str(),"Gaussian mean",0);
+          RooRealVar* sigma = new RooRealVar(("Res_sigma"+std::to_string(i)).c_str(),"Detector resolution",18);
+          RooGaussian* resolutionfunction = new RooGaussian(("resolution"+std::to_string(i)).c_str(),"Resolution function",*PBmass,*zero,*sigma);
+          PDFtoPlot = new RooFFTConvPdf(("PB"+std::to_string(i)+"PDF").c_str(),"",*PBmass,*resolutionfunction,*GetDataHist(name,PBfilename,"",PBmass));
           comp = phiKKFitter.AddComponent(name,PDFtoPlot,yield);
           comp->SetStyle(kSolid);
         }
