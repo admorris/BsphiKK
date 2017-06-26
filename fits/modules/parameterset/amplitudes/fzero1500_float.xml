@@ -3,6 +3,6 @@
 	<Value>0.0</Value>
 	<Minimum>-3.7</Minimum>
 	<Maximum>3.7</Maximum>
-	<Type>Float</Type> #phase
+	<Type>Float</Type> #deltazero
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

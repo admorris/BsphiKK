@@ -1,8 +1,0 @@
-<PhysicsParameter>
-	<Name>1600knot_deltazero</Name>
-	<Value>3.14159</Value>
-	<Minimum>-3.7</Minimum>
-	<Maximum>3.7</Maximum>
-	<Type>Fixed</Type> #phase
-	<Unit>Unitless</Unit>
-</PhysicsParameter>

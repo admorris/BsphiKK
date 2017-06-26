@@ -17,24 +17,24 @@
 <PhysicsParameter>
 	<Name>ftwo1565_deltaplus</Name>
 	<Value>0.0</Value>
-	<Minimum>-3.7</Minimum>
-	<Maximum>3.7</Maximum>
-	<Type>Float</Type> #phase
+	<Minimum>-6.7</Minimum>
+	<Maximum>6.7</Maximum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwo1565_deltazero</Name>
 	<Value>0.0</Value>
-	<Minimum>-3.7</Minimum>
-	<Maximum>3.7</Maximum>
-	<Type>Float</Type> #phase
+	<Minimum>-6.7</Minimum>
+	<Maximum>6.7</Maximum>
+	<Type>Float</Type> #deltazero
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwo1565_deltaminus</Name>
 	<Value>0.0</Value>
-	<Minimum>-3.7</Minimum>
-	<Maximum>3.7</Maximum>
-	<Type>Float</Type> #phase
+	<Minimum>-6.7</Minimum>
+	<Maximum>6.7</Maximum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

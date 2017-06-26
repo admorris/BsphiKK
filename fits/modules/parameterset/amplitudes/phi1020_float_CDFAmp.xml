@@ -23,7 +23,9 @@
 <PhysicsParameter>
 	<Name>phi1020_deltaplus</Name>
 	<Value>2.54</Value>
-	<Type>Fixed</Type>  # Can't fit this with an untagged analysis
+	<Minimum>-6.7</Minimum>
+	<Maximum>6.7</Maximum>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -35,8 +37,8 @@
 <PhysicsParameter>
 	<Name>phi1020_deltaminus</Name>
 	<Value>-1.81</Value>
-	<Minimum>-3.2</Minimum>
-	<Maximum>3.2</Maximum>
+	<Minimum>-6.7</Minimum>
+	<Maximum>6.7</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

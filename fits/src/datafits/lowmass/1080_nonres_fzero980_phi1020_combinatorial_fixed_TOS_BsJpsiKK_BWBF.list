@@ -14,7 +14,7 @@ parameterset/resonances/fzero980_fixed.xml
 parameterset/amplitudes/fzero980_float.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_float_mass.xml
-parameterset/amplitudes/phi1020_float_LHCbAmp_onephase.xml
+parameterset/amplitudes/phi1020_float_LHCbAmp.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/barrierfactorradii_fixed_BsJpsiKK.xml

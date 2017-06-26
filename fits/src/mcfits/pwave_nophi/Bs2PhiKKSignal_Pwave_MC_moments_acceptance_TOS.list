@@ -5,7 +5,7 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/pwave_MC.xml
 parameterset/resonances/phi1020_float.xml
-parameterset/amplitudes/phi1020_float_CDFAmp_twophases.xml
+parameterset/amplitudes/phi1020_float_CDFAmp.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
