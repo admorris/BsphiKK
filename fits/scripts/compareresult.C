@@ -7,15 +7,15 @@ struct phiphiresult
   std::pair<double,double> Az;
   std::pair<double,double> dp;
 };
-void compareresult(std::pair<double,double> Aplussq, std::pair<double,double> deltaplus, std::pair<double,double> Azerosq, std::pair<double,double> deltaminus)
+void compareresult(std::pair<double,double> magAplus, std::pair<double,double> deltaplus, std::pair<double,double> magAzero, std::pair<double,double> deltaminus)
 {
   std::vector<phiphiresult> results;
   std::complex<double> Aplus, Aminus, Aperp, Apara;
-  Aplus = std::polar<double>(std::sqrt(Aplussq.first),deltaplus.first);
-  Aminus = std::polar<double>(std::sqrt(1. - Aplussq.first - Azerosq.first),deltaminus.first);
+  Aplus = std::polar<double>(magAplus.first,deltaplus.first);
+  Aminus = std::polar<double>(std::sqrt(1. - std::pow(magAplus.first,2) - std::pow(magAzero.first,2),deltaminus.first);
   Apara = (Aplus + Aminus) / std::sqrt(2.);
   Aperp = (Aplus - Aminus) / std::sqrt(2.);
-  results.push_back(phiphiresult("This fit",{std::pow(std::abs(Aperp),2),0.0},Azerosq,{std::arg(Apara),0.0}));
+  results.push_back(phiphiresult("This fit",{std::pow(std::abs(Aperp),2),0.0},{std::pow(magAzero.first,2),0.0},{std::arg(Apara),0.0}));
   results.push_back(phiphiresult("LHCb Run 1",{0.305,0.013},{0.364,0.013},{2.54,0.07}));
   results.push_back(phiphiresult("LHCb 2011", {0.291,0.024},{0.365,0.024},{2.58,0.12}));
   results.push_back(phiphiresult("CDF and MC",{0.365,0.041},{0.348,0.043},{2.71,0.26}));

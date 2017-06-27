@@ -1,0 +1,8 @@
+<PhysicsParameter>
+	<Name>fzero1370_deltazero</Name>
+	<Value>0.0</Value>
+	<Minimum>-3.7</Minimum>
+	<Maximum>3.7</Maximum>
+	<Type>Fixed</Type> #deltazero
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

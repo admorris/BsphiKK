@@ -1,14 +1,14 @@
 <PhysicsParameter>
-	<Name>ftwo1810_Aplussq</Name>
-	<Value>0.333</Value>
+	<Name>ftwo1810_Aplus</Name>
+	<Value>0.577</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1810_Azerosq</Name>
-	<Value>0.333</Value>
+	<Name>ftwo1810_Azero</Name>
+	<Value>0.577</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>0.999</Maximum>
 	<Type>Float</Type>
@@ -19,7 +19,7 @@
 	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Float</Type>
+	<Type>Float</Type> #deltaplus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>

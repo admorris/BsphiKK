@@ -2,19 +2,19 @@
 # βs  η   |A‖|    δ‖   |A0|   δ0   |A⊥|    δ⊥
 #  0  1  0.536  2.71  0.590  0.0  0.604  2.39
 # $ ./basis bkd 0.536 2.71 0.604  2.39
-# Input:	A‖ = 0.536 × Exp(i × 2.71)	 A⊥ = 0.604 × Exp(i × 2.39)
-# Output:	A+ = 0.795842 × Exp(i × 2.54037)	 A− = 0.136919 × Exp(i × -1.80834)
+# Input:  A‖ = 0.536 × Exp(i × 2.71)  A⊥ = 0.604 × Exp(i × 2.39)
+# Output: A+ = 0.796 × Exp(i × 2.54)  A− = 0.137 × Exp(i × -1.81)
 <PhysicsParameter>
-	<Name>phi1020_Aplussq</Name>
-	<Value>0.633</Value>
+	<Name>phi1020_Aplus</Name>
+	<Value>0.796</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_Azerosq</Name>
-	<Value>0.348</Value>
+	<Name>phi1020_Azero</Name>
+	<Value>0.590</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>
@@ -25,7 +25,7 @@
 	<Value>2.54</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Float</Type>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>

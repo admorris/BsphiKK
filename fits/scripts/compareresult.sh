@@ -14,8 +14,8 @@ then
   echo "Can't find a RapidFitOutput dir. Please provide it as an argument."
   exit 0
 fi
-APplus=$(parse "phi1020\\\_Aplussq")
-APzero=$(parse "phi1020\\\_Azerosq")
+APplus=$(parse "phi1020\\\_Aplus")
+APzero=$(parse "phi1020\\\_Azero")
 deltaPplus=$(parse "phi1020\\\_deltaplus")
 deltaPminus=$(parse "phi1020\\\_deltaminus")
 reldir=$(echo $0 | sed s'/\/[^\/]*sh//')

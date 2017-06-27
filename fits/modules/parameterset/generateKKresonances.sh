@@ -12,13 +12,18 @@ function newKK()
 	wloerr=$8
 	./newresonance.sh ${name} ${mass} ${width} > resonances/${name}_float.xml
 	cp resonances/${name}_float.xml resonances/${name}_fixed.xml
-	sed -i 's/Float/Fixed/' resonances/${name}_fixed.xml
+	sed -i "s/Float/Fixed/" resonances/${name}_fixed.xml
 	./newamplitude.sh ${name} ${spin} 0.0 > amplitudes/${name}_float.xml
 	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero.xml
-	sed -i 's/<Type>Float<\/Type> #deltazero/<Type>Fixed<\/Type> #deltazero/' amplitudes/${name}_float_fixdeltazero.xml
+	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltaplus.xml
+	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero_fixdeltaplus.xml
+	for polarisation in "zero" "plus"
+	do
+		sed -i "s/<Type>Float<\/Type> #delta${polarisation}/<Type>Fixed<\/Type> #delta${polarisation}/" amplitudes/${name}_float_fix*delta${polarisation}*.xml
+	done
 	./newfraction.sh ${name} ${spin} "BW" > fractions/${name}_float.xml
 	cp fractions/${name}_float.xml fractions/${name}_fixed.xml
-	sed -i 's/<Type>Float<\/Type>/<Type>Fixed<\/Type>/' fractions/${name}_fixed.xml
+	sed -i "s/<Type>Float<\/Type>/<Type>Fixed<\/Type>/" fractions/${name}_fixed.xml
 	if [ "${spin}" == "0" ]
 	then
 		./newfraction.sh ${name} ${spin} "SP" > fractions/${name}_spline_float.xml
@@ -41,13 +46,13 @@ newKK   phi1680         1       1.680   0.020   0.020   0.159   0.050   0.050
 newKK   fzero1710       0       1.723   0.006   0.005   0.139   0.008   0.008
 newKK   ftwo1750        2       1.737   0.009   0.009   0.151   0.033   0.033
 newKK   ftwo1810        2       1.815   0.012   0.012   0.197   0.022   0.022
-# Custom styles for the phi and f2'
+# Custom styles for the phi and f2"
 for file in $(ls fractions/phi1020* fractions/ftwop1525*)
 do
-	sed -i 's/style: 1/style: 9/' $file
-	sed -i 's/width: 1/width: 2/' $file
-	sed -i 's/colour: 1/colour: 28/' $file
+	sed -i "s/style: 1/style: 9/" $file
+	sed -i "s/width: 1/width: 2/" $file
+	sed -i "s/colour: 1/colour: 28/" $file
 done
-sed -i 's/colour: [0-9]*/colour: 6/' fractions/phi1020*
+sed -i "s/colour: [0-9]*/colour: 6/" fractions/phi1020*
 exit 0
 
