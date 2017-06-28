@@ -3,7 +3,7 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/resonances/phi1020_fixed.xml
-parameterset/amplitudes/phi1020_float_LHCbAmp.xml
+parameterset/amplitudes/phi1020_float_LHCbAmp_fixdeltazero_fixdeltaplus.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/ftwop1525LHCb_fixed.xml
 parameterset/amplitudes/ftwop1525LHCb_float_fixdeltaplus.xml

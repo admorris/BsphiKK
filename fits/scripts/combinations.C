@@ -33,7 +33,10 @@ void printsource(std::vector<std::string> resonances, bool phi)
 		{
 			file << "parameterset/fractions/"+res+"_fixed.xml\n";
 			file << "parameterset/resonances/"+res+"_float.xml\n";
-			file << "parameterset/amplitudes/"+res+"_float_LHCbAmp.xml\n";
+			if(phi)
+				file << "parameterset/amplitudes/"+res+"_float_LHCbAmp_fixdeltazero_fixdeltaplus.xml\n";
+			else
+				file << "parameterset/amplitudes/"+res+"_float_LHCbAmp_fixdeltazero.xml\n";
 			file << "constraintfunction/"+res+"_constraint.xml\n";
 		}
 		else if(res == "ftwop1525LHCb" || res == "ftwop1525")
@@ -83,7 +86,7 @@ void combinations(bool phi = true)
 						int nres = 0;
 						int nfps;
 						if(phi)
-							nfps = 14; // nonres = 1 size, f0(980) = 1 size + 1 phase, ϕ(1020) = 2 amp + 2 phases + width + mass, f2´(1525) = 1 size + 2 amp + mass + width
+							nfps = 13; // nonres = 1 size, f0(980) = 1 size + 1 phase, ϕ(1020) = 2 amp + 1 phase + width + mass, f2´(1525) = 1 size + 2 amp + mass + width
 						else
 							nfps = 10;
 						for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), dwave1, pwave1, swave2, dwave2})

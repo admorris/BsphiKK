@@ -3,7 +3,7 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/pwave_gen.xml
 parameterset/resonances/phi1020_float.xml
-parameterset/amplitudes/phi1020_float_CDFAmp.xml
+parameterset/amplitudes/phi1020_float_CDFAmp_fixdeltazero_fixdeltaplus.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
