@@ -53,6 +53,10 @@ do
 	sed -i "s/width: 1/width: 2/" $file
 	sed -i "s/colour: 1/colour: 28/" $file
 done
-sed -i "s/colour: [0-9]*/colour: 6/" fractions/phi1020*
+for file in $(ls fractions/phi1020*)
+do
+	sed -i "s/colour: [0-9]*/colour: 6/" $file
+	sed -i "s/<Value>0.01<\/Value>/<Value>1.0<\/Value>/" $file
+done
 exit 0
 

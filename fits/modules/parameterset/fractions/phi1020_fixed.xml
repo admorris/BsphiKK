@@ -4,7 +4,7 @@
 # colour: 6
 <PhysicsParameter>
 	<Name>phi1020_fraction</Name>
-	<Value>0.01</Value>
+	<Value>1.0</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>
 	<Type>Fixed</Type>
