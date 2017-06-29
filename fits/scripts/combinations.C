@@ -89,9 +89,9 @@ void combinations(bool phi = true)
 						int nres = 0;
 						int nfps;
 						if(phi)
-							nfps = 14; // nonres = 1 size + 1 phase, f0(980) = 1 size + 1 phase, ϕ(1020) = 2 amp + 1 phase + width + mass, f2´(1525) = 1 size + 2 amp + mass + width
+							nfps = 17; // nonres = 2, f0(980) = 2, ϕ(1020) = 4, f2´(1525) = 8
 						else
-							nfps = 10;
+							nfps = 13; // nonres = 2, f0(980) = 2, ϕ(1020) = 3, f2´(1525) = 6
 						for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), dwave1, pwave1, swave2, dwave2})
 							if(res != "")
 							{
