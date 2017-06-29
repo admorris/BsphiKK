@@ -1,4 +1,3 @@
 <ConfigurationParameter>UseAcceptance:True</ConfigurationParameter>
 <ConfigurationParameter>CoefficientsFile0:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_Acceptance_notTIS.root</ConfigurationParameter>
 <ConfigurationParameter>CoefficientsFile1:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_Acceptance_TIS.root</ConfigurationParameter>
-
