@@ -12,7 +12,7 @@ void compareresult(std::pair<double,double> magAplus, std::pair<double,double> d
   std::vector<phiphiresult> results;
   std::complex<double> Aplus, Aminus, Aperp, Apara;
   Aplus = std::polar<double>(magAplus.first,deltaplus.first);
-  Aminus = std::polar<double>(std::sqrt(1. - std::pow(magAplus.first,2) - std::pow(magAzero.first,2),deltaminus.first);
+  Aminus = std::polar<double>(std::sqrt(1. - std::pow(magAplus.first,2) - std::pow(magAzero.first,2)),deltaminus.first);
   Apara = (Aplus + Aminus) / std::sqrt(2.);
   Aperp = (Aplus - Aminus) / std::sqrt(2.);
   results.push_back(phiphiresult("This fit",{std::pow(std::abs(Aperp),2),0.0},{std::pow(magAzero.first,2),0.0},{std::arg(Apara),0.0}));
