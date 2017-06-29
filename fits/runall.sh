@@ -28,6 +28,7 @@ do
 		$currentdir/scripts/compareresult.sh 2>&1| tee -a ${logfile}
 		$currentdir/scripts/comparemoments.sh 2>&1| tee -a ${logfile}
 		$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a ${logfile}
+		$currentdir/scripts/fixlatex.sh > /dev/null
 		cd ..
 	done
 done
