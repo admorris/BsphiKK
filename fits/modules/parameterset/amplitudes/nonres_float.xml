@@ -1,0 +1,8 @@
+<PhysicsParameter>
+	<Name>nonres_deltazero</Name>
+	<Value>0.0</Value>
+	<Minimum>-6.7</Minimum>
+	<Maximum>6.7</Maximum>
+	<Type>Float</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>

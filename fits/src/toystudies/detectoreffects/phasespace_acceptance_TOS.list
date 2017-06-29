@@ -5,6 +5,7 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/fractions/nonres_fixed.xml
+parameterset/amplitudes/nonres_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
 parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_1800.xml

@@ -28,7 +28,10 @@ void printsource(std::vector<std::string> resonances, bool phi)
 	for(const std::string& res: resonances)
 	{
 		if(res == "nonres")
+		{
 			file << "parameterset/fractions/nonres_float.xml\n";
+			file << "parameterset/amplitudes/nonres_float.xml\n";
+		}
 		else if(res == "phi1020")
 		{
 			file << "parameterset/fractions/"+res+"_fixed.xml\n";
@@ -86,7 +89,7 @@ void combinations(bool phi = true)
 						int nres = 0;
 						int nfps;
 						if(phi)
-							nfps = 13; // nonres = 1 size, f0(980) = 1 size + 1 phase, ϕ(1020) = 2 amp + 1 phase + width + mass, f2´(1525) = 1 size + 2 amp + mass + width
+							nfps = 14; // nonres = 1 size + 1 phase, f0(980) = 1 size + 1 phase, ϕ(1020) = 2 amp + 1 phase + width + mass, f2´(1525) = 1 size + 2 amp + mass + width
 						else
 							nfps = 10;
 						for(const std::string& res: {std::string("nonres"), std::string("fzero980"), std::string("phi1020"), swave1, std::string("ftwop1525LHCb"), dwave1, pwave1, swave2, dwave2})

@@ -4,6 +4,7 @@ fitfunction/default.xml
 dataset/phasespace_gen.xml
 parameterset/resonances/phi1020_fixed.xml
 parameterset/fractions/nonres_fixed.xml
+parameterset/amplitudes/nonres_fixed.xml
 parameterset/deltaGammas_fixed.xml
 phasespaceboundary/mKK_full_phasespace.xml
 phasespaceboundary/angles.xml
