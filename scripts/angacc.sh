@@ -1,6 +1,7 @@
 #!/bin/bash
 source eos.sh
 cd ../fits/results
+make -C ../modules -j
 for trigger in TIS TOS
 do
   fitting -f acceptance$trigger.xml --calculateAcceptanceCoefficients

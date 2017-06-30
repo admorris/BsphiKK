@@ -7,3 +7,5 @@ dataset/sideband_100MeV_cut.xml
 parameterset/backgrounds/combinatorial_fixed.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
+phasespaceboundary/TOS.xml
+parameterset/thraccscale_fixed_TOS.xml
