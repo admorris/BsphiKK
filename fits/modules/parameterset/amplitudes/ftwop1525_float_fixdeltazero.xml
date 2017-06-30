@@ -1,17 +1,17 @@
 <PhysicsParameter>
 	<Name>ftwop1525_Aplus</Name>
-	<Value>0.577</Value>
+	<Value>0.577</Value> #Aplus
 	<Minimum>0.0</Minimum>
-	<Maximum>0.999</Maximum>
-	<Type>Float</Type>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type> #Aplus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525_Azero</Name>
-	<Value>0.577</Value>
+	<Value>0.577</Value> #Azero
 	<Minimum>0.0</Minimum>
-	<Maximum>0.999</Maximum>
-	<Type>Float</Type>
+	<Maximum>1.0</Maximum>
+	<Type>Float</Type> #Azero
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -35,6 +35,6 @@
 	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Float</Type>
+	<Type>Float</Type> #deltaminus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
