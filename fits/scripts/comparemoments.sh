@@ -21,8 +21,8 @@ xmltimestamp=$(echo $recentxml | sed -r 's/outputXMLFile(.*)\.xml/\1/')
 dirtimestamp=$(echo $recentdir | sed 's/RapidFitOutput_//')
 if [ "$xmltimestamp" == "$dirtimestamp" ]
 then
-  fitting -f $recentxml --saveOneDataSet $recentdir/toys.root --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 1000000 --OverrideXML  /RapidFit/ToFit/DataSet/PhaseSpaceBoundary/Observable/mKK/Minimum 1.05 > $recentdir/toygeneration.log
-  cd $recentdir
+  fitting -f $recentxml --saveOneDataSet toys.root --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 1000000 --OverrideXML  /RapidFit/ToFit/DataSet/PhaseSpaceBoundary/Observable/mKK/Minimum 1.05 > $recentdir/toygeneration.log && \
+  mv toys.root $recentdir && cd $recentdir && \
   CompareMoments --MCfile toys.root --MCmass mKK --MCangle ctheta_2 --lower 1.05 --bins 25 --CDfile $ntuple --CDcut "B_s0_LOKI_Mass>5330&&5405>B_s0_LOKI_Mass"
 else
   echo "Most recent XML timestamp ($xmltimestamp) does not match most recent output dir timestamp ($dirtimestamp). Will not generate toys."
