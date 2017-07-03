@@ -150,11 +150,12 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
   double h_LOKI_PT[4]; // Necessary for min Kaon PT
 /*New mass branches************************************************************/
   // phi KK
-  TLorentzVector BCON_KK_P;   double BCON_KK_M;         outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D"  );
-  TLorentzVector BCON_phi_P;  double BCON_phi_M;        outtree->Branch("BCON_phi_M", &BCON_phi_M, "BCON_phi_M/D" );
-  TLorentzVector KK_TRUEP;    double KK_TRUEM; if(isMC) outtree->Branch("KK_TRUEM",   &KK_TRUEM,   "KK_TRUEM/D"   );
-  TLorentzVector phiKplusP;   double phiKplusM;         outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D"  );
-  TLorentzVector phiKminusP;  double phiKminusM;        outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D" );
+  TLorentzVector BCON_KK_P;   double BCON_KK_M;           outtree->Branch("BCON_KK_M",  &BCON_KK_M,  "BCON_KK_M/D" );
+  TLorentzVector BCON_phi_P;  double BCON_phi_M;          outtree->Branch("BCON_phi_M", &BCON_phi_M, "BCON_phi_M/D");
+  TLorentzVector KK_TRUEP;    double KK_TRUEM;   if(isMC) outtree->Branch("KK_TRUEM",   &KK_TRUEM,   "KK_TRUEM/D"  );
+  TLorentzVector B_s0_TRUEP;  double B_s0_TRUEM; if(isMC) outtree->Branch("B_s0_TRUEM", &B_s0_TRUEM, "B_s0_TRUEM/D");
+  TLorentzVector phiKplusP;   double phiKplusM;           outtree->Branch("phiKplusM",  &phiKplusM,  "phiKplusM/D" );
+  TLorentzVector phiKminusP;  double phiKminusM;          outtree->Branch("phiKminusM", &phiKminusM, "phiKminusM/D");
   // phi pipi
   TLorentzVector phipipiP;    double phipipiM;    outtree->Branch("phipipiM",    &phipipiM,    "phipipiM/D"   );
   TLorentzVector pipiP;       double pipiM;       outtree->Branch("pipiM",       &pipiM,       "pipiM/D"      );
@@ -225,6 +226,8 @@ void addBranches(string inputfilename = "BsphiKK_data_cuts.root", string outputf
       KK_TRUEP = doswap? h_TRUEP[0] + h_TRUEP[1] : h_TRUEP[2] + h_TRUEP[3];
       KK_TRUEM = KK_TRUEP.M();
       KK_TRUEM_GeV = KK_TRUEM*1e-3;
+      B_s0_TRUEP = h_TRUEP[0] + h_TRUEP[1] + h_TRUEP[2] + h_TRUEP[3];
+      B_s0_TRUEM = B_s0_TRUEP.M();
     }
     // Track 4-momenta with constrained Bs mass
     for(int j = 0; j < 4; j++) h_BCONP[j].SetXYZM(h_BCON_PX[j],h_BCON_PY[j],h_BCON_PZ[j],Kmass);
