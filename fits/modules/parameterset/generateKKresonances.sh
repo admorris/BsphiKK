@@ -21,6 +21,14 @@ function newKK()
 	do
 		sed -i "s/<Type>Float<\/Type> #delta${polarisation}/<Type>Fixed<\/Type> #delta${polarisation}/" amplitudes/${name}_float_fix*delta${polarisation}*.xml
 	done
+	if [[ ${name} == *"ftwop1525"* ]]
+	then
+		sed -i "s/<Value>.*<\/Value> #Azero/<Value>0.9<\/Value> #Azero/" amplitudes/${name}_float.xml
+		sed -i "s/<Value>.*<\/Value> #Aplus/<Value>0.3<\/Value> #Aplus/" amplitudes/${name}_float.xml
+		sed -i "s/<Value>.*<\/Value> #deltaminus/<Value>1.4<\/Value> #deltaminus/" amplitudes/${name}_float.xml
+		sed -i "s/<Value>.*<\/Value> #deltaplus/<Value>2.0<\/Value> #deltaplus/" amplitudes/${name}_float.xml
+		sed -i "s/<Value>.*<\/Value> #deltazero/<Value>-0.4<\/Value> #deltazero/" amplitudes/${name}_float.xml
+	fi
 	if [ ${spin} -gt 0 ]
 	then
 		cp amplitudes/${name}_float.xml amplitudes/${name}_float_longitudinal.xml
@@ -74,6 +82,10 @@ for file in $(ls fractions/phi1020*)
 do
 	sed -i "s/colour: [0-9]*/colour: 6/" $file
 	sed -i "s/<Value>0.01<\/Value>/<Value>1.0<\/Value>/" $file
+done
+for file in $(ls fractions/ftwop1525*)
+do
+	sed -i "s/<Value>0.01<\/Value>/<Value>2.5<\/Value>/" $file
 done
 exit 0
 
