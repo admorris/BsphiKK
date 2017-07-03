@@ -71,7 +71,7 @@ cutapplier BsphiKK_data_mvacut.root DecayTree "abs(BCON_KK_M-1019.461)<15" Bsphi
     --draw-region 2 \
     --save-results BsmassfitmvacutpkgbkgsB \
     --output-file ${table} \
-    --backgrounds f1420_Bs0_branches.root/HISTPDF BdphiKst_MC_mvacut.root LbphiKp_MC_mva.root/HISTPDF \
+    --backgrounds f1420_Bs0_branches.root/HISTPDF BdphiKst_MC_mvacut.root Lb_pkgbkg.root/HISTPDF \
     --yields 200 $NExpBdPhiKst $NExpLbPhiKp \
     --yopts flo abs abs --logy
 ../bin/BsMassFit \
