@@ -21,6 +21,9 @@ void PlotEffvsmKK(std::string filename,std::string plotname,std::string cutstrin
     Plot.ye[ibin] = Result.GetEffErr()*100.0;
   }
   TGraphErrors graph(nbins,mKK,Plot.y.data(),mKKE,Plot.ye.data());
+  graph.SetMinimum(80);
+  graph.SetMaximum(100);
+  graph.Fit("pol0");
   DrawGraph(plotname+Plot.name,graph)->Write();
 }
 int main(int argc, char* argv[])

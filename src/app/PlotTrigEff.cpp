@@ -34,6 +34,7 @@ void PlotTrigEff(std::string filename,std::string plotname)
       Plot.ye[ibin] = Result.GetEffErr()*100.0;
     }
     TGraphErrors graph(nbins,mKK,Plot.y.data(),mKKE,Plot.ye.data());
+    graph.SetMinimum(0);
     DrawGraph(plotname+Plot.name,graph)->Write();
   }
   outputfile.Close();
