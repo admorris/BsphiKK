@@ -6,7 +6,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "altftwop", "splitbyyear", "splitbytrigger", "splitbymagnet"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "splitbyyear", "splitbytrigger", "splitbymagnet"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -90,10 +90,7 @@ void printsource(std::vector<std::string> resonances)
 						else if(res.find("ftwop1525") != std::string::npos)
 						{
 							file << "parameterset/fractions/"+name+"_float.xml\n";
-							if(config["altftwop"])
-								file << "parameterset/resonances/"+name+"_float_PDG.xml\n";
-							else
-								file << "parameterset/amplitudes/"+name+"_float.xml\n";
+							file << "parameterset/amplitudes/"+name+"_float.xml\n";
 							file << "constraintfunction/"+name+"_constraint.xml\n";
 						}
 						else if(res.find("fzero980") != std::string::npos)

@@ -9,7 +9,6 @@ bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/highmass"
 best=(nonres fzero980 phi1020 ftwop1525LHCb)
 mkdir -p ${srcdir}
-mkdir -p ${srcdir}_nophi
 for extra in "ftwo1640" "phi1680" "fzero1710" "ftwo1750"
 do
 	options=()
@@ -21,8 +20,6 @@ do
 	do
 		cd ${srcdir}
 		${bindir}/PrintSource ${best[@]} ${extra}${option}
-		cd ${srcdir}_nophi
-		${bindir}/PrintSource ${best[@]} ${extra}${option} nophi
 		cd ${CWD}
 	done
 done

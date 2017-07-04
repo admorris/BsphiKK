@@ -9,13 +9,13 @@ bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/alt"
 best=(nonres fzero980 phi1020 ftwop1525LHCb)
 mkdir -p ${srcdir}
-mkdir -p ${srcdir}_nophi
-for extra in "altbarrier" "altflatte" "altftwop" "splitbyyear" "splitbytrigger" "splitbymagnet"
+for extra in "altbarrier" "altflatte" "splitbyyear" "splitbytrigger" "splitbymagnet" "nophi"
 do
 	cd ${srcdir}
 	${bindir}/PrintSource ${best[@]} ${extra}
-	cd ${srcdir}_nophi
-	${bindir}/PrintSource ${best[@]} ${extra} nophi
 	cd ${CWD}
 done
+cd ${srcdir}
+${bindir}/PrintSource ${best[@]} nonres fzero980 phi1020 ftwop1525
+cd ${CWD}
 

@@ -20,7 +20,6 @@ parameterset/fractions/fzero1500LHCb_float.xml
 parameterset/resonances/fzero1500LHCb_fixed.xml
 parameterset/amplitudes/fzero1500LHCb_float.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
-parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
 constraintfunction/ftwop1525LHCb_constraint.xml
 parameterset/deltaGammas_fixed.xml
