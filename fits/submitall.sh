@@ -20,6 +20,7 @@ do
 		#$ -N "j_$(echo $file | sed 's/.xml//')"
 		#$ -l h_rt=24:00:00
 		#$ -l h_vmem=4G
+		#$ -l h='!morar2.ph.ed.ac.uk'
 		$ParallelEnv
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
