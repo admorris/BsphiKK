@@ -90,6 +90,7 @@ void printsource(std::vector<std::string> resonances)
 						else if(res.find("ftwop1525") != std::string::npos)
 						{
 							file << "parameterset/fractions/"+name+"_float.xml\n";
+							file << "parameterset/resonances/"+name+"_float.xml\n";
 							file << "parameterset/amplitudes/"+name+"_float.xml\n";
 							file << "constraintfunction/"+name+"_constraint.xml\n";
 						}
