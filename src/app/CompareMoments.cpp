@@ -19,9 +19,11 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
   auto MCtree = std::unique_ptr<TTree>(GetTree(MCfilename,MCcuts));
   std::string CDmassrange = CDmassname + ">" + std::to_string(xlow) + "&&" + CDmassname + "<" + std::to_string(xup);
   std::string MCmassrange = MCmassname + ">" + std::to_string(xlow) + "&&" + MCmassname + "<" + std::to_string(xup);
-  double scale = CDtree->GetEntries(CDmassrange.c_str())/(double)MCtree->GetEntries(MCmassrange.c_str());
-  std::cout << "Number of data events in " << CDmassrange << " : " << CDtree->GetEntries(CDmassrange.c_str()) << "\n";
-  std::cout << "Number of toy events in " << MCmassrange << " : " << MCtree->GetEntries(MCmassrange.c_str()) << "\n";
+  const double CDentries = CDtree->GetEntries(CDmassrange.c_str());
+  const double MCentries = MCtree->GetEntries(MCmassrange.c_str());
+  std::cout << "Number of data events in " << CDmassrange << " : " << CDentries << "\n";
+  std::cout << "Number of toy events in " << MCmassrange << " : " << MCentries << "\n";
+  const double scale = CDentries/MCentries;
   std::cout << "The normalisation is " << scale << "\n";
   std::vector<LegendreMomentPlot> CDplots = LegendreMomentPlot::FillPlotsFromTree("data",*CDtree,CDmassname,CDanglename,CDweight,xtitle,unit,plotname,xlow,xup,nbins,max_order, 1);
   std::vector<LegendreMomentPlot> MCplots = LegendreMomentPlot::FillPlotsFromTree("model",*MCtree,MCmassname,MCanglename,MCweight,xtitle,unit,plotname,xlow,xup,nbins,max_order,scale);
@@ -53,6 +55,14 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
     canvas->SaveAs((plotname+"_P"+std::to_string(order)+".pdf").c_str());
     allplots.cd(order+1);
     CDplots[order].hist.Draw("E1");
+    if(CDplots[order].hist.GetMinimum() >= 0)
+      CDplots[order].hist.SetMinimum(0);
+    else
+    {
+      double lim = 1.3*std::max(std::abs(CDplots[order].hist.GetMaximum()), std::abs(CDplots[order].hist.GetMinimum()));
+      CDplots[order].hist.SetMaximum(+lim);
+      CDplots[order].hist.SetMinimum(-lim);
+    }
     MCplots[order].hist.Draw("hist same");
   }
   allplots.SaveAs((plotname+"_all.pdf").c_str());
