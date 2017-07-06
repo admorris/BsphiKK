@@ -9,9 +9,10 @@ then
 else
 	folder=${1}
 fi
+cd ${folder}
 if [ "$2" == "" ]
 then
-	recentxml=$(find $folder -type f -name "outputXMLFile*" | sort | tail -1)
+	recentxml=$(find . -type f -name "outputXMLFile*" | sort | tail -1 | sed 's/\.\///')
 	timestamp=$(echo ${recentxml} | sed -r 's/.*outputXMLFile(.*)\.xml/\1/')
 else
 	recentxml="outputXMLFile${2}.xml"
@@ -46,11 +47,11 @@ do
 	for acc in \`seq 0 7\`
 	do
 		index=\$(($i*8+\$acc))
-		newXMLfile=\$(echo "${recentxml}" | sed "s/\./_\${index}/")
-		sed "s/AcceptanceEntry:0/AcceptanceEntry:\${index}/" ${recentxml} > \$newXMLfile
+		newXMLfile=\$(echo "${recentxml}" | sed "s/\.xml/_\${index}.xml/")
+		sed "s/AcceptanceEntry:0/AcceptanceEntry:\${index}/" ../${recentxml} > \$newXMLfile
 		# Perform the fit
 		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S")_acceptance_\${index}.log
-		fitting ${nThreadsFlag} -f ../${file} --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 100000 --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
+		fitting \${nThreadsFlag} -f \${newXMLfile} --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 100000 --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
 		$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a \${logfile}
 	done
 	EOF
