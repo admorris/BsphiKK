@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>phi1680_Aplus</Name>
-	<Value>0.577</Value> #Aplus
+	<Value>0.120</Value> #Aplus
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type> #Aplus
@@ -8,7 +8,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1680_Azero</Name>
-	<Value>0.577</Value> #Azero
+	<Value>0.800</Value> #Azero
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type> #Azero
@@ -16,7 +16,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1680_deltaplus</Name>
-	<Value>0.0</Value>
+	<Value>-0.82</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltaplus
@@ -24,7 +24,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1680_deltazero</Name>
-	<Value>0.0</Value>
+	<Value>3.9</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltazero
@@ -32,7 +32,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>phi1680_deltaminus</Name>
-	<Value>0.0</Value>
+	<Value>2.3</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltaminus
