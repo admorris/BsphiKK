@@ -7,6 +7,7 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/data_mva.xml
 dataset/Bs_LOKI_Mass_2sigma_cut.xml
+dataset/2011_only.xml
 parameterset/fractions/nonres_float.xml
 parameterset/amplitudes/nonres_float.xml
 parameterset/fractions/fzero980_float.xml
@@ -20,10 +21,13 @@ parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
 constraintfunction/ftwop1525LHCb_constraint.xml
+parameterset/fractions/phi1680_float.xml
+parameterset/resonances/phi1680_fixed.xml
+parameterset/amplitudes/phi1680_float.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
-parameterset/barrierfactorradii_fixed_EvtGen.xml
+parameterset/barrierfactorradii_fixed_BsJpsiKK.xml
 parameterset/signal_fraction_1800_fixed.xml
 parameterset/backgrounds/combinatorial_hist.xml
 phasespaceboundary/mKK_BCON_1800.xml

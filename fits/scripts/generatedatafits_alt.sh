@@ -7,7 +7,7 @@ then
 fi
 bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/alt"
-best=(nonres fzero980 phi1020 ftwop1525LHCb)
+best=(nonres fzero980 phi1020 ftwop1525LHCb phi1680)
 mkdir -p ${srcdir}
 for extra in "altbarrier" "altflatte" "splitbyyear" "splitbytrigger" "splitbymagnet" "nophi"
 do
