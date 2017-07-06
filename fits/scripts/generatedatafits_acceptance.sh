@@ -11,14 +11,3 @@ best=(nonres fzero980 phi1020 ftwop1525LHCb phi1680)
 mkdir -p ${srcdir}
 cd ${srcdir}
 ${bindir}/PrintSource ${best[@]}
-make -C "${CWD}/modules" -j 4
-cd ${srcdir/src/results}
-filename=$(ls -tr *.xml | tail -1)
-for i in $(seq 1 15)
-do
-	newXMLfile=${filename/./_${i}.}
-	sed "s/AcceptanceEntry:0/AcceptanceEntry:${i}/" ${filename} > $newXMLfile
-	echo "Building ${newXMLfile}"
-done
-rm -v ${filename}
-cd ${CWD}
