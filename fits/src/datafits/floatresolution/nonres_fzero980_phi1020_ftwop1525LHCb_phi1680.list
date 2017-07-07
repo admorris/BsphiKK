@@ -23,8 +23,8 @@ constraintfunction/ftwop1525LHCb_constraint.xml
 parameterset/fractions/phi1680_float.xml
 parameterset/resonances/phi1680_fixed.xml
 parameterset/amplitudes/phi1680_float.xml
-parameterset/deltaGammas_float.xml
-parameterset/mKKrespars_fixed.xml
+parameterset/deltaGammas_fixed.xml
+parameterset/mKKrespars_float.xml
 parameterset/thraccscale_fixed_TOS.xml
 parameterset/barrierfactorradii_fixed_BsJpsiKK.xml
 parameterset/signal_fraction_1800_fixed.xml
