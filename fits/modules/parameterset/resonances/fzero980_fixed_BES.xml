@@ -1,0 +1,18 @@
+<PhysicsParameter>
+	<Name>fzero980_mass</Name>
+	<Value>0.965</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero980_gpipi</Name>
+	<Value>0.165</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
+<PhysicsParameter>
+	<Name>fzero980_Rg</Name>
+	<Value>4.21</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
