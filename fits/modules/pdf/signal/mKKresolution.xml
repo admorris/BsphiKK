@@ -1,3 +1,4 @@
 <ConfigurationParameter>convolve:True</ConfigurationParameter>
 <ConfigurationParameter>mKKres_nsteps:20</ConfigurationParameter>
 <ConfigurationParameter>mKKres_nsigma:3</ConfigurationParameter>
+<ConfigurationParameter>mKKres_power:0.452</ConfigurationParameter>
