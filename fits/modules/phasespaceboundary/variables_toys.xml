@@ -1,0 +1,30 @@
+<Observable>
+	<Name>mKK</Name>
+	<Minimum>0.9874</Minimum>
+	<Maximum>1.800</Maximum>
+	<Unit>GeV</Unit>
+</Observable>
+<Observable>
+	<Name>phi</Name>
+	<Minimum>-3.14159</Minimum>
+	<Maximum>3.14159</Maximum>
+	<Unit>rad</Unit>
+</Observable>
+<Observable>
+	<Name>ctheta_1</Name>
+	<Minimum>-1.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Unit>Unitless</Unit>
+</Observable>
+<Observable>
+	<Name>ctheta_2</Name>
+	<Minimum>-1.0</Minimum>
+	<Maximum>1.0</Maximum>
+	<Unit>Unitless</Unit>
+</Observable>
+<Observable>
+	<Name>trigger</Name>
+	<Value>0</Value>
+	<Value>1</Value>
+	<Unit>Unitless</Unit>
+</Observable>

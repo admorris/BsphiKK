@@ -6,7 +6,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "splitbyyear", "splitbytrigger", "splitbymagnet"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -59,14 +59,19 @@ void printsource(std::vector<std::string> resonances)
 						file << "pdf/background/combinatorial_nomva_moments.xml\n";
 						file << "minimiser/minuit2.xml\n";
 						file << "fitfunction/default.xml\n";
-						file << "dataset/data_mva.xml\n";
-						file << "dataset/Bs_LOKI_Mass_2sigma_cut.xml\n";
-						if(config["splitbyyear"])
-							file << "dataset/"+year+"_only.xml\n";
-						if(config["splitbytrigger"])
-							file << "dataset/"+trigger+"_only.xml\n";
-						if(config["splitbymagnet"])
-							file << "dataset/"+polarity+"_only.xml\n";
+						if(config["toys"])
+							file << "dataset/bestfit_toys.xml\n";
+						else
+						{
+							file << "dataset/data_mva.xml\n";
+							file << "dataset/Bs_LOKI_Mass_2sigma_cut.xml\n";
+							if(config["splitbyyear"])
+								file << "dataset/"+year+"_only.xml\n";
+							if(config["splitbytrigger"])
+								file << "dataset/"+trigger+"_only.xml\n";
+							if(config["splitbymagnet"])
+								file << "dataset/"+polarity+"_only.xml\n";
+						}
 						for(const std::string& res: resonances)
 						{
 							std::string option = "";
@@ -121,18 +126,23 @@ void printsource(std::vector<std::string> resonances)
 						file << "parameterset/barrierfactorradii_fixed_"+barrier+".xml\n";
 						file << "parameterset/signal_fraction_1800_fixed.xml\n";
 						file << "parameterset/backgrounds/combinatorial_hist.xml\n";
-						file << "phasespaceboundary/mKK_BCON_1800.xml\n";
-						if(config["nophi"])
-							file << "phasespaceboundary/angles_BCON_nophi.xml\n";
+						if(config["toys"])
+							file << "phasespaceboundary/variables_toys.xml\n";
 						else
-							file << "phasespaceboundary/angles_BCON.xml\n";
+						{
+							file << "phasespaceboundary/mKK_BCON_1800.xml\n";
+							if(config["nophi"])
+								file << "phasespaceboundary/angles_BCON_nophi.xml\n";
+							else
+								file << "phasespaceboundary/angles_BCON.xml\n";
+							file << "phasespaceboundary/TOS.xml\n";
+						}
 						file << "output/lowrange.xml\n";
 						file << "output/fullrange_ymax.xml\n";
 						if(!config["nophi"])
 							file << "output/phi.xml\n";
 						file << "output/ctheta_1.xml\n";
 						file << "output/ctheta_2.xml\n";
-						file << "phasespaceboundary/TOS.xml\n";
 					}
 }
 
