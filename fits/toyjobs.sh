@@ -2,7 +2,7 @@
 # Usage: toyjobs.sh <folder> [<timestamp>]
 source RFjobconfig.sh
 currentdir=$(pwd)
-nrepeats=16
+nrepeats=8
 if [ "$1" == "" ]
 then
 	echo "Please provide a folder containing the RapidFit outputXMLFile"
@@ -18,7 +18,7 @@ else
 	recentxml="outputXMLFile${2}.xml"
 	timestamp=${2}
 fi
-for i in `seq 0 15`
+for i in `seq 0 31`
 do
 	cd ${currentdir}/${folder}
 	workingfolder="toyjob_${timestamp}_${i}"
