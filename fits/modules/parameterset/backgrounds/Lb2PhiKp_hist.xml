@@ -1,0 +1,10 @@
+# shape: histogram
+# style: 2
+# width: 1
+# colour: 40
+<PhysicsParameter>
+	<Name>Lb2PhiKp_fraction</Name>
+	<Value>0.28</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
