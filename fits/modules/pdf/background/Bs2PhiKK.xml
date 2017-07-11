@@ -1,1 +1,5 @@
 <Name>Bs2PhiKKBackground</Name>
+<ConfigurationParameter>BdphiKstar_HistFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/phikstar_background_mKKhist.root</ConfigurationParameter>
+<ConfigurationParameter>BdphiKstar_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>
+<ConfigurationParameter>Lb2PhiKp_HistFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/philambda_background_mKKhist.root</ConfigurationParameter>
+<ConfigurationParameter>Lb2PhiKp_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>

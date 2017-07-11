@@ -1,2 +1,2 @@
-<ConfigurationParameter>combinatorial_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>
 <ConfigurationParameter>combinatorial_HistFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/background_nomva_mKKhist.root</ConfigurationParameter>
+<ConfigurationParameter>combinatorial_CoefficientsFile:root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/LegendreMoments_combinatorial_nomva.root</ConfigurationParameter>

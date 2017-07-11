@@ -1,0 +1,10 @@
+# shape: histogram
+# style: 2
+# width: 1
+# colour: 41
+<PhysicsParameter>
+	<Name>BdphiKstar_fraction</Name>
+	<Value>0.14</Value>
+	<Type>Fixed</Type>
+	<Unit>Unitless</Unit>
+</PhysicsParameter>
