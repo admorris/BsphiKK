@@ -7,7 +7,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "floatflatte", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "floatflatte", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "peaking"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -134,6 +134,11 @@ void printsource(std::vector<std::string> resonances)
 						file << "parameterset/barrierfactorradii_fixed_"+barrier+".xml\n";
 						file << "parameterset/signal_fraction_1800_fixed.xml\n";
 						file << "parameterset/backgrounds/combinatorial_hist.xml\n";
+						if(config["peaking"])
+						{
+							file << "parameterset/backgrounds/BdphiKstar_hist.xml\n";
+							file << "parameterset/backgrounds/Lb2PhiKp_hist.xml\n";
+						}
 						if(config["toys"])
 							file << "phasespaceboundary/variables_toys.xml\n";
 						else
