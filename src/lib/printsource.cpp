@@ -1,12 +1,13 @@
 #include <fstream>
 #include <map>
 #include <algorithm>
+#include <iostream>
 #include "printsource.h"
 
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "floatflatte", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -51,6 +52,7 @@ void printsource(std::vector<std::string> resonances)
 							tmpfilename+="_"+barrier+"_barriers";
 						if(config["altflatte"])
 							tmpfilename+=flatte+"_flatte";
+						std::cout << "Creating " << tmpfilename << std::endl;
 						std::ofstream file(tmpfilename+".list", std::ios::out);
 						file << "pdf/signal/Bs2PhiKK.xml\n";
 						file << "pdf/signal/mKKresolution.xml\n";
@@ -107,7 +109,13 @@ void printsource(std::vector<std::string> resonances)
 							else if(res.find("fzero980") != std::string::npos)
 							{
 								file << "parameterset/fractions/"+name+"_float.xml\n";
-								file << "parameterset/resonances/"+name+"_fixed"+flatte+".xml\n";
+								if(config["floatflatte"])
+								{
+									file << "parameterset/resonances/"+name+"_float"+flatte+".xml\n";
+									file << "constraintfunction/"+name+"_constraint.xml\n";
+								}
+								else
+									file << "parameterset/resonances/"+name+"_fixed"+flatte+".xml\n";
 								file << "parameterset/amplitudes/"+name+"_float.xml\n";
 							}
 							else

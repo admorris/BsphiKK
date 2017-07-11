@@ -15,7 +15,7 @@ do
 	${bindir}/PrintSource ${best[@]} ${extra} toys
 	cd ${CWD}
 done
-for extra in "splitbyyear" "splitbytrigger" "splitbymagnet"
+for extra in "altbarrier" "altflatte" "floatflatte" "splitbyyear" "splitbytrigger" "splitbymagnet"
 do
 	cd ${srcdir}
 	${bindir}/PrintSource ${best[@]} ${extra}
