@@ -20,7 +20,6 @@ else
 fi
 for i in `seq 0 15`
 do
-	cd ${currentdir}/${folder}
 	workingfolder="toyjob_${timestamp}_${i}"
 	mkdir -p ${workingfolder}
 	cd ${workingfolder}
@@ -47,15 +46,15 @@ do
 	for acc in \`seq 0 7\`
 	do
 		index=\$(($i*8+\$acc))
-
-
+		newXMLfile="inputXMLFile_\${index}.xml"
+		sed "s/<Seed>[0-9]*/<Seed>\${index}/" ../${recentxml} > \$newXMLfile
 
 
 
 
 		# Perform the fit
 		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S")_toys_\${index}.log
-		fitting \${nThreadsFlag} -f $recentxml --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
+		fitting \${nThreadsFlag} -f \${newXMLfile} --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
 		$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a \${logfile}
 	done
 	EOF

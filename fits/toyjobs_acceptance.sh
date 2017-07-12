@@ -20,7 +20,6 @@ else
 fi
 for i in `seq 0 15`
 do
-	cd ${currentdir}/${folder}
 	workingfolder="acceptancejob_${timestamp}_${i}"
 	mkdir -p ${workingfolder}
 	cd ${workingfolder}
@@ -52,7 +51,7 @@ do
 		# Fit to pre-generated toys
 		sed -i "s/^.*TF1.*$//" \$newXMLfile
 		sed -i "s/Foam/File/" \$newXMLfile
-		sed -i "s/<NumberEvents.*$/<FileName>root:\/\/eoslhcb.cern.ch\/\/eos\/lhcb\/user\/a\/admorris\/phiKK\/ntuples\/BsphiKK_data_mvacut.root<\/FileName>\\\n\\\t<NTuplePath>DecayTree<\/NTuplePath>/" \$newXMLfile
+		sed -i "s/<NumberEvents.*$/<FileName>root:\/\/eoslhcb.cern.ch\/\/eos\/lhcb\/user\/a\/admorris\/phiKK\/bestfit_toys.root<\/FileName>\\\n\\\t<NTuplePath>dataNTuple<\/NTuplePath>/" \$newXMLfile
 		# Perform the fit
 		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S")_acceptance_\${index}.log
 		fitting \${nThreadsFlag} -f \${newXMLfile} --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
