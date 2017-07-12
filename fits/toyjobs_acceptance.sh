@@ -47,11 +47,15 @@ do
 	for acc in \`seq 0 7\`
 	do
 		index=\$(($i*8+\$acc))
-		newXMLfile=\$(echo "${recentxml}" | sed "s/\.xml/_\${index}.xml/")
+		newXMLfile="inputXMLFile_\${index}.xml"
 		sed "s/AcceptanceEntry:0/AcceptanceEntry:\${index}/" ../${recentxml} > \$newXMLfile
+		# Fit to pre-generated toys
+		sed -i "s/^.*TF1.*$//" \$newXMLfile
+		sed -i "s/Foam/File/" \$newXMLfile
+		sed -i "s/<NumberEvents.*$/<FileName>root:\/\/eoslhcb.cern.ch\/\/eos\/lhcb\/user\/a\/admorris\/phiKK\/ntuples\/BsphiKK_data_mvacut.root<\/FileName>\\\n\\\t<NTuplePath>DecayTree<\/NTuplePath>/" \$newXMLfile
 		# Perform the fit
 		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S")_acceptance_\${index}.log
-		fitting \${nThreadsFlag} -f \${newXMLfile} --OverrideXML /RapidFit/ToFit/DataSet/NumberEvents 100000 --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
+		fitting \${nThreadsFlag} -f \${newXMLfile} --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
 		$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a \${logfile}
 	done
 	EOF
