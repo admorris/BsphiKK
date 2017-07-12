@@ -20,6 +20,7 @@ else
 fi
 for i in `seq 0 15`
 do
+	cd ${currentdir}/${folder}
 	workingfolder="toyjob_${timestamp}_${i}"
 	mkdir -p ${workingfolder}
 	cd ${workingfolder}
