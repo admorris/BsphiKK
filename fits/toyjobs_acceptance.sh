@@ -52,7 +52,7 @@ do
 		# Fit to pre-generated toys
 		sed -i "s/^.*TF1.*$//" \$newXMLfile
 		sed -i "s/Foam/File/" \$newXMLfile
-		sed -i "s/<NumberEvents.*$/<FileName>root:\/\/eoslhcb.cern.ch\/\/eos\/lhcb\/user\/a\/admorris\/phiKK\/bestfit_toys.root<\/FileName>\\\n\\\t<NTuplePath>dataNTuple<\/NTuplePath>/" \$newXMLfile
+		sed -i "s/<NumberEvents.*$/<NumberEvents>1000000<\/NumberEvents><FileName>root:\/\/eoslhcb.cern.ch\/\/eos\/lhcb\/user\/a\/admorris\/phiKK\/bestfit_toys.root<\/FileName>\\\n\\\t<NTuplePath>dataNTuple<\/NTuplePath>/" \$newXMLfile
 		# Perform the fit
 		logfile=RapidFitOutput-\$(date +"%Y%m%d_%H%M%S")_acceptance_\${index}.log
 		fitting \${nThreadsFlag} -f \${newXMLfile} --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee \${logfile}
@@ -60,7 +60,7 @@ do
 	done
 	EOF
 	# Submit the jobs
-	qsub ${submission_script}
-	rm ${submission_script}
+	#qsub ${submission_script}
+	#rm ${submission_script}
 done
 
