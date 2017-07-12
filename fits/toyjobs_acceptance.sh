@@ -60,7 +60,7 @@ do
 	done
 	EOF
 	# Submit the jobs
-	#qsub ${submission_script}
-	#rm ${submission_script}
+	qsub ${submission_script}
+	rm ${submission_script}
 done
 
