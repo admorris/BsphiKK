@@ -260,12 +260,12 @@ done
 # Style of total background PDF
 if [[ ${#components[@]} -gt 0 && ${#resonances[@]} -gt 0 ]]
 then
-	if [[ ${#components[@]} -gt 1 ]]
-	then
-		widthlist="${widthlist}:0"
-	else
+#	if [[ ${#components[@]} -gt 1 ]]
+#	then
+#		widthlist="${widthlist}:0"
+#	else
 		widthlist="${widthlist}:2"
-	fi
+#	fi
 	stylelist="${stylelist}:1"
 	colourlist="${colourlist}:2"
 fi
@@ -275,7 +275,8 @@ if [[ ${#components[@]} -gt 1 ]]
 then
 	for item in "${bkgwidths[@]}"
 	do
-		widthlist="${widthlist}:${item}"
+#		widthlist="${widthlist}:${item}"
+		widthlist="${widthlist}:0"
 	done
 	for item in "${bkgstyles[@]}"
 	do
