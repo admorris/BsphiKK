@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>mKKres_sigmazero</Name>
-	<Value>0.000020</Value>
+	<Value>0.0000160620</Value>
 	<Minimum>0.000010</Minimum>
 	<Maximum>0.000030</Maximum>
 	<Type>Float</Type>

@@ -18,11 +18,10 @@ TGraphErrors graph(n,x,y,xe,ye);
 graph.SetMarkerStyle(20);
 graph.Draw("AP");
 
-TF1 fun("fun",Form("x>%f?pow([0]*abs((x-%f)),[1]):0",x[0],x[0]));
+TF1 fun("fun",Form("x>%f?pow([0]*abs((x-%f)),0.5):0",x[0],x[0]));
 fun.SetLineStyle(2);
 fun.SetLineColor(2);
 fun.SetParameters(1,333);
-fun.SetParameters(2,0.5);
 graph.Fit(&fun, "","",x[0]-xerr/10, x[8]+xerr);
 graph.SetTitle("");
 graph.GetXaxis()->SetTitle("#it{m}(#it{K}^{+}#it{K}^{#minus}) [GeV/#it{c}^{2}]");
