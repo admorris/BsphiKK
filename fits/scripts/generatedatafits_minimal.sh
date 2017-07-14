@@ -9,7 +9,10 @@ bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/minimal_extra"
 best=(nonres fzero980 phi1020 ftwop1525LHCb)
 mkdir -p ${srcdir}
-for extra in "" "fzero1370LHCb" "fzero1500LHCb" "ftwo1640" "phi1680" "fzero1710" "ftwo1750"
+cd ${srcdir}
+${bindir}/PrintSource ${best[@]}
+cd ${CWD}
+for extra in "fzero1370LHCb" "fzero1500LHCb" "ftwo1640" "phi1680" "fzero1710" "ftwo1750"
 do
 	options=()
 	if [[ "${extra}" != *"zero"* ]]

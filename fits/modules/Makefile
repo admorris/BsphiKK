@@ -17,7 +17,7 @@ $(XMLDIR)%.xml : $(SRCDIR)%.$(SRCEXT) $$(shell echo `< $$(SRCDIR)%.$$(SRCEXT)`) 
 	@$(ASSEMBLE) `< $<` > $@
 
 %.xml : $(patsubst $(XMLDIR)%.xml, $(SRCDIR)%.$(SRCEXT), $@)
-	@for file in `< $<`; do ls $${file} 1>/dev/null; done
+	@for file in `< $<`; do ls $${file} 1>/dev/null || echo -e "\033[31mERROR:\e[0m Build failed for $@"; done
 
 $(DIRS) :
 	mkdir -p $@
