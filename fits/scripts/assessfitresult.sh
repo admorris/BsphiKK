@@ -33,7 +33,7 @@ function square()
 cd $1
 cwd=$(pwd)
 printf '%-68s | %-1s | %-7s | %-7s | %-7s | %24s | %-5s | %-5s | %-5s | %-7s | %-4s | %-6s | Parameters at limit\n' "folder" "S" "NLL" "AIC" "BIC" "Projection χ^2/ndof" "NR f" "f0 f" "phi f" "phi F_0" "f2' f" "f2' F_0"
-for folder in $(ls | grep FitResult)
+for folder in $(ls | grep FitResult) $(ls | grep toyjob) $(ls | grep acceptancejob)
 do
 	cd $cwd/$folder
 	for file in $(ls | grep "RapidFitOutput-.*\.log" | tail $2)
