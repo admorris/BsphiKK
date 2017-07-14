@@ -7,17 +7,17 @@ then
 fi
 bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/alt"
-best=(nonres fzero980 phi1020 ftwop1525LHCb phi1680)
+best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525LHCb phi1680)
 mkdir -p ${srcdir}
-for extra in "altbarrier" "altflatte" "nophi"
-do
-	cd ${srcdir}
-	${bindir}/PrintSource ${best[@]} ${extra} toys
-	cd ${CWD}
-done
-for extra in "altbarrier" "altflatte" "floatflatte" "peaking" "splitbyyear" "splitbytrigger" "splitbymagnet"
+for extra in "altbarrier" "altflatte" "floatflatte" "peaking" "notminLb" "conssigfrac" #"splitbyyear" "splitbytrigger" "splitbymagnet"
 do
 	cd ${srcdir}
 	${bindir}/PrintSource ${best[@]} ${extra}
 	cd ${CWD}
 done
+cd ${srcdir}
+${bindir}/PrintSource nonres fzero980 phi1020 fzero1500LHCb ftwop1525 phi1680
+${bindir}/PrintSource nonres fzero980 phi1020 fzero1500LHCb ftwop1525LHCb phi1680 alt1680
+${bindir}/PrintSource nonres fzero980 phi1020 fzero1500 ftwop1525LHCb phi1680
+cd ${CWD}
+

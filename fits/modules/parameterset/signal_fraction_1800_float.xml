@@ -3,6 +3,8 @@
 <PhysicsParameter>
 	<Name>signal_fraction</Name>
 	<Value>0.977871</Value> # ± 0.00164173
-	<Type>Fixed</Type>
+	<Minimum>0.95</Minimum>
+	<Maximum>1,00</Maximum>
+	<Type>Float</Type>
 </PhysicsParameter>
 
