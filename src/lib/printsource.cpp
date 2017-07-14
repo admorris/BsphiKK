@@ -7,7 +7,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac", "conspeaking"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};

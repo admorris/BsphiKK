@@ -16,6 +16,8 @@ do
 	cd ${CWD}
 done
 cd ${srcdir}
+${bindir}/PrintSource ${best[@]} "conspeaking" "conssigfrac"
+${bindir}/PrintSource ${best[@]} "conspeaking" "conssigfrac" "floatflatte"
 ${bindir}/PrintSource nonres fzero980 phi1020 fzero1500LHCb ftwop1525 phi1680
 ${bindir}/PrintSource nonres fzero980 phi1020 fzero1500LHCb ftwop1525LHCb phi1680 alt1680
 ${bindir}/PrintSource nonres fzero980 phi1020 fzero1500 ftwop1525LHCb phi1680
