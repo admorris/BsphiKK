@@ -153,8 +153,18 @@ void printsource(std::vector<std::string> resonances)
 		file << "parameterset/backgrounds/combinatorial_hist.xml\n";
 		if(!config["nopeaking"])
 		{
-			file << "parameterset/backgrounds/BdphiKstar_hist.xml\n";
-			file << "parameterset/backgrounds/Lb2PhiKp_hist.xml\n";
+			if(config["conspeaking"])
+			{
+				file << "parameterset/backgrounds/BdphiKstar_hist_float.xml\n";
+				file << "parameterset/backgrounds/Lb2PhiKp_hist_float.xml\n";
+				file << "constraintfunction/BdphiKstar_hist.xml\n";
+				file << "constraintfunction/Lb2PhiKp_hist.xml\n";
+			}
+			else
+			{
+				file << "parameterset/backgrounds/BdphiKstar_hist.xml\n";
+				file << "parameterset/backgrounds/Lb2PhiKp_hist.xml\n";
+			}
 		}
 		if(config["toys"])
 			file << "phasespaceboundary/variables_toys.xml\n";

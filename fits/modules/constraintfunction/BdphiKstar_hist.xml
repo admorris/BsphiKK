@@ -1,0 +1,5 @@
+<PhysicsParameter>
+	<Name>BdphiKstar_fraction</Name>
+	<Value>0.14</Value>
+	<Error>0.03</Error>
+</PhysicsParameter>

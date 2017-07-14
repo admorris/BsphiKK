@@ -1,0 +1,5 @@
+<PhysicsParameter>
+	<Name>Lb2PhiKp_fraction</Name>
+	<Value>0.28</Value>
+	<Error>0.15</Error>
+</PhysicsParameter>
