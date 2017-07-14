@@ -7,7 +7,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "floatflatte", "notminLb" "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "peaking"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb" "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -137,7 +137,10 @@ void printsource(std::vector<std::string> resonances)
 			}
 		}
 		file << "parameterset/deltaGammas_fixed.xml\n";
-		file << "parameterset/mKKrespars_fixed.xml\n";
+		if(config["altresolution"])
+			file << "parameterset/mKKrespars_fixed_18.xml\n";
+		else
+			file << "parameterset/mKKrespars_fixed.xml\n";
 		file << "parameterset/thraccscale_fixed_TOS.xml\n";
 		file << "parameterset/barrierfactorradii_fixed_"+barrier+".xml\n";
 		if(config["conssigfrac"])
@@ -148,7 +151,7 @@ void printsource(std::vector<std::string> resonances)
 		else
 			file << "parameterset/signal_fraction_1800_fixed.xml\n";
 		file << "parameterset/backgrounds/combinatorial_hist.xml\n";
-		if(config["peaking"])
+		if(!config["nopeaking"])
 		{
 			file << "parameterset/backgrounds/BdphiKstar_hist.xml\n";
 			file << "parameterset/backgrounds/Lb2PhiKp_hist.xml\n";
