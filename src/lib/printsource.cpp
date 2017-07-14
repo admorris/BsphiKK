@@ -7,7 +7,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb" "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -123,7 +123,7 @@ void printsource(std::vector<std::string> resonances)
 			else
 			{
 				file << "parameterset/fractions/"+name+"_float.xml\n";
-				if(config["alt1680"] && name.find("1680" != std::string::npos))
+				if(config["alt1680"] && name.find("1680") != std::string::npos)
 				{
 					file << "parameterset/resonances/"+name+"_float.xml\n";
 					file << "constraintfunction/"+name+"_constraint.xml\n";

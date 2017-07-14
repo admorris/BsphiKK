@@ -20,6 +20,9 @@ parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
 constraintfunction/ftwop1525LHCb_constraint.xml
+parameterset/fractions/_float.xml
+parameterset/resonances/_fixed.xml
+parameterset/amplitudes/_float_transverse.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
