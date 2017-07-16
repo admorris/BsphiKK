@@ -9,7 +9,7 @@
 <PhysicsParameter>
 	<Name>fzero980_gpipi</Name>
 	<Value>0.1990</Value> # LHCb 0.199±0.030 GeV
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>GeV</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
