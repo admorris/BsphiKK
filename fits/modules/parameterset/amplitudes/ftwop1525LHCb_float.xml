@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_Aplus</Name>
-	<Value>0.3</Value> #Aplus
+	<Value>0.295</Value> #Aplus
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type> #Aplus
@@ -8,7 +8,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_Azero</Name>
-	<Value>0.9</Value> #Azero
+	<Value>0.927</Value> #Azero
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type> #Azero
@@ -16,7 +16,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_deltaplus</Name>
-	<Value>0.0</Value>
+	<Value>1.92</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltaplus
@@ -24,7 +24,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_deltazero</Name>
-	<Value>0.0</Value>
+	<Value>0.48</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltazero
@@ -32,7 +32,7 @@
 </PhysicsParameter>
 <PhysicsParameter>
 	<Name>ftwop1525LHCb_deltaminus</Name>
-	<Value>0.0</Value>
+	<Value>1.356</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltaminus

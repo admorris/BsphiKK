@@ -1,6 +1,6 @@
 <PhysicsParameter>
 	<Name>fzero980_deltazero</Name>
-	<Value>-1.0</Value>
+	<Value>-1.9</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type>

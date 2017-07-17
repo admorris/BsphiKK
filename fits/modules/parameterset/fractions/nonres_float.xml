@@ -4,7 +4,7 @@
 # colour: 30
 <PhysicsParameter>
 	<Name>nonres_fraction</Name>
-	<Value>0.23</Value>
+	<Value>0.17</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type>

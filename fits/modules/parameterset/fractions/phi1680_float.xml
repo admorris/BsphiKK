@@ -4,7 +4,7 @@
 # colour: 1
 <PhysicsParameter>
 	<Name>phi1680_fraction</Name>
-	<Value>0.34</Value>
+	<Value>0.344</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>
 	<Type>Float</Type>
