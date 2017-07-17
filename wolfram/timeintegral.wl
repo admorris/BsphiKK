@@ -61,31 +61,5 @@ timeintegral = Integrate[DecayRate[t] + DecayRateBar[t],{t,tlow,\[Infinity]}]
 Print["\\int^{\\infty}_{",TeXForm[tlow],"} \\Gamma(t) + \\bar{\\Gamma}(t) dt &=&",TeXForm[Refine[timeintegral]]]
 Print["\\\\"]
 
-tlow := \[Tau]
-timeintegral = Integrate[DecayRate[t] + DecayRateBar[t],{t,tlow,\[Infinity]}]
-Print["\\int^{\\infty}_{",TeXForm[tlow],"} \\Gamma(t) + \\bar{\\Gamma}(t) dt &=&",TeXForm[Refine[timeintegral]]]
-Print["\\\\"]
-
-Acceptance[t_] = 1 - 1 / (1 + (b (t - \[Tau]))^2)
-Print["\\varepsilon(t) &=&",TeXForm[Acceptance[t]]]
-Print["\\\\"]
-timeintegral = Integrate[(DecayRate[t] + DecayRateBar[t]) Acceptance[t],{t,tlow,\[Infinity]}]
-Print["\\int^{\\infty}_{",TeXForm[tlow],"} \\left(\\Gamma(t) + \\bar{\\Gamma}(t)\\right) \\varepsilon(t) dt &=&",TeXForm[Refine[timeintegral]]]
-Print["\\\\"]
-
-Acceptance[t_] = Erf[b (t - \[Tau])]
-Print["\\varepsilon(t) &=&",TeXForm[Acceptance[t]]]
-Print["\\\\"]
-timeintegral = Integrate[(DecayRate[t] + DecayRateBar[t]) Acceptance[t],{t,tlow,\[Infinity]}]
-Print["\\int^{\\infty}_{",TeXForm[tlow],"} \\left(\\Gamma(t) + \\bar{\\Gamma}(t)\\right) \\varepsilon(t) dt &=&",TeXForm[Refine[timeintegral]]]
-Print["\\\\"]
-
-Acceptance[t_} = TanH[b (t - \[Tau])]
-Print["\\varepsilon(t) &=&",TeXForm[Acceptance[t]]]
-Print["\\\\"]
-timeintegral = Integrate[(DecayRate[t] + DecayRateBar[t]) Acceptance[t],{t,tlow,\[Infinity]}]
-Print["\\int^{\\infty}_{",TeXForm[tlow],"} \\left(\\Gamma(t) + \\bar{\\Gamma}(t)\\right) \\varepsilon(t) dt &=&",TeXForm[Refine[timeintegral]]]
-Print["\\\\"]
-
 
 Exit[]
