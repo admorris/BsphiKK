@@ -15,9 +15,9 @@ function newKK()
 	sed -i "s/Float/Fixed/" resonances/${name}_fixed.xml
 	./newamplitude.sh ${name} ${spin} 0.0 > amplitudes/${name}_float.xml
 	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero.xml
-	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltaplus.xml
-	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero_fixdeltaplus.xml
-	for polarisation in "zero" "plus"
+	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltaminus.xml
+	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero_fixdeltaminus.xml
+	for polarisation in "zero" "minus"
 	do
 		sed -i "s/<Type>Float<\/Type> #delta${polarisation}/<Type>Fixed<\/Type> #delta${polarisation}/" amplitudes/${name}_float_fix*delta${polarisation}*.xml
 	done

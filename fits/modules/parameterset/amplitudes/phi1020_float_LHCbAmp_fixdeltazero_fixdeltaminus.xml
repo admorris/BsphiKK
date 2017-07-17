@@ -25,7 +25,7 @@
 <PhysicsParameter>
 	<Name>phi1020_deltaplus</Name>
 	<Value>2.60</Value>
-	<Type>Fixed</Type>
+	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
@@ -39,6 +39,6 @@
 	<Value>1.34</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Float</Type>
+	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

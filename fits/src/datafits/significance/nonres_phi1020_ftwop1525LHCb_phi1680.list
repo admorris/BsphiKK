@@ -11,7 +11,7 @@ parameterset/fractions/nonres_float.xml
 parameterset/amplitudes/nonres_float.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_float.xml
-parameterset/amplitudes/phi1020_float_LHCbAmp_fixdeltazero_fixdeltaplus.xml
+parameterset/amplitudes/phi1020_float_LHCbAmp_fixdeltazero_fixdeltaminus.xml
 constraintfunction/phi1020_constraint.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml

@@ -3,7 +3,7 @@ minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
-parameterset/amplitudes/ftwop1525LHCb_float_fixdeltazero_fixdeltaplus.xml
+parameterset/amplitudes/ftwop1525LHCb_float_fixdeltazero_fixdeltaminus.xml
 parameterset/fractions/ftwop1525LHCb_fixed.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml

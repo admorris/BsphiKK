@@ -1,2 +1,2 @@
 <MinimiserName>Minuit</MinimiserName>
-<ConfigureMinimiser>MinosErrors</ConfigureMinimiser>
+#<ConfigureMinimiser>MinosErrors</ConfigureMinimiser>

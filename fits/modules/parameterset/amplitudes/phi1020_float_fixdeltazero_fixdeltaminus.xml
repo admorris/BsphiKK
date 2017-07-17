@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>ftwo1640_Aplus</Name>
+	<Name>phi1020_Aplus</Name>
 	<Value>0.577</Value> #Aplus
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -7,7 +7,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1640_Azero</Name>
+	<Name>phi1020_Azero</Name>
 	<Value>0.577</Value> #Azero
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -15,26 +15,26 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1640_deltaplus</Name>
+	<Name>phi1020_deltaplus</Name>
 	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Fixed</Type> #deltaplus
+	<Type>Float</Type> #deltaplus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1640_deltazero</Name>
+	<Name>phi1020_deltazero</Name>
 	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Float</Type> #deltazero
+	<Type>Fixed</Type> #deltazero
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>ftwo1640_deltaminus</Name>
+	<Name>phi1020_deltaminus</Name>
 	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
-	<Type>Float</Type> #deltaminus
+	<Type>Fixed</Type> #deltaminus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>

@@ -98,7 +98,7 @@ void printsource(std::vector<std::string> resonances)
 				if(config["nophi"])
 					file << "parameterset/amplitudes/"+name+"_float_LHCbAmp_fixdeltazero.xml\n";
 				else
-					file << "parameterset/amplitudes/"+name+"_float_LHCbAmp_fixdeltazero_fixdeltaplus.xml\n";
+					file << "parameterset/amplitudes/"+name+"_float_LHCbAmp_fixdeltazero_fixdeltaminus.xml\n";
 				file << "constraintfunction/"+name+"_constraint.xml\n";
 			}
 			else if(res.find("ftwop1525") != std::string::npos)
