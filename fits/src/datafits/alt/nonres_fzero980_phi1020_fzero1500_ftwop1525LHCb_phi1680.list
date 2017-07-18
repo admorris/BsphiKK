@@ -10,13 +10,15 @@ dataset/Bs_LOKI_Mass_2sigma_cut.xml
 parameterset/fractions/nonres_float.xml
 parameterset/amplitudes/nonres_float.xml
 parameterset/fractions/fzero980_float.xml
-parameterset/resonances/fzero980_float.xml
-constraintfunction/fzero980_constraint.xml
+parameterset/resonances/fzero980_fixed.xml
 parameterset/amplitudes/fzero980_float.xml
 parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_fixdeltazero_fixdeltaminus.xml
 constraintfunction/phi1020_constraint.xml
+parameterset/fractions/fzero1500_float.xml
+parameterset/resonances/fzero1500_fixed.xml
+parameterset/amplitudes/fzero1500_float.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml

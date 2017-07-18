@@ -17,6 +17,9 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/resonances/phi1020_float.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_fixdeltazero_fixdeltaminus.xml
 constraintfunction/phi1020_constraint.xml
+parameterset/fractions/fzero1500LHCb_float.xml
+parameterset/resonances/fzero1500LHCb_fixed.xml
+parameterset/amplitudes/fzero1500LHCb_float.xml
 parameterset/fractions/ftwop1525LHCb_float.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float.xml
@@ -28,10 +31,13 @@ parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-parameterset/signal_fraction_1800_fixed.xml
+parameterset/signal_fraction_1800_float.xml
+constraintfunction/signal_fraction_1800_constraint.xml
 parameterset/backgrounds/combinatorial_hist.xml
-parameterset/backgrounds/BdphiKstar_hist.xml
-parameterset/backgrounds/Lb2PhiKp_hist.xml
+parameterset/backgrounds/BdphiKstar_hist_float.xml
+parameterset/backgrounds/Lb2PhiKp_hist_float.xml
+constraintfunction/BdphiKstar_hist.xml
+constraintfunction/Lb2PhiKp_hist.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 phasespaceboundary/TOS.xml
