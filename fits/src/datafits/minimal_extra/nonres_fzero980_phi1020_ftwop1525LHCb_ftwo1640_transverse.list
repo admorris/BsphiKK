@@ -26,7 +26,7 @@ parameterset/amplitudes/ftwo1640_float_transverse.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
-parameterset/barrierfactorradii_fixed_BsJpsiKK.xml
+parameterset/barrierfactorradii_fixed_EvtGen.xml
 parameterset/signal_fraction_1800_fixed.xml
 parameterset/backgrounds/combinatorial_hist.xml
 parameterset/backgrounds/BdphiKstar_hist.xml

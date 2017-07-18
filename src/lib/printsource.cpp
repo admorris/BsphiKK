@@ -27,7 +27,7 @@ void printsource(std::vector<std::string> resonances)
 				return true;
 		return false;
 	}), resonances.end());
-	std::vector<std::string> years = {""}, triggers = {""}, polarities = {""}, barriers = {"BsJpsiKK"}, flatteparams = {""};
+	std::vector<std::string> years = {""}, triggers = {""}, polarities = {""}, barriers = {"EvtGen"}, flatteparams = {""}, floatflatteoptions = {""};
 	if(config["splitbyyear"])
 		years = {"2011", "2012"};
 	if(config["splitbytrigger"])
@@ -35,14 +35,17 @@ void printsource(std::vector<std::string> resonances)
 	if(config["splitbymagnet"])
 		polarities = {"magup", "magdown"};
 	if(config["altbarrier"])
-		barriers = {"EvtGen", "BaBar"};
+		barriers = {"BsJpsiKK", "BaBar"};
 	if(config["altflatte"])
 		flatteparams = {"_BES", "_CLEO"};
+	if(config["floatflatte"])
+		floatflatteoptions = {"", "_both"};
 	for(const auto& year: years)
 	for(const auto& trigger: triggers)
 	for(const auto& polarity: polarities)
 	for(const auto& barrier: barriers)
 	for(const auto& flatte: flatteparams)
+	for(const auto& floatflatteoption: floatflatteoptions)
 	{
 		std::string tmpfilename = filename;
 		for(const auto& suffix: {year, trigger, polarity})
@@ -52,6 +55,8 @@ void printsource(std::vector<std::string> resonances)
 			tmpfilename+="_"+barrier+"_barriers";
 		if(config["altflatte"])
 			tmpfilename+=flatte+"_flatte";
+		if(config["floatflatte"])
+			tmpfilename+=floatflatteoption;
 		std::cout << "Creating " << tmpfilename << std::endl;
 		std::ofstream file(tmpfilename+".list", std::ios::out);
 		file << "pdf/signal/Bs2PhiKK.xml\n";
@@ -113,7 +118,7 @@ void printsource(std::vector<std::string> resonances)
 				file << "parameterset/fractions/"+name+"_float.xml\n";
 				if(config["floatflatte"])
 				{
-					file << "parameterset/resonances/"+name+"_float"+flatte+".xml\n";
+					file << "parameterset/resonances/"+name+"_float"+flatte+floatflatteoption+".xml\n";
 					file << "constraintfunction/"+name+"_constraint.xml\n";
 				}
 				else
