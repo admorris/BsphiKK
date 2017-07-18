@@ -6,7 +6,7 @@ then
 	exit 1
 fi
 bindir="${CWD}/../bin"
-srcdir="${CWD}/src/datafits/1680_extra"
+srcdir="${CWD}/src/datafits/1680_1500_extra"
 best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525LHCb phi1680)
 mkdir -p ${srcdir}
 for extra in "fzero1370LHCb" "ftwo1640" "fzero1710" "ftwo1750"
