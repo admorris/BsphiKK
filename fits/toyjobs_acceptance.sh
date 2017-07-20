@@ -18,7 +18,7 @@ else
 	recentxml="outputXMLFile${2}.xml"
 	timestamp=${2}
 fi
-for i in `seq 0 15`
+for i in `seq 0 31`
 do
 	cd ${currentdir}/${folder}
 	workingfolder="acceptancejob_${timestamp}_${i}"
@@ -44,9 +44,9 @@ do
 	echo -e "$SetupEnvironment" >> ${submission_script}
 	cat <<-EOF >> ${submission_script}
 	export PATH=\$PATH:\$RapidFitDir/bin
-	for acc in \`seq 0 7\`
+	for acc in \`seq 0 3\`
 	do
-		index=\$(($i*8+\$acc))
+		index=\$(($i*4+\$acc))
 		newXMLfile="inputXMLFile_\${index}.xml"
 		sed "s/AcceptanceEntry:0/AcceptanceEntry:\${index}/" ../${recentxml} > \$newXMLfile
 		# Fit to pre-generated toys
