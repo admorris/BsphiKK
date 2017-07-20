@@ -246,6 +246,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
     phiKKFitter.Fit(&CDdata);
   resolution *= SigMod->GetValue("scalef");
   phiKKFitter.Plot(CDframe);
+  std::cout << "χ²/ndof = " << CDframe->chiSquare() << std::endl;
   plotmaker<RooPlot>* CDplotter;
   if(drawpulls)
   {
