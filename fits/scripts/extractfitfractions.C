@@ -6,6 +6,14 @@ double getvalue(TTree* tree, std::string name)
 	delete hist;
 	return value;
 }
+double getstddev(TTree* tree, std::string name)
+{
+	tree->Draw(name.c_str(),"","goff");
+	TH1* hist = static_cast<TH1*>(gDirectory->Get("htemp"));
+	double value = hist->GetStdDev();
+	delete hist;
+	return value;
+}
 
 void extractfitfractions(std::string filename)
 {
@@ -15,7 +23,8 @@ void extractfitfractions(std::string filename)
 		std::string name = branch->GetName();
 		std::cout << endl;
 		std::cout << std::left<< std::setw(40) << name.substr(name.find_first_of('_'))
-		<< std::left<< std::setw(40) << getvalue(tree, name);
+		<< std::left<< std::setw(40) << getvalue(tree, name)
+		<< std::left<< std::setw(40) << getstddev(tree, name);
 	}
 	std::cout << endl;
 }
