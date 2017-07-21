@@ -27,7 +27,7 @@ void printsource(std::vector<std::string> resonances)
 				return true;
 		return false;
 	}), resonances.end());
-	std::vector<std::string> years = {""}, triggers = {""}, polarities = {""}, barriers = {"EvtGen"}, flatteparams = {""}, floatflatteoptions = {""};
+	std::vector<std::string> years = {""}, triggers = {""}, polarities = {""}, barriers = {"EvtGen"}, flatteparams = {""}, floatflatteoptions = {""}, resolutions = {""};
 	if(config["splitbyyear"])
 		years = {"2011", "2012"};
 	if(config["splitbytrigger"])
@@ -40,12 +40,15 @@ void printsource(std::vector<std::string> resonances)
 		flatteparams = {"_BES", "_CLEO"};
 	if(config["floatflatte"])
 		floatflatteoptions = {"", "_both"};
+	if(config["altresolution"])
+		resolutions = {"_upper", "_lower"};
 	for(const auto& year: years)
 	for(const auto& trigger: triggers)
 	for(const auto& polarity: polarities)
 	for(const auto& barrier: barriers)
 	for(const auto& flatte: flatteparams)
 	for(const auto& floatflatteoption: floatflatteoptions)
+	for(const auto& resolution: resolutions)
 	{
 		std::string tmpfilename = filename;
 		for(const auto& suffix: {year, trigger, polarity})
@@ -57,6 +60,8 @@ void printsource(std::vector<std::string> resonances)
 			tmpfilename+=flatte+"_flatte";
 		if(config["floatflatte"])
 			tmpfilename+=floatflatteoption;
+		if(config["altresolution"])
+			tmpfilename+=resolution+"resolution";
 		std::cout << "Creating " << tmpfilename << std::endl;
 		std::ofstream file(tmpfilename+".list", std::ios::out);
 		file << "pdf/signal/Bs2PhiKK.xml\n";
@@ -142,10 +147,7 @@ void printsource(std::vector<std::string> resonances)
 			}
 		}
 		file << "parameterset/deltaGammas_fixed.xml\n";
-		if(config["altresolution"])
-			file << "parameterset/mKKrespars_fixed_18.xml\n";
-		else
-			file << "parameterset/mKKrespars_fixed.xml\n";
+		file << "parameterset/mKKrespars_fixed"+resolution+".xml\n";
 		file << "parameterset/thraccscale_fixed_TOS.xml\n";
 		file << "parameterset/barrierfactorradii_fixed_"+barrier+".xml\n";
 		if(config["conssigfrac"])

@@ -1,0 +1,6 @@
+<PhysicsParameter>
+	<Name>mKKres_sigmazero</Name>
+	<Value>1.56e-05</Value>
+	<Type>Fixed</Type>
+	<Unit>GeV</Unit>
+</PhysicsParameter>
