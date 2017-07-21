@@ -4,3 +4,6 @@
 [submodule "CloneTagger"]
 	path = CloneTagger
 	url = git@github.com:abmorris/CloneTagger.git
+[submodule "RapidFit"]
+	path = RapidFit
+	url = git@github.com:abmorris/RapidFit.git
