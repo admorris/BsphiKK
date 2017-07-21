@@ -16,7 +16,7 @@ cat <<-EOF > ${submission_script}
 	EOF
 	echo -e "$SetupEnvironment" >> ${submission_script}
 cat <<-EOF >> ${submission_script}
-	cd \$RapidFitDir
+	cd $currentdir/../RapidFit
 	make -j\$NSLOTS
 	EOF
 # Submit the job

@@ -2,6 +2,7 @@
 # Usage: runall.sh [<folder>] [<pattern to match>]  [<extra RapidFit options>]
 make -C modules -j || exit 1
 currentdir=$(pwd)
+export PATH=$PATH:$currentdir/../RapidFit/bin:$currentdir/../bin
 if [ "$1" == "" ]
 then
 	fitfolders=($(find src -mindepth 1 -type d | sed 's/src/results/g'))

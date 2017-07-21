@@ -43,7 +43,7 @@ do
 	EOF
 	echo -e "$SetupEnvironment" >> ${submission_script}
 	cat <<-EOF >> ${submission_script}
-	export PATH=\$PATH:\$RapidFitDir/bin
+	export PATH=\$PATH:$currentdir/../RapidFit/bin:$currentdir/../bin
 	for acc in \`seq 0 3\`
 	do
 		index=\$(($i*4+\$acc))

@@ -33,7 +33,7 @@ do
 		EOF
 		echo -e "$SetupEnvironment" >> ${submission_script}
 		cat <<-EOF >> ${submission_script}
-		export PATH=\$PATH:\$RapidFitDir/bin:$currentdir/../bin
+		export PATH=\$PATH:$currentdir/../RapidFit/bin:$currentdir/../bin
 		# Move to the right folder
 		mkdir -p FitResult_$(echo $file | sed 's/\.xml//g')
 		cd FitResult_$(echo $file | sed 's/\.xml//g')

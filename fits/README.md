@@ -4,20 +4,6 @@
 
 To avoid maintaining lots of duplicated XML tags, the RapidFit configs are built from modular XML snippets stored in `modules/` according to lists stored in `src/`. The script `modules/assemble.sh` does most of the work and has some knowledge of what RapidFit requires. To build the RapidFit configs, just type `make` in the `modules/` directory. There are three folders for different types of fit we want to do, which are mirrored in the `src/` folder: `toystudies/`, `datafits/` and `mcfits/` (which is sub-divided into `pwave/` and `phasespace/`). These can be extended or modified by changing the folder structure inside `src/` although at the moment you'll have to create the new folders yourself.
 
-## How to check out just this folder
-
-The following script will do a sparse checkout of `fits/` on its own:
-```#!/bin/bash
-git init BsphiKK
-cd BsphiKK/
-git remote add origin git@github.com:abmorris/BsphiKK.git
-git config core.sparsecheckout true
-echo "/fits/*" >> .git/info/sparse-checkout
-echo "/.gitignore" >> .git/info/sparse-checkout
-git pull --depth=1 origin master
-git fetch --depth=1
-git branch --set-upstream-to=origin/master master
-```
 ## Acceptance
 
 A special `acceptance.xml` file can be used in conjunction with `../scripts/angacc.sh` to generate the Legendre coefficients for a nice, smooth acceptance function. The location of the outputted file must be given in `modules/pdf/moments_acceptance.xml`.
@@ -68,16 +54,8 @@ It takes 3 optional arguments: the first restricts it to running the fits in a p
 
 Below are instructions of how to run on either ECDF/Eddie or the SOPA batch system.
 
-## Building RapidFit
 
-- Download RapidFit using a recursive clone:`git clone --recursive git@github.com:abmorris/RapidFit.git`
-- Copy the appropriate `RFjobconfig.[HOST].default.sh` file to `RFjobconfig.sh`
-- Edit the `RapidFitDir` environment variable to point to the right place
-- Log in to a job node qith `qlogin`
-- Set up the environment with `source RFjobconfig.sh`
-- Build RapidFit with `cd $RapidFitDir && make -j` (optionally give a number of threads to `-j`)
-
-## Submitting jobs
+Copy the appropriate `RFjobconfig.[HOST].default.sh` file to `RFjobconfig.sh`
 
 The script `submitall.sh` takes the same syntax as `runall.sh`, but will submit jobs to the batch system.
 Job runtimes can be configured via the `.list` files using the `.sh` snippets found in `modules/joboptions`.
