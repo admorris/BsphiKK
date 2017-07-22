@@ -13,7 +13,7 @@ function inform
 }
 function getparticlename
 {
-	echo $1 | sed -r "s/.*$2\/([a-zA-Z0-9]*)_.*/\1/g" | sed "s/_spline//g"
+	echo $1 | sed -r "s/.*$2\/([a-zA-Z0-9]*)_.*/\1/g"
 }
 # SGE/OGE job options
 declare -a joboptions
@@ -27,7 +27,6 @@ declare -a resonances
 declare -a sigwidths
 declare -a sigstyles
 declare -a sigcolours
-declare -a swavesplineknots
 # List of background components
 declare -a components
 declare -a bkgwidths
@@ -129,15 +128,13 @@ do
 			then
 				# The first line should contain the spin and resonance shape
 				particle=$(getparticlename $arg fractions)
-				resonances+=("${particle}$(getoption $arg shape | sed -r 's/spin-([012])\s*([A-Z][A-Z]).*$/(\1\,\2)/g')")
-				if [[ "$(getoption $arg shape)" == *"spin-0 SP"* ]]
-				then
-					swavesplineknots+=("${particle}")
-				else
+				resonances+=($(getoption $arg shape))
+				for comb in $(seq 1 $(echo "$(getoption $arg shape)" | grep -o "," | wc -l))
+				do
 					sigwidths+=("$(getoption $arg width)")
 					sigstyles+=("$(getoption $arg style)")
 					sigcolours+=("$(getoption $arg colour)")
-				fi
+				done
 			elif [[ $arg == *"backgrounds/"* ]]
 			then
 				# The first line should contain the spin and resonance shape
@@ -238,13 +235,6 @@ then
 	do
 		colourlist="${colourlist}:${item}"
 	done
-	# Style of s-wave spline
-	if [[ ${#swavesplineknots[@]} -gt 0 ]]
-	then
-		widthlist="${widthlist}:2"
-		stylelist="${stylelist}:9"
-		colourlist="${colourlist}:3"
-	fi
 	# Style of interference
 	widthlist="${widthlist}:2"
 	stylelist="${stylelist}:5"
@@ -393,7 +383,7 @@ do
 	echo "		  <Threads>${NSLOTS}</Threads>"
 	if [[ ${#resonances[@]} -gt 1 || ${#components[@]} -gt 1 ]]
 	then
-		numsigkeys=$(echo "${#resonances[@]}-${#swavesplineknots[@]}" | bc -l)
+		numsigkeys=${#resonances[@]}
 		if [[ ${#sigwidths[@]} -eq ${numsigkeys} && ${#bkgwidths[@]} -eq ${#components[@]} ]]
 		then
 			echo "			<WidthKey>${widthlist}</WidthKey>"

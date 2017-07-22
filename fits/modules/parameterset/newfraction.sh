@@ -1,15 +1,22 @@
 #!/bin/bash
 # Self-documenting the argument set
-name=$1
-spin=$2
-shape=$3
+name1=$1
+name2=$2
+spin1=$3
+spin2=$4
+shape=$5
+sortedname=($(
+for element in ${name1} ${name2}
+do
+    echo "$element"
+done | sort))
 # Generate the XML
-echo "# shape: spin-${spin} ${shape}"
+echo "# shape: ${name1},${name2}(${spin1}${spin2}${shape})"
 echo "# style: 1"
 echo "# width: 1"
 echo "# colour: 1"
 echo "<PhysicsParameter>"
-echo "	<Name>${name}_fraction</Name>"
+echo "	<Name>${sortedname[0]}_${sortedname[1]}_fraction</Name>"
 echo "	<Value>0.01</Value>"
 echo "	<Minimum>0.0</Minimum>"
 echo "	<Maximum>10.0</Maximum>"

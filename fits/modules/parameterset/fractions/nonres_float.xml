@@ -1,9 +1,9 @@
-# shape: spin-0 NR
+# shape: phi1020,nonres(10NR) nonres,phi1020(01BW)
 # style: 7
 # width: 2
 # colour: 30
 <PhysicsParameter>
-	<Name>nonres_fraction</Name>
+	<Name>nonres_phi1020_fraction</Name>
 	<Value>0.17</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>

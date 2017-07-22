@@ -1,9 +1,9 @@
-# shape: spin-0 BW
+# shape: phi1020,fzero1710(10BW)
 # style: 1
 # width: 1
 # colour: 1
 <PhysicsParameter>
-	<Name>fzero1710_fraction</Name>
+	<Name>fzero1710_phi1020_fraction</Name>
 	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>

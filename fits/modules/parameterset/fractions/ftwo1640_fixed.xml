@@ -1,9 +1,9 @@
-# shape: spin-2 BW
+# shape: phi1020,ftwo1640(12BW)
 # style: 1
 # width: 1
 # colour: 1
 <PhysicsParameter>
-	<Name>ftwo1640_fraction</Name>
+	<Name>ftwo1640_phi1020_fraction</Name>
 	<Value>0.01</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>10.0</Maximum>

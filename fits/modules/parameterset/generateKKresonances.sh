@@ -46,13 +46,9 @@ function newKK()
 		sed -i "s/<Value>.*<\/Value> #Azero/<Value>0.0<\/Value> #Azero/" amplitudes/${name}_float_transverse.xml
 		sed -i "s/<Value>.*<\/Value> #Aplus/<Value>0.707<\/Value> #Aplus/" amplitudes/${name}_float_transverse.xml
 	fi
-	./newfraction.sh ${name} ${spin} "BW" > fractions/${name}_float.xml
+	./newfraction.sh "phi1020" "${name}" 1 ${spin} "BW" > fractions/${name}_float.xml
 	cp fractions/${name}_float.xml fractions/${name}_fixed.xml
 	sed -i "s/<Type>Float<\/Type>/<Type>Fixed<\/Type>/" fractions/${name}_fixed.xml
-	if [ "${spin}" == "0" ]
-	then
-		./newfraction.sh ${name} ${spin} "SP" > fractions/${name}_spline_float.xml
-	fi
 	./newconstraint.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > ../constraintfunction/${name}_constraint.xml
 }
 # Note: f0(980) added by hand because Flatte

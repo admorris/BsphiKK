@@ -1,10 +1,10 @@
-# shape: spin-0 FT
+# shape: phi1020,fzero980(10FT) fzero980,phi1020(01BW)
 # style: 9
 # width: 2
 # colour: 3
 <PhysicsParameter>
-	<Name>fzero980_fraction</Name>
-	<Value>0.15</Value>
+	<Name>fzero980_phi1020_fraction</Name>
+	<Value>0.50</Value>
 	<Type>Fixed</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
