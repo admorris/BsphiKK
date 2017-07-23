@@ -12,7 +12,7 @@ fi
 mainfolder=${currentdir}/results/datafits/bestfits_likelihood
 mkdir -p ${mainfolder}
 nrepeats=3 # how many times to fit each PDF per job
-for i in `seq 0 31`
+for i in `seq 0 15`
 do
 	for Gfolder in ${1} ${2} ${3}
 	do
