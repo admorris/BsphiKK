@@ -2,6 +2,7 @@ pdf/signal/Bs2PhiKK.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
+parameterset/resonances/phi1020_fixed.xml
 parameterset/resonances/ftwop1525LHCb_float.xml
 parameterset/amplitudes/ftwop1525LHCb_float_fixdeltazero_fixdeltaminus.xml
 parameterset/fractions/ftwop1525LHCb_fixed.xml

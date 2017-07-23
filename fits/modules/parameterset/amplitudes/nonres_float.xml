@@ -1,5 +1,5 @@
 <PhysicsParameter>
-	<Name>nonres_deltazero</Name>
+	<Name>nonres_phi1020_deltazero</Name>
 	<Value>1.33</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>

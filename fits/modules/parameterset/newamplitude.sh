@@ -1,10 +1,18 @@
 #!/bin/bash
 # Self-documenting the argument set
-name=$1
-spin=$2
-phase=$3
+name1=$1
+name2=$2
+spin1=$3
+spin2=$4
+phase=$5
+sortedname=($(
+for element in ${name1} ${name2}
+do
+    echo "$element"
+done | sort))
+name="${sortedname[0]}_${sortedname[1]}"
 # Generate the XML
-if [ ${spin} == "0" ]
+if [[ ${spin1} == "0" || ${spin2} == 0 ]]
 then
 	echo "<PhysicsParameter>"
 	echo "	<Name>${name}_deltazero</Name>"

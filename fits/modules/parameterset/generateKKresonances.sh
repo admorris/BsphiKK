@@ -13,7 +13,7 @@ function newKK()
 	./newresonance.sh ${name} ${mass} ${width} > resonances/${name}_float.xml
 	cp resonances/${name}_float.xml resonances/${name}_fixed.xml
 	sed -i "s/Float/Fixed/" resonances/${name}_fixed.xml
-	./newamplitude.sh ${name} ${spin} 0.0 > amplitudes/${name}_float.xml
+	./newamplitude.sh "phi1020" "${name}" 1 ${spin} 0.0 > amplitudes/${name}_float.xml
 	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero.xml
 	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltaminus.xml
 	cp amplitudes/${name}_float.xml amplitudes/${name}_float_fixdeltazero_fixdeltaminus.xml
@@ -46,7 +46,7 @@ function newKK()
 		sed -i "s/<Value>.*<\/Value> #Azero/<Value>0.0<\/Value> #Azero/" amplitudes/${name}_float_transverse.xml
 		sed -i "s/<Value>.*<\/Value> #Aplus/<Value>0.707<\/Value> #Aplus/" amplitudes/${name}_float_transverse.xml
 	fi
-	./newfraction.sh "phi1020" "${name}" 1 ${spin} "BW" > fractions/${name}_float.xml
+	./newfraction.sh "phi1020" "${name}" 1 ${spin} "BW" "BW" > fractions/${name}_float.xml
 	cp fractions/${name}_float.xml fractions/${name}_fixed.xml
 	sed -i "s/<Type>Float<\/Type>/<Type>Fixed<\/Type>/" fractions/${name}_fixed.xml
 	./newconstraint.sh ${name} ${mass} ${mloerr} ${muperr} ${width} ${wloerr} ${wuperr} > ../constraintfunction/${name}_constraint.xml

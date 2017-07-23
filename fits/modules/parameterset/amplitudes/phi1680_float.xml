@@ -1,38 +1,38 @@
 <PhysicsParameter>
-	<Name>phi1680_Aplus</Name>
-	<Value>0.82</Value> #Aplus
+	<Name>phi1020_phi1680_Aplus</Name>
+	<Value>0.577</Value> #Aplus
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type> #Aplus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1680_Azero</Name>
-	<Value>0.10</Value> #Azero
+	<Name>phi1020_phi1680_Azero</Name>
+	<Value>0.577</Value> #Azero
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
 	<Type>Float</Type> #Azero
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1680_deltaplus</Name>
-	<Value>-0.75</Value>
+	<Name>phi1020_phi1680_deltaplus</Name>
+	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltaplus
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1680_deltazero</Name>
-	<Value>4.05</Value>
+	<Name>phi1020_phi1680_deltazero</Name>
+	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltazero
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1680_deltaminus</Name>
-	<Value>2.4</Value>
+	<Name>phi1020_phi1680_deltaminus</Name>
+	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
 	<Type>Float</Type> #deltaminus

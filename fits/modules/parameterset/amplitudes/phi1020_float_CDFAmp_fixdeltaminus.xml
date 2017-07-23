@@ -5,7 +5,7 @@
 # Input:  A‖ = 0.536 × Exp(i × 2.71)  A⊥ = 0.604 × Exp(i × 2.39)
 # Output: A+ = 0.796 × Exp(i × 2.54)  A− = 0.137 × Exp(i × -1.81)
 <PhysicsParameter>
-	<Name>phi1020_Aplus</Name>
+	<Name>phi1020_phi1020_Aplus</Name>
 	<Value>0.796</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -13,7 +13,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_Azero</Name>
+	<Name>phi1020_phi1020_Azero</Name>
 	<Value>0.590</Value>
 	<Minimum>0.0</Minimum>
 	<Maximum>1.0</Maximum>
@@ -21,13 +21,13 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltaplus</Name>
+	<Name>phi1020_phi1020_deltaplus</Name>
 	<Value>2.54</Value>
 	<Type>Float</Type>
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltazero</Name>
+	<Name>phi1020_phi1020_deltazero</Name>
 	<Value>0.0</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
@@ -35,7 +35,7 @@
 	<Unit>Unitless</Unit>
 </PhysicsParameter>
 <PhysicsParameter>
-	<Name>phi1020_deltaminus</Name>
+	<Name>phi1020_phi1020_deltaminus</Name>
 	<Value>-1.81</Value>
 	<Minimum>-6.7</Minimum>
 	<Maximum>6.7</Maximum>
