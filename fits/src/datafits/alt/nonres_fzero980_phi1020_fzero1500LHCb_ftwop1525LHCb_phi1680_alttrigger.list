@@ -1,6 +1,6 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
-pdf/signal/moments_acceptanceTOS.xml
+pdf/signal/moments_acceptanceTIS.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_nomva_moments.xml
 minimiser/minuit2.xml
@@ -26,9 +26,6 @@ constraintfunction/ftwop1525LHCb_constraint.xml
 parameterset/fractions/phi1680_float.xml
 parameterset/resonances/phi1680_fixed.xml
 parameterset/amplitudes/phi1680_float.xml
-parameterset/fractions/alttrigger_float.xml
-parameterset/resonances/alttrigger_fixed.xml
-parameterset/amplitudes/alttrigger_float.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
@@ -39,7 +36,7 @@ parameterset/backgrounds/BdphiKstar_hist.xml
 parameterset/backgrounds/Lb2PhiKp_hist.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
-phasespaceboundary/TOS.xml
+phasespaceboundary/TIS.xml
 output/lowrange.xml
 output/fullrange_ymax.xml
 output/phi.xml
