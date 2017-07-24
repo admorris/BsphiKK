@@ -7,7 +7,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac", "conspeaking"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac", "conspeaking", "alttrigger"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -31,7 +31,12 @@ void printsource(std::vector<std::string> resonances)
 	if(config["splitbyyear"])
 		years = {"2011", "2012"};
 	if(config["splitbytrigger"])
-		triggers = {"TOS", "notTOS"};
+	{
+		if(!config["alttrigger"])
+			triggers = {"TOS", "notTOS"};
+		else
+			triggers = {"TIS", "notTIS"};
+	}
 	if(config["splitbymagnet"])
 		polarities = {"magup", "magdown"};
 	if(config["altbarrier"])
@@ -66,7 +71,10 @@ void printsource(std::vector<std::string> resonances)
 		std::ofstream file(tmpfilename+".list", std::ios::out);
 		file << "pdf/signal/Bs2PhiKK.xml\n";
 		file << "pdf/signal/mKKresolution.xml\n";
-		file << "pdf/signal/moments_acceptanceTOS.xml\n";
+		if(!config["alttrigger"])
+			file << "pdf/signal/moments_acceptanceTOS.xml\n";
+		else
+			file << "pdf/signal/moments_acceptanceTIS.xml\n";
 		if(config["notminLb"])
 			file << "pdf/signal/NotMinLb.xml\n";
 		file << "pdf/background/Bs2PhiKK.xml\n";
@@ -182,7 +190,10 @@ void printsource(std::vector<std::string> resonances)
 				file << "phasespaceboundary/angles_BCON_nophi.xml\n";
 			else
 				file << "phasespaceboundary/angles_BCON.xml\n";
-			file << "phasespaceboundary/TOS.xml\n";
+			if(!config["alttrigger"])
+				file << "phasespaceboundary/TOS.xml\n";
+			else
+				file << "phasespaceboundary/TIS.xml\n";
 		}
 		file << "output/lowrange.xml\n";
 		file << "output/fullrange_ymax.xml\n";
