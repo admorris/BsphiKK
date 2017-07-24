@@ -43,7 +43,6 @@ do
 		export PATH=\$PATH:$currentdir/../RapidFit/bin:$currentdir/../bin
 		for repeat in \`seq 0 $(($nrepeats-1))\`
 		do
-			cd ${mainfolder}/${genname}
 			index=\$(($i*$nrepeats+\$repeat))
 			# Generate the toys
 			fitting -f ${genxml} --useUUID --saveOneDataSet toys_\${index}.root
@@ -64,6 +63,7 @@ do
 				fitting \${nThreadsFlag} -f fit_\${index}.xml --SendOutput \${outputdir} --MultiDimChi2 --ForceContinue 2>&1| tee \${logfile}
 				mv fit_\${index}.xml \${outputdir}/fit.xml
 			done
+			cd ${mainfolder}/${genname}
 			rm toys_\${index}.root
 		done
 		EOF
