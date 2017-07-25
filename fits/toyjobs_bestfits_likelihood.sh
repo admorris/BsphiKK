@@ -1,5 +1,7 @@
 #!/bin/bash
-# Usage: toyjobs_bestfits_likelihood.sh <folder1> <folder2> <folder3>
+# Usage: toyjobs_bestfits_likelihood.sh <folder1> <folder2> <folder3> <njobs> <nrepeats>
+# This will create njobs jobs per model (i.e. 3*njobs in total)
+# Each job will do nrepeats fits
 source RFjobconfig.sh
 currentdir=$(pwd)
 if [ "$1" == "" ]
@@ -11,8 +13,7 @@ else
 fi
 mainfolder=${currentdir}/results/datafits/bestfits_likelihood
 mkdir -p ${mainfolder}
-nrepeats=3 # how many times to fit each PDF per job
-for i in `seq 0 15`
+for i in $(seq 0 $((${4})))
 do
 	for Gfolder in ${1} ${2} ${3}
 	do
@@ -41,7 +42,7 @@ do
 		echo -e "$SetupEnvironment" >> ${submission_script}
 		cat <<-EOF >> ${submission_script}
 		export PATH=\$PATH:$currentdir/../RapidFit/bin:$currentdir/../bin
-		for repeat in \`seq 0 $(($nrepeats-1))\`
+		for repeat in \`seq 0 $((${5}-1))\`
 		do
 			index=\$(($i*$nrepeats+\$repeat))
 			# Generate the toys
