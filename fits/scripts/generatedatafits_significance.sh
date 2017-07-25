@@ -7,7 +7,7 @@ then
 fi
 bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/significance"
-best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525LHCb phi1680)
+best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525 phi1680)
 mkdir -p ${srcdir}
 for toremove in ${best[@]}
 do

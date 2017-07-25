@@ -5,9 +5,9 @@ dataset/toys.xml
 parameterset/resonances/phi1020_fixed.xml
 parameterset/amplitudes/phi1020_float_LHCbAmp_fixdeltazero_fixdeltaminus.xml
 parameterset/fractions/phi1020_fixed.xml
-parameterset/resonances/ftwop1525LHCb_fixed.xml
-parameterset/amplitudes/ftwop1525LHCb_float.xml
-parameterset/fractions/ftwop1525LHCb_fixed.xml
+parameterset/resonances/ftwop1525_fixed.xml
+parameterset/amplitudes/ftwop1525_float.xml
+parameterset/fractions/ftwop1525_fixed.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_1800.xml

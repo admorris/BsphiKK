@@ -7,7 +7,7 @@ then
 fi
 bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/1680_extra"
-best=(nonres fzero980 phi1020 ftwop1525LHCb phi1680)
+best=(nonres fzero980 phi1020 ftwop1525 phi1680)
 mkdir -p ${srcdir}
 for extra in "fzero1370LHCb" "fzero1500LHCb" "ftwo1640" "fzero1710" "ftwo1750"
 do

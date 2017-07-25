@@ -5,7 +5,7 @@ function getfrac()
 }
 Nphi=$(getfrac "1phi1020(1,BW):" $1)
 BFphitoKK=""
-Nftwop=$(getfrac "1ftwop1525LHCb(2,BW):" $1)
+Nftwop=$(getfrac "1ftwop1525(2,BW):" $1)
 BFftwoptoKK=""
 if [[ "$Nphi" == "" || "$Nftwop" == "" ]]
 then

@@ -46,8 +46,8 @@ do
 		fzfrac=$(getnumber "1fzero980" $file)
 		phifrac=$(getnumber "1phi1020" $file)
 		phifL=$(square $(getnumber "phi1020\_Azero" $file))
-		ftwopfrac=$(getnumber "1ftwop1525LHCb" $file)
-		ftwopfL=$(square $(getnumber "ftwop1525LHCb\_Azero" $file))
+		ftwopfrac=$(getnumber "1ftwop1525" $file)
+		ftwopfL=$(square $(getnumber "ftwop1525\_Azero" $file))
 		status=$(getnumber "Status" $file | tail -1)
 		printf '%-80s | %1d | %7.1f | %7.1f | %7.1f | %5.3f %5.3f %5.3f %5.3f | %5.3f | %5.3f | %5.3f | %7.3f | %5.3f | %7.3f | ' \
 		"$(parseparticlenames ${folder/FitResult_/})" ${status} ${nll} ${aic} ${bic} ${chisq} ${NRfrac} ${fzfrac} ${phifrac} ${phifL} ${ftwopfrac} ${ftwopfL}

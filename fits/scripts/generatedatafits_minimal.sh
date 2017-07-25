@@ -7,7 +7,7 @@ then
 fi
 bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/minimal_extra"
-best=(nonres fzero980 phi1020 ftwop1525LHCb)
+best=(nonres fzero980 phi1020 ftwop1525)
 mkdir -p ${srcdir}
 cd ${srcdir}
 ${bindir}/PrintSource ${best[@]}
