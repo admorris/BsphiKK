@@ -13,7 +13,7 @@ scripts/tables
 fits/*/Foam-*.root
 fits/*/RapidFitOutput*/*
 fits/*/*/RapidFitOutput*/*
-fits/results/*
+fits/*results/*
 fits/*.xml
 fits/*.root
 fits/RFjobconfig.sh
