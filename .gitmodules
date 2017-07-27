@@ -7,3 +7,4 @@
 [submodule "RapidFit"]
 	path = RapidFit
 	url = git@github.com:abmorris/RapidFit.git
+	ignore = dirty
