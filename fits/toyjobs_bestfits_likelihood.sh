@@ -13,7 +13,7 @@ else
 fi
 mainfolder=${currentdir}/results/datafits/bestfits_likelihood
 mkdir -p ${mainfolder}
-for i in $(seq 0 $((${4})))
+for i in $(seq 14 $((${4})))
 do
 	for Gfolder in ${1} ${2} ${3}
 	do
@@ -28,7 +28,6 @@ do
 		#$ -N "j_BF_LL_${genname}_${i}"
 		#$ -l h_rt=24:00:00
 		#$ -l h_vmem=4G
-		#$ -l h='!morar2.ph.ed.ac.uk'
 		$ParallelEnv
 		#$ -cwd
 		#$ -hold_jid buildRapidFit
