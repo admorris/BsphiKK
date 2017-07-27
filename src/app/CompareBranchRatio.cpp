@@ -15,8 +15,8 @@
 using std::string;
 void CompareBranchRatio(string Dfilename, string Nfilename, string Dbranchname, string Nbranchname, string xtitle, string unit, string plotname, string Dcuts, string Ncuts, string Dweight, string Nweight, double xlow, double xup, int nbins,std::string blurb)
 {
-  TH1D*  Dhist = MakeBranchPlot(Dfilename,Dbranchname,Dcuts,Dweight,xlow,xup,nbins);
-  TH1D*  Nhist = MakeBranchPlot(Nfilename,Nbranchname,Ncuts,Nweight,xlow,xup,nbins);
+  TH1D* Dhist = MakeBranchPlot(Dfilename,Dbranchname,Dcuts,Dweight,xlow,xup,nbins); Dhist->Sumw2();
+  TH1D* Nhist = MakeBranchPlot(Nfilename,Nbranchname,Ncuts,Nweight,xlow,xup,nbins); Nhist->Sumw2();
   Nhist->Divide(Dhist);
   Nhist->SetMaximum(Nhist->GetMaximum()*1.5);
   Nhist->SetMinimum(0);
