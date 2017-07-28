@@ -1,6 +1,6 @@
 double getstddev(TTree* tree, std::string name)
 {
-	tree->Draw(name.c_str(),"Fit_Status==3","goff");
+	tree->Draw(name.c_str(),"","goff");
 	TH1* hist = static_cast<TH1*>(gDirectory->Get("htemp"));
 	double value = hist->GetStdDev();
 	delete hist;
