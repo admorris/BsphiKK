@@ -13,7 +13,7 @@ else
 fi
 mainfolder=${currentdir}/results/datafits/bestfits_likelihood
 mkdir -p ${mainfolder}
-for i in $(seq 14 $((${4})))
+for i in $(seq 0 $((${4}-1)))
 do
 	for Gfolder in ${1} ${2} ${3}
 	do
@@ -61,6 +61,7 @@ do
 				mkdir \${outputdir}
 				logfile=\${outputdir}/RapidFitOutput.log
 				fitting \${nThreadsFlag} -f fit_\${index}.xml --SendOutput \${outputdir} --MultiDimChi2 --ForceContinue 2>&1| tee \${logfile}
+				$currentdir/scripts/calculatefitfractions.sh 2>&1| tee -a \${logfile}
 				mv fit_\${index}.xml \${outputdir}/fit.xml
 			done
 			cd ${mainfolder}/${genname}
