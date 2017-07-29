@@ -18,7 +18,7 @@ do
 	for Gfolder in ${1} ${2} ${3}
 	do
 		cd ${mainfolder}
-		genxml=$(find ${currentdir}/${Gfolder} -type f -name "outputXMLFile*" | sort | tail -1 | sed 's/\.\///')
+		genxml=$(find ${currentdir}/${Gfolder} -type f -name "outputXMLFile*"  | grep -v toy | grep -v acceptance | sort | tail -1 | sed 's/\.\///')
 		submission_script="submit.sh"
 		genname=$(echo "${Gfolder}" | sed "s/.*FitResult_//g" | sed "s/\///g")
 		mkdir -p ${genname}
@@ -43,7 +43,7 @@ do
 		export PATH=\$PATH:$currentdir/../RapidFit/bin:$currentdir/../bin
 		for repeat in \`seq 0 $((${5}-1))\`
 		do
-			index=\$(($i*$nrepeats+\$repeat))
+			index=\$(uuidgen)
 			# Generate the toys
 			fitting -f ${genxml} --useUUID --saveOneDataSet toys_\${index}.root
 			# Perform the fits
@@ -57,7 +57,7 @@ do
 				sed -i "s/^.*TF1.*$//" fit_\${index}.xml
 				sed -i "s/Foam/File/" fit_\${index}.xml
 				sed -i "s/<NumberEvents.*$/<NumberEvents>1000000<\/NumberEvents><FileName>${mainfolder//\//\\/}\/${genname}\/toys_\${index}.root<\/FileName>\\\n\\\t<NTuplePath>dataNTuple<\/NTuplePath>/" fit_\${index}.xml
-				outputdir=RapidFitOutput_\$(uuidgen)
+				outputdir=RapidFitOutput_\${index}
 				mkdir \${outputdir}
 				logfile=\${outputdir}/RapidFitOutput.log
 				fitting \${nThreadsFlag} -f fit_\${index}.xml --SendOutput \${outputdir} --MultiDimChi2 --ForceContinue 2>&1| tee \${logfile}
