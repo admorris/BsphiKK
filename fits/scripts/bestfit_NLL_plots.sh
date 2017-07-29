@@ -8,15 +8,16 @@ function getdatalikelihood()
 }
 folder=$cwd/results/datafits/bestfits_likelihood
 models=$(ls $folder | grep "nonres_fzero980_phi1020_ftwop1525")
+mkdir -p $folder/plots
 for Gmodel in $models
 do
 	for Fmodel in $models
 	do
 		cd $folder/$Gmodel/$Fmodel
 		mergedname="Global_Fit_Result.root"
-#		hadd -f $mergedname RapidFitOutput_*/Global_Fit_Result_*.root
-#		$cwd/../bin/PlotBranch -F Global_Fit_Result.root -B NLL -T "NLL" -U "" -O "NLL" -C "Fit_Status>1" -l 2800 -u 4000 -b 12 --lineat $(getdatalikelihood $Fmodel)
+		hadd -f $mergedname RapidFitOutput_*/Global_Fit_Result_*.root
 		root -q -b -l "$cwd/scripts/fitbestfitNLL.C(\"$mergedname\", $(getdatalikelihood $Fmodel))"
+		mv -v NLL.pdf "$folder/plots/gen_${Gmodel}_fit_${Fmodel}.pdf"
 	done
 done
 
