@@ -11,7 +11,7 @@ then
   exit 0
 fi
 mkdir -p tmp
-suffix=All_Data_wPulls
+suffix=All_Data_PDF_0_pull
 #suffix=All_Data
 #find $recentdir -type f -name "Overlay_*_${suffix}.pdf" -exec cp -v --backup=t {} ./tmp \;
 cp -v --backup=t $recentdir/*/Overlay_*_${suffix}.pdf ./tmp
