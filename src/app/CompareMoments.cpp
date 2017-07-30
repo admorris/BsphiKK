@@ -14,7 +14,7 @@
 
 void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCmassname, std::string CDmassname, std::string MCanglename, std::string CDanglename, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, int max_order,std::string blurb)
 {
-  TCanvas allplots("allplots","",1200,1200);
+//  TCanvas allplots("allplots","",1200,1200);
   auto CDtree = std::unique_ptr<TTree>(GetTree(CDfilename,CDcuts));
   auto MCtree = std::unique_ptr<TTree>(GetTree(MCfilename,MCcuts));
   std::string CDmassrange = CDmassname + ">" + std::to_string(xlow) + "&&" + CDmassname + "<" + std::to_string(xup);
@@ -25,7 +25,7 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
   std::cout << "Number of toy events in " << MCmassrange << " : " << MCentries << "\n";
   const double scale = CDentries/MCentries;
   std::cout << "The normalisation is " << scale << "\n";
-  std::vector<LegendreMomentPlot> CDplots = LegendreMomentPlot::FillPlotsFromTree("data",*CDtree,CDmassname,CDanglename,CDweight,xtitle,unit,plotname,xlow,xup,nbins,max_order, 1);
+  std::vector<LegendreMomentPlot> CDplots = LegendreMomentPlot::FillPlotsFromTree("",*CDtree,CDmassname,CDanglename,CDweight,xtitle,unit,plotname,xlow,xup,nbins,max_order, 1);
   std::vector<LegendreMomentPlot> MCplots = LegendreMomentPlot::FillPlotsFromTree("model",*MCtree,MCmassname,MCanglename,MCweight,xtitle,unit,plotname,xlow,xup,nbins,max_order,scale);
   assert(MCplots.size() == CDplots.size());
   int ny = std::round(std::ceil(std::sqrt(max_order)));
@@ -34,14 +34,29 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
   for(int order = 0; order <= max_order; order++)
   {
     TH1D residualplot(CDplots[order].hist);
+    residualplot.SetName("pullplot");
     residualplot.Add(&MCplots[order].hist,-1);
     residualplot.SetFillColor(kBlack);
     for(int ibin = 1; ibin < nbins+1; ibin++) // Turn residuals into pulls (I think)
-      residualplot.SetBinContent(ibin,residualplot.GetBinContent(ibin)/CDplots[order].hist.GetBinError(ibin));
+    {
+      double binerr = CDplots[order].hist.GetBinError(ibin);
+      if(std::abs(binerr)>1e-12)
+        residualplot.SetBinContent(ibin,residualplot.GetBinContent(ibin)/binerr);
+    }
+    residualplot.SetMinimum(-5);
+    residualplot.SetMaximum(+5);
     plotmaker<TH1> plot(&CDplots[order].hist);
     plot.SetBlurb(blurb);
     plot.SetPullPlot(&residualplot);
     plot.SetTitle(xtitle,unit);
+    if(CDplots[order].hist.GetMinimum() >= 0)
+      CDplots[order].hist.SetMinimum(0);
+    else
+    {
+      double lim = 1.3*std::max(std::abs(CDplots[order].hist.GetMaximum()), std::abs(CDplots[order].hist.GetMinimum()));
+      CDplots[order].hist.SetMaximum(+lim);
+      CDplots[order].hist.SetMinimum(-lim);
+    }
     TCanvas* canvas = plot.Draw("hist B");
     CDplots[order].hist.SetDrawOption("E1");
     CDplots[order].hist.SetMarkerColor(kBlack);
@@ -52,17 +67,14 @@ void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCm
     std::stringstream ytitle;
     ytitle << CDplots[order].hist.GetName() << " / " << (xup-xlow)/nbins << " " << unit;
     CDplots[order].hist.GetYaxis()->SetTitle(ytitle.str().c_str());
+    canvas->Modified();
+    canvas->Update();
     canvas->SaveAs((plotname+"_P"+std::to_string(order)+".pdf").c_str());
+    // Plot on big canvas
     allplots.cd(order+1);
+    gPad->SetLeftMargin(0.2);
+    gPad->SetBottomMargin(0.2);
     CDplots[order].hist.Draw("E1");
-    if(CDplots[order].hist.GetMinimum() >= 0)
-      CDplots[order].hist.SetMinimum(0);
-    else
-    {
-      double lim = 1.3*std::max(std::abs(CDplots[order].hist.GetMaximum()), std::abs(CDplots[order].hist.GetMinimum()));
-      CDplots[order].hist.SetMaximum(+lim);
-      CDplots[order].hist.SetMinimum(-lim);
-    }
     MCplots[order].hist.Draw("hist same");
   }
   allplots.SaveAs((plotname+"_all.pdf").c_str());
