@@ -45,5 +45,8 @@ void fitbestfitNLL(std::string filename, double dataNLL)
 	setytitle(hist.GetYaxis(),hist.GetXaxis()->GetBinWidth(1));
 	can.SetTicks(1,1);
 	can.SaveAs("NLL.pdf");
+	double mean = hist.GetFunction("gaus")->GetParameter(1);
+	double sigma = hist.GetFunction("gaus")->GetParameter(2);
+	std::cout << "The observed NLL is $" << (dataNLL-mean)/sigma << " \\sigma$ from the mean" << std::endl;
 }
 
