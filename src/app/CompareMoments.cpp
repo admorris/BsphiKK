@@ -14,7 +14,7 @@
 
 void PlotMoments(std::string MCfilename, std::string CDfilename, std::string MCmassname, std::string CDmassname, std::string MCanglename, std::string CDanglename, std::string xtitle, std::string unit, std::string plotname, std::string MCcuts, std::string CDcuts, std::string MCweight, std::string CDweight, double xlow, double xup, int nbins, int max_order,std::string blurb)
 {
-//  TCanvas allplots("allplots","",1200,1200);
+  TCanvas allplots("allplots","",1200,1200);
   auto CDtree = std::unique_ptr<TTree>(GetTree(CDfilename,CDcuts));
   auto MCtree = std::unique_ptr<TTree>(GetTree(MCfilename,MCcuts));
   std::string CDmassrange = CDmassname + ">" + std::to_string(xlow) + "&&" + CDmassname + "<" + std::to_string(xup);
