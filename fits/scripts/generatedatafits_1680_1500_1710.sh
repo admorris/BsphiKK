@@ -6,10 +6,10 @@ then
 	exit 1
 fi
 bindir="${CWD}/../bin"
-srcdir="${CWD}/src/datafits/1680_1500_extra"
-best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525 phi1680)
+srcdir="${CWD}/src/datafits/1680_1500_1710_extra"
+best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525 phi1680 fzero1710)
 mkdir -p ${srcdir}
-for extra in "ftwo1640" "fzero1710" "ftwo1750"
+for extra in "ftwo1640" "ftwo1750"
 do
 	options=()
 	if [[ "${extra}" != *"zero"* ]]
