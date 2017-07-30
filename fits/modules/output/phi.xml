@@ -3,8 +3,9 @@
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>51</PDFpoints>
 <DrawPull>True</DrawPull>
+<LimitPulls>True</LimitPulls>
 <CalcChi2>True</CalcChi2>
 <DataBins>25</DataBins>
 <UseSpline>False</UseSpline>
 <NoLegend>True</NoLegend>
-<Ymin>0</Ymin>
+<Ymin>-20</Ymin>

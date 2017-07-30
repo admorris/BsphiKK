@@ -3,6 +3,7 @@
 <UseGSLNumericalIntegration>True</UseGSLNumericalIntegration>
 <PDFpoints>61</PDFpoints>
 <DrawPull>True</DrawPull>
+<LimitPulls>True</LimitPulls>
 <CalcChi2>True</CalcChi2>
 <Xmin>1.004461</Xmin>
 <Xmax>1.034461</Xmax>
