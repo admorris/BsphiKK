@@ -23,7 +23,7 @@ do
 		then
 			nThreadsFlag="--OverrideXML /RapidFit/FitFunction/Threads ${NSLOTS}"
 		fi
-		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --MultiDimChi2 --ForceContinue $3 2>&1| tee ${logfile}
+		fitting ${nThreadsFlag} -f ../${file} --generateToyXML --ForceContinue $3 2>&1| tee ${logfile}
 		# Deal with the output
 		$currentdir/scripts/mergeprojections.sh 2>&1| tee -a ${logfile}
 		$currentdir/scripts/compareresult.sh 2>&1| tee -a ${logfile}
