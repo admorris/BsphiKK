@@ -9,7 +9,7 @@ mv -v sampled_LegendreMomentShape_1.root sampled_LegendreMomentShape_$trigger.ro
 xrdcp --verbose --force LegendreMoments_Acceptance_*.root ${nTuples_dir}
 rename LegendreMomentShape acceptance sampled_LegendreMomentShape_*.root
 
-for trigger in TIS TOS TOS_PIDcalib
+for trigger in TIS TOS TOS_PIDcalib TOS_14ps TOS_17ps
 do
   fitting -f acceptance$trigger.xml --calculateAcceptanceCoefficients
   mv -v LegendreMoments_1.root LegendreMoments_Acceptance_not$trigger.root
