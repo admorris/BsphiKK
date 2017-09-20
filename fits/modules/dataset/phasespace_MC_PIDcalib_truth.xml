@@ -1,0 +1,5 @@
+<Source>File</Source>
+<FileName>root://eoslhcb.cern.ch//eos/lhcb/user/a/admorris/phiKK/ntuples/BsphiKK_MC_PIDcalib_mvacut.root</FileName>
+<CutString>abs(KK_TRUEID)>500</CutString>
+<NTuplePath>DecayTree</NTuplePath>
+<NumberEvents>10000000000000000</NumberEvents>
