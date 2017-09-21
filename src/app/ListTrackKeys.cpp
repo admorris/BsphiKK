@@ -1,12 +1,10 @@
-#include "TFile.h"
-#include "TTree.h"
+#include "GetTree.h"
 #include <iostream>
 
 int main(int argc, char* argv[])
 {
   // Get the tree
-  TFile* file = TFile::Open(argv[1]);
-  TTree* tree = (TTree*) file->Get("DecayTree");
+  TTree* tree = GetTree(argv[1]);
   // Variables to read
   ULong64_t evt; tree->SetBranchAddress("eventNumber"      , &evt);
   UInt_t    run; tree->SetBranchAddress("runNumber"        , &run);
