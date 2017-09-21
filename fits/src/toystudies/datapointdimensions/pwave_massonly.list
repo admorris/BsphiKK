@@ -8,5 +8,5 @@ parameterset/fractions/phi1020_fixed.xml
 parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
 phasespaceboundary/mKK_1080.xml
-output/lowrange_MC.xml
-output/phirange_MC.xml
+
+
