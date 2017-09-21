@@ -21,6 +21,7 @@ do
       -B ${branches[$i]} \
       -T "#it{m}(${titles[$i]})" \
       -O ../latex/figs/${branches[$i]}$suffix \
+      -C "BCON_KK_M_GeV<1.8" \
       -l ${lower[$i]} \
       -u ${upper[$i]} \
       -b 50 ${extra}
