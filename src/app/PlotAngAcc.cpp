@@ -19,16 +19,18 @@ void PlotAngAcc(std::string filename, std::string trailer)
   TTree* dataacctree = (TTree*)file->Get("dataacctuple");
   TTree* sampledtree = (TTree*)file->Get("sampledtuple");
   gStyle->SetOptStat(0);
-  std::string varname[4] = {"mKK","phi","ctheta_1","ctheta_2"};
-  std::string axistitle[4] = { "#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]"
+  std::string varname[5] = {"mKK","mKK","phi","ctheta_1","ctheta_2"};
+  std::string plotname[5] = {"mKK","mKK_threshold","phi","ctheta_1","ctheta_2"};
+  std::string axistitle[5] = { "#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]"
+                        , "#it{m}(#it{K}^{#plus}#it{K}^{#minus}) [MeV/#it{c}^{2}]"
                         , "#it{#Phi}"
                         , "cos #it{#theta_{1}}"
                         , "cos #it{#theta_{2}}"
                         };
-  std::string unit[4] = { " MeV/#it{c}^{2}", "", "", "" };
-  double minima[4] = {0.980, -M_PI, -1, -1};
-  double maxima[4] = {1.800, +M_PI, +1, +1};
-  int nbins[4] = {30, 30, 30, 30};
+  std::string unit[5] = { " MeV/#it{c}^{2}", " MeV/#it{c}^{2}", "", "", "" };
+  double minima[5] = {0.980, 0.987, -M_PI, -1, -1};
+  double maxima[5] = {1.800, 1.017, +M_PI, +1, +1};
+  int nbins[5] = {30, 30, 30, 30, 30};
   std::map<std::string,std::string> titlemap;
   float textsize = 0.055;
   std::cout << "Drawing 1D plots" << std::endl;
@@ -87,11 +89,13 @@ void PlotAngAcc(std::string filename, std::string trailer)
     _blurb.SetTextSize(0.07);
     _blurb.Draw();
     */
-    std::string plotfilename = "acceptance_"+varname[i]+"_proj";
+    std::string plotfilename = "acceptance_"+plotname[i]+"_proj";
     if(trailer != "") plotfilename += "_" + trailer;
     canv1d.SaveAs((plotfilename+".pdf").c_str());
   }
   const std::vector<std::string> combinations = {"ctheta_1:ctheta_2","ctheta_1:phi","ctheta_2:phi","phi:mKK","ctheta_1:mKK","ctheta_2:mKK"};
+//  std::pair<TTree*, std::string> 
+  for(auto conf : {std::make_tuple(sampledtree, ""),std::make_tuple(dataacctree, "_data")})
   for(auto comb : combinations)
   {
     TCanvas canv(("projection"+comb).c_str(),"",500,500);
@@ -102,27 +106,34 @@ void PlotAngAcc(std::string filename, std::string trailer)
     pad.SetMargin(0.12,0.08,0.12,0.08);
     pad.Draw();
     pad.cd();
-    sampledtree->Draw(comb.c_str(),"weight","COLZ");
-    TH2F* graph = (TH2F*)pad.GetPrimitive("htemp");
-    graph->SetTitle("");
-    graph->GetXaxis()->SetTitleSize(textsize);
-    graph->GetXaxis()->SetLabelSize(textsize);
-    graph->GetXaxis()->CenterTitle();
-    graph->GetYaxis()->SetTitleSize(textsize);
-    graph->GetYaxis()->SetLabelSize(textsize);
-    graph->GetYaxis()->CenterTitle();
+    TTree* tree = std::get<0>(conf);
+    double xmax = tree->GetMaximum(comb.substr(separator+1,comb.size()).c_str());
+    double xmin = tree->GetMinimum(comb.substr(separator+1,comb.size()).c_str());
+    double ymax = tree->GetMaximum(comb.substr(0,separator).c_str());
+    double ymin = tree->GetMinimum(comb.substr(0,separator).c_str());
+    unsigned nbins = 10;
+    TH2F graph("htemp","",nbins,xmin,xmax,nbins,ymin,ymax);
+    tree->Draw((comb+">>htemp").c_str(),"weight","COLZ");
+    graph.SetMinimum(0);
+    graph.SetTitle("");
+    graph.GetXaxis()->SetTitleSize(textsize);
+    graph.GetXaxis()->SetLabelSize(textsize);
+    graph.GetXaxis()->CenterTitle();
+    graph.GetYaxis()->SetTitleSize(textsize);
+    graph.GetYaxis()->SetLabelSize(textsize);
+    graph.GetYaxis()->CenterTitle();
     if(comb.find("mKK")!=std::string::npos)
     {
-      graph->GetXaxis()->SetNdivisions(505);
+      graph.GetXaxis()->SetNdivisions(505);
     }
     std::cout << titlemap[comb.substr(0,separator)] << std::endl;
-    graph->GetYaxis()->SetTitle(titlemap[comb.substr(0,separator)].c_str());
-    graph->GetXaxis()->SetTitle(titlemap[comb.substr(separator+1,comb.size())].c_str());
+    graph.GetYaxis()->SetTitle(titlemap[comb.substr(0,separator)].c_str());
+    graph.GetXaxis()->SetTitle(titlemap[comb.substr(separator+1,comb.size())].c_str());
     std::cout << "Fetched graph" << std::endl;
     std::replace(comb.begin(),comb.end(), ':', '-');
     std::string plotfilename = "acceptance_"+comb;
     if(trailer != "") plotfilename += "_" + trailer;
-    canv.SaveAs((plotfilename+".pdf").c_str());
+    canv.SaveAs((plotfilename+std::get<1>(conf)+".pdf").c_str());
   }
 }
 int main(int argc, char* argv[])
