@@ -64,6 +64,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
   unsigned int npkbkgs = backgrounds.size();
   vector<Component*> PkgMod;
   bool constrain = false;
+  double sigma_res = 18;
   RooConstVar constraint_mean;
   RooConstVar constraint_sigma;
   RooRealVar* to_constrain;
@@ -120,7 +121,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
           PBmass = &mass;
           PBdata = GetData(name,PBfilename,"",PBmass);
           RooRealVar* zero  = new RooRealVar(("Res_zero"+std::to_string(i)).c_str(),"Gaussian mean",0);
-          RooRealVar* sigma = new RooRealVar(("Res_sigma"+std::to_string(i)).c_str(),"Detector resolution",18);
+          RooRealVar* sigma = new RooRealVar(("Res_sigma"+std::to_string(i)).c_str(),"Detector resolution",sigma_res);
           RooGaussian* resolutionfunction = new RooGaussian(("resolution"+std::to_string(i)).c_str(),"Resolution function",*PBmass,*zero,*sigma);
           RooHistPdf* histpdf = GetDataHist(name+"hist",PBfilename,"",PBmass);
           PBmass->setBins(10000,"cache");
@@ -167,6 +168,11 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
       }
       PkgMod.push_back(comp);
       RooPlot* PBframe = PBmass->frame();
+      if(PBbranch=="HISTPDF")
+      {
+        delete PBdata;
+        PBdata = GetSmearedData(name,PBfilename,"",PBmass,sigma_res);
+      }
       PBdata->plotOn(PBframe,Binning(nbins));
       PDFtoPlot->plotOn(PBframe,LineStyle(kSolid),LineColor(kRed));
       cout << "Plotting peaking background" << endl;
@@ -192,6 +198,7 @@ void BsMassFit(string MCfilename, string CDfilename, string SignalModel, string 
         delete PBmass;
         delete PBFitter;
       }
+      delete PBdata;
       delete PBplotter;
       comp->SetColour(linecolors[i]);
       comp->SetStyle (linestyles[i]);
