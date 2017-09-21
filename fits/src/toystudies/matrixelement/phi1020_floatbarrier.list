@@ -9,8 +9,8 @@ parameterset/deltaGammas_fixed.xml
 parameterset/barrierfactorradii_floatKK.xml
 phasespaceboundary/mKK_1080.xml
 phasespaceboundary/angles.xml
-output/lowrange_MC.xml
-output/phirange_MC.xml
-output/phi.xml
-output/ctheta_1.xml
-output/ctheta_2.xml
+
+
+
+
+
