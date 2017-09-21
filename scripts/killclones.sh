@@ -4,7 +4,7 @@ function killclones()
 {
   ../bin/FlagClones $1.root
   cutapplier $1_Clone.root DecayTree "isDup==1" $1_final.root
-  rm -v $1_Clone.root
+#  rm -v $1_Clone.root
 }
 for file in $(ls *mvacut.root | sed 's/\.root//g')
 do
