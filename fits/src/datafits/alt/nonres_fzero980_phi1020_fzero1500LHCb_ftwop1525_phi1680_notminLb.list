@@ -1,6 +1,7 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
 pdf/signal/moments_acceptanceTOS.xml
+pdf/signal/PhiWindowWeight.xml
 pdf/signal/NotMinLb.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_nomva_moments.xml
