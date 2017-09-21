@@ -1,0 +1,7 @@
+<Observable>
+	<Name>LifetimeWeight</Name>
+	<TF1>TMath::Exp(((1./0.001543) - (1./0.001405))*B_s0_LOKI_DTF_CTAU/299.792458)</TF1>
+	<Minimum>0.0</Minimum>
+	<Maximum>2.0</Maximum>
+	<Unit>Unitless</Unit>
+</Observable>
