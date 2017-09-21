@@ -1,6 +1,6 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
-pdf/signal/moments_acceptanceTOS.xml
+pdf/signal/moments_acceptanceTOS_17ps.xml
 pdf/signal/PhiWindowWeight.xml
 pdf/background/Bs2PhiKK.xml
 pdf/background/combinatorial_nomva_moments.xml
@@ -31,13 +31,10 @@ parameterset/deltaGammas_fixed.xml
 parameterset/mKKrespars_fixed.xml
 parameterset/thraccscale_fixed_TOS.xml
 parameterset/barrierfactorradii_fixed_EvtGen.xml
-parameterset/signal_fraction_1800_float.xml
-constraintfunction/signal_fraction_1800_constraint.xml
+parameterset/signal_fraction_1800_fixed.xml
 parameterset/backgrounds/combinatorial_hist.xml
-parameterset/backgrounds/BdphiKstar_hist_float.xml
-parameterset/backgrounds/Lb2PhiKp_hist_float.xml
-constraintfunction/BdphiKstar_hist.xml
-constraintfunction/Lb2PhiKp_hist.xml
+parameterset/backgrounds/BdphiKstar_hist.xml
+parameterset/backgrounds/Lb2PhiKp_hist.xml
 phasespaceboundary/mKK_BCON_1800.xml
 phasespaceboundary/angles_BCON.xml
 phasespaceboundary/TOS.xml
