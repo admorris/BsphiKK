@@ -1,9 +1,13 @@
 #!/bin/bash
 source eos.sh
-modes=(BsphiKK_MC BsphiKK_data)
+tmpdir=/scratch/admorris/
+mkdir -p $tmpdir
+modes=(BsphiKK_MC)
 for mode in ${modes[@]}
 do
-../bin/PlotTrigEff ${nTuples_dir}${mode}_nocut.root ../latex/figs/$mode
+xrdcp ${nTuples_dir}${mode}_nocut.root ${tmpdir}${mode}_nocut.root
+../bin/PlotTrigEff ${tmpdir}${mode}_nocut.root ../latex/figs/$mode
 mv TrigEffPlots.root ../${mode}_TrigEffPlots.root
+rm ${tmpdir}${mode}_nocut.root
 done
 
