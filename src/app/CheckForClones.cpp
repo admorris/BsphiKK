@@ -37,8 +37,8 @@ int main(int argc, char* argv[])
       && lastkeys[1] == thiskeys[1]
       && lastkeys[2] == thiskeys[2]
       && lastkeys[3] == thiskeys[3])
-        std::cout << "CLONE";
-      std::cout << std::endl << "***" << std::endl;
+        std::cout << "\tCLONE";
+      std::cout << std::endl;
     }
   }
   return 0;
