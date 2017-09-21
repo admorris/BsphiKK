@@ -7,7 +7,7 @@
 void printsource(std::vector<std::string> resonances)
 {
 	std::map<std::string, bool> config;
-	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac", "conspeaking", "alttrigger"})
+	for(auto key: {"nophi", "altbarrier", "altflatte", "alt1680", "altresolution", "floatflatte", "notminLb", "splitbyyear", "splitbytrigger", "splitbymagnet", "toys", "nopeaking", "conssigfrac", "conspeaking", "alttrigger", "altlifetime", "PIDcalib"})
 		config[key] = false;
 	// Construct the filename
 	std::string filename {""};
@@ -27,7 +27,7 @@ void printsource(std::vector<std::string> resonances)
 				return true;
 		return false;
 	}), resonances.end());
-	std::vector<std::string> years = {""}, triggers = {""}, polarities = {""}, barriers = {"EvtGen"}, flatteparams = {""}, floatflatteoptions = {""}, resolutions = {""};
+	std::vector<std::string> years = {""}, triggers = {""}, lifetimes = {""}, polarities = {""}, barriers = {"EvtGen"}, flatteparams = {""}, floatflatteoptions = {""}, resolutions = {""};
 	if(config["splitbyyear"])
 		years = {"2011", "2012"};
 	if(config["splitbytrigger"])
@@ -47,8 +47,11 @@ void printsource(std::vector<std::string> resonances)
 		floatflatteoptions = {"", "_both"};
 	if(config["altresolution"])
 		resolutions = {"_upper", "_lower"};
+	if(config["altlifetime"])
+		lifetimes = {"_14ps", "_17ps"};
 	for(const auto& year: years)
 	for(const auto& trigger: triggers)
+	for(const auto& lifetime: lifetimes)
 	for(const auto& polarity: polarities)
 	for(const auto& barrier: barriers)
 	for(const auto& flatte: flatteparams)
@@ -72,9 +75,17 @@ void printsource(std::vector<std::string> resonances)
 		file << "pdf/signal/Bs2PhiKK.xml\n";
 		file << "pdf/signal/mKKresolution.xml\n";
 		if(!config["alttrigger"])
-			file << "pdf/signal/moments_acceptanceTOS.xml\n";
+		{
+			if(config["altlifetime"])
+				file << "pdf/signal/moments_acceptanceTOS" << lifetime << ".xml\n";
+			else if(config["PIDcalib"])
+				file << "pdf/signal/moments_acceptanceTOS_PIDcalib.xml\n";
+			else
+				file << "pdf/signal/moments_acceptanceTOS.xml\n";
+		}
 		else
 			file << "pdf/signal/moments_acceptanceTIS.xml\n";
+		file << "pdf/signal/PhiWindowWeight.xml\n";
 		if(config["notminLb"])
 			file << "pdf/signal/NotMinLb.xml\n";
 		file << "pdf/background/Bs2PhiKK.xml\n";

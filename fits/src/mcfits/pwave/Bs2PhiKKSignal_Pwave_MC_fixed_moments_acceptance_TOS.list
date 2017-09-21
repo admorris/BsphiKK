@@ -1,6 +1,7 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/mKKresolution.xml
 pdf/signal/moments_acceptanceTOS.xml
+pdf/signal/PhiWindowWeight.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/pwave_MC.xml

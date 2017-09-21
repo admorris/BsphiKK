@@ -9,7 +9,7 @@ bindir="${CWD}/../bin"
 srcdir="${CWD}/src/datafits/alt"
 best=(nonres fzero980 phi1020 fzero1500LHCb ftwop1525 phi1680)
 mkdir -p ${srcdir}
-for extra in "altbarrier" "altflatte" "floatflatte" "conspeaking" "nopeaking" "notminLb" "conssigfrac" "altresolution" "alttrigger" #"splitbyyear" "splitbytrigger" "splitbymagnet"
+for extra in "altbarrier" "altflatte" "floatflatte" "conspeaking" "nopeaking" "notminLb" "conssigfrac" "altresolution" "alttrigger" "altlifetime" "PIDcalib" #"splitbyyear" "splitbytrigger" "splitbymagnet"
 do
 	cd ${srcdir}
 	${bindir}/PrintSource ${best[@]} ${extra}
