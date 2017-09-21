@@ -1,5 +1,8 @@
 pdf/signal/Bs2PhiKK.xml
 pdf/signal/moments_acceptanceTOS.xml
+parameterset/signal_fraction_1800_fixed.xml
+pdf/background/Bs2PhiKK.xml
+pdf/background/combinatorial_nomva_moments.xml
 minimiser/minuit2.xml
 fitfunction/default.xml
 dataset/toys.xml
