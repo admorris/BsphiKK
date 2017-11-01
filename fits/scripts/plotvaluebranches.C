@@ -13,8 +13,9 @@ double plotbranch(TTree* tree, std::string valuename, std::string genname, std::
 	TCanvas can;
 	double min = tree->GetMinimum(valuename.c_str()) - tree->GetMaximum(genname.c_str());
 	double max = tree->GetMaximum(valuename.c_str()) - tree->GetMinimum(genname.c_str());
+	double lim = std::max(std::abs(max), std::abs(min));
 	gStyle->SetOptStat(0);
-	TH1D htemp("htemp", "", 20, min, max);
+	TH1D htemp("htemp", "", 20, -lim, lim);
 	tree->Draw((valuename+"-"+genname+">>htemp").c_str(),"","hist");
 	TFitResultPtr fit = htemp.Fit("gaus","S");
 	double mean = fit->GetParams()[1];
