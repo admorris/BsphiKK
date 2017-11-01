@@ -154,11 +154,11 @@ void variables( TString fin = "TMVA.root", TString dirName = "InputVariables_Id"
                         sig->GetBinContent(nbin+1)*dxo*100, bgd->GetBinContent(nbin+1)*dxo*100 );
       }
   
-      TText* t = new TText( 0.98, 0.14, uoflow );
-      t->SetNDC();
-      t->SetTextSize( 0.040 );
-      t->SetTextAngle( 90 );
-      t->AppendPad();    
+//      TText* t = new TText( 0.98, 0.14, uoflow );
+//      t->SetNDC();
+//      t->SetTextSize( 0.040 );
+//      t->SetTextAngle( 90 );
+//      t->AppendPad();    
 
       // save canvas to file
       TString fname = Form( "plots/%s_c%i", outfname.Data(), countCanvas );

@@ -225,11 +225,11 @@ void mvas( TString fin = "TMVA.root", HistType htype = MVAType, Bool_t useTMVASt
          TString uoflow = Form( "U/O-flow (S,B): (%.1f, %.1f)%% / (%.1f, %.1f)%%", 
                                 sig->GetBinContent(0)*dxu*100, bgd->GetBinContent(0)*dxu*100,
                                 sig->GetBinContent(nbin+1)*dxo*100, bgd->GetBinContent(nbin+1)*dxo*100 );
-         TText* t = new TText( 0.975, 0.115, uoflow );
-         t->SetNDC();
-         t->SetTextSize( 0.030 );
-         t->SetTextAngle( 90 );
-         t->AppendPad();    
+//         TText* t = new TText( 0.975, 0.115, uoflow );
+//         t->SetNDC();
+//         t->SetTextSize( 0.030 );
+//         t->SetTextAngle( 90 );
+//         t->AppendPad();    
    
          // update canvas
          c->Update();

@@ -13,6 +13,15 @@ void correlations( TString fin = "TMVA.root", Bool_t isRegression = kFALSE,
 
    // set style and remove existing canvas'
    TMVAGlob::Initialize( useTMVAStyle );
+   // Define new bin titles
+   map<string, string> newtitle;
+   newtitle.insert(pair<string, string>("B_s0_ln_FDCHI2","#it{B_{s}}^{0} ln#it{#chi}_{FD}^{2}"));
+   newtitle.insert(pair<string, string>("B_s0_ln_IPCHI2","#it{B_{s}}^{0} ln#it{#chi}_{IP}^{2}"));
+   newtitle.insert(pair<string, string>("B_s0_ln_EVCHI2","#it{B_{s}}^{0} ln#it{#chi}_{EV}^{2}"));
+   newtitle.insert(pair<string, string>("B_s0_PT_fiveGeV","#it{B_{s}}^{0} #it{p_{T}}"));
+   newtitle.insert(pair<string, string>("B_s0_Eta","#it{B_{s}}^{0} #it{#eta}"));
+   newtitle.insert(pair<string, string>("minK_PT_GeV","min #it{K} #it{p_{T}}"));
+   newtitle.insert(pair<string, string>("minK_ln_IPCHI2","min #it{K} ln#it{#chi}_{IP}^{2}"));
 
    // checks if file with name "fin" is already open, and if not opens one
    TFile* file = TMVAGlob::OpenFile( fin );  
@@ -55,6 +64,13 @@ void correlations( TString fin = "TMVA.root", Bool_t isRegression = kFALSE,
       Float_t labelSize = 0.040;
       h2->GetXaxis()->SetLabelSize( labelSize );
       h2->GetYaxis()->SetLabelSize( labelSize );
+      for(auto* axis: {h2->GetXaxis(), h2->GetYaxis()})
+      {
+         for(int i = 1; i <= axis->GetNbins(); ++i)
+         {
+            axis->SetBinLabel(i, newtitle[axis->GetBinLabel(i)].c_str());
+         }
+      }
       h2->LabelsOption( "d" );
       h2->SetLabelOffset( 0.011 );// label offset on x axis    
 
@@ -69,10 +85,10 @@ void correlations( TString fin = "TMVA.root", Bool_t isRegression = kFALSE,
       h2->Draw("textsame");  // add text
 
       // add comment    
-      TText* t = new TText( 0.53, 0.88, "Linear correlation coefficients in %" );
-      t->SetNDC();
-      t->SetTextSize( 0.026 );
-      t->AppendPad();    
+//      TText* t = new TText( 0.53, 0.88, "Linear correlation coefficients in %" );
+//      t->SetNDC();
+//      t->SetTextSize( 0.026 );
+//      t->AppendPad();    
 
       // TMVAGlob::plot_logo( );
       c->Update();

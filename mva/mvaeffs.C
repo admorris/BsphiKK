@@ -451,9 +451,9 @@ void StatDialogMVAEffs::DrawHistograms()
       c->SetRightMargin ( 2.0 );
 
       info->effpurS->SetMaximum(1.1);
-      info->effpurS->Draw("histl");
+//      info->effpurS->Draw("histl");
 
-      info->purS->Draw("samehistl");      
+//      info->purS->Draw("samehistl");      
 
       // overlay signal and background histograms
       info->sigE->Draw("samehistl");
@@ -474,16 +474,16 @@ void StatDialogMVAEffs::DrawHistograms()
       legend1->Draw("same");
       legend1->SetBorderSize(1);
       legend1->SetMargin( 0.3 );
+      legend1->AddEntry(info->sSig,"Significance","L");
 
-      TLegend *legend2= new TLegend( c->GetLeftMargin() + 0.4, 1 - c->GetTopMargin(), 
-                                     1 - c->GetRightMargin(), 1 - c->GetTopMargin() + 0.12 );
-      legend2->SetFillStyle( 1 );
-      legend2->AddEntry(info->purS,"Signal purity","L");
-      legend2->AddEntry(info->effpurS,"Signal efficiency*purity","L");
-      legend2->AddEntry(info->sSig,"S / #sqrt{S+B}","L");
-      legend2->Draw("same");
-      legend2->SetBorderSize(1);
-      legend2->SetMargin( 0.3 );
+//      TLegend *legend2= new TLegend( c->GetLeftMargin() + 0.4, 1 - c->GetTopMargin(), 
+//                                     1 - c->GetRightMargin(), 1 - c->GetTopMargin() + 0.12 );
+//      legend2->SetFillStyle( 1 );
+//      legend2->AddEntry(info->purS,"Signal purity","L");
+//      legend2->AddEntry(info->effpurS,"Signal efficiency*purity","L");
+//      legend2->Draw("same");
+//      legend2->SetBorderSize(1);
+//      legend2->SetMargin( 0.3 );
          
       // line to indicate maximum efficiency
       TLine* effline = new TLine( info->sSig->GetXaxis()->GetXmin(), 1, info->sSig->GetXaxis()->GetXmax(), 1 );
@@ -498,7 +498,7 @@ void StatDialogMVAEffs::DrawHistograms()
       Int_t maxbin = info->sSig->GetMaximumBin();
       info->line1 = tl.DrawLatex( 0.15, 0.23, Form("For %1.0f signal and %1.0f background", fNSignal, fNBackground));
       tl.DrawLatex( 0.15, 0.19, "events the maximum S / #sqrt{S+B} is");
-      info->line2 = tl.DrawLatex( 0.15, 0.15, Form("%3.4f when cutting at %3.4f",
+      info->line2 = tl.DrawLatex( 0.15, 0.15, Form("%3.1f when cutting at %3.3f",
                                              info->maxSignificance, 
                                              info->sSig->GetXaxis()->GetBinCenter(maxbin)) );
       // add comment for Method cuts
